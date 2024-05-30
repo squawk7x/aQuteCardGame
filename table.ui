@@ -11,17 +11,17 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>aQuteCardGame</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="GameWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="theGame">
       <attribute name="title">
-       <string>Tab 1</string>
+       <string>Game</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -31,6 +31,9 @@
            <property name="title">
             <string>Player 2</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <layout class="QHBoxLayout" name="player2"/>
           </widget>
          </item>
@@ -38,6 +41,9 @@
           <widget class="QGroupBox" name="Player3">
            <property name="title">
             <string>Player 3</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="player3"/>
           </widget>
@@ -51,37 +57,78 @@
            <property name="title">
             <string>Monitor</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <layout class="QHBoxLayout" name="monitor"/>
           </widget>
          </item>
          <item>
           <widget class="QGroupBox" name="EightsChooser">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="title">
             <string>Eights Chooser</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="eightsChooser"/>
           </widget>
          </item>
          <item>
           <widget class="QGroupBox" name="QuteChooser">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="title">
             <string>Qute Chooser</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="quteChooser"/>
           </widget>
          </item>
          <item>
           <widget class="QGroupBox" name="JpointsChooser">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="title">
             <string>Jpoints Chooser</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="jpointsChooser"/>
           </widget>
          </item>
          <item>
+          <widget class="QGroupBox" name="RoundChooser">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="title">
+            <string>Round Chooser</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="roundChooser"/>
+          </widget>
+         </item>
+         <item>
           <widget class="QGroupBox" name="Played">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="title">
             <string>Played</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="played"/>
           </widget>
@@ -90,6 +137,9 @@
           <widget class="QGroupBox" name="Drawn">
            <property name="title">
             <string>Drawn</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="drawn"/>
           </widget>
@@ -103,6 +153,9 @@
            <property name="title">
             <string>Blind</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <layout class="QHBoxLayout" name="blind"/>
           </widget>
          </item>
@@ -111,6 +164,9 @@
            <property name="title">
             <string>Jsuit Chooser</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <layout class="QHBoxLayout" name="jsuitChooser"/>
           </widget>
          </item>
@@ -118,6 +174,9 @@
           <widget class="QGroupBox" name="Stack">
            <property name="title">
             <string>Stack</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="stack"/>
           </widget>
@@ -131,6 +190,9 @@
            <property name="title">
             <string>Playable</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <layout class="QHBoxLayout" name="playable"/>
           </widget>
          </item>
@@ -143,6 +205,9 @@
            <property name="title">
             <string>Player 1</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <layout class="QHBoxLayout" name="player1"/>
           </widget>
          </item>
@@ -150,9 +215,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="HowToPlay">
       <attribute name="title">
-       <string>Tab 2</string>
+       <string>Rules</string>
       </attribute>
      </widget>
     </widget>

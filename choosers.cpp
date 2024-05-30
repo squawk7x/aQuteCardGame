@@ -1,5 +1,6 @@
 #include "choosers.h"
 #include <QDebug>
+#include <QRandomGenerator>
 #include "card.h"
 
 /* ************************************************************************* */
@@ -131,6 +132,15 @@ void EightsChooser::toggle_to(const QString& target_decision)
     }
 }
 
+void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
+{
+    // Generate a random number between 0 and 1
+    int randomNumber = QRandomGenerator::global()->bounded(2);
+
+    // If the random number is 0, return dec1, otherwise return dec2
+    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
+}
+
 // Slots:
 void EightsChooser::onEightsInMonitor() {}
 
@@ -176,6 +186,15 @@ void QuteChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
+}
+
+void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
+{
+    // Generate a random number between 0 and 1
+    int randomNumber = QRandomGenerator::global()->bounded(2);
+
+    // If the random number is 0, return dec1, otherwise return dec2
+    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
 }
 
 // Slots:
@@ -224,6 +243,15 @@ void JpointsChooser::toggle_to(const QString& target_decision)
     }
 }
 
+void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
+{
+    // Generate a random number between 0 and 1
+    int randomNumber = QRandomGenerator::global()->bounded(2);
+
+    // If the random number is 0, return dec1, otherwise return dec2
+    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
+}
+
 // Slots:
 void JpointsChooser::onJpoints() {}
 
@@ -268,6 +296,15 @@ void RoundChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
+}
+
+void RoundChooser::toggleRandom(const QString& dec1, const QString& dec2)
+{
+    // Generate a random number between 0 and 1
+    int randomNumber = QRandomGenerator::global()->bounded(2);
+
+    // If the random number is 0, return dec1, otherwise return dec2
+    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
 }
 
 // Slots:

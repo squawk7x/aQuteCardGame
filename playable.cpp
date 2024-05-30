@@ -17,6 +17,7 @@ void Playable::addCard(QSharedPointer<Card> card)
         // connect(card.data(), &Card::cardClicked, this, [this, card]() {
         //     this->onCardClicked(card);
         // });
+        card->setParent(this);
         cards_.append(card);
         layout_->addWidget(card.data());
         layout_->update();

@@ -11,7 +11,7 @@ Drawn::~Drawn()
     // CardVec's destructor will handle cleaning up the cards using smart pointers
 }
 
-void Drawn::onCardDrawnFromBlind(const QSharedPointer<Card> &card)
+void Drawn::onCardDrawnFromBlind(const QSharedPointer<Card>& card)
 {
-    addCard(card->clone());
+    addCard(card->clone(this));
 }

@@ -23,6 +23,7 @@ private:
     std::unique_ptr<EightsChooser> eightsChooser_;
     std::unique_ptr<QuteChooser> quteChooser_;
     std::unique_ptr<JpointsChooser> jpointsChooser_;
+    std::unique_ptr<RoundChooser> roundChooser_;
     std::unique_ptr<Played> played_;
     std::unique_ptr<Blind> blind_;
     std::unique_ptr<JsuitChooser> jsuitChooser_;
@@ -52,6 +53,7 @@ public:
     std::unique_ptr<EightsChooser>& eightsChooser();
     std::unique_ptr<QuteChooser>& quteChooser();
     std::unique_ptr<JpointsChooser>& jpointsChooser();
+    std::unique_ptr<RoundChooser>& roundChooser();
     std::unique_ptr<Played>& played();
     std::unique_ptr<Drawn>& drawn();
     std::unique_ptr<Blind>& blind();

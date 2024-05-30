@@ -16,8 +16,8 @@ void Played::addCard(QSharedPointer<Card> card)
 {
     if (card) {
         card->setParent(this);
-        cards_.append(card); // Use the protected cards_ vector from CardVec
-        layout_->addWidget(card.data());
+        cards_.prepend(card);
+        layout_->insertWidget(0, card.data());
         layout_->update();
         update();
     }
@@ -25,5 +25,5 @@ void Played::addCard(QSharedPointer<Card> card)
 
 void Played::onCardAddedToStack(const QSharedPointer<Card> &card)
 {
-    addCard(card->clone()); // Simply call the addCard method to handle the layout update
+    addCard(card->clone(this));
 }

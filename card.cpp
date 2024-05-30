@@ -17,7 +17,7 @@ void Card::initCard()
 
     this->setToolTip(QString("%1 of %2").arg(rankname_, suitname_));
 
-    connect(this, &QAbstractButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
+    connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
 }
 
 // Standard Constructor
@@ -26,6 +26,10 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
     , suit_(suit)
     , rank_(rank)
 {
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    setFlat(true);
+    setText("");
+
     initCard();
 }
 
@@ -93,9 +97,13 @@ bool Card::operator==(const Card& other) const
 }
 
 // Clone
-QSharedPointer<Card> Card::clone() const
+QSharedPointer<Card> Card::clone(QWidget* parent) const
 {
-    return QSharedPointer<Card>::create(*this);
+    QSharedPointer<Card> clonedCard = QSharedPointer<Card>::create(*this);
+    if (parent) {
+        clonedCard->setParent(parent);
+    }
+    return clonedCard;
 }
 
 // Getters
@@ -103,27 +111,22 @@ QString Card::suit() const
 {
     return suit_;
 }
-
 QString Card::rank() const
 {
     return rank_;
 }
-
 QString Card::suitname() const
 {
     return suitname_;
 }
-
 QString Card::rankname() const
 {
     return rankname_;
 }
-
 QString Card::str() const
 {
     return str_;
 }
-
 int Card::value() const
 {
     return value_;

@@ -12,8 +12,8 @@ public:
     explicit Stack(QWidget* parent = nullptr, const QVector<QSharedPointer<Card>>& rhs = {});
     virtual ~Stack();
 
-    virtual void addCard(QSharedPointer<Card> card);
-    QSharedPointer<Card>& topCardFromStack();
+    virtual void addCard(QSharedPointer<Card> card) override;
+    QSharedPointer<Card> topCardFromStack() const;
 };
 
 #endif // STACK_H

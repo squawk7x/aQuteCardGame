@@ -60,6 +60,7 @@ public:
     // Methods
     void toggle();
     void toggle_to(const QString& target_decision);
+    void toggleRandom(const QString& dec1 = "a", const QString& dec2 = "n");
 
 public slots:
     void onEightsInMonitor();
@@ -86,6 +87,7 @@ public:
     // Methods
     void toggle();
     void toggle_to(const QString& target_decision);
+    void toggleRandom(const QString& dec1 = "y", const QString& dec2 = "n");
 
 public slots:
     void onFourCardsInMonitor();
@@ -113,6 +115,7 @@ public:
     // Methods
     void toggle();
     void toggle_to(const QString& target_decision);
+    void toggleRandom(const QString& dec1 = "m", const QString& dec2 = "p");
 
 public slots:
     void onJpoints();
@@ -139,6 +142,7 @@ public:
     // Methods
     void toggle();
     void toggle_to(const QString& target_decision);
+    void toggleRandom(const QString& dec1 = "c", const QString& dec2 = "f");
 
 public slots:
     void onNewRound();

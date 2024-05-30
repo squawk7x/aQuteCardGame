@@ -1,5 +1,6 @@
 #include "cardvec.h"
 #include <QDebug>
+#include <algorithm>
 
 CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     : QWidget(parent)
@@ -10,6 +11,7 @@ CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     setLayout(layout_);
 
     for (const auto& card : cards_) {
+        card->setParent(this);
         layout_->addWidget(card.data());
     }
     layout_->update();
@@ -24,6 +26,7 @@ CardVec::~CardVec()
 void CardVec::addCard(QSharedPointer<Card> card)
 {
     if (card) {
+        card->setParent(this);
         cards_.append(card);
         layout_->addWidget(card.data());
         layout_->update();
@@ -53,14 +56,13 @@ void CardVec::clearCards()
     update();
 }
 
-QString CardVec::cardsAsString()
+QString CardVec::cardsAsString() const
 {
-    QString cardsStr = "";
-
-    for (auto card : cards_) {
+    QString cardsStr;
+    for (const auto& card : cards_) {
         cardsStr += card->str() + " ";
     }
-    return cardsStr;
+    return cardsStr.trimmed();
 }
 
 void CardVec::moveCardTo(QSharedPointer<Card> card, CardVec* targetVec)
@@ -74,15 +76,15 @@ void CardVec::moveCardTo(QSharedPointer<Card> card, CardVec* targetVec)
 void CardVec::moveTopCardTo(CardVec* targetVec)
 {
     if (!cards_.isEmpty() && targetVec != nullptr) {
-        QSharedPointer<Card> card = cards_.takeLast();
-        targetVec->addCard(card);
+        QSharedPointer<Card> topCard = cards_.last();
+        moveCardTo(topCard, targetVec);
     }
 }
 
 void CardVec::copyCardTo(QSharedPointer<Card> card, CardVec* targetVec)
 {
     if (card && targetVec != nullptr) {
-        QSharedPointer<Card> newCard = card->clone();
+        QSharedPointer<Card> newCard = card->clone(targetVec);
         targetVec->addCard(newCard);
     }
 }
@@ -97,11 +99,35 @@ void CardVec::copyTopCardTo(CardVec* targetVec)
 
 QSharedPointer<Card> CardVec::drawTopCard()
 {
-    if (!cards().isEmpty()) {
-        QSharedPointer<Card> card = cards().takeLast();
+    if (!cards_.isEmpty()) {
+        QSharedPointer<Card> card = cards_.takeLast();
+        card->setParent(nullptr);
+        layout_->removeWidget(card.data());
+        layout_->update();
+        update();
         return card;
     }
     return nullptr;
+}
+
+QString CardVec::mostCommonSuit() const
+{
+    QMap<QString, int> suitCounts;
+
+    for (const auto& card : cards_) {
+        suitCounts[card->suit()]++;
+    }
+
+    QString mostCommonSuit;
+    int maxCount = 0;
+    for (auto it = suitCounts.constBegin(); it != suitCounts.constEnd(); ++it) {
+        if (it.value() > maxCount) {
+            maxCount = it.value();
+            mostCommonSuit = it.key();
+        }
+    }
+
+    return mostCommonSuit;
 }
 
 void CardVec::toggleIsVisible()
@@ -123,7 +149,7 @@ void CardVec::sortCards(int pattern)
         return;
     }
 
-    const std::vector<QString>& selected_pattern = patterns[pattern];
+    const auto& selected_pattern = patterns[pattern];
 
     std::sort(cards_.begin(),
               cards_.end(),
@@ -133,7 +159,11 @@ void CardVec::sortCards(int pattern)
                   return posA < posB;
               });
 
-    // Update the layout with the sorted cards
+    for (auto& card : cards_) {
+        layout_->removeWidget(card.data());
+        layout_->addWidget(card.data());
+    }
+
     layout_->update();
     update();
 }
@@ -149,7 +179,7 @@ bool CardVec::isVisible() const
     return isVisible_;
 }
 
-//Setters
+// Setters
 void CardVec::setIsVisible(bool isVisible)
 {
     isVisible_ = isVisible;
@@ -159,6 +189,6 @@ void CardVec::setIsVisible(bool isVisible)
 // Slots
 void CardVec::onCardClicked(const QSharedPointer<Card>& card)
 {
-    // to be implemented by subclasses
+    // To be implemented by subclasses
     qDebug() << "onCardClicked received in CardVec: " << card->str();
 }

@@ -10,10 +10,10 @@ void Handdeck::addCard(QSharedPointer<Card> card)
         connect(card.data(), &Card::cardClicked, this, [this, card]() {
             this->onCardClicked(card);
         });
+        card->setParent(this);
         cards_.append(card);
         layout_->addWidget(card.data());
-        layout_->update();
-        update();
+        // No need to call layout_->update() and update() here as addWidget will handle that.
     }
 }
 

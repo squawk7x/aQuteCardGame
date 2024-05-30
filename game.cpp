@@ -7,6 +7,7 @@ Game::Game(QObject* parent)
     , eightsChooser_(std::make_unique<EightsChooser>())
     , quteChooser_(std::make_unique<QuteChooser>())
     , jpointsChooser_(std::make_unique<JpointsChooser>())
+    , roundChooser_(std::make_unique<RoundChooser>())
     , played_(std::make_unique<Played>())
     , blind_(std::make_unique<Blind>())
     , jsuitChooser_(std::make_unique<JsuitChooser>())
@@ -30,7 +31,7 @@ Game::Game(QObject* parent)
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
     connect(this, &Game::cardDrawnFromBlind, drawn_.get(), &Drawn::onCardDrawnFromBlind);
     connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
-    for (auto& player : playerList_) {
+    for (const auto& player : playerList_) {
         connect(this, &Game::countPoints, player, &Player::onCountPoints);
     }
     connect(monitor_.get(),
@@ -84,6 +85,11 @@ std::unique_ptr<QuteChooser>& Game::quteChooser()
 std::unique_ptr<JpointsChooser>& Game::jpointsChooser()
 {
     return jpointsChooser_;
+}
+
+std::unique_ptr<RoundChooser>& Game::roundChooser()
+{
+    return roundChooser_;
 }
 
 std::unique_ptr<Played>& Game::played()
@@ -149,7 +155,7 @@ void Game::initializeGame()
         blind_->moveTopCardTo(player1_->handdeck());
     }
 
-    for (auto player : playerList_) {
+    for (const auto& player : playerList_) {
         player->handdeck()->setEnabled(false);
     }
 
@@ -161,7 +167,7 @@ void Game::initializeGame()
 
 void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
-    player = playerList_.front();
+    // player = playerList_.front();
 
     if (isCardPlayable(card->clone())) {
         stack()->addCard(card->clone());
@@ -169,7 +175,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 
         // JsuitChooser
         if (card->rank() == "J") {
-            jsuitChooser()->toggle_to(card->clone()->suit());
+            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
             if (!player->isRobot())
                 jsuitChooser()->setEnabled(true);
             jsuitChooser()->show();
@@ -183,6 +189,9 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
             emit monitor()->eightsInMonitor();
             if (!player->isRobot())
                 eightsChooser()->setEnabled(true);
+            else
+                eightsChooser()->toggleRandom();
+
             eightsChooser()->show();
         } else {
             eightsChooser()->hide();
@@ -194,6 +203,9 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
             emit monitor()->fourCardsInMonitor();
             if (!player->isRobot())
                 quteChooser()->setEnabled(true);
+            else {
+                quteChooser()->toggleRandom();
+            }
             quteChooser()->show();
         } else {
             quteChooser()->hide();
@@ -205,6 +217,8 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
             && (player->handdeck()->cards().isEmpty() || quteChooser()->isEnabled())) {
             if (!player->isRobot())
                 jpointsChooser()->setEnabled(true);
+            else
+                jpointsChooser()->toggleRandom();
             jpointsChooser()->show();
         } else {
             jpointsChooser()->hide();
@@ -328,13 +342,19 @@ bool Game::isNextPlayerPossible()
 {
     QSharedPointer<Card> stackCard = stack()->topCardFromStack();
 
+    // If quteChooser is enabled and the decision is "y", the next player is possible
+    if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
+        return true;
+    }
+
     getPlayableCard();
 
-    if (stackCard->rank() == "6"
-        || (quteChooser()->isEnabled() && quteChooser()->decision() != "y")) {
+    // If the stack card's rank is "6", the next player is not possible
+    if (stackCard->rank() == "6") {
         return false;
     }
 
+    // Next player is possible if there are played cards or if there are no playable cards but drawn cards exist
     return !played()->cards().isEmpty()
            || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty());
 }
@@ -419,7 +439,7 @@ void Game::activateNextPlayer()
                                * qMin(played()->cards().size(), monitor()->cards().size()));
 
         if (jpointsChooser()->decision() == "p") {
-            for (auto player : playerList_) {
+            for (const auto& player : playerList_) {
                 player->setScore(player->score()
                                  + shuffles * 20
                                        * qMin(played()->cards().size(), monitor()->cards().size()));
@@ -488,7 +508,16 @@ void Game::activateNextPlayer()
 
     if (isRoundFinished) {
         emit countPoints(shuffles);
-        startNewRound();
+
+        // TODO: log scores
+
+        for (const auto& player : playerList_) {
+            if (player->score() > 125)
+
+                startNewGame();
+            else
+                startNewRound();
+        }
     }
 
     if (player->isRobot()) {
@@ -575,7 +604,7 @@ void Game::startNewRound()
 
 void Game::startNewGame()
 {
-    for (auto& player : playerList_) {
+    for (const auto& player : playerList_) {
         player->setScore(0);
     }
 

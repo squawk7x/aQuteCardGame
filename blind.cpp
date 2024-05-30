@@ -7,21 +7,18 @@ extern QVector<QString> suits; // Assuming these are defined globally
 extern QVector<QString> ranks;
 
 Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
-    : CardVec(parent, rhs.isEmpty() ? QVector<QSharedPointer<Card>>() : rhs)
+    : CardVec(parent, rhs)
 {
     if (rhs.isEmpty()) {
         for (const auto& suit : suits) {
             for (const auto& rank : ranks) {
                 auto card = QSharedPointer<Card>::create(suit, rank);
                 addCard(card);
-                // cards_.append(card);
-                // layout_->addWidget(card.data()); // Add the card to the existing layout
             }
         }
     }
-
-    // shuffle();      // Shuffle cards after initialization
-    // this->update(); // Request an update to trigger paintEvent
+    shuffle();      // Shuffle cards after initialization
+    this->update(); // Request an update to trigger paintEvent
 }
 
 Blind::~Blind()
@@ -39,6 +36,7 @@ QSharedPointer<Card> Blind::drawCardFromBlind()
 {
     if (!cards_.isEmpty()) {
         QSharedPointer<Card> card = cards_.takeLast();
+        card->setParent(nullptr); // Clear parent before returning the card
         this->update();
         return card;
     }

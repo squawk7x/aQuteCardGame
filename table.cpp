@@ -29,6 +29,7 @@ Table::Table(QWidget* parent)
     QHBoxLayout* layout_eightsChooser = findChild<QHBoxLayout*>("eightsChooser");
     QHBoxLayout* layout_quteChooser = findChild<QHBoxLayout*>("quteChooser");
     QHBoxLayout* layout_jpointsChooser = findChild<QHBoxLayout*>("jpointsChooser");
+    QHBoxLayout* layout_roundChooser = findChild<QHBoxLayout*>("roundChooser");
 
     QHBoxLayout* layout_played = findChild<QHBoxLayout*>("played");
     QHBoxLayout* layout_drawn = findChild<QHBoxLayout*>("drawn");
@@ -46,6 +47,7 @@ Table::Table(QWidget* parent)
     layout_eightsChooser->addWidget(game->eightsChooser().get());
     layout_quteChooser->addWidget(game->quteChooser().get());
     layout_jpointsChooser->addWidget(game->jpointsChooser().get());
+    layout_roundChooser->addWidget(game->roundChooser().get());
     layout_played->addWidget(game->played().get());
     layout_drawn->addWidget(game->drawn().get());
     layout_blind->addWidget(game->blind().get());
@@ -72,6 +74,9 @@ Table::Table(QWidget* parent)
 
     QGroupBox* groupBoxJpointsChooser = findChild<QGroupBox*>("JpointsChooser");
     groupBoxJpointsChooser->setLayout(layout_jpointsChooser);
+
+    QGroupBox* groupBoxRoundChooser = findChild<QGroupBox*>("RoundChooser");
+    groupBoxRoundChooser->setLayout(layout_roundChooser);
 
     QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("Played");
     groupBoxPlayed->setLayout(layout_played);
@@ -123,21 +128,21 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_6) {
-        for (auto suit : suits) {
+        for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "6");
             game->player->handdeck()->addCard(newCard);
         }
     }
 
     if (event->key() == Qt::Key_8) {
-        for (auto suit : suits) {
+        for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "8");
             game->player->handdeck()->addCard(newCard);
         }
     }
 
     if (event->key() == Qt::Key_J) {
-        for (auto suit : suits) {
+        for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "J");
             game->player->handdeck()->addCard(newCard);
         }
@@ -148,9 +153,6 @@ void Table::keyPressEvent(QKeyEvent* event)
         for (const auto& player : game->playerList_) {
             qDebug() << player->name() << player->score() << player->handdeck()->cardsAsString();
         }
-        qDebug() << "blind: " << game->blind()->cardsAsString();
-        qDebug() << "stack: " << game->stack()->cardsAsString();
-        qDebug() << "playable: " << game->playable()->cardsAsString();
     }
 
     if (event->key() == Qt::Key_0) {

@@ -14,37 +14,37 @@ class CardVec : public QWidget
     Q_OBJECT
 
 public:
-    QHBoxLayout* layout_;
-
     explicit CardVec(QWidget* parent = nullptr, QVector<QSharedPointer<Card>> rhs = {});
     virtual ~CardVec();
 
     virtual void addCard(QSharedPointer<Card> card);
     void removeCard(QSharedPointer<Card> card);
     void clearCards();
-    QString cardsAsString();
+    QString cardsAsString() const;
     void moveCardTo(QSharedPointer<Card> card, CardVec* targetVec);
     void moveTopCardTo(CardVec* targetVec);
     void copyCardTo(QSharedPointer<Card> card, CardVec* targetVec);
     void copyTopCardTo(CardVec* targetVec);
-    QSharedPointer<Card> drawTopCard();
+    virtual QSharedPointer<Card> drawTopCard();
+    QString mostCommonSuit() const;
     void toggleIsVisible();
-    void sortCards(int pattern); // Declaration of the new method
+    void sortCards(int pattern);
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();
     bool isVisible() const;
 
-public slots:
-    virtual void onCardClicked(const QSharedPointer<Card>& card);
-
 protected:
+    QHBoxLayout* layout_;
     QVector<QSharedPointer<Card>> cards_;
     bool isVisible_;
 
 private:
     // Setters
     void setIsVisible(bool isVisible);
+
+public slots:
+    virtual void onCardClicked(const QSharedPointer<Card>& card);
 };
 
 #endif // CARDVEC_H
