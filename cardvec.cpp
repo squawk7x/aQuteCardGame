@@ -48,12 +48,9 @@ void CardVec::removeCard(QSharedPointer<Card> card)
 void CardVec::clearCards()
 {
     for (const auto& card : cards_) {
-        layout_->removeWidget(card.data());
-        card->setParent(nullptr);
+        removeCard(card);
     }
     cards_.clear();
-    layout_->update();
-    update();
 }
 
 QString CardVec::cardsAsString() const
@@ -69,7 +66,7 @@ void CardVec::moveCardTo(QSharedPointer<Card> card, CardVec* targetVec)
 {
     if (cards_.contains(card) && targetVec != nullptr) {
         removeCard(card);
-        targetVec->addCard(card);
+        targetVec->addCard(std::move(card));
     }
 }
 
@@ -81,7 +78,7 @@ void CardVec::moveTopCardTo(CardVec* targetVec)
     }
 }
 
-void CardVec::copyCardTo(QSharedPointer<Card> card, CardVec* targetVec)
+void CardVec::copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec)
 {
     if (card && targetVec != nullptr) {
         QSharedPointer<Card> newCard = card->clone(targetVec);
@@ -108,6 +105,11 @@ QSharedPointer<Card> CardVec::drawTopCard()
         return card;
     }
     return nullptr;
+}
+
+QSharedPointer<Card> CardVec::topCard()
+{
+    return cards_.back();
 }
 
 QString CardVec::mostCommonSuit() const

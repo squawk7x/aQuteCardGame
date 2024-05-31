@@ -18,14 +18,15 @@ public:
     virtual ~CardVec();
 
     virtual void addCard(QSharedPointer<Card> card);
-    void removeCard(QSharedPointer<Card> card);
-    void clearCards();
+    virtual void removeCard(QSharedPointer<Card> card);
+    virtual void clearCards();
     QString cardsAsString() const;
     void moveCardTo(QSharedPointer<Card> card, CardVec* targetVec);
     void moveTopCardTo(CardVec* targetVec);
-    void copyCardTo(QSharedPointer<Card> card, CardVec* targetVec);
+    void copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec);
     void copyTopCardTo(CardVec* targetVec);
     virtual QSharedPointer<Card> drawTopCard();
+    QSharedPointer<Card> topCard();
     QString mostCommonSuit() const;
     void toggleIsVisible();
     void sortCards(int pattern);

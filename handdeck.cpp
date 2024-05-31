@@ -13,7 +13,20 @@ void Handdeck::addCard(QSharedPointer<Card> card)
         card->setParent(this);
         cards_.append(card);
         layout_->addWidget(card.data());
-        // No need to call layout_->update() and update() here as addWidget will handle that.
+        layout_->update();
+        update();
+    }
+}
+
+void Handdeck::removeCard(QSharedPointer<Card> card)
+{
+    if (card && cards_.contains(card)) {
+        disconnect(card.data(), &Card::cardClicked, this, nullptr);
+        layout_->removeWidget(card.data());
+        card->setParent(nullptr);
+        cards_.removeOne(card);
+        layout_->update();
+        update();
     }
 }
 

@@ -12,6 +12,7 @@ class Handdeck : public CardVec
 public:
     explicit Handdeck(QWidget* parent = nullptr);
     virtual void addCard(QSharedPointer<Card> card) override;
+    virtual void removeCard(QSharedPointer<Card> card) override;
 
 signals:
     void handCardClicked(const QSharedPointer<Card>& card);

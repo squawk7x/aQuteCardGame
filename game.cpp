@@ -367,9 +367,12 @@ void Game::getPlayableCard()
         if (blind()->cards().isEmpty())
             refillBlindFromStack();
 
-        QSharedPointer<Card> drawnCard = blind()->drawTopCard();
-        emit cardDrawnFromBlind(drawnCard->clone());
-        player->handdeck()->addCard(drawnCard);
+        // QSharedPointer<Card> Card = blind()->drawTopCard();
+
+        emit cardDrawnFromBlind(blind()->topCard());
+        blind()->moveTopCardTo(player->handdeck());
+        // emit cardDrawnFromBlind(drawnCard->clone());
+        // player->handdeck()->addCard(drawnCard);
         updatePlayable();
     }
 }
