@@ -60,6 +60,7 @@ public:
     QSharedPointer<Stack> stack();
     QSharedPointer<Playable> playable();
     bool isCardPlayable(const QSharedPointer<Card>& card);
+    void rotatePlayerList();
     bool isNextPlayerPossible();
     void updatePlayable();
     bool mustDrawCard();
@@ -69,8 +70,6 @@ public:
     void collectAllCardsToBlind();
     void countRound();
     bool comparePlayersByScore(const QSharedPointer<Player>& a, const QSharedPointer<Player>& b);
-    void startNewRound();
-    void startNewGame();
 
 signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);
@@ -79,8 +78,10 @@ signals:
 
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
-    void rotatePlayerList();
+    // void rotatePlayerList();
     void activateNextPlayer();
+    void startNewRound();
+    void startNewGame();
 };
 
 #endif // GAME_H

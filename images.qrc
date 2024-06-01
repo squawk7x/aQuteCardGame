@@ -50,8 +50,8 @@
         <file>cards/chooser_qute_y.png</file>
         <file>cards/chooser_jpoints_p.png</file>
         <file>cards/backside_grey.png</file>
-        <file>cards/chooser_new_round.png</file>
-        <file>cards/chooser_new_game.png</file>
+        <file>cards/chooser_new_r.png</file>
+        <file>cards/chooser_new_g.png</file>
         <file>cards/chooser_quit_game.png</file>
     </qresource>
 </RCC>

@@ -3,7 +3,7 @@
 Playable::Playable(QWidget* parent)
     : CardVec(parent)
 {
-    setVisible(true); // Ensure the widget is visible if needed
+    setVisible(true);
 }
 
 Playable::~Playable()

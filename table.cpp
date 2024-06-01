@@ -59,37 +59,29 @@ Table::Table(QWidget* parent)
     // Add group boxes to their respective layouts
     QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("Player2");
     groupBoxPlayer2->setLayout(layout_player2);
-
     QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("Player3");
     groupBoxPlayer3->setLayout(layout_player3);
 
     QGroupBox* groupBoxMonitor = findChild<QGroupBox*>("Monitor");
     groupBoxMonitor->setLayout(layout_monitor);
-
     QGroupBox* groupBoxEightsChooser = findChild<QGroupBox*>("EightsChooser");
     groupBoxEightsChooser->setLayout(layout_eightsChooser);
-
     QGroupBox* groupBoxQuteChooser = findChild<QGroupBox*>("QuteChooser");
     groupBoxQuteChooser->setLayout(layout_quteChooser);
-
     QGroupBox* groupBoxJpointsChooser = findChild<QGroupBox*>("JpointsChooser");
     groupBoxJpointsChooser->setLayout(layout_jpointsChooser);
-
     QGroupBox* groupBoxRoundChooser = findChild<QGroupBox*>("RoundChooser");
     groupBoxRoundChooser->setLayout(layout_roundChooser);
 
     QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("Played");
     groupBoxPlayed->setLayout(layout_played);
-
     QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("Drawn");
     groupBoxDrawn->setLayout(layout_drawn);
 
     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("Blind");
     groupBoxBlind->setLayout(layout_blind);
-
     QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("JsuitChooser");
     groupBoxJsuitChooser->setLayout(layout_jsuitChooser);
-
     QGroupBox* groupBoxStack = findChild<QGroupBox*>("Stack");
     groupBoxStack->setLayout(layout_stack);
 
@@ -101,7 +93,6 @@ Table::Table(QWidget* parent)
 
     connect(this, &Table::rightMouseClicked, game.get(), &Game::activateNextPlayer);
 
-    // setFocusPolicy(Qt::StrongFocus); // Ensure the widget can accept key events
 }
 
 Table::~Table()

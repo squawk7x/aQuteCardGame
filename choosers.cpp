@@ -262,13 +262,19 @@ RoundChooser::RoundChooser(QString decision, QWidget* parent)
 {
     loadImage();
 
-    connect(this, &QPushButton::clicked, this, &RoundChooser::toggle);
+    connect(this, &QPushButton::clicked, this, [this]() {
+        if (decision_ == "r") {
+            emit newRound();
+        } else if (decision_ == "g") {
+            emit newGame();
+        }
+    });
 }
 
 // Methods
 void RoundChooser::loadImage()
 {
-    QString imagePath = QString(":images/cards/chooser_round_%1.png").arg(decision_);
+    QString imagePath = QString(":images/cards/chooser_new_%1.png").arg(decision_);
     QIcon icon((QString(imagePath)));
     if (!icon.isNull()) {
         setIcon(icon);
@@ -282,32 +288,10 @@ QString RoundChooser::decision()
     return decision_;
 }
 
-void RoundChooser::toggle()
+void RoundChooser::setDecision(const QString& target_decision)
 {
-    if (decision_ == "c") {
-        decision_ = "f";
-    } else
-        decision_ = "c";
+    decision_ = target_decision;
     loadImage();
 }
-
-void RoundChooser::toggle_to(const QString& target_decision)
-{
-    while (decision_ != target_decision) {
-        toggle();
-    }
-}
-
-void RoundChooser::toggleRandom(const QString& dec1, const QString& dec2)
-{
-    // Generate a random number between 0 and 1
-    int randomNumber = QRandomGenerator::global()->bounded(2);
-
-    // If the random number is 0, return dec1, otherwise return dec2
-    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
-}
-
-// Slots:
-void RoundChooser::onNewRound() {}
 
 /* ************************************************************************* */

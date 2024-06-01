@@ -151,7 +151,7 @@ void CardVec::sortCards(int pattern)
                   return posA < posB;
               });
 
-    for (auto& card : cards_) {
+    for (const auto& card : cards_) {
         layout_->removeWidget(card.data());
         layout_->addWidget(card.data());
     }

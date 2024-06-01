@@ -44,6 +44,9 @@ Game::Game(QObject* parent)
             quteChooser_.get(),
             &QuteChooser::onFourCardsInMonitor);
 
+    connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::startNewRound);
+    connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::startNewGame);
+
     initializeGame();
 }
 
@@ -127,6 +130,8 @@ QSharedPointer<Drawn> Game::drawn()
 void Game::initializeGame()
 {
     collectAllCardsToBlind();
+
+    roundChooser()->hide();
 
     if (!monitor()->cards().isEmpty())
         monitor_->clearCards();
@@ -395,7 +400,7 @@ void Game::rotatePlayerList()
         playerList_.push_back(player);
     }
 
-    for (auto player : playerList_) {
+    for (const auto& player : playerList_) {
         player->handdeck()->setEnabled(false);
     }
 
@@ -492,7 +497,6 @@ void Game::activateNextPlayer()
                     refillBlindFromStack();
                 emit cardDrawnFromBlind(blind()->topCard());
                 blind()->moveTopCardTo(player->handdeck());
-                // drawn()->cards().clear();
                 rotatePlayerList();
             } else {
                 rotatePlayerList();
@@ -524,13 +528,18 @@ void Game::activateNextPlayer()
         // TODO: log scores
 
         for (const auto& player : playerList_) {
-            if (player->score() > 125)
+            if (player->score() > 125) {
+                roundChooser()->setDecision("g");
+                roundChooser()->show();
+            }
 
-                startNewGame();
-            else
-                startNewRound();
+            else {
+                roundChooser()->setDecision("r");
+                roundChooser()->show();
+            }
         }
-    }
+    } else
+        roundChooser()->hide();
 
     if (player->isRobot()) {
         autoplay();
@@ -539,9 +548,8 @@ void Game::activateNextPlayer()
     }
 
     qDebug() << "player" << player->name() << "has played:" << played()->cardsAsString();
-    for (auto player : playerList_)
+    for (const auto& player : playerList_)
         qDebug() << "player" << player->name() << "cards:" << player->handdeck()->cardsAsString();
-    qDebug() << "-------------------------------------";
 }
 
 void Game::autoplay()

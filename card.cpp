@@ -27,7 +27,7 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
     , rank_(rank)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    setFlat(true);
+    // setFlat(true);
     setText("");
 
     initCard();

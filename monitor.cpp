@@ -36,7 +36,7 @@ void Monitor::addCard(QSharedPointer<Card> card)
     cards_ = filteredCards;
 
     // Add the new card to the layout and vector
-    cards_.prepend(card); // Insert the card at the beginning of the vector
+    cards_.prepend(card);
     layout_->insertWidget(0, card.data());
     layout_->update();
     update();

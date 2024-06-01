@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <random>
 
-extern QVector<QString> suits; // Assuming these are defined globally
+extern QVector<QString> suits;
 extern QVector<QString> ranks;
 
 Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
@@ -18,6 +18,9 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
         }
     } else
         cards_ = rhs;
+    this->shuffle();
+    layout_->update();
+    update();
 }
 
 Blind::~Blind()

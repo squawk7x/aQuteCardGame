@@ -134,18 +134,17 @@ private:
     void loadImage();
 
 public:
-    explicit RoundChooser(QString decision = "c", QWidget* parent = nullptr);
+    explicit RoundChooser(QString decision = "r", QWidget* parent = nullptr);
 
     // Getters
     QString decision();
 
-    // Methods
-    void toggle();
-    void toggle_to(const QString& target_decision);
-    void toggleRandom(const QString& dec1 = "c", const QString& dec2 = "f");
+    // Setters
+    void setDecision(const QString& target_decision);
 
-public slots:
-    void onNewRound();
+signals:
+    void newRound();
+    void newGame();
 };
 
 /* ************************************************************************* */
