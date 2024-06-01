@@ -13,7 +13,6 @@ public:
     virtual ~Blind();
 
     void shuffle();
-    QSharedPointer<Card> drawCardFromBlind();
 };
 
 #endif // BLIND_H

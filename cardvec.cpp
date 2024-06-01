@@ -94,22 +94,12 @@ void CardVec::copyTopCardTo(CardVec* targetVec)
     }
 }
 
-QSharedPointer<Card> CardVec::drawTopCard()
-{
-    if (!cards_.isEmpty()) {
-        QSharedPointer<Card> card = cards_.takeLast();
-        card->setParent(nullptr);
-        layout_->removeWidget(card.data());
-        layout_->update();
-        update();
-        return card;
-    }
-    return nullptr;
-}
-
 QSharedPointer<Card> CardVec::topCard()
 {
-    return cards_.back();
+    if (!cards_.isEmpty()) {
+        return cards_.last();
+    }
+    return nullptr;
 }
 
 QString CardVec::mostCommonSuit() const

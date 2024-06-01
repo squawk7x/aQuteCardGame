@@ -20,12 +20,11 @@ public:
     virtual void addCard(QSharedPointer<Card> card);
     virtual void removeCard(QSharedPointer<Card> card);
     virtual void clearCards();
-    QString cardsAsString() const;
+    virtual QString cardsAsString() const;
     void moveCardTo(QSharedPointer<Card> card, CardVec* targetVec);
     void moveTopCardTo(CardVec* targetVec);
     void copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec);
     void copyTopCardTo(CardVec* targetVec);
-    virtual QSharedPointer<Card> drawTopCard();
     QSharedPointer<Card> topCard();
     QString mostCommonSuit() const;
     void toggleIsVisible();

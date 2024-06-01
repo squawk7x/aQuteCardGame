@@ -24,11 +24,3 @@ void Stack::addCard(QSharedPointer<Card> card)
         update();
     }
 }
-
-QSharedPointer<Card> Stack::topCardFromStack() const
-{
-    if (!cards_.isEmpty()) {
-        return cards_.last(); // Access the last card using CardVec's storage
-    }
-    return nullptr; // Return a null QSharedPointer if no cards are present
-}

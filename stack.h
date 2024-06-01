@@ -13,7 +13,7 @@ public:
     virtual ~Stack();
 
     virtual void addCard(QSharedPointer<Card> card) override;
-    QSharedPointer<Card> topCardFromStack() const;
+    // QSharedPointer<Card> topCardFromStack() const;
 };
 
 #endif // STACK_H

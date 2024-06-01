@@ -16,9 +16,8 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
                 addCard(card);
             }
         }
-    }
-    shuffle();      // Shuffle cards after initialization
-    this->update(); // Request an update to trigger paintEvent
+    } else
+        cards_ = rhs;
 }
 
 Blind::~Blind()
@@ -30,15 +29,4 @@ void Blind::shuffle()
 {
     auto rng = QRandomGenerator::global();
     std::shuffle(cards_.begin(), cards_.end(), std::mt19937(rng->generate()));
-}
-
-QSharedPointer<Card> Blind::drawCardFromBlind()
-{
-    if (!cards_.isEmpty()) {
-        QSharedPointer<Card> card = cards_.takeLast();
-        card->setParent(nullptr); // Clear parent before returning the card
-        this->update();
-        return card;
-    }
-    return nullptr;
 }

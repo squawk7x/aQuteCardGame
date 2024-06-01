@@ -12,27 +12,26 @@
 #include "played.h"
 #include "player.h"
 #include "stack.h"
-#include <memory>
 
 class Game : public QObject
 {
     Q_OBJECT
 
 private:
-    std::unique_ptr<Monitor> monitor_;
-    std::unique_ptr<EightsChooser> eightsChooser_;
-    std::unique_ptr<QuteChooser> quteChooser_;
-    std::unique_ptr<JpointsChooser> jpointsChooser_;
-    std::unique_ptr<RoundChooser> roundChooser_;
-    std::unique_ptr<Played> played_;
-    std::unique_ptr<Blind> blind_;
-    std::unique_ptr<JsuitChooser> jsuitChooser_;
-    std::unique_ptr<Stack> stack_;
-    std::unique_ptr<Playable> playable_;
-    std::unique_ptr<Drawn> drawn_;
-    std::unique_ptr<Player> player1_;
-    std::unique_ptr<Player> player2_;
-    std::unique_ptr<Player> player3_;
+    QSharedPointer<Monitor> monitor_;
+    QSharedPointer<EightsChooser> eightsChooser_;
+    QSharedPointer<QuteChooser> quteChooser_;
+    QSharedPointer<JpointsChooser> jpointsChooser_;
+    QSharedPointer<RoundChooser> roundChooser_;
+    QSharedPointer<Played> played_;
+    QSharedPointer<Blind> blind_;
+    QSharedPointer<JsuitChooser> jsuitChooser_;
+    QSharedPointer<Stack> stack_;
+    QSharedPointer<Playable> playable_;
+    QSharedPointer<Drawn> drawn_;
+    QSharedPointer<Player> player1_;
+    QSharedPointer<Player> player2_;
+    QSharedPointer<Player> player3_;
     int games = 1;
     int rounds = 1;
     int shuffles = 1;
@@ -44,22 +43,22 @@ public:
     void initializeGame();
 
     // Getters
-    QVector<Player*> playerList_;
-    Player* player1() const;
-    Player* player2() const;
-    Player* player3() const;
-    Player* player = nullptr;
-    std::unique_ptr<Monitor>& monitor();
-    std::unique_ptr<EightsChooser>& eightsChooser();
-    std::unique_ptr<QuteChooser>& quteChooser();
-    std::unique_ptr<JpointsChooser>& jpointsChooser();
-    std::unique_ptr<RoundChooser>& roundChooser();
-    std::unique_ptr<Played>& played();
-    std::unique_ptr<Drawn>& drawn();
-    std::unique_ptr<Blind>& blind();
-    std::unique_ptr<JsuitChooser>& jsuitChooser();
-    std::unique_ptr<Stack>& stack();
-    std::unique_ptr<Playable>& playable();
+    QVector<QSharedPointer<Player>> playerList_;
+    QSharedPointer<Player> player1() const;
+    QSharedPointer<Player> player2() const;
+    QSharedPointer<Player> player3() const;
+    QSharedPointer<Player> player = nullptr;
+    QSharedPointer<Monitor> monitor();
+    QSharedPointer<EightsChooser> eightsChooser();
+    QSharedPointer<QuteChooser> quteChooser();
+    QSharedPointer<JpointsChooser> jpointsChooser();
+    QSharedPointer<RoundChooser> roundChooser();
+    QSharedPointer<Played> played();
+    QSharedPointer<Drawn> drawn();
+    QSharedPointer<Blind> blind();
+    QSharedPointer<JsuitChooser> jsuitChooser();
+    QSharedPointer<Stack> stack();
+    QSharedPointer<Playable> playable();
     bool isCardPlayable(const QSharedPointer<Card>& card);
     bool isNextPlayerPossible();
     void updatePlayable();
@@ -69,6 +68,7 @@ public:
     void refillBlindFromStack();
     void collectAllCardsToBlind();
     void countRound();
+    bool comparePlayersByScore(const QSharedPointer<Player>& a, const QSharedPointer<Player>& b);
     void startNewRound();
     void startNewGame();
 
