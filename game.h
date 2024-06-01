@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QLCDNumber>
 #include <QMouseEvent>
 #include <QObject>
 #include <QVector>
@@ -24,11 +25,14 @@ private:
     QSharedPointer<JpointsChooser> jpointsChooser_;
     QSharedPointer<RoundChooser> roundChooser_;
     QSharedPointer<Played> played_;
+    QSharedPointer<Drawn> drawn_;
     QSharedPointer<Blind> blind_;
     QSharedPointer<JsuitChooser> jsuitChooser_;
     QSharedPointer<Stack> stack_;
     QSharedPointer<Playable> playable_;
-    QSharedPointer<Drawn> drawn_;
+    QSharedPointer<QLCDNumber> lcd1_;
+    QSharedPointer<QLCDNumber> lcd2_;
+    QSharedPointer<QLCDNumber> lcd3_;
     QSharedPointer<Player> player1_;
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
@@ -59,6 +63,9 @@ public:
     QSharedPointer<JsuitChooser> jsuitChooser();
     QSharedPointer<Stack> stack();
     QSharedPointer<Playable> playable();
+    QSharedPointer<QLCDNumber> lcd1();
+    QSharedPointer<QLCDNumber> lcd2();
+    QSharedPointer<QLCDNumber> lcd3();
     bool isCardPlayable(const QSharedPointer<Card>& card);
     void rotatePlayerList();
     bool isNextPlayerPossible();
@@ -69,6 +76,7 @@ public:
     void refillBlindFromStack();
     void collectAllCardsToBlind();
     void countRound();
+    void updateDisplay();
     bool comparePlayersByScore(const QSharedPointer<Player>& a, const QSharedPointer<Player>& b);
 
 signals:
@@ -78,7 +86,6 @@ signals:
 
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
-    // void rotatePlayerList();
     void activateNextPlayer();
     void startNewRound();
     void startNewGame();

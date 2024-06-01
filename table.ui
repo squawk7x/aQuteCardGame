@@ -196,6 +196,17 @@
            <layout class="QHBoxLayout" name="playable"/>
           </widget>
          </item>
+         <item>
+          <widget class="QGroupBox" name="Scores">
+           <property name="title">
+            <string>Scores</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="scores"/>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>

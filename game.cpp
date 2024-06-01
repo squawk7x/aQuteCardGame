@@ -17,6 +17,9 @@ Game::Game(QObject* parent)
     , player1_(new Player(nullptr, "Player1", false, 0, new Handdeck(nullptr)))
     , player2_(new Player(nullptr, "Player2", true, 0, new Handdeck(nullptr)))
     , player3_(new Player(nullptr, "Player3", true, 0, new Handdeck(nullptr)))
+    , lcd1_(new QLCDNumber())
+    , lcd2_(new QLCDNumber())
+    , lcd3_(new QLCDNumber())
 {
     playerList_.push_back(player1_);
     playerList_.push_back(player2_);
@@ -101,6 +104,21 @@ QSharedPointer<Played> Game::played()
     return played_;
 }
 
+QSharedPointer<QLCDNumber> Game::lcd1()
+{
+    return lcd1_;
+}
+
+QSharedPointer<QLCDNumber> Game::lcd2()
+{
+    return lcd2_;
+}
+
+QSharedPointer<QLCDNumber> Game::lcd3()
+{
+    return lcd3_;
+}
+
 QSharedPointer<Blind> Game::blind()
 {
     return blind_;
@@ -129,9 +147,9 @@ QSharedPointer<Drawn> Game::drawn()
 // Methods
 void Game::initializeGame()
 {
-    collectAllCardsToBlind();
-
     roundChooser()->hide();
+
+    collectAllCardsToBlind();
 
     if (!monitor()->cards().isEmpty())
         monitor_->clearCards();
@@ -150,8 +168,6 @@ void Game::initializeGame()
               [](const QSharedPointer<Player>& a, const QSharedPointer<Player>& b) {
                   return a->score() > b->score();
               });
-
-    // std::sort(playerList_.begin(), playerList_.end(), &Game::comparePlayersByScore);
 
     // Distribute cards
     for (int k = 1; k <= 5; k++) {
@@ -349,14 +365,14 @@ bool Game::mustDrawCard()
 
 bool Game::isNextPlayerPossible()
 {
-    QSharedPointer<Card> stackCard = stack()->topCard();
-
     // If quteChooser is enabled and the decision is "y", the next player is possible
     if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
         return true;
     }
 
     getPlayableCard();
+
+    QSharedPointer<Card> stackCard = stack()->topCard();
 
     // If the stack card's rank is "6", the next player is not possible
     if (stackCard->rank() == "6") {
@@ -412,11 +428,6 @@ void Game::rotatePlayerList()
 
 void Game::activateNextPlayer()
 {
-    qDebug() << "--------------------------------------------------";
-    qDebug() << "player" << player->name() << "has played:" << played()->cardsAsString();
-    qDebug() << "stack:" << stack()->cardsAsString();
-    qDebug() << "blind:" << blind()->cardsAsString();
-
     bool isRoundFinished = false;
 
     if (!isNextPlayerPossible())
@@ -524,32 +535,27 @@ void Game::activateNextPlayer()
 
     if (isRoundFinished) {
         emit countPoints(shuffles);
+        updateDisplay();
 
-        // TODO: log scores
+        std::sort(playerList_.begin(),
+                  playerList_.end(),
+                  [](const QSharedPointer<Player>& a, const QSharedPointer<Player>& b) {
+                      return a->score() > b->score();
+                  });
 
-        for (const auto& player : playerList_) {
-            if (player->score() > 125) {
-                roundChooser()->setDecision("g");
-                roundChooser()->show();
-            }
-
-            else {
-                roundChooser()->setDecision("r");
-                roundChooser()->show();
-            }
+        if (playerList_.front()->score() < 125) {
+            roundChooser()->setDecision("r");
+        } else {
+            roundChooser()->setDecision("g");
         }
-    } else
-        roundChooser()->hide();
+        roundChooser()->show();
+    }
 
     if (player->isRobot()) {
         autoplay();
     } else {
         player->handdeck()->setEnabled(true);
     }
-
-    qDebug() << "player" << player->name() << "has played:" << played()->cardsAsString();
-    for (const auto& player : playerList_)
-        qDebug() << "player" << player->name() << "cards:" << player->handdeck()->cardsAsString();
 }
 
 void Game::autoplay()
@@ -607,6 +613,19 @@ void Game::collectAllCardsToBlind()
     }
 }
 
+void Game::updateDisplay()
+{
+    std::sort(playerList_.begin(),
+              playerList_.end(),
+              [](const QSharedPointer<Player>& a, const QSharedPointer<Player>& b) {
+                  return a->name() < b->name();
+              });
+
+    lcd1()->display(playerList_[0]->score());
+    lcd2()->display(playerList_[1]->score());
+    lcd3()->display(playerList_[2]->score());
+}
+
 void Game::startNewRound()
 {
     // Sort the player list by scores in descending order
@@ -616,18 +635,16 @@ void Game::startNewRound()
                   return a->score() > b->score();
               });
 
-    // std::sort(playerList_.begin(), playerList_.end(), &Game::comparePlayersByScore);
+    qDebug() << "Round finished. The winner is: " << playerList_.last()->name();
 
     if (playerList_.front()->score() > 125) {
         startNewGame();
     }
 
-    qDebug() << "Round finished. The winner is: " << playerList_.last()->name();
-
     rounds += 1;
-    initializeGame();
-
     qDebug() << "New round started.";
+
+    initializeGame();
 }
 
 void Game::startNewGame()
@@ -638,7 +655,13 @@ void Game::startNewGame()
 
     games += 1;
     rounds = 1;
-    initializeGame();
+
+    for (const auto& player : playerList_) {
+        player->setScore(0);
+    }
+    updateDisplay();
 
     qDebug() << "New game started.";
+
+    initializeGame();
 }

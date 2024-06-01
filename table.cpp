@@ -37,6 +37,7 @@ Table::Table(QWidget* parent)
     QHBoxLayout* layout_jsuitChooser = findChild<QHBoxLayout*>("jsuitChooser");
     QHBoxLayout* layout_stack = findChild<QHBoxLayout*>("stack");
     QHBoxLayout* layout_playable = findChild<QHBoxLayout*>("playable");
+    QHBoxLayout* layout_scores = findChild<QHBoxLayout*>("scores");
     QHBoxLayout* layout_player1 = findChild<QHBoxLayout*>("player1");
 
     // Add widgets to their respective layouts
@@ -48,15 +49,20 @@ Table::Table(QWidget* parent)
     layout_quteChooser->addWidget(game->quteChooser().get());
     layout_jpointsChooser->addWidget(game->jpointsChooser().get());
     layout_roundChooser->addWidget(game->roundChooser().get());
+
     layout_played->addWidget(game->played().get());
     layout_drawn->addWidget(game->drawn().get());
+
     layout_blind->addWidget(game->blind().get());
     layout_jsuitChooser->addWidget(game->jsuitChooser().get());
     layout_stack->addWidget(game->stack().get());
     layout_playable->addWidget(game->playable().get());
+    layout_scores->addWidget(game->lcd1().get());
+    layout_scores->addWidget(game->lcd2().get());
+    layout_scores->addWidget(game->lcd3().get());
     layout_player1->addWidget(game->player1()->handdeck());
 
-    // Add group boxes to their respective layouts
+    // // Add group boxes to their respective layouts
     QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("Player2");
     groupBoxPlayer2->setLayout(layout_player2);
     QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("Player3");
@@ -87,6 +93,9 @@ Table::Table(QWidget* parent)
 
     QGroupBox* groupBoxPlayable = findChild<QGroupBox*>("Playable");
     groupBoxPlayable->setLayout(layout_playable);
+
+    // QGroupBox* groupBoxScores = findChild<QGroupBox*>("Scores");
+    // groupBoxScores->setLayout(layout_scores);
 
     QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("Player1");
     groupBoxPlayer1->setLayout(layout_player1);

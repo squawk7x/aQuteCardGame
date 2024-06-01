@@ -134,7 +134,7 @@ private:
     void loadImage();
 
 public:
-    explicit RoundChooser(QString decision = "r", QWidget* parent = nullptr);
+    explicit RoundChooser(QString decision = "c", QWidget* parent = nullptr);
 
     // Getters
     QString decision();
