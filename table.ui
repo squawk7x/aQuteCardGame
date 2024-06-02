@@ -92,20 +92,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="JpointsChooser">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="title">
-            <string>Jpoints Chooser</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QHBoxLayout" name="jpointsChooser"/>
-          </widget>
-         </item>
-         <item>
           <widget class="QGroupBox" name="RoundChooser">
            <property name="enabled">
             <bool>true</bool>
@@ -117,6 +103,20 @@
             <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="roundChooser"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="JpointsChooser">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="title">
+            <string>Jpoints Chooser</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="jpointsChooser"/>
           </widget>
          </item>
          <item>
@@ -148,6 +148,17 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_03">
+         <item>
+          <widget class="QGroupBox" name="Shuffles">
+           <property name="title">
+            <string>Shuffles</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="shuffles"/>
+          </widget>
+         </item>
          <item>
           <widget class="QGroupBox" name="Blind">
            <property name="title">

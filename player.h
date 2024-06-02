@@ -12,6 +12,7 @@ private:
     QString name_;
     bool isRobot_;
     int score_;
+    int jpoints_;
     Handdeck* handdeck_;
 
 public:
@@ -35,6 +36,7 @@ public:
     void setName(const QString& name);
     void setIsRobot(bool isRobot);
     void setScore(int score);
+    void setJpoints(int jpoints);
     void setHanddeck(Handdeck* handdeck);
 
 public slots:

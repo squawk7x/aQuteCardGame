@@ -2,9 +2,9 @@
 #define TABLE_H
 
 #include <QGroupBox>
+#include <QSharedPointer>
 #include <QWidget>
 #include "game.h"
-#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,7 +29,7 @@ signals:
 
 private:
     Ui::Table *ui;
-    std::unique_ptr<Game> game;
+    QSharedPointer<Game> game; // Changed from std::unique_ptr to QSharedPointer
 };
 
 #endif // TABLE_H

@@ -5,6 +5,7 @@ Player::Player(QWidget* parent, const QString& name, bool isRobot, int score, Ha
     , name_(name)
     , isRobot_(isRobot)
     , score_(score)
+    , jpoints_(0)
     , handdeck_(handdeck ? handdeck : new Handdeck(this))
 
 {}
@@ -39,9 +40,10 @@ int Player::countHand(int shuffles)
 {
     int pointsOnHand = 0;
     for (const auto& card : handdeck_->cards()) {
-        pointsOnHand += card->value() * shuffles;
+        pointsOnHand += card->value();
     }
-    return pointsOnHand;
+    pointsOnHand += jpoints_;
+    return pointsOnHand * shuffles;
 }
 
 // Setters
@@ -60,6 +62,11 @@ void Player::setScore(int score)
     score_ += score;
 }
 
+void Player::setJpoints(int jpoints)
+{
+    jpoints_ += jpoints;
+}
+
 void Player::setHanddeck(Handdeck* handdeck)
 {
     if (handdeck_ != handdeck) {
@@ -71,10 +78,15 @@ void Player::setHanddeck(Handdeck* handdeck)
 // Slots:
 void Player::onCountPoints(int shuffles)
 {
-    score_ += countHand(shuffles);
-
-    if (score_ == 125)
+    if (shuffles == 0) {
         score_ = 0;
+        jpoints_ = 0;
+    } else {
+        score_ += countHand(shuffles);
+
+        if (score_ == 125)
+            score_ = 0;
+    }
 
     qDebug() << name() << score();
 }

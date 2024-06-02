@@ -19,6 +19,8 @@ public:
 
     virtual void addCard(QSharedPointer<Card> card);
     virtual void removeCard(QSharedPointer<Card> card);
+    virtual void removeFirstCard(); // for testing
+    virtual void removeLastCard();  // for testing
     virtual void clearCards();
     virtual QString cardsAsString() const;
     void moveCardTo(QSharedPointer<Card> card, CardVec* targetVec);

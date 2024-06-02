@@ -142,7 +142,7 @@ void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 }
 
 // Slots:
-void EightsChooser::onEightsInMonitor() {}
+// void EightsChooser::onEightsInMonitor() {}
 
 /* ************************************************************************* */
 
@@ -178,6 +178,7 @@ void QuteChooser::toggle()
         decision_ = "n";
     } else
         decision_ = "y";
+    emit quteDecisionChanged(decision_);
     loadImage();
 }
 
@@ -253,7 +254,19 @@ void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 }
 
 // Slots:
-void JpointsChooser::onJpoints() {}
+// void JpointsChooser::onJpoints() {}
+
+// Slots:
+void JpointsChooser::onQuteDecisionChanged(const QString& dec)
+{
+    if (dec == "y") {
+        this->setEnabled(true);
+        this->show();
+    } else {
+        this->hide();
+        this->setEnabled(false);
+    }
+}
 
 /* ************************************************************************* */
 
@@ -292,6 +305,18 @@ void RoundChooser::setDecision(const QString& target_decision)
 {
     decision_ = target_decision;
     loadImage();
+}
+
+// Slots:
+void RoundChooser::onQuteDecisionChanged(const QString& dec)
+{
+    if (dec == "y") {
+        this->setEnabled(true);
+        this->show();
+    } else {
+        this->hide();
+        this->setEnabled(false);
+    }
 }
 
 /* ************************************************************************* */

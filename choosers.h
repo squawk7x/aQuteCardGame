@@ -62,8 +62,8 @@ public:
     void toggle_to(const QString& target_decision);
     void toggleRandom(const QString& dec1 = "a", const QString& dec2 = "n");
 
-public slots:
-    void onEightsInMonitor();
+    // public slots:
+    //     void onEightsInMonitor();
 };
 
 /* ************************************************************************* */
@@ -91,6 +91,9 @@ public:
 
 public slots:
     void onFourCardsInMonitor();
+
+signals:
+    void quteDecisionChanged(const QString& dec);
 };
 
 /* ************************************************************************* */
@@ -118,7 +121,8 @@ public:
     void toggleRandom(const QString& dec1 = "m", const QString& dec2 = "p");
 
 public slots:
-    void onJpoints();
+    // void onJpoints();
+    void onQuteDecisionChanged(const QString& dec);
 };
 
 /* ************************************************************************* */
@@ -134,13 +138,16 @@ private:
     void loadImage();
 
 public:
-    explicit RoundChooser(QString decision = "c", QWidget* parent = nullptr);
+    explicit RoundChooser(QString decision = "r", QWidget* parent = nullptr);
 
     // Getters
     QString decision();
 
     // Setters
     void setDecision(const QString& target_decision);
+
+public slots:
+    void onQuteDecisionChanged(const QString& dec);
 
 signals:
     void newRound();

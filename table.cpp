@@ -4,12 +4,11 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include "ui_table.h"
-#include <memory>
 
 Table::Table(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
-    , game(std::make_unique<Game>())
+    , game(QSharedPointer<Game>::create()) // Changed from std::make_unique to QSharedPointer::create
 {
     ui->setupUi(this);
 
@@ -33,6 +32,7 @@ Table::Table(QWidget* parent)
 
     QHBoxLayout* layout_played = findChild<QHBoxLayout*>("played");
     QHBoxLayout* layout_drawn = findChild<QHBoxLayout*>("drawn");
+    QHBoxLayout* layout_shuffles = findChild<QHBoxLayout*>("shuffles");
     QHBoxLayout* layout_blind = findChild<QHBoxLayout*>("blind");
     QHBoxLayout* layout_jsuitChooser = findChild<QHBoxLayout*>("jsuitChooser");
     QHBoxLayout* layout_stack = findChild<QHBoxLayout*>("stack");
@@ -53,6 +53,7 @@ Table::Table(QWidget* parent)
     layout_played->addWidget(game->played().get());
     layout_drawn->addWidget(game->drawn().get());
 
+    layout_shuffles->addWidget(game->lcdShuffles().get());
     layout_blind->addWidget(game->blind().get());
     layout_jsuitChooser->addWidget(game->jsuitChooser().get());
     layout_stack->addWidget(game->stack().get());
@@ -84,6 +85,7 @@ Table::Table(QWidget* parent)
     QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("Drawn");
     groupBoxDrawn->setLayout(layout_drawn);
 
+    QGroupBox* groupBoxShuffles = findChild<QGroupBox*>("Shuffles");
     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("Blind");
     groupBoxBlind->setLayout(layout_blind);
     QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("JsuitChooser");
@@ -101,7 +103,6 @@ Table::Table(QWidget* parent)
     groupBoxPlayer1->setLayout(layout_player1);
 
     connect(this, &Table::rightMouseClicked, game.get(), &Game::activateNextPlayer);
-
 }
 
 Table::~Table()
@@ -132,6 +133,14 @@ void Table::keyPressEvent(QKeyEvent* event)
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "6");
             game->player->handdeck()->addCard(newCard);
         }
+    }
+
+    if (event->key() == Qt::Key_D) {
+        game->player->handdeck()->removeFirstCard();
+    }
+
+    if (event->key() == Qt::Key_F) {
+        game->player->handdeck()->removeLastCard();
     }
 
     if (event->key() == Qt::Key_8) {

@@ -33,12 +33,13 @@ private:
     QSharedPointer<QLCDNumber> lcd1_;
     QSharedPointer<QLCDNumber> lcd2_;
     QSharedPointer<QLCDNumber> lcd3_;
+    QSharedPointer<QLCDNumber> lcdShuffles_;
     QSharedPointer<Player> player1_;
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
     int games = 1;
     int rounds = 1;
-    int shuffles = 1;
+    int shuffles = 0;
 
 public:
     explicit Game(QObject* parent = nullptr);
@@ -66,6 +67,7 @@ public:
     QSharedPointer<QLCDNumber> lcd1();
     QSharedPointer<QLCDNumber> lcd2();
     QSharedPointer<QLCDNumber> lcd3();
+    QSharedPointer<QLCDNumber> lcdShuffles();
     bool isCardPlayable(const QSharedPointer<Card>& card);
     void rotatePlayerList();
     bool isNextPlayerPossible();
