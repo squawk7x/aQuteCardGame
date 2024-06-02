@@ -1,11 +1,12 @@
 #include "cardvec.h"
 #include <QDebug>
 #include <algorithm>
+#include <qevent.h>
 
 CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     : QWidget(parent)
     , cards_(std::move(rhs))
-    , isVisible_(true)
+    , isCardFacesVisible_(true)
 {
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
@@ -134,12 +135,6 @@ QString CardVec::mostCommonSuit() const
     return mostCommonSuit;
 }
 
-void CardVec::toggleIsVisible()
-{
-    isVisible_ = !isVisible_;
-    setVisible(isVisible_);
-}
-
 void CardVec::sortCards(int pattern)
 {
     const std::vector<std::vector<QString>> patterns
@@ -178,16 +173,15 @@ QVector<QSharedPointer<Card>>& CardVec::cards()
     return cards_;
 }
 
-bool CardVec::isVisible() const
+bool CardVec::isCardFacesVisible() const
 {
-    return isVisible_;
+    return isCardFacesVisible_;
 }
 
 // Setters
-void CardVec::setIsVisible(bool isVisible)
+void CardVec::setIsCardFacesVisible(bool isVisible)
 {
-    isVisible_ = isVisible;
-    setVisible(isVisible_);
+    isCardFacesVisible_ = isVisible;
 }
 
 // Slots
@@ -195,4 +189,13 @@ void CardVec::onCardClicked(const QSharedPointer<Card>& card)
 {
     // To be implemented by subclasses
     qDebug() << "onCardClicked received in CardVec: " << card->str();
+}
+
+void CardVec::onToggleCardVisibility()
+{
+    for (const auto& card : cards_) {
+        card->toggleFaceVisibility();
+    }
+    layout_->update();
+    update();
 }

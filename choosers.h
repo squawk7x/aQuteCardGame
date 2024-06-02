@@ -90,7 +90,7 @@ public:
     void toggleRandom(const QString& dec1 = "y", const QString& dec2 = "n");
 
 public slots:
-    void onFourCardsInMonitor();
+    // void onFourCardsInMonitor();
 
 signals:
     void quteDecisionChanged(const QString& dec);

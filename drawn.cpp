@@ -3,7 +3,7 @@
 Drawn::Drawn(QWidget* parent)
     : CardVec(parent)
 {
-    setVisible(true); // Ensure the widget is visible if needed
+    isCardFacesVisible_ = true; // Ensure the widget is visible if needed
 }
 
 Drawn::~Drawn()

@@ -29,24 +29,24 @@ public:
     void copyTopCardTo(CardVec* targetVec);
     QSharedPointer<Card> topCard();
     QString mostCommonSuit() const;
-    void toggleIsVisible();
     void sortCards(int pattern);
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();
-    bool isVisible() const;
+    bool isCardFacesVisible() const;
 
 protected:
     QHBoxLayout* layout_;
     QVector<QSharedPointer<Card>> cards_;
-    bool isVisible_;
+    bool isCardFacesVisible_;
 
 private:
     // Setters
-    void setIsVisible(bool isVisible);
+    void setIsCardFacesVisible(bool isVisible);
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);
+    virtual void onToggleCardVisibility();
 };
 
 #endif // CARDVEC_H

@@ -83,9 +83,7 @@ void JsuitChooser::toggle_to(const QString& target_suit)
 }
 
 // Slots:
-void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
-{
-}
+void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card) {}
 
 /* ************************************************************************* */
 
@@ -199,7 +197,7 @@ void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
 }
 
 // Slots:
-void QuteChooser::onFourCardsInMonitor() {}
+// void QuteChooser::onFourCardsInMonitor() {}
 
 /* ************************************************************************* */
 

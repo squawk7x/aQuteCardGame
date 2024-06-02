@@ -4,7 +4,7 @@
 Monitor::Monitor(QWidget* parent)
     : CardVec(parent)
 {
-    isVisible_ = false; // Default visibility
+    isCardFacesVisible_ = true; // Default visibility
 }
 
 Monitor::~Monitor()
@@ -36,13 +36,25 @@ void Monitor::addCard(QSharedPointer<Card> card)
     cards_ = filteredCards;
 
     // Add the new card to the layout and vector
+    card->setParent(this);
     cards_.prepend(card);
+    card->setIsFaceVisible(true);
     layout_->insertWidget(0, card.data());
     layout_->update();
     update();
 }
 
+// Slots:
 void Monitor::onCardAddedToStack(const QSharedPointer<Card>& card)
 {
     addCard(card->clone(this));
+}
+
+void Monitor::onToggleCardVisibility()
+{
+    for (const auto& card : cards_) {
+        card->setIsFaceVisible(true);
+    }
+    layout_->update();
+    update();
 }

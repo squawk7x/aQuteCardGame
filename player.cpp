@@ -1,7 +1,9 @@
 #include "player.h"
 
-Player::Player(QWidget* parent, const QString& name, bool isRobot, int score, Handdeck* handdeck)
+Player::Player(
+    QWidget* parent, int id, const QString& name, bool isRobot, int score, Handdeck* handdeck)
     : QWidget(parent)
+    , id_(id)
     , name_(name)
     , isRobot_(isRobot)
     , score_(score)
@@ -13,6 +15,11 @@ Player::Player(QWidget* parent, const QString& name, bool isRobot, int score, Ha
 Player::~Player()
 {
     delete handdeck_;
+}
+
+int Player::id() const
+{
+    return id_;
 }
 
 QString Player::name() const

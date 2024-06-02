@@ -18,9 +18,19 @@ void Stack::addCard(QSharedPointer<Card> card)
         disconnect(card.data(), &Card::cardClicked, this, nullptr);
 
         card->setParent(this);
+        card->setIsFaceVisible(true);
         cards_.append(card);
         layout_->insertWidget(0, card.data());
         layout_->update();
         update();
     }
+}
+
+void Stack::onToggleCardVisibility()
+{
+    for (const auto& card : cards_) {
+        card->setIsFaceVisible(true);
+    }
+    layout_->update();
+    update();
 }

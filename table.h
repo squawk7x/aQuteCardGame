@@ -26,10 +26,11 @@ protected:
 
 signals:
     void rightMouseClicked();
+    void toggleCardVisibility();
 
 private:
     Ui::Table *ui;
-    QSharedPointer<Game> game; // Changed from std::unique_ptr to QSharedPointer
+    QSharedPointer<Game> game;
 };
 
 #endif // TABLE_H

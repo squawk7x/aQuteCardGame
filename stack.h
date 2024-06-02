@@ -13,6 +13,9 @@ public:
     virtual ~Stack();
 
     virtual void addCard(QSharedPointer<Card> card) override;
+
+public slots:
+    void onToggleCardVisibility() override;
 };
 
 #endif // STACK_H

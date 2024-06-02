@@ -12,10 +12,12 @@ public:
     explicit Played(QWidget *parent = nullptr);
     virtual ~Played();
 
-    virtual void addCard(QSharedPointer<Card> card); // Method to add a smart pointer to a card
+    virtual void addCard(
+        QSharedPointer<Card> card) override; // Method to add a smart pointer to a card
 
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card> &card); // Slot to handle card added to stack
+    void onToggleCardVisibility() override;
 };
 
 #endif // PLAYED_H

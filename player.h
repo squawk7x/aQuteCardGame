@@ -9,6 +9,7 @@ class Player : public QWidget
     Q_OBJECT
 
 private:
+    int id_;
     QString name_;
     bool isRobot_;
     int score_;
@@ -17,6 +18,7 @@ private:
 
 public:
     explicit Player(QWidget* parent,
+                    int id,
                     const QString& name = "",
                     bool isRobot = true,
                     int score = 0,
@@ -24,6 +26,7 @@ public:
     ~Player();
 
     // Getters
+    int id() const;
     QString name() const;
     bool isRobot() const;
     int score() const;

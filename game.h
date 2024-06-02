@@ -19,24 +19,29 @@ class Game : public QObject
     Q_OBJECT
 
 private:
+    QSharedPointer<Player> player2_;
+    QSharedPointer<Player> player3_;
+
     QSharedPointer<Monitor> monitor_;
     QSharedPointer<EightsChooser> eightsChooser_;
     QSharedPointer<QuteChooser> quteChooser_;
-    QSharedPointer<JpointsChooser> jpointsChooser_;
     QSharedPointer<RoundChooser> roundChooser_;
+    QSharedPointer<JpointsChooser> jpointsChooser_;
     QSharedPointer<Played> played_;
     QSharedPointer<Drawn> drawn_;
+
+    QSharedPointer<QLCDNumber> lcdShuffles_;
     QSharedPointer<Blind> blind_;
     QSharedPointer<JsuitChooser> jsuitChooser_;
     QSharedPointer<Stack> stack_;
+
     QSharedPointer<Playable> playable_;
     QSharedPointer<QLCDNumber> lcd1_;
     QSharedPointer<QLCDNumber> lcd2_;
     QSharedPointer<QLCDNumber> lcd3_;
-    QSharedPointer<QLCDNumber> lcdShuffles_;
+
     QSharedPointer<Player> player1_;
-    QSharedPointer<Player> player2_;
-    QSharedPointer<Player> player3_;
+
     int games = 1;
     int rounds = 1;
     int shuffles = 0;
@@ -48,28 +53,35 @@ public:
     void initializeGame();
 
     // Getters
-    QVector<QSharedPointer<Player>> playerList_;
-    QSharedPointer<Player> player1() const;
     QSharedPointer<Player> player2() const;
     QSharedPointer<Player> player3() const;
-    QSharedPointer<Player> player = nullptr;
+
     QSharedPointer<Monitor> monitor();
     QSharedPointer<EightsChooser> eightsChooser();
     QSharedPointer<QuteChooser> quteChooser();
-    QSharedPointer<JpointsChooser> jpointsChooser();
     QSharedPointer<RoundChooser> roundChooser();
+    QSharedPointer<JpointsChooser> jpointsChooser();
     QSharedPointer<Played> played();
     QSharedPointer<Drawn> drawn();
+
+    QSharedPointer<QLCDNumber> lcdShuffles();
     QSharedPointer<Blind> blind();
     QSharedPointer<JsuitChooser> jsuitChooser();
     QSharedPointer<Stack> stack();
+
     QSharedPointer<Playable> playable();
     QSharedPointer<QLCDNumber> lcd1();
     QSharedPointer<QLCDNumber> lcd2();
     QSharedPointer<QLCDNumber> lcd3();
-    QSharedPointer<QLCDNumber> lcdShuffles();
+
+    QSharedPointer<Player> player1() const;
+
+    QVector<QSharedPointer<Player>> playerList_;
+    QSharedPointer<Player> player = nullptr;
+
     bool isCardPlayable(const QSharedPointer<Card>& card);
     void rotatePlayerList();
+    void togglePlayerListToScore(bool highest);
     bool isNextPlayerPossible();
     void updatePlayable();
     bool mustDrawCard();
