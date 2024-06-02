@@ -23,7 +23,7 @@ Game::Game(QObject* parent)
     , lcdShuffles_(new QLCDNumber())
 {
     lcdShuffles_->setDigitCount(2);
-    lcdShuffles_->setSegmentStyle(QLCDNumber::Flat);
+    // lcdShuffles_->setSegmentStyle(QLCDNumber::Flat);
 
     playerList_.push_back(player1_);
     playerList_.push_back(player2_);
@@ -424,15 +424,7 @@ void Game::getPlayableCard()
 {
     player = playerList_.front();
 
-    // while (mustDrawCard()) {
-    //     if (blind()->cards().isEmpty())
-    //         refillBlindFromStack();
-    //     emit cardDrawnFromBlind(blind()->topCard());
-    //     blind()->moveTopCardTo(player->handdeck());
-    //     updatePlayable();
-    // }
-
-    if (mustDrawCard()) {
+    while (mustDrawCard()) {
         if (blind()->cards().isEmpty())
             refillBlindFromStack();
         emit cardDrawnFromBlind(blind()->topCard());
@@ -578,12 +570,8 @@ void Game::activateNextPlayer()
         rotatePlayerList();
     }
 
-    if (!roundChooser()->isEnabled()) {
-        if (player->isRobot()) {
-            autoplay();
-        } else {
-            player->handdeck()->setEnabled(true);
-        }
+    if (!roundChooser()->isEnabled() && player->isRobot()) {
+        autoplay();
     }
 }
 
@@ -592,20 +580,24 @@ void Game::autoplay()
     player->handdeck()->setEnabled(true);
 
     do {
-        // Play all playable cards in the handdeck
-        for (const auto& card : player->handdeck()->cards()) {
-            if (isCardPlayable(card)) {
-                card->click(); // Simulate click on playable card
-                updatePlayable();
-            }
+        updatePlayable();
+
+        for (const auto& card : playable_->cards()) {
+            card->click();
         }
 
         // Draw a card if necessary and update playable cards
         if (mustDrawCard()) {
+            if (blind()->cards().isEmpty()) {
+                refillBlindFromStack();
+            }
+            emit cardDrawnFromBlind(blind()->topCard());
             blind()->moveTopCardTo(player->handdeck());
-            updatePlayable();
         }
-    } while (!playable()->cards().isEmpty() || !isNextPlayerPossible());
+
+    } while (playable()->cards().isEmpty() || isNextPlayerPossible());
+
+    activateNextPlayer();
 }
 
 void Game::refillBlindFromStack()
@@ -671,7 +663,7 @@ void Game::startNewRound()
                   return a->score() > b->score();
               });
 
-    qDebug() << "Round finished. The winner is: " << playerList_.last()->name();
+    qDebug() << "The winner is: " << playerList_.last()->name();
 
     if (playerList_.front()->score() < 125) {
         rounds += 1;

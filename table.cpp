@@ -120,6 +120,10 @@ void Table::mousePressEvent(QMouseEvent* event)
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
+    if (event->key() == Qt::Key_Right) {
+        emit rightMouseClicked();
+    }
+
     if (event->key() == Qt::Key_R) {
         game->startNewRound();
     }
