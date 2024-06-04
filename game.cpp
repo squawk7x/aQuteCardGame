@@ -34,13 +34,15 @@ Game::Game(QObject* parent)
 
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
-    // connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
 
     connect(this, &Game::cardDrawnFromBlind, drawn_.get(), &Drawn::onCardDrawnFromBlind);
 
     for (const auto& player : playerList_) {
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
     }
+
+    // connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
+
     // connect(monitor_.get(),
     //         &Monitor::eightsInMonitor,
     //         eightsChooser_.get(),
@@ -271,7 +273,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
         }
 
         // RoundChooser
-        if (player->handdeck()->cards().isEmpty()
+        if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
             || quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
             roundChooser()->setDecision("r");
             roundChooser()->setEnabled(true);
@@ -280,18 +282,12 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
             roundChooser()->hide();
             roundChooser()->setEnabled(false);
         }
-
-        // player = playerList_.front();
-        // player->handdeck()->removeCard(card);
-        // updatePlayable();
     }
 }
 
 void Game::updatePlayable()
 {
     playable()->clearCards();
-
-    // player = playerList_.front();
 
     for (const auto& card : player->handdeck()->cards()) {
         if (isCardPlayable(card)) {
@@ -364,29 +360,12 @@ bool Game::isCardPlayable(const QSharedPointer<Card>& card)
 
 bool Game::mustDrawCard()
 {
-    /*
-        must draw card, if:
-        ---------------------------------
-         card   playable  card    must  next player
-        played    card    drawn   draw  playable
-            1       1       1       N       Y
-            1       1       0       N       Y
-            1       0       1       N       Y
-            1       0       0       N       Y
-            0       1       1       N       N
-            0       1       0       N       N
-            0       0       1       N       Y
-            0       0       0       Y       N   <-- must draw card
-        '6' on stack:
-        -------------
-            1       0      0||1     Y       N   <-- must draw card
-    */
-
     QSharedPointer<Card> stackCard = stack()->topCard();
+
+    updatePlayable();
 
     // played card '6' must be covered
     if (stackCard->rank() == "6" && !played()->cards().isEmpty() && playable()->cards().isEmpty()) {
-        // getPlayableCard();
         return true;
     }
 
@@ -399,6 +378,23 @@ bool Game::mustDrawCard()
 }
 
 bool Game::isNextPlayerPossible()
+
+/*      
+        ---------------------------------
+         card   playable  card    must  next player
+        played    card    drawn   draw  possible
+            1       1       1       N       Y
+            1       1       0       N       Y
+            1       0       1       N       Y
+            1       0       0       N       Y
+            0       1       1       N       N
+            0       1       0       N       N
+            0       0       1       N       Y
+            0       0       0       Y       N   <-- must draw card
+        '6' on stack:
+        -------------
+            1       0      0||1     Y       N   <-- must draw card
+    */
 {
     // If quteChooser is enabled and the decision is "y", the next player is possible
     if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
@@ -407,10 +403,16 @@ bool Game::isNextPlayerPossible()
 
     updatePlayable();
 
+    while (mustDrawCard()) {
+        drawCardFromBlind();
+        updatePlayable();
+    }
+
     QSharedPointer<Card> stackCard = stack()->topCard();
 
     // If the stack card's rank is "6", the next player is not possible
     // except on quteChooser()->decision() == "y"
+    // player himself has played a '6'
     if (!played()->cards().isEmpty() && stackCard->rank() == "6") {
         return false;
     }
@@ -420,18 +422,12 @@ bool Game::isNextPlayerPossible()
            || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty());
 }
 
-void Game::getPlayableCard()
+void Game::drawCardFromBlind()
 {
-    // player = playerList_.front();
-
-    // if (mustDrawCard()) {
-    while (mustDrawCard()) {
-        if (blind()->cards().isEmpty())
-            refillBlindFromStack();
-        emit cardDrawnFromBlind(blind()->topCard());
-        blind()->moveTopCardTo(player->handdeck());
-        // updatePlayable();
-    }
+    if (blind()->cards().isEmpty())
+        refillBlindFromStack();
+    emit cardDrawnFromBlind(blind()->topCard());
+    blind()->moveTopCardTo(player->handdeck());
 }
 
 void Game::rotatePlayerList()
@@ -461,7 +457,7 @@ void Game::rotatePlayerList()
     player = playerList_.front();
     player->handdeck()->setEnabled(true);
 
-    // updatePlayable();
+    updatePlayable();
 }
 
 void Game::togglePlayerListToScore(bool highest)
@@ -500,9 +496,6 @@ void Game::activateNextPlayer()
         }
     }
 
-    played()->clearCards();
-    drawn()->clearCards();
-
     // shuffles are considered when players count their points
     if (jpointsChooser()->isEnabled()) {
         // Calculate points based on the minimum size of played and monitor card sets
@@ -527,15 +520,6 @@ void Game::activateNextPlayer()
     // Rotate the player list normally first
     rotatePlayerList();
 
-    // Apply effects of '7' (next player must draw a card)
-    for (int i = 0; i < sevens; ++i) {
-        if (blind()->cards().isEmpty())
-            refillBlindFromStack();
-        // emit cardDrawnFromBlind(blind()->topCard());
-        blind()->moveTopCardTo(player->handdeck());
-    }
-
-    // Apply effects of 'A' (skip next player(s))
     if (aces > 0) {
         int leap = 1;
         while (leap <= aces) {
@@ -549,19 +533,16 @@ void Game::activateNextPlayer()
         }
     }
 
-    // If there are eights and decision is 'cards to all'
+    for (int i = 0; i < sevens; ++i) {
+        drawCardFromBlind();
+    }
+
     if (eights >= 2 && eightsChooser()->decision() == "a") {
         int leap = 1;
         while (leap <= eights) {
             if (leap % playerList_.size() != 0) {
-                if (blind()->cards().isEmpty())
-                    refillBlindFromStack();
-                // emit cardDrawnFromBlind(blind()->topCard());
-                blind()->moveTopCardTo(player->handdeck());
-                if (blind()->cards().isEmpty())
-                    refillBlindFromStack();
-                // emit cardDrawnFromBlind(blind()->topCard());
-                blind()->moveTopCardTo(player->handdeck());
+                drawCardFromBlind();
+                drawCardFromBlind();
                 rotatePlayerList();
             } else {
                 rotatePlayerList();
@@ -572,18 +553,16 @@ void Game::activateNextPlayer()
         eights = 0;
     }
 
-    // If there are eights and decision is 'cards to next player'
     for (int i = 0; i < eights; ++i) {
-        if (blind()->cards().isEmpty())
-            refillBlindFromStack();
-        // emit cardDrawnFromBlind(blind()->topCard());
-        blind()->moveTopCardTo(player->handdeck());
-        if (blind()->cards().isEmpty())
-            refillBlindFromStack();
-        // emit cardDrawnFromBlind(blind()->topCard());
-        blind()->moveTopCardTo(player->handdeck());
-        rotatePlayerList();
+        drawCardFromBlind();
+        drawCardFromBlind();
     }
+
+    if (eights)
+        rotatePlayerList();
+
+    played()->clearCards();
+    drawn()->clearCards();
 
     if (!roundChooser()->isEnabled() && player->isRobot()) {
         autoplay();
@@ -594,26 +573,13 @@ void Game::autoplay()
 {
     player->handdeck()->setEnabled(true);
 
-    do {
-        updatePlayable();
+    updatePlayable();
 
-        for (const auto& card : playable_->cards()) {
+    while (!isNextPlayerPossible()) {
+        for (auto& card : player->handdeck()->cards()) {
             card->click();
         }
-
-        // Draw a card if necessary and update playable cards
-        if (mustDrawCard()) {
-            if (blind()->cards().isEmpty()) {
-                refillBlindFromStack();
-            }
-            emit cardDrawnFromBlind(blind()->topCard());
-            blind()->moveTopCardTo(player->handdeck());
-        }
-
-        // } while (!playable()->cards().isEmpty() || isNextPlayerPossible());
-    } while (!playable()->cards().isEmpty());
-
-    activateNextPlayer();
+    }
 }
 
 void Game::refillBlindFromStack()

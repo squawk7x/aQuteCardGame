@@ -66,6 +66,15 @@ void CardVec::clearCards()
     cards_.clear();
 }
 
+bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
+{
+    for (const auto& c : cards_) {
+        if (card == c)
+            return true;
+    }
+    return false;
+}
+
 QString CardVec::cardsAsString() const
 {
     QString cardsStr;

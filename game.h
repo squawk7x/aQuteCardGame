@@ -79,19 +79,18 @@ public:
     QVector<QSharedPointer<Player>> playerList_;
     QSharedPointer<Player> player = nullptr;
 
-    bool isCardPlayable(const QSharedPointer<Card>& card);
     void rotatePlayerList();
-    void togglePlayerListToScore(bool highest);
+    bool isCardPlayable(const QSharedPointer<Card>& card);
     bool isNextPlayerPossible();
     void updatePlayable();
     bool mustDrawCard();
+    void drawCardFromBlind();
     void autoplay();
-    void getPlayableCard();
     void refillBlindFromStack();
-    void collectAllCardsToBlind();
     void countRound();
     void updateDisplay();
-    bool comparePlayersByScore(const QSharedPointer<Player>& a, const QSharedPointer<Player>& b);
+    void collectAllCardsToBlind();
+    void togglePlayerListToScore(bool highest);
 
 signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);
