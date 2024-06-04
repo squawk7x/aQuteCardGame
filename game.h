@@ -8,6 +8,7 @@
 #include "blind.h"
 #include "choosers.h"
 #include "drawn.h"
+#include "got.h"
 #include "monitor.h"
 #include "playable.h"
 #include "played.h"
@@ -27,6 +28,8 @@ private:
     QSharedPointer<QuteChooser> quteChooser_;
     QSharedPointer<RoundChooser> roundChooser_;
     QSharedPointer<JpointsChooser> jpointsChooser_;
+    QSharedPointer<Got> got1_;
+    QSharedPointer<Got> got2_;
     QSharedPointer<Played> played_;
     QSharedPointer<Drawn> drawn_;
 
@@ -47,6 +50,8 @@ private:
     int shuffles = 0;
 
 public:
+    enum class DrawOption { MustCard, BadCard };
+
     explicit Game(QObject* parent = nullptr);
     ~Game();
 
@@ -61,6 +66,8 @@ public:
     QSharedPointer<QuteChooser> quteChooser();
     QSharedPointer<RoundChooser> roundChooser();
     QSharedPointer<JpointsChooser> jpointsChooser();
+    QSharedPointer<Got> got1();
+    QSharedPointer<Got> got2();
     QSharedPointer<Played> played();
     QSharedPointer<Drawn> drawn();
 
@@ -79,15 +86,15 @@ public:
     QVector<QSharedPointer<Player>> playerList_;
     QSharedPointer<Player> player = nullptr;
 
-    void rotatePlayerList();
-    bool isCardPlayable(const QSharedPointer<Card>& card);
+    bool isThisCardPlayable(const QSharedPointer<Card>& card);
     bool isNextPlayerPossible();
     void updatePlayable();
     bool mustDrawCard();
-    void drawCardFromBlind();
+    void drawCardFromBlind(DrawOption option);
     void autoplay();
     void refillBlindFromStack();
     void handleChoosers();
+    void rotatePlayerList();
     void countRound();
     void updateDisplay();
     void collectAllCardsToBlind();
@@ -96,6 +103,7 @@ public:
 signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);
     void cardDrawnFromBlind(const QSharedPointer<Card>& card);
+    void cardBadFromBlind(const QSharedPointer<Card>& card);
     void countPoints(int shuffles);
 
 public slots:

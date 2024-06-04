@@ -1,5 +1,6 @@
 #include "game.h"
 #include <QDebug>
+#include <QTimer>
 
 Game::Game(QObject* parent)
     : QObject(parent)
@@ -12,6 +13,8 @@ Game::Game(QObject* parent)
     , blind_(new Blind())
     , jsuitChooser_(new JsuitChooser())
     , stack_(new Stack())
+    , got1_(new Got())
+    , got2_(new Got())
     , playable_(new Playable())
     , drawn_(new Drawn())
     , player1_(new Player(nullptr, 1, "Player1", false, 0, new Handdeck(nullptr)))
@@ -32,6 +35,9 @@ Game::Game(QObject* parent)
     connect(player2()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
     connect(player3()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
 
+    // connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::oncardBadFromBlind);
+    // connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::oncardBadFromBlind);
+    // connect(this, &Game::cardAddedToStack, got_.get(), &Got::clearGotCards);
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
 
@@ -155,6 +161,16 @@ QSharedPointer<Stack> Game::stack()
     return stack_;
 }
 
+QSharedPointer<Got> Game::got1()
+{
+    return got1_;
+}
+
+QSharedPointer<Got> Game::got2()
+{
+    return got2_;
+}
+
 QSharedPointer<Playable> Game::playable()
 {
     return playable_;
@@ -210,11 +226,14 @@ void Game::initializeGame()
     player = playerList_.front();
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
+
+    // case a robot player starts a new round
+    autoplay();
 }
 
 void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
-    if (isCardPlayable(card)) {
+    if (isThisCardPlayable(card)) {
         emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
@@ -297,13 +316,13 @@ void Game::updatePlayable()
     playable()->clearCards();
 
     for (const auto& card : player->handdeck()->cards()) {
-        if (isCardPlayable(card)) {
+        if (isThisCardPlayable(card)) {
             player->handdeck()->copyCardTo(card, playable().get());
         }
     }
 }
 
-bool Game::isCardPlayable(const QSharedPointer<Card>& card)
+bool Game::isThisCardPlayable(const QSharedPointer<Card>& card)
 
 /*
     1st move:
@@ -320,7 +339,7 @@ bool Game::isCardPlayable(const QSharedPointer<Card>& card)
 {
     QSharedPointer<Card> stackCard = stack()->topCard();
 
-    // for playing first card by
+    // for playing first card when stack is empty
     // player1_->handdeck()->cards().last()->click();
     if (!stackCard) {
         return true;
@@ -372,7 +391,7 @@ bool Game::mustDrawCard()
     updatePlayable();
 
     // played card '6' must be covered
-    if (stackCard->rank() == "6" && !played()->cards().isEmpty() && playable()->cards().isEmpty()) {
+    if (!played()->cards().isEmpty() && playable()->cards().isEmpty() && stackCard->rank() == "6") {
         return true;
     }
 
@@ -411,8 +430,8 @@ bool Game::isNextPlayerPossible()
     updatePlayable();
 
     while (mustDrawCard()) {
-        drawCardFromBlind();
-        updatePlayable();
+        drawCardFromBlind(Game::DrawOption::MustCard);
+        // updatePlayable();
     }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
@@ -429,11 +448,17 @@ bool Game::isNextPlayerPossible()
            || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty());
 }
 
-void Game::drawCardFromBlind()
+void Game::drawCardFromBlind(DrawOption option)
 {
     if (blind()->cards().isEmpty())
         refillBlindFromStack();
-    emit cardDrawnFromBlind(blind()->topCard());
+
+    if (option == DrawOption::MustCard) {
+        emit cardDrawnFromBlind(blind()->topCard());
+    } else if (option == DrawOption::BadCard) {
+        emit cardBadFromBlind(blind()->topCard());
+    }
+
     blind()->moveTopCardTo(player->handdeck());
 }
 
@@ -486,10 +511,10 @@ void Game::activateNextPlayer()
         return;
 
     // Count occurrences of sevens, eights, and aces
-    int aces = 0;
-    int sevens = 0;
-    int eights = 0;
     int jacks = 0;
+    int sevens = 0;
+    int aces = 0;
+    int eights = 0;
 
     for (const auto& card : played()->cards()) {
         if (card->rank() == "7") {
@@ -524,8 +549,19 @@ void Game::activateNextPlayer()
         }
     }
 
+    QSharedPointer<CardVec> cardVec(new CardVec(nullptr, played_->cards()));
+
     // Rotate the player list normally first
     rotatePlayerList();
+
+    got1()->clearCards();
+    got2()->clearCards();
+
+    for (int i = 0; i < sevens; ++i) {
+        connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+        drawCardFromBlind(Game::DrawOption::BadCard);
+        disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+    }
 
     if (aces > 0) {
         int leap = 1;
@@ -540,17 +576,21 @@ void Game::activateNextPlayer()
         }
     }
 
-    for (int i = 0; i < sevens; ++i) {
-        drawCardFromBlind();
-    }
-
     if (eights >= 2 && eightsChooser()->decision() == "a") {
         int leap = 1;
+        int num = 0;
         while (leap <= eights) {
             if (leap % playerList_.size() != 0) {
-                drawCardFromBlind();
-                drawCardFromBlind();
+                if (num % 2 == 0)
+                    connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+                else
+                    connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+                drawCardFromBlind(Game::DrawOption::BadCard);
+                drawCardFromBlind(Game::DrawOption::BadCard);
+                disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+                disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 rotatePlayerList();
+                num++;
             } else {
                 rotatePlayerList();
                 eights++;
@@ -560,34 +600,39 @@ void Game::activateNextPlayer()
         eights = 0;
     }
 
-    for (int i = 0; i < eights; ++i) {
-        drawCardFromBlind();
-        drawCardFromBlind();
+    if (eights > 0) {
+        connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+        for (int i = 0; i < eights; ++i) {
+            drawCardFromBlind(Game::DrawOption::BadCard);
+            drawCardFromBlind(Game::DrawOption::BadCard);
+        }
+        disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+        rotatePlayerList();
     }
 
-    if (eights)
-        rotatePlayerList();
+    got1()->setEnabled(false);
+    got2()->setEnabled(got1()->cards().isEmpty());
 
     played()->clearCards();
     drawn()->clearCards();
 
-    if (!roundChooser()->isEnabled() && player->isRobot()) {
-        autoplay();
-    }
+    autoplay();
 }
 
 void Game::autoplay()
 {
-    player->handdeck()->setEnabled(true);
+    if (!roundChooser()->isEnabled() && player->isRobot()) {
+        player->handdeck()->setEnabled(true);
 
-    updatePlayable();
+        updatePlayable();
 
-    while (!isNextPlayerPossible()) {
-        for (auto& card : playable()->cards()) {
-            for (auto& card : player->handdeck()->cards()) {
-                card->click();
-                updatePlayable();
-                handleChoosers();
+        while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
+            for (auto& card : playable()->cards()) {
+                for (auto& card : player->handdeck()->cards()) {
+                    card->click();
+                    updatePlayable();
+                    handleChoosers();
+                }
             }
         }
     }

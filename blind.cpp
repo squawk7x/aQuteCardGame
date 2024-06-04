@@ -19,6 +19,13 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
     } else
         cards_ = rhs;
     this->shuffle();
+
+    if (!cards_.isEmpty()) {
+        for (int i = 0; i < cards_.size() - 1; ++i) {
+            cards_[i]->hide();
+        }
+    }
+
     layout_->update();
     update();
 }

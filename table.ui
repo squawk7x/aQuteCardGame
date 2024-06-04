@@ -60,7 +60,11 @@
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
-           <layout class="QHBoxLayout" name="monitor"/>
+           <layout class="QHBoxLayout" name="monitor">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+           </layout>
           </widget>
          </item>
          <item>
@@ -117,6 +121,31 @@
             <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="jpointsChooser"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="Got1">
+           <property name="title">
+            <string>bad cards by 7's or 8's</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+           <layout class="QHBoxLayout" name="got1"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="Got2">
+           <property name="title">
+            <string>bad cards by 7's or 8's</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="got2"/>
           </widget>
          </item>
          <item>

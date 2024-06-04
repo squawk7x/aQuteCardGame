@@ -29,6 +29,8 @@ Table::Table(QWidget* parent)
     QHBoxLayout* layout_quteChooser = findChild<QHBoxLayout*>("quteChooser");
     QHBoxLayout* layout_jpointsChooser = findChild<QHBoxLayout*>("jpointsChooser");
     QHBoxLayout* layout_roundChooser = findChild<QHBoxLayout*>("roundChooser");
+    QHBoxLayout* layout_got1 = findChild<QHBoxLayout*>("got1");
+    QHBoxLayout* layout_got2 = findChild<QHBoxLayout*>("got2");
     QHBoxLayout* layout_played = findChild<QHBoxLayout*>("played");
     QHBoxLayout* layout_drawn = findChild<QHBoxLayout*>("drawn");
 
@@ -50,6 +52,8 @@ Table::Table(QWidget* parent)
     layout_jpointsChooser->addWidget(game->jpointsChooser().get());
     layout_roundChooser->addWidget(game->roundChooser().get());
 
+    layout_got1->addWidget(game->got1().get());
+    layout_got2->addWidget(game->got2().get());
     layout_played->addWidget(game->played().get());
     layout_drawn->addWidget(game->drawn().get());
 
@@ -82,6 +86,10 @@ Table::Table(QWidget* parent)
     QGroupBox* groupBoxRoundChooser = findChild<QGroupBox*>("RoundChooser");
     groupBoxRoundChooser->setLayout(layout_roundChooser);
 
+    QGroupBox* groupBoxGot1 = findChild<QGroupBox*>("Got1");
+    groupBoxGot1->setLayout(layout_got1);
+    QGroupBox* groupBoxGot2 = findChild<QGroupBox*>("Got2");
+    groupBoxGot2->setLayout(layout_got2);
     QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("Played");
     groupBoxPlayed->setLayout(layout_played);
     QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("Drawn");
@@ -167,6 +175,13 @@ void Table::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_6) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "6");
+            game->player->handdeck()->addCard(newCard);
+        }
+    }
+
+    if (event->key() == Qt::Key_7) {
+        for (const auto& suit : suits) {
+            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "7");
             game->player->handdeck()->addCard(newCard);
         }
     }
