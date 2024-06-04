@@ -218,70 +218,77 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
         emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
+        handleChoosers();
+    }
+}
 
-        // JsuitChooser
-        if (card->rank() == "J") {
-            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
-            if (!player->isRobot())
-                jsuitChooser()->setEnabled(true);
-            jsuitChooser()->show();
-        } else {
-            jsuitChooser()->hide();
-            jsuitChooser()->setEnabled(false);
+void Game::handleChoosers()
+{
+    QSharedPointer<Card> stackCard = stack()->topCard();
+
+    // JsuitChooser
+    if (stackCard->rank() == "J") {
+        jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
+        if (!player->isRobot())
+            jsuitChooser()->setEnabled(true);
+        jsuitChooser()->show();
+    } else {
+        jsuitChooser()->hide();
+        jsuitChooser()->setEnabled(false);
+    }
+
+    // EightsChooser
+    if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
+        && played()->cards().size() >= 2) {
+        // emit monitor()->eightsInMonitor();
+        if (!player->isRobot())
+            eightsChooser()->setEnabled(true);
+        else
+            eightsChooser()->toggleRandom();
+
+        eightsChooser()->show();
+    } else {
+        eightsChooser()->hide();
+        eightsChooser()->setEnabled(false);
+    }
+
+    // QuteChooser
+    if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
+        // emit monitor()->fourCardsInMonitor();
+        if (!player->isRobot())
+            quteChooser()->setEnabled(true);
+        else {
+            quteChooser()->toggleRandom();
         }
+        quteChooser()->show();
+    } else {
+        quteChooser()->hide();
+        quteChooser()->setEnabled(false);
+    }
 
-        // EightsChooser
-        if (card->rank() == "8" && monitor()->cards().size() >= 2 && played()->cards().size() >= 2) {
-            // emit monitor()->eightsInMonitor();
-            if (!player->isRobot())
-                eightsChooser()->setEnabled(true);
-            else
-                eightsChooser()->toggleRandom();
-
-            eightsChooser()->show();
-        } else {
-            eightsChooser()->hide();
-            eightsChooser()->setEnabled(false);
+    // JPointsChooser
+    if (stackCard->rank() == "J"
+        && (player->handdeck()->cards().isEmpty() || quteChooser()->isEnabled())) {
+        if (!player->isRobot())
+            jpointsChooser()->setEnabled(true);
+        else {
+            jpointsChooser()->toggleRandom();
         }
+        jpointsChooser()->show();
+    } else {
+        jpointsChooser()->hide();
+        jpointsChooser()->setEnabled(false);
+    }
 
-        // QuteChooser
-        if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
-            // emit monitor()->fourCardsInMonitor();
-            if (!player->isRobot())
-                quteChooser()->setEnabled(true);
-            else {
-                quteChooser()->toggleRandom();
-            }
-            quteChooser()->show();
-        } else {
-            quteChooser()->hide();
-            quteChooser()->setEnabled(false);
-        }
-
-        // JPointsChooser
-        if (card->rank() == "J"
-            && (player->handdeck()->cards().isEmpty() || quteChooser()->isEnabled())) {
-            if (!player->isRobot())
-                jpointsChooser()->setEnabled(true);
-            else {
-                jpointsChooser()->toggleRandom();
-            }
-            jpointsChooser()->show();
-        } else {
-            jpointsChooser()->hide();
-            jpointsChooser()->setEnabled(false);
-        }
-
-        // RoundChooser
-        if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
-            || quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
-            roundChooser()->setDecision("r");
-            roundChooser()->setEnabled(true);
-            roundChooser()->show();
-        } else {
-            roundChooser()->hide();
-            roundChooser()->setEnabled(false);
-        }
+    // RoundChooser
+    if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
+        || quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
+        roundChooser()->setDecision("r");
+        roundChooser()->setEnabled(true);
+        roundChooser()->show();
+    } else {
+        roundChooser()->hide();
+        roundChooser()->setEnabled(false);
     }
 }
 
@@ -576,8 +583,12 @@ void Game::autoplay()
     updatePlayable();
 
     while (!isNextPlayerPossible()) {
-        for (auto& card : player->handdeck()->cards()) {
-            card->click();
+        for (auto& card : playable()->cards()) {
+            for (auto& card : player->handdeck()->cards()) {
+                card->click();
+                updatePlayable();
+                handleChoosers();
+            }
         }
     }
 }

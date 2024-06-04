@@ -87,6 +87,7 @@ public:
     void drawCardFromBlind();
     void autoplay();
     void refillBlindFromStack();
+    void handleChoosers();
     void countRound();
     void updateDisplay();
     void collectAllCardsToBlind();
