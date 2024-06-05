@@ -8,7 +8,7 @@
 Table::Table(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
-    , game(QSharedPointer<Game>::create()) // Changed from std::make_unique to QSharedPointer::create
+    , game(QSharedPointer<Game>::create())
 {
     ui->setupUi(this);
 
@@ -96,6 +96,7 @@ Table::Table(QWidget* parent)
     groupBoxDrawn->setLayout(layout_drawn);
 
     QGroupBox* groupBoxShuffles = findChild<QGroupBox*>("Shuffles");
+    groupBoxShuffles->setLayout(layout_shuffles);
     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("Blind");
     groupBoxBlind->setLayout(layout_blind);
     QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("JsuitChooser");
@@ -166,6 +167,10 @@ void Table::keyPressEvent(QKeyEvent* event)
 
     if (event->key() == Qt::Key_R) {
         game->startNewRound();
+    }
+
+    if (event->key() == Qt::Key_S) {
+        game->blind()->shuffle();
     }
 
     if (event->key() == Qt::Key_G) {

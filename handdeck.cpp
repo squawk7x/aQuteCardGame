@@ -13,6 +13,7 @@ void Handdeck::addCard(QSharedPointer<Card> card)
         card->setParent(this);
         cards_.append(card);
         layout_->addWidget(card.data());
+        card->show();
         layout_->update();
         update();
     }

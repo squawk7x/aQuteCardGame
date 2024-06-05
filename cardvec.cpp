@@ -46,18 +46,6 @@ void CardVec::removeCard(QSharedPointer<Card> card)
     }
 }
 
-void CardVec::removeFirstCard()
-{
-    if (!cards_.empty())
-        removeCard(cards_.front());
-}
-
-void CardVec::removeLastCard()
-{
-    if (!cards_.empty())
-        removeCard(cards_.last());
-}
-
 void CardVec::clearCards()
 {
     for (const auto& card : cards_) {

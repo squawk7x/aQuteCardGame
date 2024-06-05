@@ -11,8 +11,10 @@ class Blind : public CardVec
 public:
     explicit Blind(QWidget* parent = nullptr, const QVector<QSharedPointer<Card>>& rhs = {});
     virtual ~Blind();
+    virtual void removeCard(QSharedPointer<Card> card) override;
 
     void shuffle();
+    void showTopCard();
 };
 
 #endif // BLIND_H

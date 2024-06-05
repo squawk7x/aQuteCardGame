@@ -148,31 +148,6 @@
            <layout class="QHBoxLayout" name="got2"/>
           </widget>
          </item>
-         <item>
-          <widget class="QGroupBox" name="Played">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="title">
-            <string>Played</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QHBoxLayout" name="played"/>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="Drawn">
-           <property name="title">
-            <string>Drawn</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QHBoxLayout" name="drawn"/>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -234,6 +209,31 @@
             <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="playable"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="Played">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="title">
+            <string>Played</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="played"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="Drawn">
+           <property name="title">
+            <string>Drawn</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="drawn"/>
           </widget>
          </item>
          <item>

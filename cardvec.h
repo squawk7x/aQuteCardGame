@@ -19,8 +19,6 @@ public:
 
     virtual void addCard(QSharedPointer<Card> card);
     virtual void removeCard(QSharedPointer<Card> card);
-    virtual void removeFirstCard(); // for testing
-    virtual void removeLastCard();  // for testing
     virtual void clearCards();
     bool isCardInCards(const QSharedPointer<Card>& card);
     virtual QString cardsAsString() const;

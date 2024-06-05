@@ -431,7 +431,7 @@ bool Game::isNextPlayerPossible()
 
     while (mustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
-        // updatePlayable();
+        updatePlayable();
     }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
