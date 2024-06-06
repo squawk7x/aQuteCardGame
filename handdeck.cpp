@@ -31,6 +31,37 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
     }
 }
 
+void Handdeck::sortCards(Handdeck::SortOption option)
+{
+    if (option == SortOption::Suit) {
+        std::sort(cards_.begin(),
+                  cards_.end(),
+                  [](const QSharedPointer<Card>& a, const QSharedPointer<Card>& b) {
+                      if (a->suit() == b->suit()) {
+                          return ranks.indexOf(a->rank()) < ranks.indexOf(b->rank());
+                      }
+                      return suits.indexOf(a->suit()) < suits.indexOf(b->suit());
+                  });
+    } else if (option == SortOption::Rank) {
+        std::sort(cards_.begin(),
+                  cards_.end(),
+                  [](const QSharedPointer<Card>& a, const QSharedPointer<Card>& b) {
+                      if (a->rank() == b->rank()) {
+                          return suits.indexOf(a->suit()) < suits.indexOf(b->suit());
+                      }
+                      return ranks.indexOf(a->rank()) < ranks.indexOf(b->rank());
+                  });
+    }
+
+    for (const auto& card : cards_) {
+        layout_->removeWidget(card.data());
+        layout_->addWidget(card.data());
+    }
+
+    layout_->update();
+    update();
+}
+
 void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
 {
     if (cards().contains(card)) {

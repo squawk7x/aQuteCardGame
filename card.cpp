@@ -2,10 +2,10 @@
 #include <QDebug>
 
 // Definitions for the global card properties
-QVector<QString> suits = {"♦", "♥", "♠", "♣"};
+QVector<QString> suits = {"♦", "♠", "♥", "♣"};
 QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
-QVector<QString> suitnames = {"diamonds", "hearts", "spades", "clubs"};
+QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
 void Card::initCard()
 {

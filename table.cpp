@@ -166,14 +166,14 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_R) {
-        game->startNewRound();
+        game->player->handdeck()->sortCards(Handdeck::SortOption::Rank);
     }
 
     if (event->key() == Qt::Key_S) {
-        game->blind()->shuffle();
+        game->player->handdeck()->sortCards(Handdeck::SortOption::Suit);
     }
 
-    if (event->key() == Qt::Key_G) {
+    if (event->key() == Qt::Key_N) {
         game->startNewGame();
     }
 
