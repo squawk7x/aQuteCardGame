@@ -140,6 +140,7 @@ Table::Table(QWidget* parent)
             &Table::toggleCardVisibility,
             game->monitor().get(),
             &Monitor::onToggleCardVisibility);
+    connect(this, &Table::toggleCardVisibility, game->stack().get(), &Stack::onToggleCardVisibility);
 }
 
 Table::~Table()
@@ -180,6 +181,10 @@ void Table::keyPressEvent(QKeyEvent* event)
 
     if (event->key() == Qt::Key_1) {
         game->player->handdeck()->sortCardsByPattern(1);
+    }
+
+    if (event->key() == Qt::Key_F) {
+        emit game->roundChooser()->finishRound();
     }
 
     if (event->key() == Qt::Key_N) {

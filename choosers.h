@@ -133,21 +133,22 @@ private:
     QString decision_;
 
     // Setters
-    void loadImage();
 
 public:
-    explicit RoundChooser(QString decision = "r", QWidget* parent = nullptr);
+    explicit RoundChooser(QString decision = "f", QWidget* parent = nullptr);
 
     // Getters
     QString decision();
 
     // Setters
     void setDecision(const QString& target_decision);
+    void loadImage();
 
 public slots:
     void onQuteDecisionChanged(const QString& dec);
 
 signals:
+    void finishRound();
     void newRound();
     void newGame();
 };

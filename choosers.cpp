@@ -69,7 +69,6 @@ void JsuitChooser::toggle()
         suit_ = suits[index];
         suitname_ = suitnames[index];
         setStr();
-        qDebug() << "JsuitChooser toggled to:" << suit_;
         loadImage();
     } else {
         qDebug() << "Current suit not found in the list.";
@@ -144,9 +143,6 @@ void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
     // If the random number is 0, return dec1, otherwise return dec2
     (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
 }
-
-// Slots:
-// void EightsChooser::onEightsInMonitor() {}
 
 /* ************************************************************************* */
 
@@ -273,14 +269,16 @@ void JpointsChooser::onQuteDecisionChanged(const QString& dec)
 }
 
 /* ************************************************************************* */
-
 RoundChooser::RoundChooser(QString decision, QWidget* parent)
     : decision_{decision}
 {
     loadImage();
 
     connect(this, &QPushButton::clicked, this, [this]() {
-        if (decision_ == "r") {
+        if (decision_ == "f") {
+            emit finishRound();
+            setDecision("r");
+        } else if (decision_ == "r") {
             emit newRound();
         } else if (decision_ == "g") {
             emit newGame();

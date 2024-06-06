@@ -88,9 +88,11 @@ public:
     QVector<QSharedPointer<Player>> playerList_;
     QSharedPointer<Player> player = nullptr;
 
+    void initializeRound();
     bool isThisCardPlayable(const QSharedPointer<Card>& card);
     void handleSpecialCards();
     bool isNextPlayerPossible();
+    bool isRoundFinished();
     void updatePlayable();
     bool mustDrawCard();
     void drawCardFromBlind(DrawOption option);
@@ -112,8 +114,8 @@ signals:
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
-    void startNewRound();
-    void startNewGame();
+    void onNewRound();
+    void onNewGame();
 };
 
 #endif // GAME_H
