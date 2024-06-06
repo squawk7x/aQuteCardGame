@@ -53,5 +53,6 @@
         <file>cards/chooser_new_r.png</file>
         <file>cards/chooser_new_g.png</file>
         <file>cards/chooser_quit_game.png</file>
+        <file>cards/chooser_new_f.png</file>
     </qresource>
 </RCC>

@@ -40,8 +40,9 @@ set(PROJECT_SOURCES
 	game.h
 	drawn.cpp
 	drawn.h
+	got.cpp
+	got.h
 	table.ui
-
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -49,7 +50,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 		MANUAL_FINALIZATION
 		${PROJECT_SOURCES}
 		images.qrc
-		got.h got.cpp
+		README.md
+
+
 	)
 else()
 	if(ANDROID)

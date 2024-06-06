@@ -51,10 +51,11 @@ Game::Game(QObject* parent)
             roundChooser().get(),
             &RoundChooser::onQuteDecisionChanged);
 
-    connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::startNewRound);
-    connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::startNewGame);
+    connect(roundChooser().get(), &RoundChooser::finishRound, this, &Game::handleSpecialCards);
+    connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::onNewRound);
+    connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::onNewGame);
 
-    initializeGame();
+    initializeRound();
 }
 
 Game::~Game()
@@ -168,10 +169,10 @@ QSharedPointer<Drawn> Game::drawn()
 }
 
 // Methods
-void Game::initializeGame()
+void Game::initializeRound()
 {
     // jpointsChooser()->setDisabled(true);
-    roundChooser()->setDisabled(true);
+    roundChooser()->setEnabled(false);
     roundChooser()->hide();
 
     collectAllCardsToBlind();
@@ -182,6 +183,10 @@ void Game::initializeGame()
         played_->clearCards();
     if (!drawn()->cards().isEmpty())
         drawn_->clearCards();
+    if (!got1()->cards().isEmpty())
+        got1_->clearCards();
+    if (!got2()->cards().isEmpty())
+        got2_->clearCards();
 
     // shuffle the cards
     blind_->shuffle();
@@ -215,14 +220,13 @@ void Game::initializeGame()
     player->handdeck()->cards().last()->click();
 
     // case a robot player starts a new round
-    autoplay();
+    // autoplay();
 }
 
 void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
         emit cardAddedToStack(card);
-        // card->setIsFaceVisible(true);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
         handleChoosers();
@@ -245,7 +249,6 @@ void Game::handleChoosers()
     // EightsChooser
     if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
         && played()->cards().size() >= 2) {
-        // emit monitor()->eightsInMonitor();
         eightsChooser()->setEnabled(!player->isRobot());
         eightsChooser()->show();
     } else {
@@ -255,7 +258,6 @@ void Game::handleChoosers()
 
     // QuteChooser
     if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
-        // emit monitor()->fourCardsInMonitor();
         quteChooser()->setEnabled(!player->isRobot());
         quteChooser()->show();
         if (stackCard->rank() == "J") {
@@ -266,6 +268,7 @@ void Game::handleChoosers()
         }
     } else {
         quteChooser()->hide();
+        quteChooser()->toggle_to("y");
         quteChooser()->setEnabled(false);
         disconnect(quteChooser().get(),
                    &QuteChooser::quteDecisionChanged,
@@ -287,7 +290,7 @@ void Game::handleChoosers()
     // RoundChooser
     if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
         || quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
-        roundChooser()->setDecision("r");
+        roundChooser()->setDecision("f");
         roundChooser()->setEnabled(true);
         roundChooser()->show();
     } else {
@@ -389,8 +392,6 @@ bool Game::mustDrawCard()
     return false;
 }
 
-bool Game::isNextPlayerPossible()
-
 /*      
         ---------------------------------
          card   playable  card    must  next player
@@ -408,7 +409,16 @@ bool Game::isNextPlayerPossible()
             6       1      0||1     N       N
             6       0      0||1     Y       N   <-- must draw card
     */
+
+bool Game::isNextPlayerPossible()
+
 {
+    QSharedPointer<Card> stackCard = stack()->topCard();
+
+    if (isRoundFinished()) {
+        return false;
+    }
+
     if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
         return false;
     }
@@ -419,8 +429,6 @@ bool Game::isNextPlayerPossible()
         drawCardFromBlind(Game::DrawOption::MustCard);
         updatePlayable();
     }
-
-    QSharedPointer<Card> stackCard = stack()->topCard();
 
     // If the stack card's rank is "6", the next player is not possible
     // except on quteChooser()->decision() == "y"
@@ -491,6 +499,20 @@ void Game::togglePlayerListToScore(bool highest)
     }
 }
 
+bool Game::isRoundFinished()
+{
+    QSharedPointer<Card> stackCard = stack()->topCard();
+
+    if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
+        return true;
+    }
+
+    if (player->handdeck()->cards().isEmpty() && stackCard->rank() != "6") {
+        return true;
+    }
+    return false;
+}
+
 void Game::handleSpecialCards()
 {
     // Count occurrences of sevens, eights, and aces
@@ -533,6 +555,8 @@ void Game::handleSpecialCards()
     }
 
     QSharedPointer<CardVec> cardVec(new CardVec(nullptr, played_->cards()));
+
+    bool isFinished = isRoundFinished();
 
     // Rotate the player list normally first
     rotatePlayerList();
@@ -598,6 +622,11 @@ void Game::handleSpecialCards()
 
     played()->clearCards();
     drawn()->clearCards();
+
+    if (isFinished) {
+        emit countPoints(shuffles);
+        updateDisplay();
+    }
 }
 
 void Game::activateNextPlayer()
@@ -612,6 +641,7 @@ void Game::activateNextPlayer()
 
 void Game::autoplay()
 {
+    // if (player->isRobot()) {
     if (!roundChooser()->isEnabled() && player->isRobot()) {
         player->handdeck()->setEnabled(true);
 
@@ -677,29 +707,23 @@ void Game::updateDisplay()
     }
 }
 
-void Game::startNewRound()
+void Game::onNewRound()
 {
-    activateNextPlayer();
-
-    // make the players count their points and update their scores
-    emit countPoints(shuffles);
-    updateDisplay();
-
     togglePlayerListToScore(false);
     qDebug() << "The winner is: " << playerList_.front()->name();
 
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
-        rounds += 1;
         qDebug() << "Starting new Round ...";
-        initializeGame();
+        rounds += 1;
+        initializeRound();
     } else {
-        roundChooser()->setDecision("g");
         qDebug() << "Game is over...";
+        roundChooser()->setDecision("g");
     }
 }
 
-void Game::startNewGame()
+void Game::onNewGame()
 {
     emit countPoints(0);
 
@@ -710,5 +734,5 @@ void Game::startNewGame()
 
     qDebug() << "Starting new game ...";
 
-    initializeGame();
+    initializeRound();
 }
