@@ -47,7 +47,7 @@ Game::Game(QObject* parent)
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
     }
 
-    // connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
+    connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
 
     // connect(monitor_.get(),
     //         &Monitor::eightsInMonitor,
@@ -235,6 +235,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
         emit cardAddedToStack(card);
+        card->setIsFaceVisible(true);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
         handleChoosers();
@@ -248,13 +249,15 @@ void Game::handleChoosers()
     // JsuitChooser
     if (stackCard->rank() == "J") {
         jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
-        if (!player->isRobot())
-            jsuitChooser()->setEnabled(true);
+        jsuitChooser()->setEnabled(!player->isRobot());
         jsuitChooser()->show();
-    } else {
-        jsuitChooser()->hide();
-        jsuitChooser()->setEnabled(false);
     }
+    // else {
+    //     if (!played()->cards().isEmpty()) {
+    //         jsuitChooser()->hide();
+    //         jsuitChooser()->setEnabled(false);
+    //     }
+    // }
 
     // EightsChooser
     if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
@@ -320,6 +323,7 @@ void Game::updatePlayable()
             player->handdeck()->copyCardTo(card, playable().get());
         }
     }
+    playable()->sortCardsByPattern(1);
 }
 
 bool Game::isThisCardPlayable(const QSharedPointer<Card>& card)

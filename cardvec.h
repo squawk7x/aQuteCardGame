@@ -28,7 +28,7 @@ public:
     void copyTopCardTo(CardVec* targetVec);
     QSharedPointer<Card> topCard();
     QString mostCommonSuit() const;
-    void sortCards(int pattern);
+    void sortCardsByPattern(int pattern);
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();

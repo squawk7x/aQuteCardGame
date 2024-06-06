@@ -69,6 +69,7 @@ void JsuitChooser::toggle()
         suit_ = suits[index];
         suitname_ = suitnames[index];
         setStr();
+        qDebug() << "JsuitChooser toggled to:" << suit_;
         loadImage();
     } else {
         qDebug() << "Current suit not found in the list.";
@@ -77,13 +78,18 @@ void JsuitChooser::toggle()
 
 void JsuitChooser::toggle_to(const QString& target_suit)
 {
-    while (suit_ != target_suit) {
-        toggle();
-    }
+    if (isEnabled())
+        while (suit_ != target_suit) {
+            toggle();
+        }
 }
 
 // Slots:
-void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card) {}
+void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
+{
+    hide();
+    setEnabled(false);
+}
 
 /* ************************************************************************* */
 

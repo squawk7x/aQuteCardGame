@@ -173,6 +173,10 @@ void Table::keyPressEvent(QKeyEvent* event)
         game->player->handdeck()->sortCards(Handdeck::SortOption::Suit);
     }
 
+    if (event->key() == Qt::Key_1) {
+        game->player->handdeck()->sortCardsByPattern(1);
+    }
+
     if (event->key() == Qt::Key_N) {
         game->startNewGame();
     }
@@ -203,19 +207,6 @@ void Table::keyPressEvent(QKeyEvent* event)
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "J");
             game->player->handdeck()->addCard(newCard);
         }
-    }
-
-    if (event->key() == Qt::Key_0) {
-        game->playable()->sortCards(0);
-    }
-    if (event->key() == Qt::Key_1) {
-        game->playable()->sortCards(1);
-    }
-    if (event->key() == Qt::Key_2) {
-        game->playable()->sortCards(2);
-    }
-    if (event->key() == Qt::Key_3) {
-        game->playable()->sortCards(3);
     }
 
     QWidget::keyPressEvent(event);

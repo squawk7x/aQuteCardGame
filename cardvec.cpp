@@ -132,10 +132,11 @@ QString CardVec::mostCommonSuit() const
     return mostCommonSuit;
 }
 
-void CardVec::sortCards(int pattern)
+void CardVec::sortCardsByPattern(int pattern)
 {
     const std::vector<std::vector<QString>> patterns
         = {{"6", "A", "J", "K", "Q", "10", "8", "7", "9"},
+           {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
            {"J", "9", "7", "8", "10", "Q", "K", "A", "6"},
            {"J", "A", "K", "Q", "10", "9", "8", "7", "6"},
            {"9", "8", "7", "6", "10", "Q", "K", "A", "J"}};
