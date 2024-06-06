@@ -39,9 +39,10 @@ private:
     QSharedPointer<Stack> stack_;
 
     QSharedPointer<Playable> playable_;
-    QSharedPointer<QLCDNumber> lcd1_;
-    QSharedPointer<QLCDNumber> lcd2_;
-    QSharedPointer<QLCDNumber> lcd3_;
+    QSharedPointer<QLCDNumber> lcdRound_;
+    QSharedPointer<QLCDNumber> lcdP1_;
+    QSharedPointer<QLCDNumber> lcdP2_;
+    QSharedPointer<QLCDNumber> lcdP3_;
 
     QSharedPointer<Player> player1_;
 
@@ -77,9 +78,10 @@ public:
     QSharedPointer<Stack> stack();
 
     QSharedPointer<Playable> playable();
-    QSharedPointer<QLCDNumber> lcd1();
-    QSharedPointer<QLCDNumber> lcd2();
-    QSharedPointer<QLCDNumber> lcd3();
+    QSharedPointer<QLCDNumber> lcdRound();
+    QSharedPointer<QLCDNumber> lcdP1();
+    QSharedPointer<QLCDNumber> lcdP2();
+    QSharedPointer<QLCDNumber> lcdP3();
 
     QSharedPointer<Player> player1() const;
 
@@ -87,6 +89,7 @@ public:
     QSharedPointer<Player> player = nullptr;
 
     bool isThisCardPlayable(const QSharedPointer<Card>& card);
+    void handleSpecialCards();
     bool isNextPlayerPossible();
     void updatePlayable();
     bool mustDrawCard();

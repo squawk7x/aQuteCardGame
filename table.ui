@@ -341,6 +341,17 @@
           </widget>
          </item>
          <item>
+          <widget class="QGroupBox" name="Round">
+           <property name="title">
+            <string>Round</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="round"/>
+          </widget>
+         </item>
+         <item>
           <widget class="QGroupBox" name="Scores">
            <property name="title">
             <string>Scores</string>

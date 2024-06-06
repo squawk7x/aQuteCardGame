@@ -153,9 +153,14 @@ void CardVec::sortCardsByPattern(int pattern)
               [&selected_pattern](QSharedPointer<Card> a, QSharedPointer<Card> b) {
                   auto posA = std::find(selected_pattern.begin(), selected_pattern.end(), a->rank());
                   auto posB = std::find(selected_pattern.begin(), selected_pattern.end(), b->rank());
-                  return posA < posB;
+                  return posA > posB;
               });
 
+    updateLayout();
+}
+
+void CardVec::updateLayout()
+{
     for (const auto& card : cards_) {
         layout_->removeWidget(card.data());
         layout_->addWidget(card.data());

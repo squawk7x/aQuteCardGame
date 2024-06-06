@@ -45,12 +45,8 @@ void Blind::shuffle()
 {
     auto rng = QRandomGenerator::global();
     std::shuffle(cards_.begin(), cards_.end(), std::mt19937(rng->generate()));
-    for (const auto& card : cards_) {
-        layout_->removeWidget(card.data());
-        layout_->addWidget(card.data());
-    }
-    layout_->update();
-    update();
+
+    updateLayout();
 }
 
 void Blind::showTopCard()

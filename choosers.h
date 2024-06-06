@@ -109,8 +109,7 @@ private:
     void loadImage();
 
 public:
-    explicit JpointsChooser(QString decision = "m",
-                            QWidget* parent = nullptr);
+    explicit JpointsChooser(QString decision = "m", QWidget* parent = nullptr);
 
     // Getters
     QString decision();
@@ -121,7 +120,6 @@ public:
     void toggleRandom(const QString& dec1 = "m", const QString& dec2 = "p");
 
 public slots:
-    // void onJpoints();
     void onQuteDecisionChanged(const QString& dec);
 };
 

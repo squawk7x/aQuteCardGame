@@ -53,13 +53,7 @@ void Handdeck::sortCards(Handdeck::SortOption option)
                   });
     }
 
-    for (const auto& card : cards_) {
-        layout_->removeWidget(card.data());
-        layout_->addWidget(card.data());
-    }
-
-    layout_->update();
-    update();
+    updateLayout();
 }
 
 void Handdeck::onCardClicked(const QSharedPointer<Card>& card)

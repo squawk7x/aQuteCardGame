@@ -29,6 +29,7 @@ public:
     QSharedPointer<Card> topCard();
     QString mostCommonSuit() const;
     void sortCardsByPattern(int pattern);
+    void updateLayout();
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();

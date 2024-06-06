@@ -20,9 +20,10 @@ Game::Game(QObject* parent)
     , player1_(new Player(nullptr, 1, "Player1", false, 0, new Handdeck(nullptr)))
     , player2_(new Player(nullptr, 2, "Player2", true, 0, new Handdeck(nullptr)))
     , player3_(new Player(nullptr, 3, "Player3", true, 0, new Handdeck(nullptr)))
-    , lcd1_(new QLCDNumber())
-    , lcd2_(new QLCDNumber())
-    , lcd3_(new QLCDNumber())
+    , lcdRound_(new QLCDNumber())
+    , lcdP1_(new QLCDNumber())
+    , lcdP2_(new QLCDNumber())
+    , lcdP3_(new QLCDNumber())
     , lcdShuffles_(new QLCDNumber())
 {
     lcdShuffles_->setDigitCount(2);
@@ -35,12 +36,8 @@ Game::Game(QObject* parent)
     connect(player2()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
     connect(player3()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
 
-    // connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::oncardBadFromBlind);
-    // connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::oncardBadFromBlind);
-    // connect(this, &Game::cardAddedToStack, got_.get(), &Got::clearGotCards);
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
-
     connect(this, &Game::cardDrawnFromBlind, drawn_.get(), &Drawn::onCardDrawnFromBlind);
 
     for (const auto& player : playerList_) {
@@ -49,25 +46,10 @@ Game::Game(QObject* parent)
 
     connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
 
-    // connect(monitor_.get(),
-    //         &Monitor::eightsInMonitor,
-    //         eightsChooser_.get(),
-    //         &EightsChooser::onEightsInMonitor);
-
-    // connect(monitor_.get(),
-    //         &Monitor::fourCardsInMonitor,
-    //         quteChooser_.get(),
-    //         &QuteChooser::onFourCardsInMonitor);
-
     connect(quteChooser().get(),
             &QuteChooser::quteDecisionChanged,
             roundChooser().get(),
             &RoundChooser::onQuteDecisionChanged);
-
-    connect(quteChooser().get(),
-            &QuteChooser::quteDecisionChanged,
-            jpointsChooser().get(),
-            &JpointsChooser::onQuteDecisionChanged);
 
     connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::startNewRound);
     connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::startNewGame);
@@ -126,19 +108,23 @@ QSharedPointer<Played> Game::played()
     return played_;
 }
 
-QSharedPointer<QLCDNumber> Game::lcd1()
+QSharedPointer<QLCDNumber> Game::lcdRound()
 {
-    return lcd1_;
+    return lcdRound_;
+}
+QSharedPointer<QLCDNumber> Game::lcdP1()
+{
+    return lcdP1_;
 }
 
-QSharedPointer<QLCDNumber> Game::lcd2()
+QSharedPointer<QLCDNumber> Game::lcdP2()
 {
-    return lcd2_;
+    return lcdP2_;
 }
 
-QSharedPointer<QLCDNumber> Game::lcd3()
+QSharedPointer<QLCDNumber> Game::lcdP3()
 {
-    return lcd3_;
+    return lcdP3_;
 }
 
 QSharedPointer<QLCDNumber> Game::lcdShuffles()
@@ -201,6 +187,7 @@ void Game::initializeGame()
     blind_->shuffle();
     shuffles = 1;
     lcdShuffles()->display(shuffles);
+    lcdRound()->display(rounds);
 
     // Player with highest score will start
     togglePlayerListToScore(true);
@@ -235,7 +222,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
         emit cardAddedToStack(card);
-        card->setIsFaceVisible(true);
+        // card->setIsFaceVisible(true);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
         handleChoosers();
@@ -252,22 +239,14 @@ void Game::handleChoosers()
         jsuitChooser()->setEnabled(!player->isRobot());
         jsuitChooser()->show();
     }
-    // else {
-    //     if (!played()->cards().isEmpty()) {
-    //         jsuitChooser()->hide();
-    //         jsuitChooser()->setEnabled(false);
-    //     }
-    // }
+    // shown until next player played a card
+    // hide/disable by slot onCardAddedToStack
 
     // EightsChooser
     if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
         && played()->cards().size() >= 2) {
         // emit monitor()->eightsInMonitor();
-        if (!player->isRobot())
-            eightsChooser()->setEnabled(true);
-        else
-            eightsChooser()->toggleRandom();
-
+        eightsChooser()->setEnabled(!player->isRobot());
         eightsChooser()->show();
     } else {
         eightsChooser()->hide();
@@ -277,25 +256,28 @@ void Game::handleChoosers()
     // QuteChooser
     if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
         // emit monitor()->fourCardsInMonitor();
-        if (!player->isRobot())
-            quteChooser()->setEnabled(true);
-        else {
-            quteChooser()->toggleRandom();
-        }
+        quteChooser()->setEnabled(!player->isRobot());
         quteChooser()->show();
+        if (stackCard->rank() == "J") {
+            connect(quteChooser().get(),
+                    &QuteChooser::quteDecisionChanged,
+                    jpointsChooser().get(),
+                    &JpointsChooser::onQuteDecisionChanged);
+        }
     } else {
         quteChooser()->hide();
         quteChooser()->setEnabled(false);
+        disconnect(quteChooser().get(),
+                   &QuteChooser::quteDecisionChanged,
+                   jpointsChooser().get(),
+                   &JpointsChooser::onQuteDecisionChanged);
     }
 
     // JPointsChooser
-    if (stackCard->rank() == "J"
-        && (player->handdeck()->cards().isEmpty() || quteChooser()->isEnabled())) {
-        if (!player->isRobot())
-            jpointsChooser()->setEnabled(true);
-        else {
-            jpointsChooser()->toggleRandom();
-        }
+    if (stackCard->rank() == "J" && player->handdeck()->cards().isEmpty()
+        || (stackCard->rank() == "J")
+               && (quteChooser()->isEnabled() && quteChooser()->decision() == "y")) {
+        jpointsChooser()->setEnabled(!player->isRobot());
         jpointsChooser()->show();
     } else {
         jpointsChooser()->hide();
@@ -423,12 +405,12 @@ bool Game::isNextPlayerPossible()
             0       0       0       Y       N   <-- must draw card
         '6' on stack:
         -------------
-            1       0      0||1     Y       N   <-- must draw card
+            6       1      0||1     N       N
+            6       0      0||1     Y       N   <-- must draw card
     */
 {
-    // If quteChooser is enabled and the decision is "y", the next player is possible
     if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
-        return true;
+        return false;
     }
 
     updatePlayable();
@@ -471,7 +453,7 @@ void Game::rotatePlayerList()
     played()->clearCards();
     drawn()->clearCards();
 
-    jsuitChooser()->setEnabled(false);
+    // jsuitChooser()->setEnabled(false); // handled by slot onCardAddedToStack
 
     eightsChooser()->setEnabled(false);
     jpointsChooser()->setEnabled(false);
@@ -509,11 +491,8 @@ void Game::togglePlayerListToScore(bool highest)
     }
 }
 
-void Game::activateNextPlayer()
+void Game::handleSpecialCards()
 {
-    if (!isNextPlayerPossible())
-        return;
-
     // Count occurrences of sevens, eights, and aces
     int jacks = 0;
     int sevens = 0;
@@ -619,6 +598,14 @@ void Game::activateNextPlayer()
 
     played()->clearCards();
     drawn()->clearCards();
+}
+
+void Game::activateNextPlayer()
+{
+    if (!isNextPlayerPossible())
+        return;
+
+    handleSpecialCards();
 
     autoplay();
 }
@@ -681,11 +668,11 @@ void Game::updateDisplay()
 {
     for (const auto& player : playerList_) {
         if (player->id() == 1) {
-            lcd1()->display(player->score());
+            lcdP1()->display(player->score());
         } else if (player->id() == 2) {
-            lcd2()->display(player->score());
+            lcdP2()->display(player->score());
         } else if (player->id() == 3) {
-            lcd3()->display(player->score());
+            lcdP3()->display(player->score());
         }
     }
 }
@@ -708,6 +695,7 @@ void Game::startNewRound()
         initializeGame();
     } else {
         roundChooser()->setDecision("g");
+        qDebug() << "Game is over...";
     }
 }
 

@@ -39,6 +39,7 @@ Table::Table(QWidget* parent)
     QHBoxLayout* layout_jsuitChooser = findChild<QHBoxLayout*>("jsuitChooser");
     QHBoxLayout* layout_stack = findChild<QHBoxLayout*>("stack");
     QHBoxLayout* layout_playable = findChild<QHBoxLayout*>("playable");
+    QHBoxLayout* layout_round = findChild<QHBoxLayout*>("round");
     QHBoxLayout* layout_scores = findChild<QHBoxLayout*>("scores");
     QHBoxLayout* layout_player1 = findChild<QHBoxLayout*>("player1");
 
@@ -63,9 +64,10 @@ Table::Table(QWidget* parent)
     layout_stack->addWidget(game->stack().get());
 
     layout_playable->addWidget(game->playable().get());
-    layout_scores->addWidget(game->lcd1().get());
-    layout_scores->addWidget(game->lcd2().get());
-    layout_scores->addWidget(game->lcd3().get());
+    layout_round->addWidget(game->lcdRound().get());
+    layout_scores->addWidget(game->lcdP1().get());
+    layout_scores->addWidget(game->lcdP2().get());
+    layout_scores->addWidget(game->lcdP3().get());
 
     layout_player1->addWidget(game->player1()->handdeck());
 
@@ -106,6 +108,8 @@ Table::Table(QWidget* parent)
 
     QGroupBox* groupBoxPlayable = findChild<QGroupBox*>("Playable");
     groupBoxPlayable->setLayout(layout_playable);
+    QGroupBox* groupBoxRound = findChild<QGroupBox*>("Round");
+    groupBoxRound->setLayout(layout_round);
     QGroupBox* groupBoxScores = findChild<QGroupBox*>("Scores");
     groupBoxScores->setLayout(layout_scores);
 
@@ -148,6 +152,7 @@ void Table::mousePressEvent(QMouseEvent* event)
     if (event->button() == Qt::RightButton) {
         emit rightMouseClicked();
     }
+
     QWidget::mousePressEvent(event);
 }
 
@@ -178,7 +183,11 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_N) {
-        game->startNewGame();
+        emit game->roundChooser()->newRound();
+    }
+
+    if (event->key() == Qt::Key_G) {
+        emit game->roundChooser()->newGame();
     }
 
     if (event->key() == Qt::Key_6) {
@@ -198,6 +207,13 @@ void Table::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_8) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "8");
+            game->player->handdeck()->addCard(newCard);
+        }
+    }
+
+    if (event->key() == Qt::Key_A) {
+        for (const auto& suit : suits) {
+            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "A");
             game->player->handdeck()->addCard(newCard);
         }
     }
