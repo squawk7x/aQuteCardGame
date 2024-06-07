@@ -64,11 +64,11 @@ If four cards of the same rank are played in a row, the player who plays the fou
 ![jsuit](cards/jsuit_of_spades.png)
 ![jsuit](cards/jsuit_of_clubs.png)
 - **J Points**: Choose between reducing your score or increasing others' scores.
-![jpoints](cards/chooser_of_jpoints_p.png)
-![jpoints](cards/chooser_of_jpoints_m.png)
+![jpoints](cards/chooser_jpoints_p.png)
+![jpoints](cards/chooser_jpoints_m.png)
 - **'Qute'**: Decide whether to finish or continue the round.
-![qute](cards/chooser_of_qute_y.png)
-![qute](cards/chooser_of_qute_n.png)
+![qute](cards/chooser_qute_y.png)
+![qute](cards/chooser_qute_n.png)
 
 ### Special Keys (Testing Mode)
 - **v**: Toggle visibility of other players' cards.
