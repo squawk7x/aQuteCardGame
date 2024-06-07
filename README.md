@@ -56,20 +56,24 @@ If four cards of the same rank are played in a row, the player who plays the fou
 
 ### Decisions
 - **multiple 8**: Decide how the draw cards rule for multiple 8 will apply.
+
 ![multiple 8](cards/chooser_eights_n.png)
 ![multiple 8](cards/chooser_eights_a.png)
 
-- **J Suit**: Choose the suit to follow a 'J'.
+- **J Suit**: Choose the suit to follow a 'J'
+
 ![jsuit](cards/jsuit_of_diamonds.png)
 ![jsuit](cards/jsuit_of_hearts.png)
 ![jsuit](cards/jsuit_of_spades.png)
 ![jsuit](cards/jsuit_of_clubs.png)
 
 - **J Points**: Choose between reducing your score or increasing others' scores.
+
 ![jpoints](cards/chooser_jpoints_p.png)
 ![jpoints](cards/chooser_jpoints_m.png)
 
 - **'Qute'**: Decide whether to finish or continue the round.
+
 ![qute](cards/chooser_qute_y.png)
 ![qute](cards/chooser_qute_n.png)
 
