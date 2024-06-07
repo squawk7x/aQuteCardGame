@@ -66,7 +66,7 @@ If four cards of the same rank are played in a row, the player who plays the fou
 
 - **J Suit**: Choose the suit to follow a 'J'
 
-![jsuit](images/jsuit_of_hearts.png)
+![jsuit](images/chooser_jsuit_of_hearts.png)
 
 - **J Points**: Choose between reducing your score or increasing others' scores.
 
