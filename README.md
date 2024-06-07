@@ -59,7 +59,7 @@ If four cards of the same rank are played in a row, the player who plays the fou
 ![multiple 8](cards/chooser_eights_n.png)
 ![multiple 8](cards/chooser_eights_a.png)
 - **J Suit**: Choose the suit to follow a 'J'.
-![jsuit](cards/jsuit_of_diamaonds.png)
+![jsuit](cards/jsuit_of_diamonds.png)
 ![jsuit](cards/jsuit_of_hearts.png)
 ![jsuit](cards/jsuit_of_spades.png)
 ![jsuit](cards/jsuit_of_clubs.png)
