@@ -6,7 +6,6 @@ Gamebord Layout:
 
 ![Gamebord](images/table_layout_qute.png)
 
-
 ## Game Rules
 
 ### Starting the Game
@@ -57,30 +56,27 @@ If four cards of the same rank are played in a row, the player who plays the fou
 ### Mouse Controls
 - **Click on card**: Put card on stack if the card fits to the stack.
 - **Right Click on**: next player's turn
-- **Toggle decisions**: Various in-game decisions for 8's, J's and 'Qute'
+- **Toggle decisions**: Various in-game decisions for 'multiple 8', 'Jsuit', 'Jpoints' and 'Qute'
 
 ### Decisions
 - **multiple 8**: Decide how the draw cards rule for multiple 8 will apply.
 
-![multiple 8](cards/chooser_eights_n.png)
-![multiple 8](cards/chooser_eights_a.png)
+![multiple 8](images/chooser_eights_n.png)
+![multiple 8](images/chooser_eights_a.png)
 
 - **J Suit**: Choose the suit to follow a 'J'
 
-![jsuit](cards/jsuit_of_diamonds.png)
-![jsuit](cards/jsuit_of_hearts.png)
-![jsuit](cards/jsuit_of_spades.png)
-![jsuit](cards/jsuit_of_clubs.png)
+![jsuit](images/jsuit_of_hearts.png)
 
 - **J Points**: Choose between reducing your score or increasing others' scores.
 
-![jpoints](cards/chooser_jpoints_p.png)
-![jpoints](cards/chooser_jpoints_m.png)
+![jpoints](images/chooser_jpoints_p.png)
+![jpoints](images/chooser_jpoints_m.png)
 
 - **'Qute'**: Decide whether to finish or continue the round.
 
-![qute](cards/chooser_qute_y.png)
-![qute](cards/chooser_qute_n.png)
+![qute](images/chooser_qute_y.png)
+![qute](images/chooser_qute_n.png)
 
 ### Special Keys (Testing Mode)
 - **v**: Toggle visibility of other players' cards.
