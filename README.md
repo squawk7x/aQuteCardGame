@@ -1,4 +1,4 @@
-# Card Game Rules and Instructions
+# Game Rules and Instructions
 
 This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks ranging from {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}. The game can be played by 3 players. Player 1 will play against 2 AI players. Each player starts with 5 cards. Below are the detailed rules and controls of the game.
 
