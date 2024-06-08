@@ -94,7 +94,7 @@ public:
     bool isNextPlayerPossible();
     bool isRoundFinished();
     void updatePlayable();
-    bool mustDrawCard();
+    bool isMustDrawCard();
     void drawCardFromBlind(DrawOption option);
     void autoplay();
     void refillBlindFromStack();
@@ -107,7 +107,7 @@ public:
 
 signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);
-    void cardDrawnFromBlind(const QSharedPointer<Card>& card);
+    void cardMustFromBlind(const QSharedPointer<Card>& card);
     void cardBadFromBlind(const QSharedPointer<Card>& card);
     void countPoints(int shuffles);
 

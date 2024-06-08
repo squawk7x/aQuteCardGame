@@ -29,6 +29,7 @@ public:
     int id() const;
     QString name() const;
     bool isRobot() const;
+    int jpoints() const;
     int score() const;
     Handdeck* handdeck() const;
 
@@ -38,7 +39,7 @@ public:
     // Setters
     void setName(const QString& name);
     void setIsRobot(bool isRobot);
-    void setScore(int score);
+    // void setScore(int score);
     void setJpoints(int jpoints);
     void setHanddeck(Handdeck* handdeck);
 

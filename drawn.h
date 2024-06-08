@@ -11,7 +11,7 @@ public:
     virtual ~Drawn();
 
 public slots:
-    void onCardDrawnFromBlind(const QSharedPointer<Card> &card);
+    void onCardMustFromBlind(const QSharedPointer<Card> &card);
 };
 
 #endif // DRAWN_H

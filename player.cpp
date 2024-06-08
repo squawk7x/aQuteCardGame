@@ -32,6 +32,11 @@ bool Player::isRobot() const
     return isRobot_;
 }
 
+int Player::jpoints() const
+{
+    return jpoints_;
+}
+
 int Player::score() const
 {
     return score_;
@@ -64,14 +69,14 @@ void Player::setIsRobot(bool isRobot)
     isRobot_ = isRobot;
 }
 
-void Player::setScore(int score)
-{
-    score_ += score;
-}
+// void Player::setScore(int score)
+// {
+//     score_ += score;
+// }
 
 void Player::setJpoints(int jpoints)
 {
-    jpoints_ += jpoints;
+    jpoints_ = jpoints;
 }
 
 void Player::setHanddeck(Handdeck* handdeck)

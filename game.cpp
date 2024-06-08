@@ -38,7 +38,7 @@ Game::Game(QObject* parent)
 
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
-    connect(this, &Game::cardDrawnFromBlind, drawn_.get(), &Drawn::onCardDrawnFromBlind);
+    connect(this, &Game::cardMustFromBlind, drawn_.get(), &Drawn::onCardMustFromBlind);
 
     for (const auto& player : playerList_) {
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
@@ -220,7 +220,8 @@ void Game::initializeRound()
     player->handdeck()->cards().last()->click();
 
     // case a robot player starts a new round
-    // autoplay();
+    // all playable cards are played
+    autoplay();
 }
 
 void Game::onHandCardClicked(const QSharedPointer<Card>& card)
@@ -373,14 +374,14 @@ bool Game::isThisCardPlayable(const QSharedPointer<Card>& card)
     return false;
 }
 
-bool Game::mustDrawCard()
+bool Game::isMustDrawCard()
 {
     QSharedPointer<Card> stackCard = stack()->topCard();
 
     updatePlayable();
 
     // played card '6' must be covered
-    if (!played()->cards().isEmpty() && playable()->cards().isEmpty() && stackCard->rank() == "6") {
+    if (stackCard->rank() == "6" && playable()->cards().isEmpty()) {
         return true;
     }
 
@@ -393,51 +394,42 @@ bool Game::mustDrawCard()
 }
 
 /*      
-        ---------------------------------
-         card   playable  card    must  next player
-        played    card    drawn   draw  possible
-            1       1       1       N       Y
-            1       1       0       N       Y
-            1       0       1       N       Y
-            1       0       0       N       Y
-            0       1       1       N       N
-            0       1       0       N       N
-            0       0       1       N       Y
-            0       0       0       Y       N   <-- must draw card
-        '6' on stack:
-        -------------
-            6       1      0||1     N       N
-            6       0      0||1     Y       N   <-- must draw card
-    */
+            ----------------------------------------------------
+             card   playable  card    next player
+            played    card    drawn   possible
+                1       1       1         Y
+                1       1       0         Y
+                1       0       1         Y
+                1       0       0         Y
+                0       1       1         N
+                0       1       0         N
+                0       0       1         Y
+                0       0       0         N   <-- must draw card
+            '6' on stack:
+            ----------------------------------------------------
+                6       1      0||1       N
+                6       0      0||1       N   <-- must draw card
+*/
 
 bool Game::isNextPlayerPossible()
-
 {
-    QSharedPointer<Card> stackCard = stack()->topCard();
-
     if (isRoundFinished()) {
-        return false;
-    }
-
-    if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
-        return false;
+        return true;
     }
 
     updatePlayable();
 
-    while (mustDrawCard()) {
+    while (isMustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
         updatePlayable();
     }
 
-    // If the stack card's rank is "6", the next player is not possible
-    // except on quteChooser()->decision() == "y"
-    // player himself has played a '6'
-    if (!played()->cards().isEmpty() && stackCard->rank() == "6") {
+    QSharedPointer<Card> stackCard = stack()->topCard();
+    if (stackCard->rank() == "6") {
+        qDebug() << "Stack card rank is '6', next player not possible";
         return false;
     }
 
-    // Next player is possible if there are played cards or if there are no playable cards but drawn cards exist
     return !played()->cards().isEmpty()
            || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty());
 }
@@ -448,7 +440,7 @@ void Game::drawCardFromBlind(DrawOption option)
         refillBlindFromStack();
 
     if (option == DrawOption::MustCard) {
-        emit cardDrawnFromBlind(blind()->topCard());
+        emit cardMustFromBlind(blind()->topCard());
     } else if (option == DrawOption::BadCard) {
         emit cardBadFromBlind(blind()->topCard());
     }
@@ -503,11 +495,19 @@ bool Game::isRoundFinished()
 {
     QSharedPointer<Card> stackCard = stack()->topCard();
 
+    // if (roundChooser()->isEnabled() && roundChooser()->decision() == "r") {
+    if (roundChooser()->isEnabled()) {
+        qDebug() << "RoundChooser is enabled, round is finished";
+        return true;
+    }
+
     if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
+        qDebug() << "quteChooser is enabled, round is finished";
         return true;
     }
 
     if (player->handdeck()->cards().isEmpty() && stackCard->rank() != "6") {
+        qDebug() << "handdeck is empty, round is finished";
         return true;
     }
     return false;
@@ -539,13 +539,16 @@ void Game::handleSpecialCards()
         int points = 20 * jacks;
 
         // Set points for the current player
-        player->setJpoints(-points);
+        if (jpointsChooser()->decision() == "m") {
+            player->setJpoints(-points);
+        }
 
         // If the decision is "p", set points for all players in the player list
-        if (jpointsChooser()->decision() == "p") {
+        else if (jpointsChooser()->decision() == "p") {
             for (const auto& player : playerList_) {
                 player->setJpoints(points);
             }
+            player->setJpoints(0); // active Player
         }
     } else {
         // If jpointsChooser is not enabled, set points to 0 for all players
@@ -623,8 +626,12 @@ void Game::handleSpecialCards()
     played()->clearCards();
     drawn()->clearCards();
 
+    for (const auto& player : playerList_)
+        qDebug() << "player order:" << player->id();
+
     if (isFinished) {
         emit countPoints(shuffles);
+        playable()->clearCards();
         updateDisplay();
     }
 }
@@ -634,6 +641,9 @@ void Game::activateNextPlayer()
     if (!isNextPlayerPossible())
         return;
 
+    if (isRoundFinished())
+        return;
+
     handleSpecialCards();
 
     autoplay();
@@ -641,20 +651,25 @@ void Game::activateNextPlayer()
 
 void Game::autoplay()
 {
-    // if (player->isRobot()) {
-    if (!roundChooser()->isEnabled() && player->isRobot()) {
-        player->handdeck()->setEnabled(true);
+    if (player->isRobot()) {
+        if (!roundChooser()->isEnabled()) {
+            player->handdeck()->setEnabled(true);
 
-        updatePlayable();
+            updatePlayable();
 
-        while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
-            for (auto& card : playable()->cards()) {
-                for (auto& card : player->handdeck()->cards()) {
-                    card->click();
-                    updatePlayable();
-                    handleChoosers();
+            while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
+                for (auto& card : playable()->cards()) {
+                    for (auto& card : player->handdeck()->cards()) {
+                        card->click();
+                        updatePlayable();
+                        handleChoosers();
+                    }
                 }
             }
+        }
+        if (quteChooser()->isEnabled()) {
+            quteChooser()->toggleRandom();
+            quteChooser()->click();
         }
     }
 }
@@ -666,7 +681,10 @@ void Game::refillBlindFromStack()
         return;
     }
 
-    // Move all but the top card from stack to blind
+    // Reverse the order of cards in the stack
+    std::reverse(stack()->cards().begin(), stack()->cards().end());
+
+    // Move all but the original last card (now first) from stack to blind
     while (stack()->cards().size() > 1) {
         stack()->moveTopCardTo(blind().get());
     }
@@ -711,6 +729,10 @@ void Game::onNewRound()
 {
     togglePlayerListToScore(false);
     qDebug() << "The winner is: " << playerList_.front()->name();
+
+    for (const auto& player : playerList_) {
+        player->setJpoints(0);
+    }
 
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
