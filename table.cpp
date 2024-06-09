@@ -159,14 +159,6 @@ void Table::mousePressEvent(QMouseEvent* event)
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_T) {
-        qDebug() << game->player->name();
-        qDebug() << "blind:" << game->blind()->cardsAsString();
-        qDebug() << "stack:" << game->stack()->cardsAsString();
-        qDebug() << "played:" << game->played()->cardsAsString();
-        qDebug() << "drawn:" << game->drawn()->cardsAsString();
-        qDebug() << "playable:" << game->playable()->cardsAsString();
-    }
     if (event->key() == Qt::Key_V) {
         emit toggleCardVisibility();
     }
@@ -180,7 +172,16 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_1) {
+        game->player->handdeck()->sortCardsByPattern(0);
+    }
+    if (event->key() == Qt::Key_1) {
         game->player->handdeck()->sortCardsByPattern(1);
+    }
+    if (event->key() == Qt::Key_1) {
+        game->player->handdeck()->sortCardsByPattern(2);
+    }
+    if (event->key() == Qt::Key_1) {
+        game->player->handdeck()->sortCardsByPattern(3);
     }
 
     if (event->key() == Qt::Key_F) {
@@ -202,6 +203,7 @@ void Table::keyPressEvent(QKeyEvent* event)
         }
     }
 
+    // Special Cards for Testing
     if (event->key() == Qt::Key_7) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "7");
@@ -228,6 +230,10 @@ void Table::keyPressEvent(QKeyEvent* event)
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "J");
             game->player->handdeck()->addCard(newCard);
         }
+    }
+
+    if (event->key() == Qt::Key_D) {
+        emit game->player->handdeck()->moveTopCardTo(game->blind().get());
     }
 
     QWidget::keyPressEvent(event);

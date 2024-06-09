@@ -194,6 +194,11 @@ void Game::initializeRound()
     lcdShuffles()->display(shuffles);
     lcdRound()->display(rounds);
 
+    // make sure the relative order in playerList_ is restored
+    // std::sort(playerList_.begin(), playerList_.end(), [](Player* a, Player* b) {
+    //     return a->id() < b->id();
+    // });
+
     // Player with highest score will start
     togglePlayerListToScore(true);
 
@@ -240,17 +245,23 @@ void Game::handleChoosers()
 
     // JsuitChooser
     if (stackCard->rank() == "J") {
-        jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
         jsuitChooser()->setEnabled(!player->isRobot());
+        if (!player->handdeck()->cards().isEmpty())
+            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
+        else
+            jsuitChooser()->toggle_to(stackCard->suit());
+
         jsuitChooser()->show();
     }
-    // shown until next player played a card
-    // hide/disable by slot onCardAddedToStack
+    // shown until next player's card is added to stack
+    // (slot: onCardAddedToStack)
 
     // EightsChooser
     if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
         && played()->cards().size() >= 2) {
         eightsChooser()->setEnabled(!player->isRobot());
+        if (player->isRobot())
+            eightsChooser()->toggleRandom();
         eightsChooser()->show();
     } else {
         eightsChooser()->hide();
@@ -259,28 +270,33 @@ void Game::handleChoosers()
 
     // QuteChooser
     if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
-        quteChooser()->setEnabled(!player->isRobot());
-        quteChooser()->show();
         if (stackCard->rank() == "J") {
             connect(quteChooser().get(),
                     &QuteChooser::quteDecisionChanged,
                     jpointsChooser().get(),
                     &JpointsChooser::onQuteDecisionChanged);
         }
+        quteChooser()->setEnabled(!player->isRobot());
+        if (player->isRobot())
+            quteChooser()->toggleRandom();
+        quteChooser()->show();
+
     } else {
-        quteChooser()->hide();
-        quteChooser()->toggle_to("y");
-        quteChooser()->setEnabled(false);
         disconnect(quteChooser().get(),
                    &QuteChooser::quteDecisionChanged,
                    jpointsChooser().get(),
                    &JpointsChooser::onQuteDecisionChanged);
+        quteChooser()->hide();
+        quteChooser()->setEnabled(false);
+        quteChooser()->toggle_to("y"); // prepare for next 'Qute'
     }
 
     // JPointsChooser
     if (stackCard->rank() == "J" && player->handdeck()->cards().isEmpty()
         || (stackCard->rank() == "J")
                && (quteChooser()->isEnabled() && quteChooser()->decision() == "y")) {
+        if (player->isRobot())
+            jpointsChooser()->toggleRandom();
         jpointsChooser()->setEnabled(!player->isRobot());
         jpointsChooser()->show();
     } else {
@@ -356,7 +372,7 @@ bool Game::isThisCardPlayable(const QSharedPointer<Card>& card)
     // 2nd move:
     // if stack card is '6'
     if (!played()->cards().isEmpty() && stackCard->rank() == "6") {
-        if (card->rank() == stackCard->rank() || card->suit() == stackCard->suit()
+        if (card->suit() == stackCard->suit() || card->rank() == stackCard->rank()
             || card->rank() == "J") {
             return true;
         }
@@ -405,8 +421,8 @@ bool Game::isMustDrawCard()
                 0       1       0         N
                 0       0       1         Y
                 0       0       0         N   <-- must draw card
-            '6' on stack:
             ----------------------------------------------------
+            '6' on stack:
                 6       1      0||1       N
                 6       0      0||1       N   <-- must draw card
 */
@@ -480,14 +496,21 @@ void Game::rotatePlayerList()
 
 void Game::togglePlayerListToScore(bool highest)
 {
-    auto compare = [highest](const QSharedPointer<Player>& a, const QSharedPointer<Player>& b) {
-        return highest ? a->score() < b->score() : a->score() > b->score();
-    };
+    // Step 1: Sort by score, then by ID if scores are equal
+    std::sort(playerList_.begin(),
+              playerList_.end(),
+              [highest](const QSharedPointer<Player>& a, const QSharedPointer<Player>& b) {
+                  if (a->score() == b->score()) {
+                      return a->id() < b->id(); // Sort by ID if scores are equal
+                  }
+                  return highest ? a->score() > b->score()
+                                 : a->score() < b->score(); // Sort by score
+              });
 
-    auto maxIt = std::max_element(playerList_.begin(), playerList_.end(), compare);
-
-    if (maxIt != playerList_.end()) {
-        std::rotate(playerList_.begin(), maxIt, maxIt + 1);
+    // Debug output
+    qDebug() << "After rotating by score:";
+    for (const auto& player : playerList_) {
+        qDebug() << "Player ID:" << player->id() << " Score:" << player->score();
     }
 }
 
@@ -651,26 +674,20 @@ void Game::activateNextPlayer()
 
 void Game::autoplay()
 {
-    if (player->isRobot()) {
-        if (!roundChooser()->isEnabled()) {
-            player->handdeck()->setEnabled(true);
+    if (player->isRobot() && !roundChooser()->isEnabled()) {
+        player->handdeck()->setEnabled(true);
 
-            updatePlayable();
+        updatePlayable();
 
-            while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
-                for (auto& card : playable()->cards()) {
-                    for (auto& card : player->handdeck()->cards()) {
-                        card->click();
-                        updatePlayable();
-                        handleChoosers();
-                    }
+        while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
+            for (auto& card : playable()->cards()) {
+                for (auto& card : player->handdeck()->cards()) {
+                    card->click();
+                    updatePlayable();
                 }
             }
         }
-        if (quteChooser()->isEnabled()) {
-            quteChooser()->toggleRandom();
-            quteChooser()->click();
-        }
+        handleChoosers();
     }
 }
 
