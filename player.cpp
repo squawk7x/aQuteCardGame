@@ -17,6 +17,21 @@ Player::~Player()
     delete handdeck_;
 }
 
+bool operator<(const Player& lhs, const Player& rhs)
+{
+    return lhs.score_ < rhs.score_;
+}
+
+bool operator>(const Player& lhs, const Player& rhs)
+{
+    return lhs.score_ > rhs.score_;
+}
+
+bool operator==(const Player& lhs, const Player& rhs)
+{
+    return lhs.score_ == rhs.score_;
+}
+
 int Player::id() const
 {
     return id_;

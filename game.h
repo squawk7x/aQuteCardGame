@@ -89,21 +89,21 @@ public:
     QSharedPointer<Player> player = nullptr;
 
     void initializeRound();
-    bool isThisCardPlayable(const QSharedPointer<Card>& card);
-    void handleSpecialCards();
-    bool isNextPlayerPossible();
-    bool isRoundFinished();
-    void updatePlayable();
-    bool isMustDrawCard();
-    void drawCardFromBlind(DrawOption option);
-    void autoplay();
     void refillBlindFromStack();
+    bool isThisCardPlayable(const QSharedPointer<Card>& card);
+    bool isMustDrawCard();
+    bool isNextPlayerPossible();
+    void updatePlayable();
+    void drawCardFromBlind(DrawOption option);
     void handleChoosers();
+    void handleSpecialCards();
     void rotatePlayerList();
+    void autoplay();
+    bool isRoundFinished();
     void countRound();
     void updateDisplay();
-    void collectAllCardsToBlind();
     void togglePlayerListToScore(bool highest);
+    void collectAllCardsToBlind();
 
 signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);

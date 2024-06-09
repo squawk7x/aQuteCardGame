@@ -25,6 +25,10 @@ public:
                     Handdeck* handdeck = nullptr);
     ~Player();
 
+    friend bool operator<(const Player& lhs, const Player& rhs);
+    friend bool operator>(const Player& lhs, const Player& rhs);
+    friend bool operator==(const Player& lhs, const Player& rhs);
+
     // Getters
     int id() const;
     QString name() const;
