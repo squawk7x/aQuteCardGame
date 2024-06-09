@@ -294,11 +294,17 @@ void Game::handleChoosers()
     // JPointsChooser
     if (stackCard->rank() == "J" && player->handdeck()->cards().isEmpty()
         || (stackCard->rank() == "J")
+<<<<<<< HEAD
                && (quteChooser()->isVisible() && quteChooser()->decision() == "y")) {
         if (player->isRobot()) {
             jpointsChooser()->toggleRandom();
         }
         jpointsChooser()->toggle_to(jpointsChooser()->decision());
+=======
+               && (quteChooser()->isEnabled() && quteChooser()->decision() == "y")) {
+        if (player->isRobot())
+            jpointsChooser()->toggleRandom();
+>>>>>>> 9af2a39b74ea461eb128c86de813e9630cfa9c19
         jpointsChooser()->setEnabled(!player->isRobot());
         jpointsChooser()->show();
     } else {
@@ -500,6 +506,7 @@ void Game::rotatePlayerList()
 
 void Game::togglePlayerListToScore(bool highest)
 {
+<<<<<<< HEAD
     if (playerList_.empty())
         return;
 
@@ -520,6 +527,19 @@ void Game::togglePlayerListToScore(bool highest)
     // Rotate the list so the extreme player is at the front
     std::rotate(playerList_.begin(), extremePlayerIt, playerList_.end());
 
+=======
+    // Step 1: Sort by score, then by ID if scores are equal
+    std::sort(playerList_.begin(),
+              playerList_.end(),
+              [highest](const QSharedPointer<Player>& a, const QSharedPointer<Player>& b) {
+                  if (a->score() == b->score()) {
+                      return a->id() < b->id(); // Sort by ID if scores are equal
+                  }
+                  return highest ? a->score() > b->score()
+                                 : a->score() < b->score(); // Sort by score
+              });
+
+>>>>>>> 9af2a39b74ea461eb128c86de813e9630cfa9c19
     // Debug output
     qDebug() << "After rotating by score:";
     for (const auto& player : playerList_) {
@@ -692,10 +712,17 @@ void Game::autoplay()
                 for (auto& card : player->handdeck()->cards()) {
                     card->click();
                     updatePlayable();
+<<<<<<< HEAD
                     handleChoosers();
                 }
             }
         }
+=======
+                }
+            }
+        }
+        handleChoosers();
+>>>>>>> 9af2a39b74ea461eb128c86de813e9630cfa9c19
     }
 }
 
