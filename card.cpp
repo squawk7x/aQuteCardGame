@@ -25,7 +25,7 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
     : QPushButton(parent)
     , suit_(suit)
     , rank_(rank)
-    , isFaceVisible_(true)
+// , isCardFaceVisible_(true)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setText("");
@@ -106,12 +106,12 @@ QSharedPointer<Card> Card::clone(QWidget* parent) const
     return clonedCard;
 }
 
-void Card::toggleFaceVisibility()
-{
-    isFaceVisible_ = !isFaceVisible_;
-    loadImage();
-    update();
-}
+// void Card::toggleCardFaceVisibility()
+// {
+//     isCardFaceVisible_ = !isCardFaceVisible_;
+//     loadImage();
+//     update();
+// }
 
 // Getters
 QString Card::suit() const
@@ -174,15 +174,15 @@ void Card::setValue(const QString& rank)
     }
 }
 
-void Card::setIsFaceVisible(bool isVisible)
-{
-    isFaceVisible_ = isVisible;
-}
+// void Card::setIsCardFaceVisible(bool isVisible)
+// {
+//     isCardFaceVisible_ = isVisible;
+// }
 
-void Card::loadImage()
+void Card::loadImage(bool isCardFaceVisible)
 {
     QString imagePath;
-    if (isFaceVisible_)
+    if (isCardFaceVisible)
         imagePath = QString(":/images/cards/%1_of_%2.png").arg(rankname_, suitname_);
     else {
         imagePath = QString(":/images/cards/backside_blue.png");

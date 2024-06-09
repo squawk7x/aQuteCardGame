@@ -12,7 +12,7 @@ public:
 
 public slots:
     void onCardBadFromBlind(const QSharedPointer<Card> &card);
-    // void clearGotCards();
+    virtual void onToggleIsTableCardsVisible(bool isTableCardsVisible) override;
 };
 
 #endif // GOT_H

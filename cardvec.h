@@ -33,20 +33,20 @@ public:
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();
-    bool isCardFacesVisible() const;
+    bool isCardVecVisible() const;
 
 protected:
     QHBoxLayout* layout_;
     QVector<QSharedPointer<Card>> cards_;
-    bool isCardFacesVisible_;
+    bool isCardVecVisible_;
 
 private:
     // Setters
-    void setIsCardFacesVisible(bool isVisible);
+    void setIsCardVecVisible(bool isVisible);
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);
-    virtual void onToggleCardVisibility();
+    virtual void onToggleIsTableCardsVisible(bool isTableCardsVisible);
 };
 
 #endif // CARDVEC_H

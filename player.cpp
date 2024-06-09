@@ -1,20 +1,20 @@
 #include "player.h"
 
-Player::Player(
-    QWidget* parent, int id, const QString& name, bool isRobot, int score, Handdeck* handdeck)
+Player::Player(QWidget* parent,
+               int id,
+               const QString& name,
+               bool isRobot,
+               int score,
+               QSharedPointer<Handdeck> handdeck)
     : QWidget(parent)
     , id_(id)
     , name_(name)
     , isRobot_(isRobot)
     , score_(score)
     , jpoints_(0)
-    , handdeck_(handdeck ? handdeck : new Handdeck(this))
-
-{}
-
-Player::~Player()
+// , handdeck_(handdeck ? handdeck : QSharedPointer<Handdeck>::create(this))
 {
-    delete handdeck_;
+    handdeck_ = QSharedPointer<Handdeck>(new Handdeck(this));
 }
 
 bool operator<(const Player& lhs, const Player& rhs)
@@ -57,20 +57,19 @@ int Player::score() const
     return score_;
 }
 
-Handdeck* Player::handdeck() const
+QSharedPointer<Handdeck> Player::handdeck() const
 {
     return handdeck_;
 }
 
 // Methods
-int Player::countHand(int shuffles)
+int Player::countHand()
 {
     int pointsOnHand = 0;
     for (const auto& card : handdeck_->cards()) {
         pointsOnHand += card->value();
     }
-    pointsOnHand += jpoints_;
-    return pointsOnHand * shuffles;
+    return pointsOnHand;
 }
 
 // Setters
@@ -84,20 +83,14 @@ void Player::setIsRobot(bool isRobot)
     isRobot_ = isRobot;
 }
 
-// void Player::setScore(int score)
-// {
-//     score_ += score;
-// }
-
 void Player::setJpoints(int jpoints)
 {
     jpoints_ = jpoints;
 }
 
-void Player::setHanddeck(Handdeck* handdeck)
+void Player::setHanddeck(QSharedPointer<Handdeck> handdeck)
 {
     if (handdeck_ != handdeck) {
-        delete handdeck_;
         handdeck_ = handdeck;
     }
 }
@@ -109,11 +102,12 @@ void Player::onCountPoints(int shuffles)
         score_ = 0;
         jpoints_ = 0;
     } else {
-        score_ += countHand(shuffles);
+        score_ += countHand() * shuffles;
+        score_ += jpoints_ * shuffles;
 
         if (score_ == 125)
             score_ = 0;
     }
 
-    qDebug() << name() << score();
+    qDebug() << name() << score_;
 }

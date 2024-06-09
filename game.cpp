@@ -4,27 +4,32 @@
 
 Game::Game(QObject* parent)
     : QObject(parent)
-    , monitor_(new Monitor())
-    , eightsChooser_(new EightsChooser())
-    , quteChooser_(new QuteChooser())
-    , jpointsChooser_(new JpointsChooser())
-    , roundChooser_(new RoundChooser())
-    , played_(new Played())
-    , blind_(new Blind())
-    , jsuitChooser_(new JsuitChooser())
-    , stack_(new Stack())
-    , got1_(new Got())
-    , got2_(new Got())
-    , playable_(new Playable())
-    , drawn_(new Drawn())
-    , player1_(new Player(nullptr, 1, "Player1", false, 0, new Handdeck(nullptr)))
-    , player2_(new Player(nullptr, 2, "Player2", true, 0, new Handdeck(nullptr)))
-    , player3_(new Player(nullptr, 3, "Player3", true, 0, new Handdeck(nullptr)))
-    , lcdRound_(new QLCDNumber())
-    , lcdP1_(new QLCDNumber())
-    , lcdP2_(new QLCDNumber())
-    , lcdP3_(new QLCDNumber())
-    , lcdShuffles_(new QLCDNumber())
+    , monitor_(QSharedPointer<Monitor>::create())
+    , eightsChooser_(QSharedPointer<EightsChooser>::create())
+    , quteChooser_(QSharedPointer<QuteChooser>::create())
+    , jpointsChooser_(QSharedPointer<JpointsChooser>::create())
+    , roundChooser_(QSharedPointer<RoundChooser>::create())
+    , played_(QSharedPointer<Played>::create())
+    , blind_(QSharedPointer<Blind>::create())
+    , jsuitChooser_(QSharedPointer<JsuitChooser>::create())
+    , stack_(QSharedPointer<Stack>::create())
+    , got1_(QSharedPointer<Got>::create())
+    , got2_(QSharedPointer<Got>::create())
+    , playable_(QSharedPointer<Playable>::create())
+    , drawn_(QSharedPointer<Drawn>::create())
+    , player1_(QSharedPointer<Player>::create(nullptr, 1, "Player1", false, 0))
+    , player2_(QSharedPointer<Player>::create(nullptr, 2, "Player2", true, 0))
+    , player3_(QSharedPointer<Player>::create(nullptr, 3, "Player3", true, 0))
+    , lcdRound_(
+          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
+    , lcdP1_(
+          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
+    , lcdP2_(
+          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
+    , lcdP3_(
+          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
+    , lcdShuffles_(
+          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
 {
     lcdShuffles_->setDigitCount(2);
 
@@ -32,9 +37,9 @@ Game::Game(QObject* parent)
     playerList_.push_back(player2_);
     playerList_.push_back(player3_);
 
-    connect(player1()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
-    connect(player2()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
-    connect(player3()->handdeck(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
+    connect(player1()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
+    connect(player2()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
+    connect(player3()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
 
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
@@ -204,15 +209,15 @@ void Game::initializeRound()
 
     // Distribute cards
     for (int k = 1; k <= 5; k++) {
-        blind_->moveTopCardTo(player2_->handdeck());
+        blind_->moveTopCardTo(player2_->handdeck().get());
     }
 
     for (int k = 1; k <= 5; k++) {
-        blind_->moveTopCardTo(player3_->handdeck());
+        blind_->moveTopCardTo(player3_->handdeck().get());
     }
 
     for (int k = 1; k <= 5; k++) {
-        blind_->moveTopCardTo(player1_->handdeck());
+        blind_->moveTopCardTo(player1_->handdeck().get());
     }
 
     for (const auto& player : playerList_) {
@@ -465,7 +470,7 @@ void Game::drawCardFromBlind(DrawOption option)
         emit cardBadFromBlind(blind()->topCard());
     }
 
-    blind()->moveTopCardTo(player->handdeck());
+    blind()->moveTopCardTo(player->handdeck().get());
 }
 
 void Game::rotatePlayerList()

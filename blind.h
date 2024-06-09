@@ -15,6 +15,9 @@ public:
 
     void shuffle();
     void showTopCard();
+
+public slots:
+    virtual void onToggleIsTableCardsVisible(bool isTableCardsVisible) override;
 };
 
 #endif // BLIND_H

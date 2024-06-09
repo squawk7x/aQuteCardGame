@@ -22,7 +22,7 @@ class Card : public QPushButton
     QString rankname_;
     QString str_;
     int value_;
-    bool isFaceVisible_ = true;
+    // bool isCardFaceVisible_ = true;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
@@ -34,8 +34,8 @@ public:
 
     bool operator==(const Card& other) const;
     QSharedPointer<Card> clone(QWidget* parent = nullptr) const;
-    void toggleFaceVisibility();
-    void setIsFaceVisible(bool isVisible);
+    // void toggleCardFaceVisibility();
+    // void setIsCardFaceVisible(bool isVisible);
 
     // Getters
     QString suit() const;
@@ -44,6 +44,9 @@ public:
     QString rankname() const;
     QString str() const;
     int value() const;
+
+    // Setters
+    void loadImage(bool isCardFaceVisible = true);
 
 signals:
     void cardClicked(const QSharedPointer<Card>& card);
@@ -55,7 +58,6 @@ private:
     void setRankname(const QString& rank);
     void setStr();
     void setValue(const QString& rank);
-    void loadImage();
 };
 
 #endif // CARD_H

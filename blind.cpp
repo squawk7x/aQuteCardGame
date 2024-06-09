@@ -58,3 +58,13 @@ void Blind::showTopCard()
         cards_.last()->show();
     }
 }
+
+void Blind::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+{
+    isCardVecVisible_ = isTableCardsVisible;
+    for (const auto& card : cards_) {
+        card->loadImage(isTableCardsVisible);
+    }
+    layout_->update();
+    update();
+}

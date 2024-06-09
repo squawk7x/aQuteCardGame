@@ -6,7 +6,7 @@
 CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     : QWidget(parent)
     , cards_(std::move(rhs))
-    , isCardFacesVisible_(true)
+    , isCardVecVisible_(true)
 {
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
@@ -176,15 +176,15 @@ QVector<QSharedPointer<Card>>& CardVec::cards()
     return cards_;
 }
 
-bool CardVec::isCardFacesVisible() const
+bool CardVec::isCardVecVisible() const
 {
-    return isCardFacesVisible_;
+    return isCardVecVisible_;
 }
 
 // Setters
-void CardVec::setIsCardFacesVisible(bool isVisible)
+void CardVec::setIsCardVecVisible(bool isVisible)
 {
-    isCardFacesVisible_ = isVisible;
+    isCardVecVisible_ = isVisible;
 }
 
 // Slots
@@ -194,10 +194,12 @@ void CardVec::onCardClicked(const QSharedPointer<Card>& card)
     qDebug() << "onCardClicked received in CardVec: " << card->str();
 }
 
-void CardVec::onToggleCardVisibility()
+void CardVec::onToggleIsTableCardsVisible(bool isTableCardsVisible)
 {
+    isCardVecVisible_ = isTableCardsVisible;
+
     for (const auto& card : cards_) {
-        card->toggleFaceVisibility();
+        card->loadImage(isTableCardsVisible);
     }
     layout_->update();
     update();

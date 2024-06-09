@@ -19,6 +19,7 @@ signals:
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card) override;
+    virtual void onToggleIsTableCardsVisible(bool isTableCardsVisible) override;
 };
 
 #endif // PLAYABLE_H

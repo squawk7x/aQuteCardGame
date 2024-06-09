@@ -3,7 +3,7 @@
 Drawn::Drawn(QWidget* parent)
     : CardVec(parent)
 {
-    isCardFacesVisible_ = true; // Ensure the widget is visible if needed
+    isCardVecVisible_ = true; // Ensure the widget is visible if needed
 }
 
 Drawn::~Drawn()
@@ -14,4 +14,14 @@ Drawn::~Drawn()
 void Drawn::onCardMustFromBlind(const QSharedPointer<Card>& card)
 {
     addCard(card->clone(this));
+}
+
+void Drawn::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+{
+    isCardVecVisible_ = isTableCardsVisible;
+    for (const auto& card : cards_) {
+        card->loadImage(isTableCardsVisible);
+    }
+    layout_->update();
+    update();
 }

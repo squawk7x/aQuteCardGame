@@ -18,7 +18,7 @@ void Stack::addCard(QSharedPointer<Card> card)
         disconnect(card.data(), &Card::cardClicked, this, nullptr);
 
         card->setParent(this);
-        card->setIsFaceVisible(true);
+        card->loadImage(true);
         cards_.append(card);
         layout_->insertWidget(0, card.data());
         layout_->update();
@@ -26,10 +26,11 @@ void Stack::addCard(QSharedPointer<Card> card)
     }
 }
 
-void Stack::onToggleCardVisibility()
+void Stack::onToggleIsTableCardsVisible(bool isTableCardsVisible)
 {
+    isCardVecVisible_ = true;
     for (const auto& card : cards_) {
-        card->setIsFaceVisible(true);
+        card->loadImage(true);
     }
     layout_->update();
     update();

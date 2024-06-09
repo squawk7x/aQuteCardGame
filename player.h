@@ -2,6 +2,8 @@
 #define PLAYER_H
 
 #include <QObject>
+#include <QSharedPointer>
+#include <QWidget>
 #include "handdeck.h"
 
 class Player : public QWidget
@@ -14,16 +16,16 @@ private:
     bool isRobot_;
     int score_;
     int jpoints_;
-    Handdeck* handdeck_;
+    QSharedPointer<Handdeck> handdeck_; // Use QSharedPointer for handdeck_
 
 public:
-    explicit Player(QWidget* parent,
-                    int id,
+    explicit Player(QWidget* parent = nullptr,
+                    int id = 0,
                     const QString& name = "",
                     bool isRobot = true,
                     int score = 0,
-                    Handdeck* handdeck = nullptr);
-    ~Player();
+                    QSharedPointer<Handdeck> handdeck = QSharedPointer<Handdeck>(nullptr));
+    ~Player() = default;
 
     friend bool operator<(const Player& lhs, const Player& rhs);
     friend bool operator>(const Player& lhs, const Player& rhs);
@@ -35,20 +37,19 @@ public:
     bool isRobot() const;
     int jpoints() const;
     int score() const;
-    Handdeck* handdeck() const;
+    QSharedPointer<Handdeck> handdeck() const;
 
     // Methods
-    int countHand(int shuffles = 1);
+    int countHand();
 
     // Setters
     void setName(const QString& name);
     void setIsRobot(bool isRobot);
-    // void setScore(int score);
     void setJpoints(int jpoints);
-    void setHanddeck(Handdeck* handdeck);
+    void setHanddeck(QSharedPointer<Handdeck> handdeck);
 
 public slots:
-    void onCountPoints(int shuffles);
+    void onCountPoints(int shuffles = 1);
 };
 
 #endif // PLAYER_H

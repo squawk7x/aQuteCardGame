@@ -44,8 +44,8 @@ Table::Table(QWidget* parent)
     QHBoxLayout* layout_player1 = findChild<QHBoxLayout*>("player1");
 
     // Add widgets to their respective layouts
-    layout_player2->addWidget(game->player2()->handdeck());
-    layout_player3->addWidget(game->player3()->handdeck());
+    layout_player2->addWidget(game->player2()->handdeck().get());
+    layout_player3->addWidget(game->player3()->handdeck().get());
     layout_monitor->addWidget(game->monitor().get());
 
     layout_eightsChooser->addWidget(game->eightsChooser().get());
@@ -69,7 +69,7 @@ Table::Table(QWidget* parent)
     layout_scores->addWidget(game->lcdP2().get());
     layout_scores->addWidget(game->lcdP3().get());
 
-    layout_player1->addWidget(game->player1()->handdeck());
+    layout_player1->addWidget(game->player1()->handdeck().get());
 
     // Add group boxes to their respective layouts
     QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("Player2");
@@ -117,30 +117,42 @@ Table::Table(QWidget* parent)
     groupBoxPlayer1->setLayout(layout_player1);
 
     connect(this, &Table::rightMouseClicked, game.get(), &Game::activateNextPlayer);
-    connect(this, &Table::toggleCardVisibility, game->blind().get(), &Blind::onToggleCardVisibility);
-
     connect(this,
-            &Table::toggleCardVisibility,
-            game->player2()->handdeck(),
-            &Handdeck::onToggleCardVisibility);
+            &Table::toggleIsTableCardsVisible,
+            game->blind().get(),
+            &Blind::onToggleIsTableCardsVisible);
     connect(this,
-            &Table::toggleCardVisibility,
-            game->player3()->handdeck(),
-            &Handdeck::onToggleCardVisibility);
+            &Table::toggleIsTableCardsVisible,
+            game->player1()->handdeck().get(),
+            &Handdeck::onToggleIsTableCardsVisible);
     connect(this,
-            &Table::toggleCardVisibility,
+            &Table::toggleIsTableCardsVisible,
+            game->player2()->handdeck().get(),
+            &Handdeck::onToggleIsTableCardsVisible);
+    connect(this,
+            &Table::toggleIsTableCardsVisible,
+            game->player3()->handdeck().get(),
+            &Handdeck::onToggleIsTableCardsVisible);
+    connect(this,
+            &Table::toggleIsTableCardsVisible,
             game->played().get(),
-            &Played::onToggleCardVisibility);
-    connect(this, &Table::toggleCardVisibility, game->drawn().get(), &Drawn::onToggleCardVisibility);
+            &Played::onToggleIsTableCardsVisible);
     connect(this,
-            &Table::toggleCardVisibility,
+            &Table::toggleIsTableCardsVisible,
+            game->drawn().get(),
+            &Drawn::onToggleIsTableCardsVisible);
+    connect(this,
+            &Table::toggleIsTableCardsVisible,
             game->playable().get(),
-            &Playable::onToggleCardVisibility);
+            &Playable::onToggleIsTableCardsVisible);
     connect(this,
-            &Table::toggleCardVisibility,
+            &Table::toggleIsTableCardsVisible,
             game->monitor().get(),
-            &Monitor::onToggleCardVisibility);
-    connect(this, &Table::toggleCardVisibility, game->stack().get(), &Stack::onToggleCardVisibility);
+            &Monitor::onToggleIsTableCardsVisible);
+    connect(this,
+            &Table::toggleIsTableCardsVisible,
+            game->stack().get(),
+            &Stack::onToggleIsTableCardsVisible);
 }
 
 Table::~Table()
@@ -160,7 +172,8 @@ void Table::mousePressEvent(QMouseEvent* event)
 void Table::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_V) {
-        emit toggleCardVisibility();
+        emit toggleIsTableCardsVisible(isTableCardsVisible_);
+        isTableCardsVisible_ = !isTableCardsVisible_;
     }
 
     if (event->key() == Qt::Key_R) {

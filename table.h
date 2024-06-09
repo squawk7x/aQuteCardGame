@@ -16,6 +16,11 @@ class Table : public QWidget
 {
     Q_OBJECT
 
+private:
+    Ui::Table *ui;
+    QSharedPointer<Game> game;
+    bool isTableCardsVisible_ = false;
+
 public:
     explicit Table(QWidget *parent = nullptr);
     ~Table();
@@ -26,11 +31,7 @@ protected:
 
 signals:
     void rightMouseClicked();
-    void toggleCardVisibility();
-
-private:
-    Ui::Table *ui;
-    QSharedPointer<Game> game;
+    void toggleIsTableCardsVisible(bool isTableCardsVisible);
 };
 
 #endif // TABLE_H
