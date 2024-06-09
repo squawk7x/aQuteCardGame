@@ -3,12 +3,13 @@
 #include <QGroupBox>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include "card.h"
 #include "ui_table.h"
 
 Table::Table(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
-    , game(QSharedPointer<Game>::create())
+    , game_(QSharedPointer<Game>::create())
 {
     ui->setupUi(this);
 
@@ -44,32 +45,32 @@ Table::Table(QWidget* parent)
     QHBoxLayout* layout_player1 = findChild<QHBoxLayout*>("player1");
 
     // Add widgets to their respective layouts
-    layout_player2->addWidget(game->player2()->handdeck().get());
-    layout_player3->addWidget(game->player3()->handdeck().get());
-    layout_monitor->addWidget(game->monitor().get());
+    layout_player2->addWidget(game_->player2()->handdeck().get());
+    layout_player3->addWidget(game_->player3()->handdeck().get());
+    layout_monitor->addWidget(game_->monitor().get());
 
-    layout_eightsChooser->addWidget(game->eightsChooser().get());
-    layout_quteChooser->addWidget(game->quteChooser().get());
-    layout_jpointsChooser->addWidget(game->jpointsChooser().get());
-    layout_roundChooser->addWidget(game->roundChooser().get());
+    layout_eightsChooser->addWidget(game_->eightsChooser().get());
+    layout_quteChooser->addWidget(game_->quteChooser().get());
+    layout_jpointsChooser->addWidget(game_->jpointsChooser().get());
+    layout_roundChooser->addWidget(game_->roundChooser().get());
 
-    layout_got1->addWidget(game->got1().get());
-    layout_got2->addWidget(game->got2().get());
-    layout_played->addWidget(game->played().get());
-    layout_drawn->addWidget(game->drawn().get());
+    layout_got1->addWidget(game_->got1().get());
+    layout_got2->addWidget(game_->got2().get());
+    layout_played->addWidget(game_->played().get());
+    layout_drawn->addWidget(game_->drawn().get());
 
-    layout_shuffles->addWidget(game->lcdShuffles().get());
-    layout_blind->addWidget(game->blind().get());
-    layout_jsuitChooser->addWidget(game->jsuitChooser().get());
-    layout_stack->addWidget(game->stack().get());
+    layout_shuffles->addWidget(game_->lcdShuffles().get());
+    layout_blind->addWidget(game_->blind().get());
+    layout_jsuitChooser->addWidget(game_->jsuitChooser().get());
+    layout_stack->addWidget(game_->stack().get());
 
-    layout_playable->addWidget(game->playable().get());
-    layout_round->addWidget(game->lcdRound().get());
-    layout_scores->addWidget(game->lcdP1().get());
-    layout_scores->addWidget(game->lcdP2().get());
-    layout_scores->addWidget(game->lcdP3().get());
+    layout_playable->addWidget(game_->playable().get());
+    layout_round->addWidget(game_->lcdRound().get());
+    layout_scores->addWidget(game_->lcdP1().get());
+    layout_scores->addWidget(game_->lcdP2().get());
+    layout_scores->addWidget(game_->lcdP3().get());
 
-    layout_player1->addWidget(game->player1()->handdeck().get());
+    layout_player1->addWidget(game_->player1()->handdeck().get());
 
     // Add group boxes to their respective layouts
     QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("Player2");
@@ -116,43 +117,43 @@ Table::Table(QWidget* parent)
     QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("Player1");
     groupBoxPlayer1->setLayout(layout_player1);
 
-    connect(this, &Table::rightMouseClicked, game.get(), &Game::activateNextPlayer);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->blind().get(),
-            &Blind::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->player1()->handdeck().get(),
-            &Handdeck::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->player2()->handdeck().get(),
-            &Handdeck::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->player3()->handdeck().get(),
-            &Handdeck::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->played().get(),
-            &Played::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->drawn().get(),
-            &Drawn::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->playable().get(),
-            &Playable::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->monitor().get(),
-            &Monitor::onToggleIsTableCardsVisible);
-    connect(this,
-            &Table::toggleIsTableCardsVisible,
-            game->stack().get(),
-            &Stack::onToggleIsTableCardsVisible);
+    connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->blind().get(),
+    //         &Blind::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->player1()->handdeck().get(),
+    //         &Handdeck::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->player2()->handdeck().get(),
+    //         &Handdeck::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->player3()->handdeck().get(),
+    //         &Handdeck::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->played().get(),
+    //         &Played::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->drawn().get(),
+    //         &Drawn::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->playable().get(),
+    //         &Playable::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->monitor().get(),
+    //         &Monitor::onToggleIsTableCardsVisible);
+    // connect(this,
+    //         &Table::toggleIsTableCardsVisible,
+    //         game_->stack().get(),
+    //         &Stack::onToggleIsTableCardsVisible);
 }
 
 Table::~Table()
@@ -177,42 +178,42 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_R) {
-        game->player->handdeck()->sortCards(Handdeck::SortOption::Rank);
+        game_->player->handdeck()->sortCards(Handdeck::SortOption::Rank);
     }
 
     if (event->key() == Qt::Key_S) {
-        game->player->handdeck()->sortCards(Handdeck::SortOption::Suit);
+        game_->player->handdeck()->sortCards(Handdeck::SortOption::Suit);
     }
 
     if (event->key() == Qt::Key_1) {
-        game->player->handdeck()->sortCardsByPattern(0);
+        game_->player->handdeck()->sortCardsByPattern(0);
     }
     if (event->key() == Qt::Key_1) {
-        game->player->handdeck()->sortCardsByPattern(1);
+        game_->player->handdeck()->sortCardsByPattern(1);
     }
     if (event->key() == Qt::Key_1) {
-        game->player->handdeck()->sortCardsByPattern(2);
+        game_->player->handdeck()->sortCardsByPattern(2);
     }
     if (event->key() == Qt::Key_1) {
-        game->player->handdeck()->sortCardsByPattern(3);
+        game_->player->handdeck()->sortCardsByPattern(3);
     }
 
     if (event->key() == Qt::Key_F) {
-        emit game->roundChooser()->finishRound();
+        emit game_->roundChooser()->finishRound();
     }
 
     if (event->key() == Qt::Key_N) {
-        emit game->roundChooser()->newRound();
+        emit game_->roundChooser()->newRound();
     }
 
     if (event->key() == Qt::Key_G) {
-        emit game->roundChooser()->newGame();
+        emit game_->roundChooser()->newGame();
     }
 
     if (event->key() == Qt::Key_6) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "6");
-            game->player->handdeck()->addCard(newCard);
+            game_->player->handdeck()->addCard(newCard);
         }
     }
 
@@ -220,33 +221,33 @@ void Table::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_7) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "7");
-            game->player->handdeck()->addCard(newCard);
+            game_->player->handdeck()->addCard(newCard);
         }
     }
 
     if (event->key() == Qt::Key_8) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "8");
-            game->player->handdeck()->addCard(newCard);
+            game_->player->handdeck()->addCard(newCard);
         }
     }
 
     if (event->key() == Qt::Key_A) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "A");
-            game->player->handdeck()->addCard(newCard);
+            game_->player->handdeck()->addCard(newCard);
         }
     }
 
     if (event->key() == Qt::Key_J) {
         for (const auto& suit : suits) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "J");
-            game->player->handdeck()->addCard(newCard);
+            game_->player->handdeck()->addCard(newCard);
         }
     }
 
     if (event->key() == Qt::Key_D) {
-        emit game->player->handdeck()->moveTopCardTo(game->blind().get());
+        emit game_->player->handdeck()->moveTopCardTo(game_->blind().get());
     }
 
     QWidget::keyPressEvent(event);

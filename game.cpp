@@ -44,6 +44,7 @@ Game::Game(QObject* parent)
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
     connect(this, &Game::cardMustFromBlind, drawn_.get(), &Drawn::onCardMustFromBlind);
+    // connect(this, &Game::numberCardPlayed, stack_.get(), &Stack::onNumberCardsPlayed);
 
     for (const auto& player : playerList_) {
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
@@ -680,6 +681,8 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
+    emit numberCardPlayed(played()->cards().size());
+
     handleSpecialCards();
 
     autoplay();
@@ -701,6 +704,7 @@ void Game::autoplay()
                 }
             }
         }
+        emit numberCardPlayed(played()->cards().size());
     }
 }
 

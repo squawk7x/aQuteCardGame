@@ -18,7 +18,7 @@ class Table : public QWidget
 
 private:
     Ui::Table *ui;
-    QSharedPointer<Game> game;
+    QSharedPointer<Game> game_;
     bool isTableCardsVisible_ = false;
 
 public:

@@ -58,6 +58,8 @@ private:
     void setRankname(const QString& rank);
     void setStr();
     void setValue(const QString& rank);
+
+public slots:
 };
 
 #endif // CARD_H

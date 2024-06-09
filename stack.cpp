@@ -26,6 +26,26 @@ void Stack::addCard(QSharedPointer<Card> card)
     }
 }
 
+void Stack::removeFirstCard()
+{
+    if (!cards_.isEmpty()) {
+        QSharedPointer<Card> firstCard = cards_.takeFirst();
+        layout_->removeWidget(firstCard.data());
+        firstCard->setParent(nullptr);
+        firstCard->hide();
+        layout_->update();
+        update();
+    }
+}
+
+void Stack::onNumberCardsPlayed(int numCardsPlayed)
+{
+    // Check if the number of cards exceeds the limit
+    while (cards_.size() > numCardsPlayed + 1) {
+        removeFirstCard(); // Remove the first card if the limit is exceeded
+    }
+}
+
 void Stack::onToggleIsTableCardsVisible(bool isTableCardsVisible)
 {
     isCardVecVisible_ = true;
