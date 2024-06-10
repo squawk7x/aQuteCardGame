@@ -108,6 +108,4 @@ void Player::onCountPoints(int shuffles)
         if (score_ == 125)
             score_ = 0;
     }
-
-    qDebug() << name() << score_;
 }

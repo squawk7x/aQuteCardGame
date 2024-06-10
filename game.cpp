@@ -315,8 +315,6 @@ void Game::handleChoosers()
     // RoundChooser
     if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
         || quteChooser()->isVisible() && quteChooser()->decision() == "y") {
-        // qDebug() << "roundChooser isEnabled:" << roundChooser()->isEnabled();
-        // qDebug() << "roundChooser isVisible:" << roundChooser()->isVisible();
         roundChooser()->setDecision("f");
         roundChooser()->setEnabled(true);
         roundChooser()->show();
@@ -452,7 +450,6 @@ bool Game::isNextPlayerPossible()
 
     QSharedPointer<Card> stackCard = stack()->topCard();
     if (stackCard->rank() == "6") {
-        qDebug() << "Stack card rank is '6', next player not possible";
         return false;
     }
 
@@ -526,30 +523,21 @@ void Game::togglePlayerListToScore(bool highest)
     // Rotate the list so the extreme player is at the front
     std::rotate(playerList_.begin(), extremePlayerIt, playerList_.end());
 
-    // Debug output
-    qDebug() << "After rotating by score:";
-    for (const auto& player : playerList_) {
-        qDebug() << "Player ID:" << player->id() << " Score:" << player->score();
-    }
 }
 
 bool Game::isRoundFinished()
 {
     QSharedPointer<Card> stackCard = stack()->topCard();
 
-    // if (roundChooser()->isEnabled() && roundChooser()->decision() == "r") {
     if (roundChooser()->isEnabled()) {
-        qDebug() << "RoundChooser is enabled, round is finished";
         return true;
     }
 
     if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
-        qDebug() << "quteChooser is enabled, round is finished";
         return true;
     }
 
     if (player->handdeck()->cards().isEmpty() && stackCard->rank() != "6") {
-        qDebug() << "handdeck is empty, round is finished";
         return true;
     }
     return false;
@@ -663,9 +651,6 @@ void Game::handleSpecialCards()
     played()->clearCards();
     drawn()->clearCards();
 
-    for (const auto& player : playerList_)
-        qDebug() << "player order:" << player->id();
-
     if (isFinished) {
         emit countPoints(shuffles);
         playable()->clearCards();
@@ -761,8 +746,8 @@ void Game::updateDisplay()
 
 void Game::onNewRound()
 {
-    togglePlayerListToScore(false);
-    qDebug() << "The winner is: " << playerList_.front()->name();
+    // togglePlayerListToScore(false);
+    // qDebug() << "The winner is: " << playerList_.front()->name();
 
     for (const auto& player : playerList_) {
         player->setJpoints(0);
@@ -770,11 +755,11 @@ void Game::onNewRound()
 
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
-        qDebug() << "Starting new Round ...";
+        // qDebug() << "Starting new Round ...";
         rounds += 1;
         initializeRound();
     } else {
-        qDebug() << "Game is over...";
+        // qDebug() << "Game is over...";
         roundChooser()->setDecision("g");
     }
 }
