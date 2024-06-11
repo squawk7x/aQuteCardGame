@@ -1,6 +1,6 @@
 # Card Game
 
-This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks from {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}. The game is played by 3 players. Player 1 competes against 2 'AI' players. Each player starts with 5 cards. Below is a description of the gameboard layout, detailed rules, and game control instructions.
+This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks from {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}. The game is played by 3 players. Player 1 competes against 2 'AI' players. Below is a description of the gameboard layout, detailed rules, and game control instructions.
 
 ## Gameboard Layout
 
