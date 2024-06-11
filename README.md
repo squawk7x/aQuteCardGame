@@ -1,89 +1,72 @@
 # Card Game
 
-This little card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks ranks from {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}. The game is played by 3 players. Player 1 will play against 2 'AI' players. Each player starts with 5 cards. Below are the description of the gameboard layout, the detailed rules, and how to control the game flow.
+This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks from {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}. The game is played by 3 players. Player 1 competes against 2 'AI' players. Each player starts with 5 cards. Below is a description of the gameboard layout, detailed rules, and game control instructions.
 
 ## Gameboard Layout
 
-- **First Row**: Displays the 2 opponent 'AI' players ('Player 2' and 'Player 3').
-- **Second Row**: Contains the 'Monitor' (it shows the cards with the same rank played in sequence - may be played by different players), different choosers ('Eights Chooser', 'Qute Chooser', 'Round Chooser' and 'Jpoints Chooser') to react to different situations during the game flow, and panels for the cards that players had to draw due to the 'Bad cards' '7' or '8'.
-- **Third Row**: A counter 'Shuffles' indicates how often the blind was refilled from the stack and shuffled, the 'Blind' (just showing the upper card which might be drawn next time a card has to be drawn), the 'JsuitChooser' (to choose which suit has to follow a 'J') and the 'Stack' (the played cards, shortened to a few of last cards played).
-- **Fourth Row**: Indicators for cards of the active player's handdeck that fit to the stack ('Playable'), for cards that have been played by the actual player ('Played'), and for cards that had to be drawn in case the player had to draw (except drawings for '7's and '8's). Additionally, an indicator of the rounds played in the game and the counters for the players scores.
-- **Bottom Row**: Contains your own handdeck.
-
-![Gameboard](images/table_layout_eights_next.png)
-![Gameboard](images/table_layout_qute.png)
+1. **First Row**: Displays the 2 opponent 'AI' players ('Player 2' and 'Player 3').
+2. **Second Row**: Contains the 'Monitor' (shows cards of the same rank played in sequence), various choosers ('Eights Chooser', 'Qute Chooser', 'Round Chooser', and 'Jpoints Chooser'), and panels for cards drawn due to 'Bad cards' ('7' or '8').
+3. **Third Row**: Includes the 'Shuffles' counter (indicates how often the blind was refilled and shuffled), the 'Blind' (shows the top card of the draw pile), the 'JsuitChooser' (to choose which suit follows a 'J'), and the 'Stack' (recently played cards).
+4. **Fourth Row**: Indicators for playable cards ('Playable'), cards played by the current player ('Played'), cards drawn (except for '7's and '8's), rounds played, and player scores.
+5. **Bottom Row**: Contains your own hand of cards.
 
 ## Game Rules
 
 ### Starting the Game
 - **Initial Setup**: Each player starts with 5 cards.
-- **First Move**: Player 1 puts a card onto the stack and can add more cards with the same rank. The next player can play a card with the same suit or the same rank and can add more cards with the same rank.
+- **First Move**: Player 1 plays a card onto the stack and can add more cards of the same rank. The next player must play a card of the same suit or rank, and may add more cards of the same rank.
 
 ### Playing a Turn
-- **Using Hand Cards**: Initially, the cards on hand must be used, and at least one card must be played.
-- **Drawing from the Blind**: If a player does not hold a suitable card, they must draw one card from the blind. This card can be played if it matches the card on the stack. If it does not match, the next player continues.
+- **Using Hand Cards**: Players must use their hand cards and play at least one card.
+- **Drawing from the Blind**: If no suitable card is in hand, draw one card from the blind. This card can be played if it matches the card on the stack; otherwise, the turn passes to the next player.
 
 ### Special Conditions
-- **Drawing Cards**: No more than one card can be drawn from the blind, except when a '6' is placed on the stack.
-- **Covering a '6'**: A '6' must always be finally covered by another rank. If no suitable card is in the player's hand, they must draw cards from the blind until the '6' may be covered. The exception to this rule is the 'Qute' condition (4 times played same rank in sequence). In this case, the player can choose to continue and cover finally the 4th '6' with another rank or to finish the round. The decision is made by clicking on the 'Qute Chooser'.
+- **Drawing Cards**: Only one card can be drawn from the blind, except when covering a '6'.
+- **Covering a '6'**: Must be covered by a different rank. If no suitable card is in hand, draw cards from the blind until a non-'6' card can be played. The 'Qute' condition (four cards of the same rank played in sequence) overrides this rule, allowing the player to either end the round or cover the fourth '6' with another rank.
 
 ## Special Cards
-- **6**: Must be covered by a different rank. The player must draw cards until the '6' can be covered.
+- **6**: Must be covered by a different rank. Draw cards until this is possible.
 - **7**: The next player must draw one card from the blind.
-- **8**: The next player must draw 2 cards and will be passed over. Multiple '8's can either force the next player to draw 2 cards for each '8' or distribute the draw among following players. How to distribute the multiple '8's is chosen by clicking on the 'Eights Chooser'.
-- **J**: Can be played to any suit and the player chooses the suit that must follow by clicking on the 'Jsuit Chooser'.
-- **A**: The next player is passed over. Multiple Aces skip sequential players.
+- **8**: The next player must draw 2 cards and is skipped. Multiple '8's can force the next player to draw more cards or distribute the draws among players. This is decided using the 'Eights Chooser'.
+- **J**: Can be played on any suit, and the player chooses the suit to follow using the 'Jsuit Chooser'.
+- **A**: The next player is skipped. Multiple Aces skip sequential players.
 
 ## 'Qute' Condition
-- If four cards of the same rank are played in sequence (may be and probably by different players), the player who plays the fourth card can choose to end the round or to continue the round.
-
-- 'Qute' with '6'**: Overrides the '6 must be covered' rule.
+When four cards of the same rank are played in sequence (by different players), the player who plays the fourth card can choose to end the round or continue. For '6's, this overrides the 'must be covered' rule.
 
 ## Scoring
 - **End of Round**: Scoring occurs when a player has no more cards or a 'Qute' is announced.
 
 ### Card Values:
-- 6: 0 points
-- 7: 0 points
-- 8: 0 points
-- 9: 0 points
-- 10: 10 points
-- J: 20 points (-20 or +20 for each 'J' when finishing with 'J')
-- Q: 10 points
-- K: 10 points
+- 6, 7, 8, 9: 0 points
+- 10, Q, K: 10 points
+- J: 20 points (-20 or +20 when finishing with 'J')
 - A: 15 points
 
-### Special Counting and 'J' points
-- **A player has exactly 125 Points**: Their score resets to 0.
-- **Finishing with 'J'**: Either the actual players' score is reduced by 20 points for each 'J' played by the actual player or the scores of the opponent players are increased by 20 points for each 'J' played by the actual player. The actual player can decide by clicking on the 'JpointsChooser' how to count (-20 or +20 points).
-- **Refilled Blind**: The stack cards are reshuffled (except last card added to the stack). Each refill of the blind doubles, tripples, ... the points when counting at the end of this round. This doubling (trippling, ...) of points also applies to the +/-20 rule when finishing a round with 'J'.
+### Special Scoring Rules:
+- **125 Points**: A player's score resets to 0 if they reach exactly 125 points.
+- **Finishing with 'J'**: The player can choose to either reduce their score by 20 points per 'J' or increase opponent scores by 20 points per 'J', decided via the 'JpointsChooser'.
+- **Refilled Blind**: Each refill of the blind multiplies the end-of-round points (doubling, tripling, etc.), including the +/-20 points rule when finishing with 'J'.
 
 ## Game Control
 
 ### Mouse Controls
-- **Click on card**: Put card on stack if the card fits to the stack.
-- **Right Click**: Next player's turn.
-- **Toggle decisions**: Various in-game decisions for 'multiple 8', 'Jsuit', 'Jpoints', and 'Qute' by clicking on the appropriate chooser.
+- **Click on card**: Play the card onto the stack if it matches.
+- **Right Click**: End the current player's turn.
+- **Toggle Decisions**: Use the choosers for decisions on multiple '8's, 'Jsuit', 'Jpoints', and 'Qute'.
 
-### Decisions
-- **multiple 8**: Decide how the draw cards rule for multiple 8 will apply:
-
-![multiple 8](images/chooser_eights_n.png)
-![multiple 8](images/chooser_eights_a.png)
-
-- **J Suit**: Choose the suit to follow a 'J':
-
-![jsuit](images/chooser_jsuit_of_hearts.png)
-
-- **J Points**: Choose between increasing scores of opponent players or reducing score of active player:
-
-![jpoints](images/chooser_jpoints_p.png)
-![jpoints](images/chooser_jpoints_m.png)
-
-- **'Qute'**: Decide whether to finish or continue the round:
-
-![qute](images/chooser_qute_y.png)
-![qute](images/chooser_qute_n.png)
+### Choosers
+- **Multiple 8's**: Decide how the draw cards rule for multiple '8's will apply.
+  - ![multiple 8](images/chooser_eights_n.png)
+  - ![multiple 8](images/chooser_eights_a.png)
+- **J Suit**: Choose the suit to follow a 'J'.
+  - ![jsuit](images/chooser_jsuit_of_hearts.png)
+- **J Points**: Choose between increasing scores of opponent players or reducing score of active player.
+  - ![jpoints](images/chooser_jpoints_p.png)
+  - ![jpoints](images/chooser_jpoints_m.png)
+- **'Qute'**: Decide whether to finish or continue the round.
+  - ![qute](images/chooser_qute_y.png)
+  - ![qute](images/chooser_qute_n.png)
 
 ### Special Keys (Testing Mode)
 - **v**: Toggle visibility of other players' cards.
