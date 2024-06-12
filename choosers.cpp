@@ -81,6 +81,7 @@ void JsuitChooser::toggle_to(const QString& target_suit)
         while (suit_ != target_suit) {
             toggle();
         }
+    loadImage();
 }
 
 // Slots:
@@ -133,6 +134,7 @@ void EightsChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
+    loadImage();
 }
 
 void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
@@ -142,6 +144,8 @@ void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
     // If the random number is 0, return dec1, otherwise return dec2
     (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
+
+    loadImage();
 }
 
 /* ************************************************************************* */
@@ -187,6 +191,7 @@ void QuteChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
+    loadImage();
 }
 
 void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
@@ -196,6 +201,8 @@ void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
     // If the random number is 0, return dec1, otherwise return dec2
     (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
+
+    loadImage();
 }
 
 // Slots:
@@ -242,6 +249,7 @@ void JpointsChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
+    loadImage();
 }
 
 void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
@@ -251,6 +259,8 @@ void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
     // If the random number is 0, return dec1, otherwise return dec2
     (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
+
+    loadImage();
 }
 
 // Slots:
@@ -266,6 +276,7 @@ void JpointsChooser::onQuteDecisionChanged(const QString& dec)
         this->hide();
         this->setEnabled(false);
     }
+    loadImage();
 }
 
 /* ************************************************************************* */

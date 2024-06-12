@@ -670,6 +670,8 @@ void Game::activateNextPlayer()
 
     handleSpecialCards();
 
+    updatePlayable();
+
     autoplay();
 }
 
@@ -678,7 +680,7 @@ void Game::autoplay()
     if (player->isRobot() && !roundChooser()->isEnabled()) {
         player->handdeck()->setEnabled(true);
 
-        updatePlayable();
+        // updatePlayable();
 
         while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
             for (auto& card : playable()->cards()) {
