@@ -682,9 +682,8 @@ void Game::autoplay()
     if (player->isRobot() && !roundChooser()->isEnabled()) {
         player->handdeck()->setEnabled(true);
 
-        // updatePlayable();
-
         while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
+            player->handdeck()->sortCardsByPattern(1);
             for (auto& card : playable()->cards()) {
                 for (auto& card : player->handdeck()->cards()) {
                     card->click();

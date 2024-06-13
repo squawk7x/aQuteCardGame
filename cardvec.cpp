@@ -137,11 +137,11 @@ QString CardVec::mostCommonSuit() const
 void CardVec::sortCardsByPattern(int pattern)
 {
     const std::vector<std::vector<QString>> patterns
-        = {{"6", "A", "J", "K", "Q", "10", "8", "7", "9"},
-           {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
+        = {{"9", "7", "8", "10", "Q", "K", "J", "A", "6"},
            {"J", "9", "7", "8", "10", "Q", "K", "A", "6"},
-           {"J", "A", "K", "Q", "10", "9", "8", "7", "6"},
-           {"9", "8", "7", "6", "10", "Q", "K", "A", "J"}};
+           {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
+           {"6", "7", "8", "9", "10", "Q", "K", "A", "J"},
+           {"J", "A", "K", "Q", "10", "6", "7", "8", "9"}};
 
     if (pattern < 0 || pattern >= patterns.size()) {
         qWarning() << "Invalid pattern index.";

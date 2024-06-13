@@ -220,7 +220,6 @@ void Table::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_V) {
         isCardFaceVisible_ = !isCardFaceVisible_;
-        qDebug() << "isCardFaceVisible:" << isCardFaceVisible_;
         emit toggleIsCardFaceVisible(isCardFaceVisible_);
     }
 
@@ -236,17 +235,20 @@ void Table::keyPressEvent(QKeyEvent* event)
         game_->player->handdeck()->sortCards(Handdeck::SortOption::Suit);
     }
 
-    if (event->key() == Qt::Key_1) {
+    if (event->key() == Qt::Key_0) {
         game_->player->handdeck()->sortCardsByPattern(0);
     }
     if (event->key() == Qt::Key_1) {
         game_->player->handdeck()->sortCardsByPattern(1);
     }
-    if (event->key() == Qt::Key_1) {
+    if (event->key() == Qt::Key_2) {
         game_->player->handdeck()->sortCardsByPattern(2);
     }
-    if (event->key() == Qt::Key_1) {
+    if (event->key() == Qt::Key_3) {
         game_->player->handdeck()->sortCardsByPattern(3);
+    }
+    if (event->key() == Qt::Key_4) {
+        game_->player->handdeck()->sortCardsByPattern(4);
     }
 
     if (event->key() == Qt::Key_F) {
