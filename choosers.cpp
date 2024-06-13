@@ -54,6 +54,8 @@ void JsuitChooser::loadImage()
     if (!icon.isNull()) {
         setIcon(icon);
         setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
     } else {
         qDebug() << "Failed to load card image:" << imagePath;
     }
@@ -117,6 +119,8 @@ void EightsChooser::loadImage()
     if (!icon.isNull()) {
         setIcon(icon);
         setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
     }
 }
 
@@ -173,6 +177,8 @@ void QuteChooser::loadImage()
     if (!icon.isNull()) {
         setIcon(icon);
         setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
     }
 }
 
@@ -232,6 +238,8 @@ void JpointsChooser::loadImage()
         if (!icon.isNull()) {
             setIcon(icon);
             setIconSize(QSize(50, 75));
+            this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+            this->resize(iconSize());
         }
 }
 
@@ -305,6 +313,8 @@ void RoundChooser::loadImage()
     if (!icon.isNull()) {
         setIcon(icon);
         setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
     }
 }
 

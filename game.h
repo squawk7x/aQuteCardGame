@@ -20,6 +20,7 @@ class Game : public QObject
     Q_OBJECT
 
 private:
+    int numberOfPlayers_;
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
 
@@ -53,7 +54,7 @@ private:
 public:
     enum class DrawOption { MustCard, BadCard };
 
-    explicit Game(QObject* parent = nullptr);
+    explicit Game(int numberOfPlayers, QObject* parent = nullptr);
     ~Game();
 
     void initializeGame();

@@ -4,13 +4,14 @@
 #include <QGroupBox>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QScreen> // Include QScreen header
 #include "card.h"
 #include "ui_table.h"
 
-Table::Table(QWidget* parent)
+Table::Table(int numberOfPlayers, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
-    , game_(QSharedPointer<Game>::create())
+    , game_(QSharedPointer<Game>::create(numberOfPlayers))
     , isCardFaceVisible_(true)
 {
     ui->setupUi(this);
@@ -24,100 +25,111 @@ Table::Table(QWidget* parent)
     setMaximumSize(screenWidth, screenHeight);
 
     // Find all QHBoxLayouts
-    QHBoxLayout* layout_player2 = findChild<QHBoxLayout*>("player2");
-    QHBoxLayout* layout_player3 = findChild<QHBoxLayout*>("player3");
+    QHBoxLayout* layoutPlayer2 = findChild<QHBoxLayout*>("layoutPlayer2");
+    QHBoxLayout* layoutPlayer3 = nullptr; // Initialize to nullptr
+    if (numberOfPlayers == 3) {
+        layoutPlayer3 = findChild<QHBoxLayout*>("layoutPlayer3");
+    }
 
-    QHBoxLayout* layout_monitor = findChild<QHBoxLayout*>("monitor");
-    QHBoxLayout* layout_eightsChooser = findChild<QHBoxLayout*>("eightsChooser");
-    QHBoxLayout* layout_quteChooser = findChild<QHBoxLayout*>("quteChooser");
-    QHBoxLayout* layout_jpointsChooser = findChild<QHBoxLayout*>("jpointsChooser");
-    QHBoxLayout* layout_roundChooser = findChild<QHBoxLayout*>("roundChooser");
-    QHBoxLayout* layout_got1 = findChild<QHBoxLayout*>("got1");
-    QHBoxLayout* layout_got2 = findChild<QHBoxLayout*>("got2");
-    QHBoxLayout* layout_played = findChild<QHBoxLayout*>("played");
-    QHBoxLayout* layout_drawn = findChild<QHBoxLayout*>("drawn");
+    QHBoxLayout* layoutMonitor = findChild<QHBoxLayout*>("layoutMonitor");
+    QHBoxLayout* layoutEightsChooser = findChild<QHBoxLayout*>("layoutEightsChooser");
+    QHBoxLayout* layoutQuteChooser = findChild<QHBoxLayout*>("layoutQuteChooser");
+    QHBoxLayout* layoutJpointsChooser = findChild<QHBoxLayout*>("layoutJpointsChooser");
+    QHBoxLayout* layoutRoundChooser = findChild<QHBoxLayout*>("layoutRoundChooser");
+    QHBoxLayout* layoutGot1 = findChild<QHBoxLayout*>("layoutGot1");
+    QHBoxLayout* layoutGot2 = findChild<QHBoxLayout*>("layoutGot2");
+    QHBoxLayout* layoutPlayed = findChild<QHBoxLayout*>("layoutPlayed");
+    QHBoxLayout* layoutDrawn = findChild<QHBoxLayout*>("layoutDrawn");
 
-    QHBoxLayout* layout_shuffles = findChild<QHBoxLayout*>("shuffles");
-    QHBoxLayout* layout_blind = findChild<QHBoxLayout*>("blind");
-    QHBoxLayout* layout_jsuitChooser = findChild<QHBoxLayout*>("jsuitChooser");
-    QHBoxLayout* layout_stack = findChild<QHBoxLayout*>("stack");
-    QHBoxLayout* layout_playable = findChild<QHBoxLayout*>("playable");
-    QHBoxLayout* layout_round = findChild<QHBoxLayout*>("round");
-    QHBoxLayout* layout_scores = findChild<QHBoxLayout*>("scores");
-    QHBoxLayout* layout_player1 = findChild<QHBoxLayout*>("player1");
+    QHBoxLayout* layoutShuffles = findChild<QHBoxLayout*>("layoutShuffles");
+    QHBoxLayout* layoutBlind = findChild<QHBoxLayout*>("layoutBlind");
+    QHBoxLayout* layoutJsuitChooser = findChild<QHBoxLayout*>("layoutJsuitChooser");
+    QHBoxLayout* layoutStack = findChild<QHBoxLayout*>("layoutStack");
+    QHBoxLayout* layoutPlayable = findChild<QHBoxLayout*>("layoutPlayable");
+    QHBoxLayout* layoutRound = findChild<QHBoxLayout*>("layoutRound");
+    QHBoxLayout* layoutScores = findChild<QHBoxLayout*>("layoutScores");
+    QHBoxLayout* layoutPlayer1 = findChild<QHBoxLayout*>("layoutPlayer1");
 
     // Add widgets to their respective layouts
-    layout_player2->addWidget(game_->player2()->handdeck().get());
-    layout_player3->addWidget(game_->player3()->handdeck().get());
-    layout_monitor->addWidget(game_->monitor().get());
+    layoutPlayer2->addWidget(game_->player2()->handdeck().get());
+    if (numberOfPlayers == 3) {
+        layoutPlayer3->addWidget(game_->player3()->handdeck().get());
+    }
 
-    layout_eightsChooser->addWidget(game_->eightsChooser().get());
-    layout_quteChooser->addWidget(game_->quteChooser().get());
-    layout_jpointsChooser->addWidget(game_->jpointsChooser().get());
-    layout_roundChooser->addWidget(game_->roundChooser().get());
+    layoutMonitor->addWidget(game_->monitor().get());
+    layoutEightsChooser->addWidget(game_->eightsChooser().get());
+    layoutQuteChooser->addWidget(game_->quteChooser().get());
+    layoutJpointsChooser->addWidget(game_->jpointsChooser().get());
+    layoutRoundChooser->addWidget(game_->roundChooser().get());
 
-    layout_got1->addWidget(game_->got1().get());
-    layout_got2->addWidget(game_->got2().get());
-    layout_played->addWidget(game_->played().get());
-    layout_drawn->addWidget(game_->drawn().get());
+    layoutGot1->addWidget(game_->got1().get());
+    layoutGot2->addWidget(game_->got2().get());
+    layoutPlayed->addWidget(game_->played().get());
+    layoutDrawn->addWidget(game_->drawn().get());
 
-    layout_shuffles->addWidget(game_->lcdShuffles().get());
-    layout_blind->addWidget(game_->blind().get());
-    layout_jsuitChooser->addWidget(game_->jsuitChooser().get());
-    layout_stack->addWidget(game_->stack().get());
+    layoutShuffles->addWidget(game_->lcdShuffles().get());
+    layoutBlind->addWidget(game_->blind().get());
+    layoutJsuitChooser->addWidget(game_->jsuitChooser().get());
+    layoutStack->addWidget(game_->stack().get());
 
-    layout_playable->addWidget(game_->playable().get());
-    layout_round->addWidget(game_->lcdRound().get());
-    layout_scores->addWidget(game_->lcdP1().get());
-    layout_scores->addWidget(game_->lcdP2().get());
-    layout_scores->addWidget(game_->lcdP3().get());
+    layoutPlayable->addWidget(game_->playable().get());
+    layoutRound->addWidget(game_->lcdRound().get());
+    layoutScores->addWidget(game_->lcdP1().get());
+    layoutScores->addWidget(game_->lcdP2().get());
+    if (numberOfPlayers == 3) {
+        layoutScores->addWidget(game_->lcdP3().get());
+    }
 
-    layout_player1->addWidget(game_->player1()->handdeck().get());
+    layoutPlayer1->addWidget(game_->player1()->handdeck().get());
 
     // Add group boxes to their respective layouts
-    QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("Player2");
-    groupBoxPlayer2->setLayout(layout_player2);
-    QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("Player3");
-    groupBoxPlayer3->setLayout(layout_player3);
+    QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("gbPlayer2");
+    groupBoxPlayer2->setLayout(layoutPlayer2);
 
-    QGroupBox* groupBoxMonitor = findChild<QGroupBox*>("Monitor");
-    groupBoxMonitor->setLayout(layout_monitor);
-    QGroupBox* groupBoxEightsChooser = findChild<QGroupBox*>("EightsChooser");
-    groupBoxEightsChooser->setLayout(layout_eightsChooser);
-    QGroupBox* groupBoxQuteChooser = findChild<QGroupBox*>("QuteChooser");
-    groupBoxQuteChooser->setLayout(layout_quteChooser);
-    QGroupBox* groupBoxJpointsChooser = findChild<QGroupBox*>("JpointsChooser");
-    groupBoxJpointsChooser->setLayout(layout_jpointsChooser);
-    QGroupBox* groupBoxRoundChooser = findChild<QGroupBox*>("RoundChooser");
-    groupBoxRoundChooser->setLayout(layout_roundChooser);
+    QGroupBox* groupBoxPlayer3 = nullptr;
+    if (numberOfPlayers == 3) {
+        QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("gbPlayer3");
+        groupBoxPlayer3->setLayout(layoutPlayer3);
+    }
 
-    QGroupBox* groupBoxGot1 = findChild<QGroupBox*>("Got1");
-    groupBoxGot1->setLayout(layout_got1);
-    QGroupBox* groupBoxGot2 = findChild<QGroupBox*>("Got2");
-    groupBoxGot2->setLayout(layout_got2);
-    QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("Played");
-    groupBoxPlayed->setLayout(layout_played);
-    QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("Drawn");
-    groupBoxDrawn->setLayout(layout_drawn);
+    QGroupBox* groupBoxMonitor = findChild<QGroupBox*>("gbMonitor");
+    groupBoxMonitor->setLayout(layoutMonitor);
+    QGroupBox* groupBoxEightsChooser = findChild<QGroupBox*>("gbEightsChooser");
+    groupBoxEightsChooser->setLayout(layoutEightsChooser);
+    QGroupBox* groupBoxQuteChooser = findChild<QGroupBox*>("gbQuteChooser");
+    groupBoxQuteChooser->setLayout(layoutQuteChooser);
+    QGroupBox* groupBoxJpointsChooser = findChild<QGroupBox*>("gbJpointsChooser");
+    groupBoxJpointsChooser->setLayout(layoutJpointsChooser);
+    QGroupBox* groupBoxRoundChooser = findChild<QGroupBox*>("gbRoundChooser");
+    groupBoxRoundChooser->setLayout(layoutRoundChooser);
 
-    QGroupBox* groupBoxShuffles = findChild<QGroupBox*>("Shuffles");
-    groupBoxShuffles->setLayout(layout_shuffles);
-    QGroupBox* groupBoxBlind = findChild<QGroupBox*>("Blind");
-    groupBoxBlind->setLayout(layout_blind);
-    QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("JsuitChooser");
-    groupBoxJsuitChooser->setLayout(layout_jsuitChooser);
-    QGroupBox* groupBoxStack = findChild<QGroupBox*>("Stack");
-    groupBoxStack->setLayout(layout_stack);
+    QGroupBox* groupBoxGot1 = findChild<QGroupBox*>("gbGot1");
+    groupBoxGot1->setLayout(layoutGot1);
+    QGroupBox* groupBoxGot2 = findChild<QGroupBox*>("gbGot2");
+    groupBoxGot2->setLayout(layoutGot2);
+    QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("gbPlayed");
+    groupBoxPlayed->setLayout(layoutPlayed);
+    QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("gbDrawn");
+    groupBoxDrawn->setLayout(layoutDrawn);
 
-    QGroupBox* groupBoxPlayable = findChild<QGroupBox*>("Playable");
-    groupBoxPlayable->setLayout(layout_playable);
-    QGroupBox* groupBoxRound = findChild<QGroupBox*>("Round");
-    groupBoxRound->setLayout(layout_round);
-    QGroupBox* groupBoxScores = findChild<QGroupBox*>("Scores");
-    groupBoxScores->setLayout(layout_scores);
+    QGroupBox* groupBoxShuffles = findChild<QGroupBox*>("gbShuffles");
+    groupBoxShuffles->setLayout(layoutShuffles);
+    QGroupBox* groupBoxBlind = findChild<QGroupBox*>("gbBlind");
+    groupBoxBlind->setLayout(layoutBlind);
+    QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("gbJsuitChooser");
+    groupBoxJsuitChooser->setLayout(layoutJsuitChooser);
+    QGroupBox* groupBoxStack = findChild<QGroupBox*>("gbStack");
+    groupBoxStack->setLayout(layoutStack);
 
-    QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("Player1");
-    groupBoxPlayer1->setLayout(layout_player1);
+    QGroupBox* groupBoxPlayable = findChild<QGroupBox*>("gbPlayable");
+    groupBoxPlayable->setLayout(layoutPlayable);
+    QGroupBox* groupBoxRound = findChild<QGroupBox*>("gbRound");
+    groupBoxRound->setLayout(layoutRound);
+    QGroupBox* groupBoxScores = findChild<QGroupBox*>("gbScores");
+    groupBoxScores->setLayout(layoutScores);
+
+    QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("gbPlayer1");
+    groupBoxPlayer1->setLayout(layoutPlayer1);
 
     connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
 
@@ -126,10 +138,12 @@ Table::Table(QWidget* parent)
             game_->player2()->handdeck().get(),
             &Handdeck::onToggleIsCardFaceVisible);
 
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->player3()->handdeck().get(),
-            &Handdeck::onToggleIsCardFaceVisible);
+    if (numberOfPlayers == 3) {
+        connect(this,
+                &Table::toggleIsCardFaceVisible,
+                game_->player3()->handdeck().get(),
+                &Handdeck::onToggleIsCardFaceVisible);
+    }
 
     // in Monitor card face always shown
     // connect(this,
@@ -300,7 +314,7 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_D) {
-        emit game_->player->handdeck()->moveTopCardTo(game_->blind().get());
+        game_->player->handdeck()->moveTopCardTo(game_->blind().get());
     }
 
     QWidget::keyPressEvent(event);

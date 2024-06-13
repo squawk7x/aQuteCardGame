@@ -2,8 +2,9 @@
 #include <QDebug>
 #include <QTimer>
 
-Game::Game(QObject* parent)
+Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
+    , numberOfPlayers_(numberOfPlayers)
     , monitor_(QSharedPointer<Monitor>::create())
     , eightsChooser_(QSharedPointer<EightsChooser>::create())
     , quteChooser_(QSharedPointer<QuteChooser>::create())
@@ -17,29 +18,31 @@ Game::Game(QObject* parent)
     , got2_(QSharedPointer<Got>::create())
     , playable_(QSharedPointer<Playable>::create())
     , drawn_(QSharedPointer<Drawn>::create())
-    , player1_(QSharedPointer<Player>::create(nullptr, 1, "Player1", false, 0))
-    , player2_(QSharedPointer<Player>::create(nullptr, 2, "Player2", true, 0))
-    , player3_(QSharedPointer<Player>::create(nullptr, 3, "Player3", true, 0))
-    , lcdRound_(
-          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
-    , lcdP1_(
-          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
-    , lcdP2_(
-          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
-    , lcdP3_(
-          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
-    , lcdShuffles_(
-          QSharedPointer<QLCDNumber>::create()) // Assuming QLCDNumber is still managed by raw pointers
+    , lcdRound_(new QLCDNumber())
+    , lcdP1_(new QLCDNumber())
+    , lcdP2_(new QLCDNumber())
+    , lcdP3_(new QLCDNumber())
+    , lcdShuffles_(new QLCDNumber())
 {
-    lcdShuffles_->setDigitCount(2);
+    player1_ = QSharedPointer<Player>::create(nullptr, 1, "Player1", false, 0);
+    player2_ = QSharedPointer<Player>::create(nullptr, 2, "Player2", true, 0);
+    player3_ = nullptr; // or create a dummy player for the third slot
 
+    playerList_.clear();
     playerList_.push_back(player1_);
     playerList_.push_back(player2_);
-    playerList_.push_back(player3_);
 
     connect(player1()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
     connect(player2()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
-    connect(player3()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
+
+    if (numberOfPlayers_ == 3) {
+        player3_ = QSharedPointer<Player>::create(nullptr, 3, "Player3", true, 0);
+        playerList_.push_back(player3_);
+        connect(player3()->handdeck().get(),
+                &Handdeck::handCardClicked,
+                this,
+                &Game::onHandCardClicked);
+    }
 
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
@@ -60,8 +63,6 @@ Game::Game(QObject* parent)
     connect(roundChooser().get(), &RoundChooser::finishRound, this, &Game::handleSpecialCards);
     connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::onNewRound);
     connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::onNewGame);
-
-    // emit setIsCardVisible(false);
 
     initializeRound();
 }
@@ -211,8 +212,10 @@ void Game::initializeRound()
         blind_->moveTopCardTo(player2_->handdeck().get());
     }
 
-    for (int k = 1; k <= 5; k++) {
-        blind_->moveTopCardTo(player3_->handdeck().get());
+    if (numberOfPlayers_ == 3) {
+        for (int k = 1; k <= 5; k++) {
+            blind_->moveTopCardTo(player3_->handdeck().get());
+        }
     }
 
     for (int k = 1; k <= 5; k++) {

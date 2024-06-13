@@ -22,7 +22,7 @@ private:
     bool isCardFaceVisible_;
 
 public:
-    explicit Table(QWidget *parent = nullptr);
+    explicit Table(int numberOfPlayers = 2, QWidget *parent = nullptr);
     ~Table();
     void openReadmeFile();
 

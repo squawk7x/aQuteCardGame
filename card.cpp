@@ -174,11 +174,6 @@ void Card::setValue(const QString& rank)
     }
 }
 
-// void Card::setIsCardFaceVisible(bool isVisible)
-// {
-//     isCardFaceVisible_ = isVisible;
-// }
-
 void Card::loadImage(bool isCardFaceVisible)
 {
     QString imagePath;
@@ -187,10 +182,17 @@ void Card::loadImage(bool isCardFaceVisible)
     else {
         imagePath = QString(":/images/cards/backside_blue.png");
     }
+
     QIcon icon(imagePath);
     if (!icon.isNull()) {
         this->setIcon(icon);
         this->setIconSize(QSize(50, 75));
+
+        // Ensure there are no margins or padding around the icon
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+
+        // Resize the button to fit the icon size
+        this->resize(iconSize());
     } else {
         this->setText(str_);
         qDebug() << "Failed to load card image:" << imagePath;
