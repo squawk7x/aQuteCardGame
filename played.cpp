@@ -4,7 +4,6 @@
 Played::Played(QWidget* parent)
     : CardVec(parent)
 {
-    isCardVecVisible_ = true; // Default visibility can be set here
 }
 
 Played::~Played()
@@ -30,9 +29,9 @@ void Played::onCardAddedToStack(const QSharedPointer<Card> &card)
     addCard(card->clone(this));
 }
 
-void Played::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+void Played::onToggleIsCardFaceVisible(bool isVisible)
 {
-    isCardVecVisible_ = true;
+    isCardFaceVisible_ = true;
     for (const auto& card : cards_) {
         card->loadImage(true);
     }

@@ -109,8 +109,10 @@ signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);
     void cardMustFromBlind(const QSharedPointer<Card>& card);
     void cardBadFromBlind(const QSharedPointer<Card>& card);
-    void numberCardPlayed(int numCardsPlayed);
+    void cardsPlayed(int numCardsPlayed);
     void countPoints(int shuffles);
+    //
+    void setIsCardVisible(bool isVisible);
 
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);

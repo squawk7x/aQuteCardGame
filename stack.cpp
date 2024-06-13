@@ -16,7 +16,6 @@ void Stack::addCard(QSharedPointer<Card> card)
 {
     if (card) {
         disconnect(card.data(), &Card::cardClicked, this, nullptr);
-
         card->setParent(this);
         card->loadImage(true);
         cards_.append(card);
@@ -26,29 +25,20 @@ void Stack::addCard(QSharedPointer<Card> card)
     }
 }
 
-void Stack::removeFirstCard()
+void Stack::onCardsPlayed(int numCardsPlayed)
 {
-    if (!cards_.isEmpty()) {
-        QSharedPointer<Card> firstCard = cards_.takeFirst();
+    QSharedPointer<Card> firstCard;
+
+    while (cards_.size() > numCardsPlayed + 12) {
+        firstCard = cards_.takeFirst();
         layout_->removeWidget(firstCard.data());
-        firstCard->setParent(nullptr);
-        firstCard->hide();
-        layout_->update();
-        update();
     }
 }
 
-void Stack::onNumberCardsPlayed(int numCardsPlayed)
+void Stack::onToggleIsCardFaceVisible(bool isVisible)
 {
-    // Check if the number of cards exceeds the limit
-    while (cards_.size() > numCardsPlayed + 1) {
-        removeFirstCard(); // Remove the first card if the limit is exceeded
-    }
-}
+    isCardFaceVisible_ = true;
 
-void Stack::onToggleIsTableCardsVisible(bool isTableCardsVisible)
-{
-    isCardVecVisible_ = true;
     for (const auto& card : cards_) {
         card->loadImage(true);
     }

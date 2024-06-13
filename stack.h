@@ -13,11 +13,10 @@ public:
     virtual ~Stack();
 
     virtual void addCard(QSharedPointer<Card> card) override;
-    void removeFirstCard();
 
 public slots:
-    virtual void onToggleIsTableCardsVisible(bool isTableCardsVisible) override;
-    void onNumberCardsPlayed(int numCardsPlayed);
+    virtual void onToggleIsCardFaceVisible(bool isVisible) override;
+    void onCardsPlayed(int numCardsPlayed);
 };
 
 #endif // STACK_H

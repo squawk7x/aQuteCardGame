@@ -16,7 +16,7 @@ private:
     bool isRobot_;
     int score_;
     int jpoints_;
-    QSharedPointer<Handdeck> handdeck_; // Use QSharedPointer for handdeck_
+    QSharedPointer<Handdeck> handdeck_;
 
 public:
     explicit Player(QWidget* parent = nullptr,

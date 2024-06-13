@@ -59,11 +59,12 @@ void Blind::showTopCard()
     }
 }
 
-void Blind::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+void Blind::onToggleIsCardFaceVisible(bool isVisible)
 {
-    isCardVecVisible_ = isTableCardsVisible;
+    isCardFaceVisible_ = isVisible;
+
     for (const auto& card : cards_) {
-        card->loadImage(isTableCardsVisible);
+        card->loadImage(isCardFaceVisible_);
     }
     layout_->update();
     update();

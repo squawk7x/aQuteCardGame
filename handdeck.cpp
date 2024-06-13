@@ -1,5 +1,5 @@
 #include "handdeck.h"
-#include "player.h"
+#include <QGroupBox>
 
 Handdeck::Handdeck(QWidget* parent)
     : CardVec(parent)
@@ -7,17 +7,20 @@ Handdeck::Handdeck(QWidget* parent)
 
 void Handdeck::addCard(QSharedPointer<Card> card)
 {
-    // Player* handdeckParent = qobject_cast<Player*>(parent());
-
     if (card) {
         connect(card.data(), &Card::cardClicked, this, [this, card]() {
             this->onCardClicked(card);
         });
         card->setParent(this);
-        // if (handdeckParent->isRobot())
-        //     card->loadImage(isCardVecVisible_);
-        // else
-        //     card->loadImage(true);
+
+        QGroupBox* handdeck = qobject_cast<QGroupBox*>(parent());
+
+        if (handdeck && handdeck->objectName() == "Player1") {
+            card->loadImage(true);
+        } else {
+            card->loadImage(isCardFaceVisible_);
+        }
+
         cards_.append(card);
         layout_->addWidget(card.data());
         card->show();
@@ -70,27 +73,24 @@ void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
     }
 }
 
-void Handdeck::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+void Handdeck::onToggleIsCardFaceVisible(bool isVisible)
 {
-    isCardVecVisible_ = isTableCardsVisible;
-    // Debugging statement to check the type of the parent object
-    qDebug() << "Parent object type:" << parent()->metaObject()->className();
+    isCardFaceVisible_ = isVisible;
 
-    // Safely cast the parent to a Player object
-    Player* handdeckParent = qobject_cast<Player*>(parent());
+    QGroupBox* handdeck = qobject_cast<QGroupBox*>(parent());
 
-    if (handdeckParent) {
-        // Parent object successfully cast to Player
-        for (const auto& card : cards_) {
-            if (handdeckParent->isRobot())
-                card->loadImage(isTableCardsVisible);
-            else
-                card->loadImage(true);
-        }
-        layout_->update();
-        update();
-    } else {
-        // Parent object is not of type Player
-        qWarning() << "Parent is not of type Player";
+    if (!handdeck) {
+        return; // Safeguard against invalid parent casting
     }
+
+    for (const auto& card : cards_) {
+        // qDebug() << handdeck->objectName();
+        if (handdeck && handdeck->objectName() == "Player1") {
+            card->loadImage(true);
+        } else {
+            card->loadImage(isCardFaceVisible_);
+        }
+    }
+    layout_->update();
+    update();
 }

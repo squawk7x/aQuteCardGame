@@ -1,10 +1,8 @@
 #include "playable.h"
-#include "player.h"
 
 Playable::Playable(QWidget* parent)
     : CardVec(parent)
 {
-    isCardVecVisible_ = true;
 }
 
 Playable::~Playable()
@@ -19,6 +17,7 @@ void Playable::addCard(QSharedPointer<Card> card)
         //     this->onCardClicked(card);
         // });
         card->setParent(this);
+        card->loadImage(true);
         cards_.append(card);
         layout_->addWidget(card.data());
         layout_->update();
@@ -34,22 +33,13 @@ void Playable::onCardClicked(const QSharedPointer<Card> &card)
     }
 }
 
-void Playable::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+void Playable::onToggleIsCardFaceVisible(bool isVisible)
 {
-    isCardVecVisible_ = isTableCardsVisible;
-    // Safely cast the parent to a Player object
-    Player* playableParent = qobject_cast<Player*>(parent());
+    isCardFaceVisible_ = true;
 
-    if (playableParent) {
-        for (const auto& card : cards_) {
-            if (playableParent->isRobot())
-                card->loadImage(isTableCardsVisible);
-            else
-                card->loadImage(true);
-        }
-        layout_->update();
-        update();
-    } else {
-        qWarning() << "Parent is not of type Player";
+    for (const auto& card : cards_) {
+        card->loadImage(true);
     }
+    layout_->update();
+    update();
 }

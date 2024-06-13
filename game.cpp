@@ -44,7 +44,7 @@ Game::Game(QObject* parent)
     connect(this, &Game::cardAddedToStack, played_.get(), &Played::onCardAddedToStack);
     connect(this, &Game::cardAddedToStack, monitor_.get(), &Monitor::onCardAddedToStack);
     connect(this, &Game::cardMustFromBlind, drawn_.get(), &Drawn::onCardMustFromBlind);
-    // connect(this, &Game::numberCardPlayed, stack_.get(), &Stack::onNumberCardsPlayed);
+    connect(this, &Game::cardsPlayed, stack_.get(), &Stack::onCardsPlayed);
 
     for (const auto& player : playerList_) {
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
@@ -60,6 +60,8 @@ Game::Game(QObject* parent)
     connect(roundChooser().get(), &RoundChooser::finishRound, this, &Game::handleSpecialCards);
     connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::onNewRound);
     connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::onNewGame);
+
+    // emit setIsCardVisible(false);
 
     initializeRound();
 }
@@ -177,7 +179,8 @@ QSharedPointer<Drawn> Game::drawn()
 // Methods
 void Game::initializeRound()
 {
-    // jpointsChooser()->setDisabled(true);
+    jpointsChooser()->setDisabled(true);
+    jpointsChooser()->hide();
     roundChooser()->setEnabled(false);
     roundChooser()->hide();
 
@@ -199,11 +202,6 @@ void Game::initializeRound()
     shuffles = 1;
     lcdShuffles()->display(shuffles);
     lcdRound()->display(rounds);
-
-    // make sure the relative order in playerList_ is restored
-    // std::sort(playerList_.begin(), playerList_.end(), [](Player* a, Player* b) {
-    //     return a->id() < b->id();
-    // });
 
     // Player with highest score will start
     togglePlayerListToScore(true);
@@ -229,6 +227,9 @@ void Game::initializeRound()
     player = playerList_.front();
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
+
+    // show card face only for Player 1
+    emit setIsCardVisible(false);
 
     // case a robot player starts a new round
     // all playable cards are played
@@ -482,7 +483,7 @@ void Game::rotatePlayerList()
     jpointsChooser()->setEnabled(false);
     quteChooser()->setEnabled(false);
     eightsChooser()->hide();
-    jpointsChooser()->hide();
+    // jpointsChooser()->hide();    // don't hide when counting points
     quteChooser()->hide();
 
     if (!playerList_.isEmpty()) {
@@ -653,6 +654,7 @@ void Game::handleSpecialCards()
 
     if (isFinished) {
         emit countPoints(shuffles);
+        emit setIsCardVisible(true);
         playable()->clearCards();
         updateDisplay();
     }
@@ -666,7 +668,7 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
-    emit numberCardPlayed(played()->cards().size());
+    emit cardsPlayed(played()->cards().size());
 
     handleSpecialCards();
 
@@ -691,7 +693,7 @@ void Game::autoplay()
                 }
             }
         }
-        emit numberCardPlayed(played()->cards().size());
+        emit cardsPlayed(played()->cards().size());
     }
 }
 

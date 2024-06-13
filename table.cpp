@@ -1,5 +1,6 @@
 #include "table.h"
 #include <QDebug>
+#include <QDesktopServices>
 #include <QGroupBox>
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -10,6 +11,7 @@ Table::Table(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
     , game_(QSharedPointer<Game>::create())
+    , isCardFaceVisible_(true)
 {
     ui->setupUi(this);
 
@@ -118,47 +120,91 @@ Table::Table(QWidget* parent)
     groupBoxPlayer1->setLayout(layout_player1);
 
     connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->player2()->handdeck().get(),
+            &Handdeck::onToggleIsCardFaceVisible);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->player3()->handdeck().get(),
+            &Handdeck::onToggleIsCardFaceVisible);
+
+    // in Monitor card face always shown
     // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->blind().get(),
-    //         &Blind::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->player1()->handdeck().get(),
-    //         &Handdeck::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->player2()->handdeck().get(),
-    //         &Handdeck::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->player3()->handdeck().get(),
-    //         &Handdeck::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->played().get(),
-    //         &Played::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->drawn().get(),
-    //         &Drawn::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
-    //         game_->playable().get(),
-    //         &Playable::onToggleIsTableCardsVisible);
-    // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
+    //         &Table::toggleIsCardFaceVisible,
     //         game_->monitor().get(),
-    //         &Monitor::onToggleIsTableCardsVisible);
+    //         &Monitor::onToggleIsCardFaceVisible);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->got1().get(),
+            &Got::onToggleIsCardFaceVisible);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->got2().get(),
+            &Got::onToggleIsCardFaceVisible);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->blind().get(),
+            &Blind::onToggleIsCardFaceVisible);
+
+    // in Stack card face always shown
     // connect(this,
-    //         &Table::toggleIsTableCardsVisible,
+    //         &Table::toggleIsCardFaceVisible,
     //         game_->stack().get(),
-    //         &Stack::onToggleIsTableCardsVisible);
+    //         &Stack::onToggleIsCardFaceVisible);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->playable().get(),
+            &Playable::onToggleIsCardFaceVisible);
+
+    // in played cards card face always shown
+    // connect(this,
+    //         &Table::toggleIsCardFaceVisible,
+    //         game_->played().get(),
+    //         &Played::onToggleIsCardFaceVisible);
+
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->drawn().get(),
+            &Drawn::onToggleIsCardFaceVisible);
+
+    // in handdeck of player 1 card face always shown
+    connect(this,
+            &Table::toggleIsCardFaceVisible,
+            game_->player1()->handdeck().get(),
+            &Handdeck::onToggleIsCardFaceVisible);
+
+    // does not work as expected:
+    // emit toggleIsCardFaceVisible(isCardFaceVisible_);
+
+    // this makes player 1 visible == true and opponent players visible == false:
+    QKeyEvent* event = new QKeyEvent(QEvent::KeyPress, Qt::Key_V, Qt::NoModifier);
+    QApplication::postEvent(this, event);
+
+    connect(game_.get(), &Game::setIsCardVisible, this, &Table::onSetIsCardVisible);
 }
 
 Table::~Table()
 {
     delete ui;
+}
+
+void Table::openReadmeFile()
+{
+    QString readmePath = "/home/andreas/Qt/Projects/aQuteCardGame/README.md";
+    QDesktopServices::openUrl(QUrl::fromLocalFile(readmePath));
+}
+
+void Table::onSetIsCardVisible(bool isVisible)
+{
+    isCardFaceVisible_ = isVisible;
+    emit toggleIsCardFaceVisible(isCardFaceVisible_);
 }
 
 void Table::mousePressEvent(QMouseEvent* event)
@@ -173,8 +219,13 @@ void Table::mousePressEvent(QMouseEvent* event)
 void Table::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_V) {
-        emit toggleIsTableCardsVisible(isTableCardsVisible_);
-        isTableCardsVisible_ = !isTableCardsVisible_;
+        isCardFaceVisible_ = !isCardFaceVisible_;
+        qDebug() << "isCardFaceVisible:" << isCardFaceVisible_;
+        emit toggleIsCardFaceVisible(isCardFaceVisible_);
+    }
+
+    if (event->key() == Qt::Key_F1) {
+        openReadmeFile();
     }
 
     if (event->key() == Qt::Key_R) {

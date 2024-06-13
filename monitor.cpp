@@ -4,7 +4,6 @@
 Monitor::Monitor(QWidget* parent)
     : CardVec(parent)
 {
-    isCardVecVisible_ = true; // Default visibility
 }
 
 Monitor::~Monitor()
@@ -51,9 +50,9 @@ void Monitor::onCardAddedToStack(const QSharedPointer<Card>& card)
     addCard(card->clone(this));
 }
 
-void Monitor::onToggleIsTableCardsVisible(bool isTableCardsVisible)
+void Monitor::onToggleIsCardFaceVisible(bool isVisible)
 {
-    isCardVecVisible_ = true;
+    isCardFaceVisible_ = true;
     for (const auto& card : cards_) {
         card->loadImage(true);
     }

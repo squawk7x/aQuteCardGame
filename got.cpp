@@ -3,7 +3,6 @@
 Got::Got(QWidget* parent)
     : CardVec(parent)
 {
-    isCardVecVisible_ = true; // Ensure the widget is visible if needed
 }
 
 Got::~Got()
@@ -16,18 +15,13 @@ void Got::onCardBadFromBlind(const QSharedPointer<Card>& card)
     addCard(card->clone(this));
 }
 
-void Got::onToggleIsTableCardsVisible(bool isTableCardsVisible)
-{
-    isCardVecVisible_ = isTableCardsVisible;
-    for (const auto& card : cards_) {
-        card->loadImage(isTableCardsVisible);
-    }
-    layout_->update();
-    update();
-}
-
-// void Got::clearGotCards()
+// void Got::onToggleIsCardFaceVisible(bool isVisible)
 // {
-//     // if (!cards_.isEmpty())
-//     //     clearCards();
+//     isCardFaceVisible_ = isVisible;
+
+//     for (const auto& card : cards_) {
+//         card->loadImage(isCardFaceVisible_);
+//     }
+//     layout_->update();
+//     update();
 // }
