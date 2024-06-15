@@ -11,8 +11,6 @@
 Table::Table(int numberOfPlayers, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
-    , game_(QSharedPointer<Game>::create(numberOfPlayers))
-    , isCardFaceVisible_(true)
 {
     ui->setupUi(this);
 
@@ -20,9 +18,18 @@ Table::Table(int numberOfPlayers, QWidget* parent)
     QRect screenGeometry = screen->availableGeometry();
     int screenWidth = screenGeometry.width();
     int screenHeight = screenGeometry.height();
-
-    // Set maximum size constraints based on the available screen size
     setMaximumSize(screenWidth, screenHeight);
+
+    initializeGame(numberOfPlayers);
+}
+
+void Table::initializeGame(int numberOfPlayers)
+{
+    if (game_) {
+        game_.reset();
+    }
+
+    game_ = QSharedPointer<Game>::create(numberOfPlayers);
 
     // Find all QHBoxLayouts
     QHBoxLayout* layoutPlayer2 = findChild<QHBoxLayout*>("layoutPlayer2");
@@ -86,7 +93,6 @@ Table::Table(int numberOfPlayers, QWidget* parent)
     QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("gbPlayer2");
     groupBoxPlayer2->setLayout(layoutPlayer2);
 
-    QGroupBox* groupBoxPlayer3 = nullptr;
     if (numberOfPlayers == 3) {
         QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("gbPlayer3");
         groupBoxPlayer3->setLayout(layoutPlayer3);
@@ -133,75 +139,19 @@ Table::Table(int numberOfPlayers, QWidget* parent)
 
     connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
 
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->player2()->handdeck().get(),
-            &Handdeck::onToggleIsCardFaceVisible);
+    // Settings
+    connect(game_.get(), &Game::setCbVisible, this, [this](bool checked) {
+        ui->cbVisible->setChecked(checked);
+    });
+    connect(this, &Table::cbVisibleStatus, game_.get(), &Game::onCbVisibleStatus);
+    connect(ui->cbVisible, &QCheckBox::stateChanged, game_.get(), &Game::onCbVisible);
+    connect(ui->cbSound, &QCheckBox::stateChanged, game_.get(), &Game::onCbSound);
+    connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
+    connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
+    connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
+    connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
 
-    if (numberOfPlayers == 3) {
-        connect(this,
-                &Table::toggleIsCardFaceVisible,
-                game_->player3()->handdeck().get(),
-                &Handdeck::onToggleIsCardFaceVisible);
-    }
-
-    // in Monitor card face always shown
-    // connect(this,
-    //         &Table::toggleIsCardFaceVisible,
-    //         game_->monitor().get(),
-    //         &Monitor::onToggleIsCardFaceVisible);
-
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->got1().get(),
-            &Got::onToggleIsCardFaceVisible);
-
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->got2().get(),
-            &Got::onToggleIsCardFaceVisible);
-
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->blind().get(),
-            &Blind::onToggleIsCardFaceVisible);
-
-    // in Stack card face always shown
-    // connect(this,
-    //         &Table::toggleIsCardFaceVisible,
-    //         game_->stack().get(),
-    //         &Stack::onToggleIsCardFaceVisible);
-
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->playable().get(),
-            &Playable::onToggleIsCardFaceVisible);
-
-    // in played cards card face always shown
-    // connect(this,
-    //         &Table::toggleIsCardFaceVisible,
-    //         game_->played().get(),
-    //         &Played::onToggleIsCardFaceVisible);
-
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->drawn().get(),
-            &Drawn::onToggleIsCardFaceVisible);
-
-    // in handdeck of player 1 card face always shown
-    connect(this,
-            &Table::toggleIsCardFaceVisible,
-            game_->player1()->handdeck().get(),
-            &Handdeck::onToggleIsCardFaceVisible);
-
-    // does not work as expected:
-    // emit toggleIsCardFaceVisible(isCardFaceVisible_);
-
-    // this makes player 1 visible == true and opponent players visible == false:
-    QKeyEvent* event = new QKeyEvent(QEvent::KeyPress, Qt::Key_V, Qt::NoModifier);
-    QApplication::postEvent(this, event);
-
-    connect(game_.get(), &Game::setIsCardVisible, this, &Table::onSetIsCardVisible);
+    emit cbVisibleStatus(ui->cbVisible->isChecked());
 }
 
 Table::~Table()
@@ -209,16 +159,14 @@ Table::~Table()
     delete ui;
 }
 
-void Table::openReadmeFile()
+void Table::onRbNumPlayers2()
 {
-    QString readmePath = "/home/andreas/Qt/Projects/aQuteCardGame/README.md";
-    QDesktopServices::openUrl(QUrl::fromLocalFile(readmePath));
+    initializeGame(2);
 }
 
-void Table::onSetIsCardVisible(bool isVisible)
+void Table::onRbNumPlayers3()
 {
-    isCardFaceVisible_ = isVisible;
-    emit toggleIsCardFaceVisible(isCardFaceVisible_);
+    initializeGame(3);
 }
 
 void Table::mousePressEvent(QMouseEvent* event)
@@ -232,21 +180,16 @@ void Table::mousePressEvent(QMouseEvent* event)
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_V) {
-        isCardFaceVisible_ = !isCardFaceVisible_;
-        emit toggleIsCardFaceVisible(isCardFaceVisible_);
-    }
-
     if (event->key() == Qt::Key_F1) {
         openReadmeFile();
     }
 
     if (event->key() == Qt::Key_R) {
-        game_->player->handdeck()->sortCards(Handdeck::SortOption::Rank);
+        game_->player->handdeck()->sortCardsBy(Handdeck::SortOption::Rank);
     }
 
     if (event->key() == Qt::Key_S) {
-        game_->player->handdeck()->sortCards(Handdeck::SortOption::Suit);
+        game_->player->handdeck()->sortCardsBy(Handdeck::SortOption::Suit);
     }
 
     if (event->key() == Qt::Key_0) {
@@ -318,4 +261,10 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     QWidget::keyPressEvent(event);
+}
+
+void Table::openReadmeFile()
+{
+    QString readmePath = "/home/andreas/Qt/Projects/aQuteCardGame/README.md";
+    QDesktopServices::openUrl(QUrl::fromLocalFile(readmePath));
 }

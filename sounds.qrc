@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sounds/draw_card_from_blind.mp3</file>
+        <file>sounds/put_card_on_stack.mp3</file>
+        <file>sounds/shuffling.mp3</file>
+    </qresource>
+</RCC>

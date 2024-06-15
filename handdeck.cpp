@@ -15,7 +15,7 @@ void Handdeck::addCard(QSharedPointer<Card> card)
 
         QGroupBox* handdeck = qobject_cast<QGroupBox*>(parent());
 
-        if (handdeck && handdeck->objectName() == "Player1") {
+        if (handdeck && handdeck->objectName() == "gbPlayer1") {
             card->loadImage(true);
         } else {
             card->loadImage(isCardFaceVisible_);
@@ -41,7 +41,7 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
     }
 }
 
-void Handdeck::sortCards(Handdeck::SortOption option)
+void Handdeck::sortCardsBy(SortOption option)
 {
     if (option == SortOption::Suit) {
         std::sort(cards_.begin(),
@@ -73,7 +73,7 @@ void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
     }
 }
 
-void Handdeck::onToggleIsCardFaceVisible(bool isVisible)
+void Handdeck::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 
@@ -84,8 +84,7 @@ void Handdeck::onToggleIsCardFaceVisible(bool isVisible)
     }
 
     for (const auto& card : cards_) {
-        // qDebug() << handdeck->objectName();
-        if (handdeck && handdeck->objectName() == "Player1") {
+        if (handdeck && handdeck->objectName() == "gbPlayer1") {
             card->loadImage(true);
         } else {
             card->loadImage(isCardFaceVisible_);

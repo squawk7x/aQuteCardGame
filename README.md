@@ -11,11 +11,11 @@ This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "�
 5. **Bottom Row**: Contains your own hand of cards.
 
 ### Layout with card faces of opponent players hidden:
-![layout](images/table_layout_1.png)
+![layout](images/table_layout.png)
 
-### Layout with card faces of opponent players shown (keypress 'V'):
+### Layout with card faces of opponent players shown:
+![layout](images/table_layout_1.png)
 ![layout](images/table_layout_2.png)
-![layout](images/table_layout_3.png)
 
 ## Game Rules
 
@@ -74,6 +74,14 @@ When four cards of the same rank are played in sequence (by different players), 
 - **'Qute'**: Decide whether to finish or continue the round.
   - ![qute](images/chooser_qute_y.png)
   - ![qute](images/chooser_qute_n.png)
+
+### More Controls and Settings
+   ![controls](images/indicator_and_control_switches.png)
+
+- **Players**: you can play against 1 or 2 to AI player (TODO).
+- **Sort Cards by**: arrange handdeck cards by suit or rank.
+- **Sound**: enables some sound effects.
+- **Visible**: if enabled the card faces of th opponent players are shown.
 
 ### Special Keys (Testing Mode)
 - **F1**: Show the README.md (this help).

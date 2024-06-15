@@ -29,7 +29,7 @@ void Played::onCardAddedToStack(const QSharedPointer<Card> &card)
     addCard(card->clone(this));
 }
 
-void Played::onToggleIsCardFaceVisible(bool isVisible)
+void Played::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
     for (const auto& card : cards_) {

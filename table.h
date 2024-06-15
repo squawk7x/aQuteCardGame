@@ -19,15 +19,12 @@ class Table : public QWidget
 private:
     Ui::Table *ui;
     QSharedPointer<Game> game_;
-    bool isCardFaceVisible_;
 
 public:
-    explicit Table(int numberOfPlayers = 2, QWidget *parent = nullptr);
+    explicit Table(int numberOfPlayers = 3, QWidget *parent = nullptr);
     ~Table();
+    void initializeGame(int numberOfPlayers);
     void openReadmeFile();
-
-public slots:
-    void onSetIsCardVisible(bool isVisible);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -35,7 +32,11 @@ protected:
 
 signals:
     void rightMouseClicked();
-    void toggleIsCardFaceVisible(bool isVisible);
+    void cbVisibleStatus(int state);
+
+public slots:
+    void onRbNumPlayers2();
+    void onRbNumPlayers3();
 };
 
 #endif // TABLE_H

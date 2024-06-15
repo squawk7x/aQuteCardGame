@@ -5,6 +5,10 @@
 Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
     , numberOfPlayers_(numberOfPlayers)
+    , mediaPlayer_(QSharedPointer<QMediaPlayer>::create(this))
+    , audioOutput_(QSharedPointer<QAudioOutput>::create(this))
+    , isCardsVisible_(false)
+    , isSoundOn_(false)
     , monitor_(QSharedPointer<Monitor>::create())
     , eightsChooser_(QSharedPointer<EightsChooser>::create())
     , quteChooser_(QSharedPointer<QuteChooser>::create())
@@ -63,6 +67,32 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(roundChooser().get(), &RoundChooser::finishRound, this, &Game::handleSpecialCards);
     connect(roundChooser().get(), &RoundChooser::newRound, this, &Game::onNewRound);
     connect(roundChooser().get(), &RoundChooser::newGame, this, &Game::onNewGame);
+
+    connect(this,
+            &Game::toggleCardsVisible,
+            player2()->handdeck().get(),
+            &Handdeck::onToggleCardsVisible);
+
+    if (numberOfPlayers == 3) {
+        connect(this,
+                &Game::toggleCardsVisible,
+                player3()->handdeck().get(),
+                &Handdeck::onToggleCardsVisible);
+    }
+
+    connect(this, &Game::toggleCardsVisible, got1().get(), &Got::onToggleCardsVisible);
+    connect(this, &Game::toggleCardsVisible, got2().get(), &Got::onToggleCardsVisible);
+    connect(this, &Game::toggleCardsVisible, blind().get(), &Blind::onToggleCardsVisible);
+    connect(this, &Game::toggleCardsVisible, playable().get(), &Playable::onToggleCardsVisible);
+    connect(this, &Game::toggleCardsVisible, drawn().get(), &Drawn::onToggleCardsVisible);
+
+    // in handdeck of player 1 card face always shown
+    connect(this,
+            &Game::toggleCardsVisible,
+            player1()->handdeck().get(),
+            &Handdeck::onToggleCardsVisible);
+
+    mediaPlayer_->setAudioOutput(audioOutput_.data());
 
     initializeRound();
 }
@@ -199,6 +229,11 @@ void Game::initializeRound()
         got2_->clearCards();
 
     // shuffle the cards
+    if (isSoundOn_) {
+        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
+        mediaPlayer_->stop(); // Stop any previous playback
+        mediaPlayer_->play();
+    }
     blind_->shuffle();
     shuffles = 1;
     lcdShuffles()->display(shuffles);
@@ -232,7 +267,7 @@ void Game::initializeRound()
     player->handdeck()->cards().last()->click();
 
     // show card face only for Player 1
-    emit setIsCardVisible(false);
+    emit setCbVisible(false);
 
     // case a robot player starts a new round
     // all playable cards are played
@@ -242,6 +277,11 @@ void Game::initializeRound()
 void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
+        if (isSoundOn_) {
+            mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/put_card_on_stack.wav"));
+            mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->play();
+        }
         emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
@@ -472,6 +512,12 @@ void Game::drawCardFromBlind(DrawOption option)
         emit cardBadFromBlind(blind()->topCard());
     }
 
+    if (isSoundOn_) {
+        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/draw_card_from_blind.wav"));
+        mediaPlayer_->stop(); // Stop any previous playback
+        mediaPlayer_->play();
+    }
+
     blind()->moveTopCardTo(player->handdeck().get());
 }
 
@@ -657,7 +703,7 @@ void Game::handleSpecialCards()
 
     if (isFinished) {
         emit countPoints(shuffles);
-        emit setIsCardVisible(true);
+        emit setCbVisible(true);
         playable()->clearCards();
         updateDisplay();
     }
@@ -715,6 +761,11 @@ void Game::refillBlindFromStack()
     }
 
     // Shuffle the blind deck
+    if (isSoundOn_) {
+        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
+        mediaPlayer_->stop(); // Stop any previous playback
+        mediaPlayer_->play();
+    }
     blind()->shuffle();
     shuffles += 1;
     lcdShuffles()->display(shuffles);
@@ -750,11 +801,45 @@ void Game::updateDisplay()
     }
 }
 
+void Game::onCbVisible(int state)
+{
+    emit toggleCardsVisible(state);
+}
+
+void Game::onCbVisibleStatus(int state)
+{
+    isCardsVisible_ = state;
+    emit toggleCardsVisible(state);
+}
+
+void Game::onCbSound(int state)
+{
+    isSoundOn_ = state;
+}
+
+void Game::onRbSuit()
+{
+    player->handdeck()->sortCardsBy(Handdeck::SortOption::Suit);
+}
+void Game::onRbRank()
+{
+    player->handdeck()->sortCardsBy(Handdeck::SortOption::Rank);
+}
+
+// void Game::onNumPlayers2()
+// {
+//     numberOfPlayers_ = 2;
+//     onNewGame();
+// }
+
+// void Game::onNumPlayers3()
+// {
+//     numberOfPlayers_ = 3;
+//     onNewGame();
+// }
+
 void Game::onNewRound()
 {
-    // togglePlayerListToScore(false);
-    // qDebug() << "The winner is: " << playerList_.front()->name();
-
     for (const auto& player : playerList_) {
         player->setJpoints(0);
     }

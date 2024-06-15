@@ -17,7 +17,7 @@ public:
 
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card> &card); // Slot to handle card added to stack
-    virtual void onToggleIsCardFaceVisible(bool isVisible) override;
+    virtual void onToggleCardsVisible(bool isVisible) override;
 };
 
 #endif // PLAYED_H
