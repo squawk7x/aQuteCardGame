@@ -33,7 +33,7 @@ void Playable::onCardClicked(const QSharedPointer<Card> &card)
     }
 }
 
-void Playable::onToggleIsCardFaceVisible(bool isVisible)
+void Playable::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 

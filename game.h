@@ -1,7 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QAudioOutput>
 #include <QLCDNumber>
+#include <QMediaPlayer>
 #include <QMouseEvent>
 #include <QObject>
 #include <QVector>
@@ -21,6 +23,11 @@ class Game : public QObject
 
 private:
     int numberOfPlayers_;
+    bool isCardsVisible_;
+    bool isSoundOn_;
+    QSharedPointer<QMediaPlayer> mediaPlayer_;
+    QSharedPointer<QAudioOutput> audioOutput_;
+
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
 
@@ -112,12 +119,19 @@ signals:
     void cardBadFromBlind(const QSharedPointer<Card>& card);
     void cardsPlayed(int numCardsPlayed);
     void countPoints(int shuffles);
-    //
-    void setIsCardVisible(bool isVisible);
+
+    // Controls and Settings:
+    void setCbVisible(bool isVisible);
+    void toggleCardsVisible(bool isVisible);
 
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
+    void onCbVisible(int state);
+    void onCbVisibleStatus(int state);
+    void onCbSound(int state);
+    void onRbSuit();
+    void onRbRank();
     void onNewRound();
     void onNewGame();
 };

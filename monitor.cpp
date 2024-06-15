@@ -50,7 +50,7 @@ void Monitor::onCardAddedToStack(const QSharedPointer<Card>& card)
     addCard(card->clone(this));
 }
 
-void Monitor::onToggleIsCardFaceVisible(bool isVisible)
+void Monitor::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
     for (const auto& card : cards_) {

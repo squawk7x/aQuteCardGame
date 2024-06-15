@@ -15,14 +15,14 @@ public:
     explicit Handdeck(QWidget* parent = nullptr);
     virtual void addCard(QSharedPointer<Card> card) override;
     virtual void removeCard(QSharedPointer<Card> card) override;
-    void sortCards(SortOption);
 
 signals:
     void handCardClicked(const QSharedPointer<Card>& card);
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card) override;
-    virtual void onToggleIsCardFaceVisible(bool isVisible) override;
+    virtual void onToggleCardsVisible(bool isVisible) override;
+    void sortCardsBy(SortOption);
 };
 
 #endif // HANDDECK_H

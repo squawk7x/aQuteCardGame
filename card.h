@@ -22,7 +22,6 @@ class Card : public QPushButton
     QString rankname_;
     QString str_;
     int value_;
-    // bool isCardFaceVisible_ = true;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);

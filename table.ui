@@ -416,36 +416,20 @@
            <set>Qt::AlignCenter</set>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
+           <item row="1" column="0">
+            <widget class="QRadioButton" name="rbNumPlayers3">
+             <property name="text">
+              <string>3</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QRadioButton" name="rbNumPlayers2">
              <property name="text">
               <string>2</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QRadioButton" name="rbNumerPlayers3">
-             <property name="text">
-              <string>3</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="gbSound">
-          <property name="title">
-           <string>Sound</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="cbSoundOn">
-             <property name="text">
-              <string>On</string>
              </property>
             </widget>
            </item>
@@ -461,7 +445,17 @@
            <set>Qt::AlignCenter</set>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
+           <item row="4" column="0">
+            <widget class="QRadioButton" name="rbUnsorted">
+             <property name="text">
+              <string>Unsorted</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
             <widget class="QRadioButton" name="rbRank">
              <property name="text">
               <string>Rank</string>
@@ -472,6 +466,41 @@
             <widget class="QRadioButton" name="rbSuit">
              <property name="text">
               <string>Suit</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbSound">
+          <property name="title">
+           <string>Settings</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="cbSound">
+             <property name="text">
+              <string>Sound</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="cbVisible">
+             <property name="text">
+              <string>Visible</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
              </property>
             </widget>
            </item>

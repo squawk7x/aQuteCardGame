@@ -17,7 +17,7 @@ public:
     void showTopCard();
 
 public slots:
-    virtual void onToggleIsCardFaceVisible(bool isVisible) override;
+    virtual void onToggleCardsVisible(bool isVisible) override;
 };
 
 #endif // BLIND_H

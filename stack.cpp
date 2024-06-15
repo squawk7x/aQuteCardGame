@@ -35,7 +35,7 @@ void Stack::onCardsPlayed(int numCardsPlayed)
     }
 }
 
-void Stack::onToggleIsCardFaceVisible(bool isVisible)
+void Stack::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 

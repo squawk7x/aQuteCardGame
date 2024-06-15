@@ -25,7 +25,6 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
     : QPushButton(parent)
     , suit_(suit)
     , rank_(rank)
-// , isCardFaceVisible_(true)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setText("");
@@ -105,13 +104,6 @@ QSharedPointer<Card> Card::clone(QWidget* parent) const
     }
     return clonedCard;
 }
-
-// void Card::toggleCardFaceVisibility()
-// {
-//     isCardFaceVisible_ = !isCardFaceVisible_;
-//     loadImage();
-//     update();
-// }
 
 // Getters
 QString Card::suit() const

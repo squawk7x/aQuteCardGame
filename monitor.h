@@ -21,7 +21,7 @@ signals:
 
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card>& card);
-    virtual void onToggleIsCardFaceVisible(bool isVisible) override;
+    virtual void onToggleCardsVisible(bool isVisible) override;
 };
 
 #endif // MONITOR_H

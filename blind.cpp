@@ -59,7 +59,7 @@ void Blind::showTopCard()
     }
 }
 
-void Blind::onToggleIsCardFaceVisible(bool isVisible)
+void Blind::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 

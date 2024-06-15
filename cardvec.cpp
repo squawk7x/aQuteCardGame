@@ -196,7 +196,7 @@ void CardVec::onCardClicked(const QSharedPointer<Card>& card)
     qDebug() << "onCardClicked received in CardVec: " << card->str();
 }
 
-void CardVec::onToggleIsCardFaceVisible(bool isVisible)
+void CardVec::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 
