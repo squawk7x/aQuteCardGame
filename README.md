@@ -1,6 +1,8 @@
 # Card Game
 
-This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}. The game is played by 3 players. Player 1 competes against 2 AI players. Below is a description of the gameboard layout, detailed rules, and game control instructions.
+This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}.<br>
+The game is can be played by 2 or 3 players. Player 1 competes against 1 or 2 AI players.<br>
+Below is a description of the gameboard layout, detailed rules, and game control instructions.
 
 ## Gameboard Layout
 
@@ -10,36 +12,50 @@ This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "�
 4. **Fourth Row**: Indicators for cards drawn (except cards drawn for '7's and '8's) (Drawn), playable cards that fit to the actual card on the stack (Playable), cards played by the current player (Played). Further this row contains an indicator for the rounds played, and the player scores.
 5. **Bottom Row**: Contains your own hand of cards.
 
-### Layout with card faces of opponent players hidden:
-![layout](images/table_layout_1.png)
+### Layout with card faces of opponent players visible (3 players):
+![layout](images/table_layout_3_players.png)
 
-### Layout with card faces of opponent players shown (keypress 'V'):
-![layout](images/table_layout_2.png)
-![layout](images/table_layout_3.png)
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
+
+### Layout with card faces of opponent players not visible (2 players):
+![layout](images/table_layout_2_players.png)
+
 
 ## Game Rules
 
 ### Starting the Game
 - **Initial Setup**: Each player starts with 5 cards.
-- **First Move**: Player 1 plays a card onto the stack and can add more cards of the same rank. The next player must play a card of the same suit or rank and may add more cards of the same rank.
+- **First Move**: Player 1 plays a card onto the stack and can add more cards of the same rank.<br>
+The next player must play a card of the same suit or rank and may add more cards of the same rank.
 
 ### Playing a Turn
 - **Using Hand Cards**: Players must use their hand cards and play at least one card.
-- **Drawing from the Blind**: If no suitable card is in hand, draw one card from the blind. This card can be played if it matches the card on the stack; otherwise, the turn passes to the next player.
+- **Drawing from the Blind**: If no suitable card is in hand, draw one card from the blind.<br>
+This card can be played if it matches the card on the stack; otherwise, the turn passes to the next player.
 
 ### Special Conditions
 - **Drawing Cards**: Only one card can be drawn from the blind, except when covering a '6'.
-- **Covering a '6'**: Must be covered by a different rank. If no suitable card is in hand, draw cards from the blind until a non-'6' card can be played. The 'Qute' condition (four cards of the same rank played in sequence) overrides this rule, allowing the player to either end the round or cover the fourth '6' with another rank.
+- **Covering a '6'**: Must be covered by a different rank.<br>
+If no suitable card is in hand, draw cards from the blind until a non-'6' card can be played.<br>
+The 'Qute' condition (four cards of the same rank played in sequence) overrides this rule,
+allowing the player to either end the round or cover the fourth '6' with another rank.
 
 ### Special Cards
 - **6**: Must be covered by a different rank. Draw cards until this is possible.
 - **7**: The next player must draw one card from the blind.
-- **8**: The next player must draw 2 cards and is skipped. Multiple '8's can force the next player to draw more cards or distribute the draws among players. This is decided using the 'Eights Chooser'.
+- **8**: The next player must draw 2 cards and is skipped.<br>
+Multiple '8's can force the next player to draw more cards or distribute the draws among players.<br>
+This is decided using the 'Eights Chooser'.
 - **J**: Can be played on any suit, and the player chooses the suit to follow using the 'JsuitChooser'.
 - **A**: The next player is skipped. Multiple Aces skip sequential players.
 
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
+
 ### 'Qute' Condition
-When four cards of the same rank are played in sequence (by different players), the player who plays the fourth card can choose to end the round or continue. For '6's, this overrides the 'must be covered' rule.
+When four cards of the same rank are played in sequence (by different players), the player who plays the fourth card can choose to end the round or continue.<br>
+For '6's, this overrides the 'must be covered' rule.
 
 ## Scoring
 - **End of Round**: Scoring occurs when a player has no more cards or a 'Qute' is announced.
@@ -63,17 +79,35 @@ When four cards of the same rank are played in sequence (by different players), 
 - **Toggle Decisions**: Use the choosers for decisions on multiple '8's, 'Jsuit', 'Jpoints', and 'Qute'.
 
 ### Choosers
-- **Multiple 8's**: Decide how the draw cards rule for multiple '8's will apply.
+- **Multiple 8's**: Decide how the draw cards rule for multiple '8's will apply.<br>
+Click on this chooser to toggle between 'all 8s for next player' or 'share the 8s among the following players'.<br>
+(The toggling is disabled when playing against 1 opponent only.)
   - ![multiple 8](images/chooser_eights_n.png)
   - ![multiple 8](images/chooser_eights_a.png)
-- **J Suit**: Choose the suit to follow a 'J'.
+
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
+
+- **J Suit**: Choose the suit to follow a 'J'.<br>
+Click on this chooser to toggle to the next suit.<br>
+(The order of toggling is {"♦", "♠", "♥", "♣"}.)
   - ![jsuit](images/chooser_jsuit_of_hearts.png)
-- **J Points**: Choose between increasing scores of opponent players or reducing score of active player.
+
+
+- **J Points**: Choose between increasing scores of opponent players or reducing the score of the active player.<br>
+Click on this chooser to toggle between '+20 points' and '-20 points'.
   - ![jpoints](images/chooser_jpoints_p.png)
   - ![jpoints](images/chooser_jpoints_m.png)
+
 - **'Qute'**: Decide whether to finish or continue the round.
+You can finish a round if 4 times 6 is indicated in the 'Monitor' (6♦ 6♠ 6♥ 6♣) and 'Qute' enabled.
+If you choose 'Continue' then the last played '6' must be covered.<br>
+Click on this chooser to toggle between 'Qute' (finishing the round) and 'Continue this round'.
   - ![qute](images/chooser_qute_y.png)
   - ![qute](images/chooser_qute_n.png)
+
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
 
 ### More Controls and Settings
    ![controls](images/indicator_and_control_switches.png)
@@ -81,11 +115,15 @@ When four cards of the same rank are played in sequence (by different players), 
 - **Players**: you can play against 1 or 2 AI player.
 - **Sort Cards by**: arrange handdeck cards by suit or rank.
 - **Sound**: enables some sound effects.
-- **Visible**: if enabled the card faces of th opponent players are shown.
+- **Visible**: enables the card faces of the opponent players be shown.
 
-### Special Keys (Testing Mode)
-- **F1**: Show the README.md (this help).
-- **v**: Toggle visibility of other players' cards.
-- **6, 7, 8, J, A**: Add a corresponding card to the active player's hand.
+### Special Keys
+- **F1**: Show the README.md
+- **G**: Start a new Game.
+
+###  For Testing
+Extra special cards given to the active player:<br>
+- **6, 7, 8, J, A**: Add a corresponding card to the active player's hand.<br>
+- **D**: Move last card in the handdeck of the active player back to the blind.<br>
 
 Enjoy the game!

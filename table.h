@@ -30,6 +30,10 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
+private:
+    void addSpecialCardsToHand(QKeyEvent *event, const QVector<QString> &suits);
+    void sortCardsByPattern(QKeyEvent *event);
+
 signals:
     void rightMouseClicked();
     void cbVisibleStatus(int state);
@@ -37,6 +41,7 @@ signals:
 public slots:
     void onRbNumPlayers2();
     void onRbNumPlayers3();
+    // void onSetBlindRed(bool red);
 };
 
 #endif // TABLE_H

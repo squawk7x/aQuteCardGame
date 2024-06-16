@@ -268,6 +268,7 @@ void Game::initializeRound()
 
     // show card face only for Player 1
     emit setCbVisible(false);
+    emit setRbUnsorted(true);
 
     // case a robot player starts a new round
     // all playable cards are played
@@ -309,10 +310,17 @@ void Game::handleChoosers()
     // EightsChooser
     if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
         && played()->cards().size() >= 2) {
-        eightsChooser()->setEnabled(!player->isRobot());
-        if (player->isRobot())
-            eightsChooser()->toggleRandom();
-        eightsChooser()->show();
+        // if 2 players not allowing toggling to "a"
+        if (numberOfPlayers_ == 2) {
+            eightsChooser()->toggle_to("n");
+            eightsChooser()->setDisabled(true);
+            eightsChooser()->show();
+        } else {
+            eightsChooser()->setEnabled(!player->isRobot());
+            if (player->isRobot())
+                eightsChooser()->toggleRandom();
+            eightsChooser()->show();
+        }
     } else {
         eightsChooser()->hide();
         eightsChooser()->setEnabled(false);
@@ -450,11 +458,13 @@ bool Game::isMustDrawCard()
 
     // played card '6' must be covered
     if (stackCard->rank() == "6" && playable()->cards().isEmpty()) {
+        // emit setBlindRed(true);
         return true;
     }
 
     // at least one card must be played or drawn (if no playable card on hand)
     if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
+        // emit setBlindRed(true);
         return true;
     }
 
@@ -487,10 +497,14 @@ bool Game::isNextPlayerPossible()
 
     updatePlayable();
 
+    // if (player->isRobot()) {
     while (isMustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
+        emit setRbUnsorted(true);
+        // emit setBlindRed(false);
         updatePlayable();
     }
+    // }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
     if (stackCard->rank() == "6") {
@@ -643,9 +657,21 @@ void Game::handleSpecialCards()
     got2()->clearCards();
 
     for (int i = 0; i < sevens; ++i) {
-        connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
-        drawCardFromBlind(Game::DrawOption::BadCard);
-        disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+        if (numberOfPlayers_ == 3) {
+            connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+            drawCardFromBlind(Game::DrawOption::BadCard);
+            // if Player1 gets a card, cards are unsorted
+            if (!player->isRobot())
+                emit setRbUnsorted(true);
+            disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+        } else {
+            connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+            drawCardFromBlind(Game::DrawOption::BadCard);
+            // if Player1 gets a card, cards are unsorted
+            if (!player->isRobot())
+                emit setRbUnsorted(true);
+            disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+        }
     }
 
     if (aces > 0) {
@@ -672,6 +698,9 @@ void Game::handleSpecialCards()
                     connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 drawCardFromBlind(Game::DrawOption::BadCard);
                 drawCardFromBlind(Game::DrawOption::BadCard);
+                // if Player1 gets a card, cards are unsorted
+                if (!player->isRobot())
+                    emit setRbUnsorted(true);
                 disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
                 disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 rotatePlayerList();
@@ -690,6 +719,9 @@ void Game::handleSpecialCards()
         for (int i = 0; i < eights; ++i) {
             drawCardFromBlind(Game::DrawOption::BadCard);
             drawCardFromBlind(Game::DrawOption::BadCard);
+            // if Player1 gets a card, cards are unsorted
+            if (!player->isRobot())
+                emit setRbUnsorted(true);
         }
         disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
         rotatePlayerList();
@@ -826,16 +858,13 @@ void Game::onRbRank()
     player->handdeck()->sortCardsBy(Handdeck::SortOption::Rank);
 }
 
-// void Game::onNumPlayers2()
+// void Game::onBlindClicked()
 // {
-//     numberOfPlayers_ = 2;
-//     onNewGame();
-// }
-
-// void Game::onNumPlayers3()
-// {
-//     numberOfPlayers_ = 3;
-//     onNewGame();
+//     if (!player->isRobot() && isMustDrawCard()) {
+//         drawCardFromBlind(Game::DrawOption::MustCard);
+//         updatePlayable();
+//         // emit setBlindRed(false);
+//     }
 // }
 
 void Game::onNewRound()
