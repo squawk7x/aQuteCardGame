@@ -11,11 +11,11 @@ This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "�
 5. **Bottom Row**: Contains your own hand of cards.
 
 ### Layout with card faces of opponent players hidden:
-![layout](images/table_layout.png)
-
-### Layout with card faces of opponent players shown:
 ![layout](images/table_layout_1.png)
+
+### Layout with card faces of opponent players shown (keypress 'V'):
 ![layout](images/table_layout_2.png)
+![layout](images/table_layout_3.png)
 
 ## Game Rules
 
