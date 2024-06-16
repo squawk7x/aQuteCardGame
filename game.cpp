@@ -450,11 +450,13 @@ bool Game::isMustDrawCard()
 
     // played card '6' must be covered
     if (stackCard->rank() == "6" && playable()->cards().isEmpty()) {
+        // emit setBlindRed(true);
         return true;
     }
 
     // at least one card must be played or drawn (if no playable card on hand)
     if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
+        // emit setBlindRed(true);
         return true;
     }
 
@@ -487,10 +489,13 @@ bool Game::isNextPlayerPossible()
 
     updatePlayable();
 
+    // if (player->isRobot()) {
     while (isMustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
+        // emit setBlindRed(false);
         updatePlayable();
     }
+    // }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
     if (stackCard->rank() == "6") {
@@ -826,16 +831,13 @@ void Game::onRbRank()
     player->handdeck()->sortCardsBy(Handdeck::SortOption::Rank);
 }
 
-// void Game::onNumPlayers2()
+// void Game::onBlindClicked()
 // {
-//     numberOfPlayers_ = 2;
-//     onNewGame();
-// }
-
-// void Game::onNumPlayers3()
-// {
-//     numberOfPlayers_ = 3;
-//     onNewGame();
+//     if (!player->isRobot() && isMustDrawCard()) {
+//         drawCardFromBlind(Game::DrawOption::MustCard);
+//         updatePlayable();
+//         // emit setBlindRed(false);
+//     }
 // }
 
 void Game::onNewRound()

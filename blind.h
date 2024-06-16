@@ -16,6 +16,12 @@ public:
     void shuffle();
     void showTopCard();
 
+signals:
+    void blindClicked(); // Signal emitted when the blind is clicked
+
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
+
 public slots:
     virtual void onToggleCardsVisible(bool isVisible) override;
 };

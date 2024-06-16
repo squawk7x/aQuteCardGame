@@ -119,6 +119,7 @@ signals:
     void cardBadFromBlind(const QSharedPointer<Card>& card);
     void cardsPlayed(int numCardsPlayed);
     void countPoints(int shuffles);
+    void setBlindRed(bool red);
 
     // Controls and Settings:
     void setCbVisible(bool isVisible);
@@ -127,6 +128,7 @@ signals:
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
+    // void onBlindClicked();
     void onCbVisible(int state);
     void onCbVisibleStatus(int state);
     void onCbSound(int state);

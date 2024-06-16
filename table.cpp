@@ -122,6 +122,7 @@ void Table::initializeGame(int numberOfPlayers)
     groupBoxShuffles->setLayout(layoutShuffles);
     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("gbBlind");
     groupBoxBlind->setLayout(layoutBlind);
+    // groupBoxBlind->setStyleSheet("QGroupBox QWidget { background-color: red; }");
     QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("gbJsuitChooser");
     groupBoxJsuitChooser->setLayout(layoutJsuitChooser);
     QGroupBox* groupBoxStack = findChild<QGroupBox*>("gbStack");
@@ -151,6 +152,14 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
 
+    // if must draw a card from blind turn blind red
+    // connect(game_.get(), &Game::setBlindRed, this, &Table::onSetBlindRed);
+
+    // connect(game_->blind().get(),
+    //         &Blind::blindClicked,
+    //         game_.get(),
+    //         &Game::onBlindClicked); // Connect the click signal to the Game slot
+
     emit cbVisibleStatus(ui->cbVisible->isChecked());
 }
 
@@ -168,6 +177,17 @@ void Table::onRbNumPlayers3()
 {
     initializeGame(3);
 }
+
+// void Table::onSetBlindRed(bool red)
+// {
+//     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("gbBlind");
+//     if (groupBoxBlind) {
+//         if (red)
+//             groupBoxBlind->setStyleSheet("QGroupBox QWidget { background-color: red; }");
+//         else
+//             groupBoxBlind->setStyleSheet("");
+//     }
+// }
 
 void Table::mousePressEvent(QMouseEvent* event)
 {

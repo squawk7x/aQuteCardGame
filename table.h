@@ -37,6 +37,7 @@ signals:
 public slots:
     void onRbNumPlayers2();
     void onRbNumPlayers3();
+    // void onSetBlindRed(bool red);
 };
 
 #endif // TABLE_H

@@ -1,5 +1,6 @@
 #include "blind.h"
 #include <QRandomGenerator>
+#include "qevent.h"
 #include <algorithm>
 #include <random>
 
@@ -68,4 +69,12 @@ void Blind::onToggleCardsVisible(bool isVisible)
     }
     layout_->update();
     update();
+}
+
+void Blind::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+        emit blindClicked();
+    }
+    QWidget::mousePressEvent(event);
 }
