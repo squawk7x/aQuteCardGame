@@ -1,7 +1,8 @@
 # This file is used to ignore files which are generated
 # --------------------------------------------------------------
 .cache/
-images/Screenshot*
 build/
+dll/
+images/Screenshot*
 *.xcf
 CMakeLists.txt.user

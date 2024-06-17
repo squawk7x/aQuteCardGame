@@ -61,4 +61,5 @@
         <file>sounds/shuffling.wav</file>
         <file>sounds/draw_card_from_blind.wav</file>
     </qresource>
+    <qresource prefix="/dll"/>
 </RCC>

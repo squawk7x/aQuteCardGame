@@ -657,21 +657,12 @@ void Game::handleSpecialCards()
     got2()->clearCards();
 
     for (int i = 0; i < sevens; ++i) {
-        if (numberOfPlayers_ == 3) {
-            connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
-            drawCardFromBlind(Game::DrawOption::BadCard);
-            // if Player1 gets a card, cards are unsorted
-            if (!player->isRobot())
-                emit setRbUnsorted(true);
-            disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
-        } else {
-            connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
-            drawCardFromBlind(Game::DrawOption::BadCard);
-            // if Player1 gets a card, cards are unsorted
-            if (!player->isRobot())
-                emit setRbUnsorted(true);
-            disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
-        }
+        connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
+        drawCardFromBlind(Game::DrawOption::BadCard);
+        // if Player1 gets a card, cards are unsorted
+        if (!player->isRobot())
+            emit setRbUnsorted(true);
+        disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
     }
 
     if (aces > 0) {
