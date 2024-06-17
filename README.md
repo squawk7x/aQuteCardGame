@@ -1,8 +1,8 @@
 # Card Game
 
-This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and ranks {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}.<br>
+This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and 9 ranks {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}.<br>
 The game is can be played by 2 or 3 players. Player 1 competes against 1 or 2 AI players.<br>
-Below is a description of the gameboard layout, detailed rules, and game control instructions.
+Below is a description of the gameboard layout, detailed rules, game control and compile/run instructions.
 
 ## Gameboard Layout
 
@@ -41,17 +41,18 @@ If no suitable card is in hand, draw cards from the blind until a non-'6' card c
 The 'Qute' condition (four cards of the same rank played in sequence) overrides this rule,
 allowing the player to either end the round or cover the fourth '6' with another rank.
 
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
+
 ### Special Cards
 - **6**: Must be covered by a different rank. Draw cards until this is possible.
 - **7**: The next player must draw one card from the blind.
-- **8**: The next player must draw 2 cards and is skipped.<br>
-Multiple '8's can force the next player to draw more cards or distribute the draws among players.<br>
+- **8**: The next player must draw 2 cards and is skipped. Multiple '8's can force the next player to draw 2 cards for each 8 played or distribute the draws among the following players.<br>
+If multiple 8's are distributed among several players, these players will be skipped also.<br>
 This is decided using the 'Eights Chooser'.
+
 - **J**: Can be played on any suit, and the player chooses the suit to follow using the 'JsuitChooser'.
 - **A**: The next player is skipped. Multiple Aces skip sequential players.
-
-<!-- Page break -->
-<div style="page-break-before: always;"></div>
 
 ### 'Qute' Condition
 When four cards of the same rank are played in sequence (by different players), the player who plays the fourth card can choose to end the round or continue.<br>
@@ -71,12 +72,15 @@ For '6's, this overrides the 'must be covered' rule.
 - **Finishing with 'J'**: The player can choose to either reduce their score by 20 points per 'J' or increase opponent scores by 20 points per 'J', decided via the 'JpointsChooser'.
 - **Refilled Blind**: Each refill of the blind multiplies the end-of-round points (doubling, tripling, etc.), including the +/-20 points rule when finishing with 'J'.
 
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
+
 ## Game Control
 
 ### Mouse Controls
 - **Click on card**: Play the card onto the stack if it matches.
 - **Right Click**: End the current player's turn.
-- **Toggle Decisions**: Use the choosers for decisions on multiple '8's, 'Jsuit', 'Jpoints', and 'Qute'.
+- **Toggle Decisions**: Click on the different choosers to toggle to appropriate decisions on 'multiple 8s', 'Jsuit', 'Jpoints', and 'Qute'.
 
 ### Choosers
 - **Multiple 8's**: Decide how the draw cards rule for multiple '8's will apply.<br>
@@ -84,9 +88,6 @@ Click on this chooser to toggle between 'all 8s for next player' or 'share the 8
 (The toggling is disabled when playing against 1 opponent only.)
   - ![multiple 8](images/chooser_eights_n.png)
   - ![multiple 8](images/chooser_eights_a.png)
-
-<!-- Page break -->
-<div style="page-break-before: always;"></div>
 
 - **J Suit**: Choose the suit to follow a 'J'.<br>
 Click on this chooser to toggle to the next suit.<br>
@@ -99,15 +100,15 @@ Click on this chooser to toggle between '+20 points' and '-20 points'.
   - ![jpoints](images/chooser_jpoints_p.png)
   - ![jpoints](images/chooser_jpoints_m.png)
 
+<!-- Page break -->
+<div style="page-break-before: always;"></div>
+
 - **'Qute'**: Decide whether to finish or continue the round.
-You can finish a round if 4 times 6 is indicated in the 'Monitor' (6♦ 6♠ 6♥ 6♣) and 'Qute' enabled.
-If you choose 'Continue' then the last played '6' must be covered.<br>
+(Special case: You can finish a round if 4 times 6 is indicated in the 'Monitor' (6♦ 6♠ 6♥ 6♣) and 'Qute' enabled.
+If you choose 'Continue' then the last played '6' must be covered.)<br>
 Click on this chooser to toggle between 'Qute' (finishing the round) and 'Continue this round'.
   - ![qute](images/chooser_qute_y.png)
   - ![qute](images/chooser_qute_n.png)
-
-<!-- Page break -->
-<div style="page-break-before: always;"></div>
 
 ### More Controls and Settings
    ![controls](images/indicator_and_control_switches.png)
@@ -115,15 +116,23 @@ Click on this chooser to toggle between 'Qute' (finishing the round) and 'Contin
 - **Players**: you can play against 1 or 2 AI player.
 - **Sort Cards by**: arrange handdeck cards by suit or rank.
 - **Sound**: enables some sound effects.
-- **Visible**: enables the card faces of the opponent players be shown.
+- **Visible**: enables the card faces of the opponent players to be shown.
 
 ### Special Keys
 - **F1**: Show the README.md
 - **G**: Start a new Game.
 
 ###  For Testing
-Extra special cards given to the active player:<br>
-- **6, 7, 8, J, A**: Add a corresponding card to the active player's hand.<br>
+- **6, 7, 8, J, A**: Add corresponding cards (given rank for all suits) to the active player's hand.
 - **D**: Move last card in the handdeck of the active player back to the blind.<br>
 
+### How to install
+- **install git** if not already installed.
+- **git clone** https://github.com/squawk7x/aQuteCardGame.git
+- **install qtcreator** to compile the program for your specific operating system or use an appropriate compiled version.
+- **in qtcreator** Open File or Project (Ctrl-O), change into the directory 'aQuteCardGame' and doubleclick on CMakeLists.txt.
+- **in qtcreator** Run the program by (Ctrl-R) or by clicking on the green arrow.
+
+
 Enjoy the game!
+
