@@ -93,9 +93,12 @@ void Table::initializeGame(int numberOfPlayers)
     QGroupBox* groupBoxPlayer2 = findChild<QGroupBox*>("gbPlayer2");
     groupBoxPlayer2->setLayout(layoutPlayer2);
 
+    QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("gbPlayer3");
     if (numberOfPlayers == 3) {
-        QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("gbPlayer3");
         groupBoxPlayer3->setLayout(layoutPlayer3);
+        groupBoxPlayer3->show(); // Ensure the group box is visible
+    } else {
+        groupBoxPlayer3->hide(); // Hide the group box for player 3 if 2 players only
     }
 
     QGroupBox* groupBoxMonitor = findChild<QGroupBox*>("gbMonitor");
@@ -112,7 +115,13 @@ void Table::initializeGame(int numberOfPlayers)
     QGroupBox* groupBoxGot1 = findChild<QGroupBox*>("gbGot1");
     groupBoxGot1->setLayout(layoutGot1);
     QGroupBox* groupBoxGot2 = findChild<QGroupBox*>("gbGot2");
-    groupBoxGot2->setLayout(layoutGot2);
+    if (numberOfPlayers == 3) {
+        groupBoxGot2->setLayout(layoutGot2);
+        groupBoxGot2->show();
+    } else {
+        groupBoxGot2->hide(); // Hide the group box for overnext player if 2 players only
+    }
+
     QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("gbPlayed");
     groupBoxPlayed->setLayout(layoutPlayed);
     QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("gbDrawn");
@@ -144,6 +153,10 @@ void Table::initializeGame(int numberOfPlayers)
     connect(game_.get(), &Game::setCbVisible, this, [this](bool checked) {
         ui->cbVisible->setChecked(checked);
     });
+    connect(game_.get(), &Game::setRbUnsorted, this, [this](bool checked) {
+        ui->rbUnsorted->setChecked(checked);
+    });
+
     connect(this, &Table::cbVisibleStatus, game_.get(), &Game::onCbVisibleStatus);
     connect(ui->cbVisible, &QCheckBox::stateChanged, game_.get(), &Game::onCbVisible);
     connect(ui->cbSound, &QCheckBox::stateChanged, game_.get(), &Game::onCbSound);
@@ -166,6 +179,33 @@ void Table::initializeGame(int numberOfPlayers)
 Table::~Table()
 {
     delete ui;
+}
+
+void Table::addSpecialCardsToHand(QKeyEvent* event, const QVector<QString>& suits)
+{
+    QMap<int, QString> keyToCard = {{Qt::Key_6, "6"},
+                                    {Qt::Key_7, "7"},
+                                    {Qt::Key_8, "8"},
+                                    {Qt::Key_9, "9"},
+                                    {Qt::Key_A, "A"},
+                                    {Qt::Key_J, "J"}};
+
+    if (keyToCard.contains(event->key())) {
+        QString cardValue = keyToCard[event->key()];
+        for (const auto& suit : suits) {
+            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, cardValue);
+            game_->player->handdeck()->addCard(newCard);
+        }
+    }
+}
+
+void Table::sortCardsByPattern(QKeyEvent* event)
+{
+    int key = event->key();
+    if (key >= Qt::Key_0 && key <= Qt::Key_4) {
+        int pattern = key - Qt::Key_0;
+        game_->player->handdeck()->sortCardsByPattern(pattern);
+    }
 }
 
 void Table::onRbNumPlayers2()
@@ -204,81 +244,17 @@ void Table::keyPressEvent(QKeyEvent* event)
         openReadmeFile();
     }
 
-    if (event->key() == Qt::Key_R) {
-        game_->player->handdeck()->sortCardsBy(Handdeck::SortOption::Rank);
-    }
-
-    if (event->key() == Qt::Key_S) {
-        game_->player->handdeck()->sortCardsBy(Handdeck::SortOption::Suit);
-    }
-
-    if (event->key() == Qt::Key_0) {
-        game_->player->handdeck()->sortCardsByPattern(0);
-    }
-    if (event->key() == Qt::Key_1) {
-        game_->player->handdeck()->sortCardsByPattern(1);
-    }
-    if (event->key() == Qt::Key_2) {
-        game_->player->handdeck()->sortCardsByPattern(2);
-    }
-    if (event->key() == Qt::Key_3) {
-        game_->player->handdeck()->sortCardsByPattern(3);
-    }
-    if (event->key() == Qt::Key_4) {
-        game_->player->handdeck()->sortCardsByPattern(4);
-    }
-
-    if (event->key() == Qt::Key_F) {
-        emit game_->roundChooser()->finishRound();
-    }
-
-    if (event->key() == Qt::Key_N) {
-        emit game_->roundChooser()->newRound();
-    }
-
     if (event->key() == Qt::Key_G) {
-        emit game_->roundChooser()->newGame();
+        game_->onNewGame();
     }
 
-    if (event->key() == Qt::Key_6) {
-        for (const auto& suit : suits) {
-            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "6");
-            game_->player->handdeck()->addCard(newCard);
-        }
-    }
-
-    // Special Cards for Testing
-    if (event->key() == Qt::Key_7) {
-        for (const auto& suit : suits) {
-            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "7");
-            game_->player->handdeck()->addCard(newCard);
-        }
-    }
-
-    if (event->key() == Qt::Key_8) {
-        for (const auto& suit : suits) {
-            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "8");
-            game_->player->handdeck()->addCard(newCard);
-        }
-    }
-
-    if (event->key() == Qt::Key_A) {
-        for (const auto& suit : suits) {
-            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "A");
-            game_->player->handdeck()->addCard(newCard);
-        }
-    }
-
-    if (event->key() == Qt::Key_J) {
-        for (const auto& suit : suits) {
-            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, "J");
-            game_->player->handdeck()->addCard(newCard);
-        }
-    }
-
+    //For Testing:
     if (event->key() == Qt::Key_D) {
         game_->player->handdeck()->moveTopCardTo(game_->blind().get());
     }
+
+    addSpecialCardsToHand(event, suits);
+    sortCardsByPattern(event);
 
     QWidget::keyPressEvent(event);
 }

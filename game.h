@@ -123,6 +123,7 @@ signals:
 
     // Controls and Settings:
     void setCbVisible(bool isVisible);
+    void setRbUnsorted(bool isSorted);
     void toggleCardsVisible(bool isVisible);
 
 public slots:

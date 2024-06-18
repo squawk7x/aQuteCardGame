@@ -30,6 +30,10 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
+private:
+    void addSpecialCardsToHand(QKeyEvent *event, const QVector<QString> &suits);
+    void sortCardsByPattern(QKeyEvent *event);
+
 signals:
     void rightMouseClicked();
     void cbVisibleStatus(int state);

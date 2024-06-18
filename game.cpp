@@ -268,6 +268,7 @@ void Game::initializeRound()
 
     // show card face only for Player 1
     emit setCbVisible(false);
+    emit setRbUnsorted(true);
 
     // case a robot player starts a new round
     // all playable cards are played
@@ -309,10 +310,17 @@ void Game::handleChoosers()
     // EightsChooser
     if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
         && played()->cards().size() >= 2) {
-        eightsChooser()->setEnabled(!player->isRobot());
-        if (player->isRobot())
-            eightsChooser()->toggleRandom();
-        eightsChooser()->show();
+        // if 2 players not allowing toggling to "a"
+        if (numberOfPlayers_ == 2) {
+            eightsChooser()->toggle_to("n");
+            eightsChooser()->setDisabled(true);
+            eightsChooser()->show();
+        } else {
+            eightsChooser()->setEnabled(!player->isRobot());
+            if (player->isRobot())
+                eightsChooser()->toggleRandom();
+            eightsChooser()->show();
+        }
     } else {
         eightsChooser()->hide();
         eightsChooser()->setEnabled(false);
@@ -492,7 +500,6 @@ bool Game::isNextPlayerPossible()
     // if (player->isRobot()) {
     while (isMustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
-        // emit setBlindRed(false);
         updatePlayable();
     }
     // }
@@ -648,9 +655,12 @@ void Game::handleSpecialCards()
     got2()->clearCards();
 
     for (int i = 0; i < sevens; ++i) {
-        connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+        connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
         drawCardFromBlind(Game::DrawOption::BadCard);
-        disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
+        // if Player1 gets a card, cards are unsorted
+        if (!player->isRobot())
+            emit setRbUnsorted(true);
+        disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
     }
 
     if (aces > 0) {
@@ -677,6 +687,9 @@ void Game::handleSpecialCards()
                     connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 drawCardFromBlind(Game::DrawOption::BadCard);
                 drawCardFromBlind(Game::DrawOption::BadCard);
+                // if Player1 gets a card, cards are unsorted
+                if (!player->isRobot())
+                    emit setRbUnsorted(true);
                 disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
                 disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 rotatePlayerList();
@@ -695,6 +708,9 @@ void Game::handleSpecialCards()
         for (int i = 0; i < eights; ++i) {
             drawCardFromBlind(Game::DrawOption::BadCard);
             drawCardFromBlind(Game::DrawOption::BadCard);
+            // if Player1 gets a card, cards are unsorted
+            if (!player->isRobot())
+                emit setRbUnsorted(true);
         }
         disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
         rotatePlayerList();
