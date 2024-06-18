@@ -791,7 +791,7 @@ void Game::refillBlindFromStack()
     shuffles += 1;
     lcdShuffles()->display(shuffles);
 
-    qDebug() << "Blind refilled and shuffled.";
+    // qDebug() << "Blind refilled and shuffled.";
 }
 
 void Game::collectAllCardsToBlind()
@@ -882,7 +882,7 @@ void Game::onNewGame()
 
     updateDisplay();
 
-    qDebug() << "Starting new game ...";
+    // qDebug() << "Starting new game ...";
 
     initializeRound();
 }

@@ -222,7 +222,7 @@
         <item>
          <widget class="QGroupBox" name="gbGot2">
           <property name="title">
-           <string>bad cards by 7's or 8's</string>
+           <string>bad cards by 8's</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>

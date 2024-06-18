@@ -6,3 +6,4 @@ dll/
 images/Screenshot*
 *.xcf
 CMakeLists.txt.user
+*.orig

@@ -187,6 +187,7 @@ void Table::addSpecialCardsToHand(QKeyEvent* event, const QVector<QString>& suit
                                     {Qt::Key_7, "7"},
                                     {Qt::Key_8, "8"},
                                     {Qt::Key_9, "9"},
+                                    {Qt::Key_K, "K"},
                                     {Qt::Key_A, "A"},
                                     {Qt::Key_J, "J"}};
 

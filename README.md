@@ -2,23 +2,41 @@
 
 This card game is played with 36 cards, consisting of 4 suits {"♦", "♠", "♥", "♣"} and 9 ranks {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}.<br>
 The game can be played by 2 or 3 players. Player 1 competes against 1 or 2 AI players.<br>
+
 Below is a description of the gameboard layout, detailed rules, game controls, and compile/run instructions.
 
 ## Gameboard Layout
 
 1. **First Row**: Displays the 2 opponent AI players (Player 2 and Player 3).
-2. **Second Row**: Contains the Monitor (shows cards of the same rank played in sequence), various choosers (Qute Chooser, Eights Chooser, Jpoints Chooser, and Round Chooser), and panels for cards drawn due to 'Bad cards' ('7' or '8').
+2. **Second Row**: Contains the Monitor (shows cards of the same rank played in sequence), various choosers (Qute Chooser, Eights Chooser, Jpoints Chooser, and Round Chooser),
+and panels for cards drawn by next player due to 'Bad cards' ('7' or '8') and for cards drawn by overnext player due to 'Bad cards ('8').
 3. **Third Row**: Includes the Shuffles counter (indicates how often the blind was refilled and shuffled), the Blind (shows the top card of the draw pile), the JsuitChooser (to choose which suit follows a 'J'), and the Stack (recently played cards).
-4. **Fourth Row**: Indicators for cards drawn (except cards drawn for '7's and '8's) (Drawn), playable cards that fit the actual card on the stack (Playable), cards played by the current player (Played). Further, this row contains an indicator for the rounds played, and the player scores.
-5. **Bottom Row**: Contains your own hand of cards.
+4. **Fourth Row**: Indicators for cards drawn (except cards drawn for '7's and '8's) (Drawn),
+playable cards that fit the actual card on the stack (Playable),
+cards played by the current player (Played).
+This row shows an indicator for the rounds played,
+and the player scores.
+Furthermore there are radiobuttons for the number of players (Players) and
+how to sort the handdeck (Sort Cards by) as well
+checkboxes for some sound effects and wether or not the card faces of the opponent handdeck are visible (Settings).
 
-### Layout with card faces of opponent players visible (3 players):
+5. **Bottom Row**: Contains your own hand of cards (Player 1). Just click on a playable card to put it on the stack.
+
+#### Layout with card faces of opponent players not visible (3 players):
 ![layout](images/table_layout_3_players.png)
 
 <div style="page-break-before: always;"></div>
 
-### Layout with card faces of opponent players not visible (2 players):
+#### Layout with card faces of opponent players visible (2 players):
 ![layout](images/table_layout_2_players.png)
+
+<div style="page-break-before: always;"></div>
+
+
+#### Layout with card faces of opponent players visible (2 players) after counting:
+- Player 1 holds Q=10 + A=15 + J=20 => 45 points.<br>
+- Player 2 finished the round by playing 2 J and set Jpoints Chooser to '-' => 2x (-20) = -40 points.<br>
+![layout](images/table_layout_2_players_after_counting.png)
 
 ## Game Rules
 
@@ -55,7 +73,11 @@ When four cards of the same rank are played in sequence (by different players), 
 For '6's, this overrides the 'must be covered' rule.
 
 ## Scoring
-- **End of Round**: Scoring occurs when a player has no more cards or a 'Qute' is announced.
+- The game consists of several rounds.
+- The end of a round is reached when a player has no more cards or a 'Qute' is announced.
+- At the end of round scoring occurs.
+- The points will then be added to the previous scores.
+- The game is over whenever a player got a score higher than 125 points.
 
 ### Card Values:
 - 6, 7, 8, 9: 0 points
@@ -120,9 +142,11 @@ Click on this chooser to toggle between 'Qute' (finishing the round) and 'Contin
 - **D**: Move the last card in the handdeck of the active player back to the blind.<br>
 
 ### How to install
-- **install git** if not already installed.
+- **try the precompiled version** (/build/.../aQuteCardGame). (Ubuntu 22.04LTS)
+**OR:**
+- **install git** (if not already installed.)
 - **git clone** https://github.com/squawk7x/aQuteCardGame.git
-- **install qtcreator** to compile the program for your specific operating system or use an appropriate compiled version.
+- **install qtcreator** to compile the program for your specific operating system.
 - **in qtcreator** Open File or Project (Ctrl-O), change into the directory 'aQuteCardGame' and doubleclick on CMakeLists.txt.
 - **in qtcreator** Run the program by (Ctrl-R) or by clicking on the green arrow.
 
