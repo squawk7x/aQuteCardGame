@@ -14,14 +14,3 @@ void Got::onCardBadFromBlind(const QSharedPointer<Card>& card)
 {
     addCard(card->clone(this));
 }
-
-// void Got::onToggleIsCardFaceVisible(bool isVisible)
-// {
-//     isCardFaceVisible_ = isVisible;
-
-//     for (const auto& card : cards_) {
-//         card->loadImage(isCardFaceVisible_);
-//     }
-//     layout_->update();
-//     update();
-// }

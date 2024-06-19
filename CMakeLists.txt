@@ -43,19 +43,14 @@ set(PROJECT_SOURCES
 	got.cpp
 	got.h
 	table.ui
+	resources.qrc
+	README.md
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 	qt_add_executable(aQuteCardGame
 		MANUAL_FINALIZATION
 		${PROJECT_SOURCES}
-		resources.qrc
-		README.md
-
-
-
-
-
 	)
 else()
 	if(ANDROID)

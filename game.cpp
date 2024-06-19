@@ -6,7 +6,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
     , numberOfPlayers_(numberOfPlayers)
     , mediaPlayer_(QSharedPointer<QMediaPlayer>::create(this))
-    , audioOutput_(QSharedPointer<QAudioOutput>::create(this))
+    // , audioOutput_(QSharedPointer<QAudioOutput>::create(this))
     , isCardsVisible_(false)
     , isSoundOn_(false)
     , monitor_(QSharedPointer<Monitor>::create())
@@ -22,11 +22,11 @@ Game::Game(int numberOfPlayers, QObject* parent)
     , got2_(QSharedPointer<Got>::create())
     , playable_(QSharedPointer<Playable>::create())
     , drawn_(QSharedPointer<Drawn>::create())
-    , lcdRound_(new QLCDNumber())
-    , lcdP1_(new QLCDNumber())
-    , lcdP2_(new QLCDNumber())
-    , lcdP3_(new QLCDNumber())
-    , lcdShuffles_(new QLCDNumber())
+    , lcdRound_(QSharedPointer<QLCDNumber>::create())
+    , lcdP1_(QSharedPointer<QLCDNumber>::create())
+    , lcdP2_(QSharedPointer<QLCDNumber>::create())
+    , lcdP3_(QSharedPointer<QLCDNumber>::create())
+    , lcdShuffles_(QSharedPointer<QLCDNumber>::create())
 {
     player1_ = QSharedPointer<Player>::create(nullptr, 1, "Player1", false, 0);
     player2_ = QSharedPointer<Player>::create(nullptr, 2, "Player2", true, 0);
@@ -53,7 +53,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(this, &Game::cardMustFromBlind, drawn_.get(), &Drawn::onCardMustFromBlind);
     connect(this, &Game::cardsPlayed, stack_.get(), &Stack::onCardsPlayed);
 
-    for (const auto& player : playerList_) {
+    foreach (const auto& player, playerList_) {
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
     }
 
@@ -92,7 +92,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
             player1()->handdeck().get(),
             &Handdeck::onToggleCardsVisible);
 
-    mediaPlayer_->setAudioOutput(audioOutput_.data());
+    // mediaPlayer_->setAudioOutput(audioOutput_.data());
 
     initializeRound();
 }
@@ -230,7 +230,7 @@ void Game::initializeRound()
 
     // shuffle the cards
     if (isSoundOn_) {
-        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
+        // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
         mediaPlayer_->stop(); // Stop any previous playback
         mediaPlayer_->play();
     }
@@ -279,7 +279,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
         if (isSoundOn_) {
-            mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/put_card_on_stack.wav"));
+            // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/put_card_on_stack.wav"));
             mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->play();
         }
@@ -525,7 +525,7 @@ void Game::drawCardFromBlind(DrawOption option)
     }
 
     if (isSoundOn_) {
-        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/draw_card_from_blind.wav"));
+        // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/draw_card_from_blind.wav"));
         mediaPlayer_->stop(); // Stop any previous playback
         mediaPlayer_->play();
     }
@@ -783,7 +783,7 @@ void Game::refillBlindFromStack()
 
     // Shuffle the blind deck
     if (isSoundOn_) {
-        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
+        // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
         mediaPlayer_->stop(); // Stop any previous playback
         mediaPlayer_->play();
     }

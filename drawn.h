@@ -12,7 +12,6 @@ public:
 
 public slots:
     void onCardMustFromBlind(const QSharedPointer<Card> &card);
-    // virtual void onToggleIsCardFaceVisible(bool isVisible) override;
 };
 
 #endif // DRAWN_H

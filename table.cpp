@@ -4,7 +4,7 @@
 #include <QGroupBox>
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <QScreen> // Include QScreen header
+#include <QScreen>
 #include "card.h"
 #include "ui_table.h"
 
@@ -16,11 +16,14 @@ Table::Table(int numberOfPlayers, QWidget* parent)
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->availableGeometry();
-    int screenWidth = screenGeometry.width();
-    int screenHeight = screenGeometry.height();
-    setMaximumSize(screenWidth, screenHeight);
+    setMaximumSize(screenGeometry.width(), screenGeometry.height());
 
     initializeGame(numberOfPlayers);
+}
+
+Table::~Table()
+{
+    delete ui;
 }
 
 void Table::initializeGame(int numberOfPlayers)
@@ -33,7 +36,7 @@ void Table::initializeGame(int numberOfPlayers)
 
     // Find all QHBoxLayouts
     QHBoxLayout* layoutPlayer2 = findChild<QHBoxLayout*>("layoutPlayer2");
-    QHBoxLayout* layoutPlayer3 = nullptr; // Initialize to nullptr
+    QHBoxLayout* layoutPlayer3 = nullptr;
     if (numberOfPlayers == 3) {
         layoutPlayer3 = findChild<QHBoxLayout*>("layoutPlayer3");
     }
@@ -47,7 +50,6 @@ void Table::initializeGame(int numberOfPlayers)
     QHBoxLayout* layoutGot2 = findChild<QHBoxLayout*>("layoutGot2");
     QHBoxLayout* layoutPlayed = findChild<QHBoxLayout*>("layoutPlayed");
     QHBoxLayout* layoutDrawn = findChild<QHBoxLayout*>("layoutDrawn");
-
     QHBoxLayout* layoutShuffles = findChild<QHBoxLayout*>("layoutShuffles");
     QHBoxLayout* layoutBlind = findChild<QHBoxLayout*>("layoutBlind");
     QHBoxLayout* layoutJsuitChooser = findChild<QHBoxLayout*>("layoutJsuitChooser");
@@ -68,17 +70,14 @@ void Table::initializeGame(int numberOfPlayers)
     layoutQuteChooser->addWidget(game_->quteChooser().get());
     layoutJpointsChooser->addWidget(game_->jpointsChooser().get());
     layoutRoundChooser->addWidget(game_->roundChooser().get());
-
     layoutGot1->addWidget(game_->got1().get());
     layoutGot2->addWidget(game_->got2().get());
     layoutPlayed->addWidget(game_->played().get());
     layoutDrawn->addWidget(game_->drawn().get());
-
     layoutShuffles->addWidget(game_->lcdShuffles().get());
     layoutBlind->addWidget(game_->blind().get());
     layoutJsuitChooser->addWidget(game_->jsuitChooser().get());
     layoutStack->addWidget(game_->stack().get());
-
     layoutPlayable->addWidget(game_->playable().get());
     layoutRound->addWidget(game_->lcdRound().get());
     layoutScores->addWidget(game_->lcdP1().get());
@@ -86,7 +85,6 @@ void Table::initializeGame(int numberOfPlayers)
     if (numberOfPlayers == 3) {
         layoutScores->addWidget(game_->lcdP3().get());
     }
-
     layoutPlayer1->addWidget(game_->player1()->handdeck().get());
 
     // Add group boxes to their respective layouts
@@ -96,9 +94,9 @@ void Table::initializeGame(int numberOfPlayers)
     QGroupBox* groupBoxPlayer3 = findChild<QGroupBox*>("gbPlayer3");
     if (numberOfPlayers == 3) {
         groupBoxPlayer3->setLayout(layoutPlayer3);
-        groupBoxPlayer3->show(); // Ensure the group box is visible
+        groupBoxPlayer3->show();
     } else {
-        groupBoxPlayer3->hide(); // Hide the group box for player 3 if 2 players only
+        groupBoxPlayer3->hide();
     }
 
     QGroupBox* groupBoxMonitor = findChild<QGroupBox*>("gbMonitor");
@@ -111,7 +109,6 @@ void Table::initializeGame(int numberOfPlayers)
     groupBoxJpointsChooser->setLayout(layoutJpointsChooser);
     QGroupBox* groupBoxRoundChooser = findChild<QGroupBox*>("gbRoundChooser");
     groupBoxRoundChooser->setLayout(layoutRoundChooser);
-
     QGroupBox* groupBoxGot1 = findChild<QGroupBox*>("gbGot1");
     groupBoxGot1->setLayout(layoutGot1);
     QGroupBox* groupBoxGot2 = findChild<QGroupBox*>("gbGot2");
@@ -119,37 +116,31 @@ void Table::initializeGame(int numberOfPlayers)
         groupBoxGot2->setLayout(layoutGot2);
         groupBoxGot2->show();
     } else {
-        groupBoxGot2->hide(); // Hide the group box for overnext player if 2 players only
+        groupBoxGot2->hide();
     }
-
     QGroupBox* groupBoxPlayed = findChild<QGroupBox*>("gbPlayed");
     groupBoxPlayed->setLayout(layoutPlayed);
     QGroupBox* groupBoxDrawn = findChild<QGroupBox*>("gbDrawn");
     groupBoxDrawn->setLayout(layoutDrawn);
-
     QGroupBox* groupBoxShuffles = findChild<QGroupBox*>("gbShuffles");
     groupBoxShuffles->setLayout(layoutShuffles);
     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("gbBlind");
     groupBoxBlind->setLayout(layoutBlind);
-    // groupBoxBlind->setStyleSheet("QGroupBox QWidget { background-color: red; }");
     QGroupBox* groupBoxJsuitChooser = findChild<QGroupBox*>("gbJsuitChooser");
     groupBoxJsuitChooser->setLayout(layoutJsuitChooser);
     QGroupBox* groupBoxStack = findChild<QGroupBox*>("gbStack");
     groupBoxStack->setLayout(layoutStack);
-
     QGroupBox* groupBoxPlayable = findChild<QGroupBox*>("gbPlayable");
     groupBoxPlayable->setLayout(layoutPlayable);
     QGroupBox* groupBoxRound = findChild<QGroupBox*>("gbRound");
     groupBoxRound->setLayout(layoutRound);
     QGroupBox* groupBoxScores = findChild<QGroupBox*>("gbScores");
     groupBoxScores->setLayout(layoutScores);
-
     QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("gbPlayer1");
     groupBoxPlayer1->setLayout(layoutPlayer1);
 
     connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
 
-    // Settings
     connect(game_.get(), &Game::setCbVisible, this, [this](bool checked) {
         ui->cbVisible->setChecked(checked);
     });
@@ -165,20 +156,7 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
 
-    // if must draw a card from blind turn blind red
-    // connect(game_.get(), &Game::setBlindRed, this, &Table::onSetBlindRed);
-
-    // connect(game_->blind().get(),
-    //         &Blind::blindClicked,
-    //         game_.get(),
-    //         &Game::onBlindClicked); // Connect the click signal to the Game slot
-
     emit cbVisibleStatus(ui->cbVisible->isChecked());
-}
-
-Table::~Table()
-{
-    delete ui;
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event, const QVector<QString>& suits)
@@ -187,9 +165,11 @@ void Table::addSpecialCardsToHand(QKeyEvent* event, const QVector<QString>& suit
                                     {Qt::Key_7, "7"},
                                     {Qt::Key_8, "8"},
                                     {Qt::Key_9, "9"},
+                                    {Qt::Key_T, "10"},
+                                    {Qt::Key_J, "J"},
+                                    {Qt::Key_Q, "Q"},
                                     {Qt::Key_K, "K"},
-                                    {Qt::Key_A, "A"},
-                                    {Qt::Key_J, "J"}};
+                                    {Qt::Key_A, "A"}};
 
     if (keyToCard.contains(event->key())) {
         QString cardValue = keyToCard[event->key()];
@@ -219,49 +199,22 @@ void Table::onRbNumPlayers3()
     initializeGame(3);
 }
 
-// void Table::onSetBlindRed(bool red)
-// {
-//     QGroupBox* groupBoxBlind = findChild<QGroupBox*>("gbBlind");
-//     if (groupBoxBlind) {
-//         if (red)
-//             groupBoxBlind->setStyleSheet("QGroupBox QWidget { background-color: red; }");
-//         else
-//             groupBoxBlind->setStyleSheet("");
-//     }
-// }
-
 void Table::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::RightButton) {
         emit rightMouseClicked();
     }
-
     QWidget::mousePressEvent(event);
 }
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_F1) {
-        openReadmeFile();
+    if (event->modifiers() & Qt::ControlModifier) {
+        if (event->key() >= Qt::Key_6 && event->key() <= Qt::Key_A) {
+            QVector<QString> suits = {"clubs", "diamonds", "hearts", "spades"};
+            addSpecialCardsToHand(event, suits);
+        }
+    } else {
+        sortCardsByPattern(event);
     }
-
-    if (event->key() == Qt::Key_G) {
-        game_->onNewGame();
-    }
-
-    //For Testing:
-    if (event->key() == Qt::Key_D) {
-        game_->player->handdeck()->moveTopCardTo(game_->blind().get());
-    }
-
-    addSpecialCardsToHand(event, suits);
-    sortCardsByPattern(event);
-
-    QWidget::keyPressEvent(event);
-}
-
-void Table::openReadmeFile()
-{
-    QString readmePath = "/home/andreas/Qt/Projects/aQuteCardGame/README.md";
-    QDesktopServices::openUrl(QUrl::fromLocalFile(readmePath));
 }

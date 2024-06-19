@@ -11,7 +11,7 @@ CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
 
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         card->setParent(this);
         card->loadImage(isCardFaceVisible_);
         layout_->addWidget(card.data());
@@ -50,15 +50,19 @@ void CardVec::removeCard(QSharedPointer<Card> card)
 
 void CardVec::clearCards()
 {
-    for (const auto& card : cards_) {
-        removeCard(card);
+    // Directly clear the layout and the cards vector
+    foreach (const auto& card, cards_) {
+        layout_->removeWidget(card.data());
+        card->setParent(nullptr);
     }
     cards_.clear();
+    layout_->update();
+    update();
 }
 
 bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
 {
-    for (const auto& c : cards_) {
+    foreach (const auto& c, cards_) {
         if (card == c)
             return true;
     }
@@ -68,7 +72,7 @@ bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
 QString CardVec::cardsAsString() const
 {
     QString cardsStr;
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         cardsStr += card->str() + " ";
     }
     return cardsStr.trimmed();
@@ -118,7 +122,7 @@ QString CardVec::mostCommonSuit() const
 {
     QMap<QString, int> suitCounts;
 
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         suitCounts[card->suit()]++;
     }
 
@@ -163,7 +167,7 @@ void CardVec::sortCardsByPattern(int pattern)
 
 void CardVec::updateLayout()
 {
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         layout_->removeWidget(card.data());
         layout_->addWidget(card.data());
     }
@@ -200,7 +204,7 @@ void CardVec::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         card->loadImage(isCardFaceVisible_);
     }
     layout_->update();
