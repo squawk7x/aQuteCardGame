@@ -128,7 +128,7 @@ If you choose 'Continue the round' then the last played '6' must be covered.
 - **G**: Start a new Game.
 
 ### For Testing
-- **6, 7, 8, 9, T, J, Q, K, A**: Add corresponding cards (given rank for all suits) to the active player's hand.
+- **CTRL + 6, 7, 8, 9, T, J, Q, K, A**: Add corresponding cards (given rank for all suits) to the active player's hand.
 - **D**: Move the last card in the hand deck of the active player back to the blind.
 
 ### How to install

@@ -10,14 +10,6 @@ class Player : public QWidget
 {
     Q_OBJECT
 
-private:
-    int id_;
-    QString name_;
-    bool isRobot_;
-    int score_;
-    int jpoints_;
-    QSharedPointer<Handdeck> handdeck_;
-
 public:
     explicit Player(QWidget* parent = nullptr,
                     int id = 0,
@@ -50,6 +42,14 @@ public:
 
 public slots:
     void onCountPoints(int shuffles = 1);
+
+private:
+    int id_;
+    QString name_;
+    bool isRobot_;
+    int score_;
+    int jpoints_;
+    QSharedPointer<Handdeck> handdeck_;
 };
 
 #endif // PLAYER_H

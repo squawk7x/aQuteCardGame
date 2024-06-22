@@ -2,8 +2,7 @@
 
 Got::Got(QWidget* parent)
     : CardVec(parent)
-{
-}
+{}
 
 Got::~Got()
 {
@@ -12,5 +11,7 @@ Got::~Got()
 
 void Got::onCardBadFromBlind(const QSharedPointer<Card>& card)
 {
-    addCard(card->clone(this));
+    if (card) {
+        addCard(card->clone(this)); // Clone and add the card, setting this as parent
+    }
 }

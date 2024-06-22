@@ -48,34 +48,20 @@ void CardVec::removeCard(QSharedPointer<Card> card)
     }
 }
 
-void CardVec::clearCards()
+void CardVec::copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec)
 {
-    // Directly clear the layout and the cards vector
-    foreach (const auto& card, cards_) {
-        layout_->removeWidget(card.data());
-        card->setParent(nullptr);
+    if (card && targetVec != nullptr) {
+        QSharedPointer<Card> newCard = card->clone(targetVec);
+        targetVec->addCard(newCard);
     }
-    cards_.clear();
-    layout_->update();
-    update();
 }
 
-bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
+void CardVec::copyTopCardTo(CardVec* targetVec)
 {
-    foreach (const auto& c, cards_) {
-        if (card == c)
-            return true;
+    if (!cards_.isEmpty() && targetVec != nullptr) {
+        QSharedPointer<Card> topCard = cards_.last();
+        copyCardTo(topCard, targetVec);
     }
-    return false;
-}
-
-QString CardVec::cardsAsString() const
-{
-    QString cardsStr;
-    foreach (const auto& card, cards_) {
-        cardsStr += card->str() + " ";
-    }
-    return cardsStr.trimmed();
 }
 
 void CardVec::moveCardTo(QSharedPointer<Card> card, CardVec* targetVec)
@@ -94,28 +80,44 @@ void CardVec::moveTopCardTo(CardVec* targetVec)
     }
 }
 
-void CardVec::copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec)
-{
-    if (card && targetVec != nullptr) {
-        QSharedPointer<Card> newCard = card->clone(targetVec);
-        targetVec->addCard(newCard);
-    }
-}
-
-void CardVec::copyTopCardTo(CardVec* targetVec)
-{
-    if (!cards_.isEmpty() && targetVec != nullptr) {
-        QSharedPointer<Card> topCard = cards_.last();
-        copyCardTo(topCard, targetVec);
-    }
-}
-
 QSharedPointer<Card> CardVec::topCard()
 {
     if (!cards_.isEmpty()) {
         return cards_.last();
     }
     return nullptr;
+}
+
+QString CardVec::cardsAsString() const
+{
+    QString cardsStr;
+    foreach (const auto& card, cards_) {
+        cardsStr += card->str() + " ";
+    }
+    return cardsStr.trimmed();
+}
+
+void CardVec::clearCards()
+{
+    // Using index-based loop to avoid detachment
+    for (int i = 0; i < cards_.size(); ++i) {
+        layout_->removeWidget(cards_[i].data());
+        cards_[i]->setParent(nullptr);
+    }
+    cards_.clear();
+    layout_->update();
+    update();
+}
+
+bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
+{
+    return std::any_of(cards_.cbegin(), cards_.cend(), [&](const auto& c) { return card == c; });
+
+    // foreach (const auto& c, cards_) {
+    //     if (card == c)
+    //         return true;
+    // }
+    // return false;
 }
 
 QString CardVec::mostCommonSuit() const

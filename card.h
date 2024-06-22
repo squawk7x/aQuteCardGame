@@ -33,8 +33,6 @@ public:
 
     bool operator==(const Card& other) const;
     QSharedPointer<Card> clone(QWidget* parent = nullptr) const;
-    // void toggleCardFaceVisibility();
-    // void setIsCardFaceVisible(bool isVisible);
 
     // Getters
     QString suit() const;
@@ -47,18 +45,19 @@ public:
     // Setters
     void loadImage(bool isCardFaceVisible = true);
 
+public slots:
+    // no slots defined here
+
 signals:
     void cardClicked(const QSharedPointer<Card>& card);
 
 private:
-    // Setters
     void initCard();
     void setSuitname(const QString& suit);
     void setRankname(const QString& rank);
     void setStr();
     void setValue(const QString& rank);
 
-public slots:
 };
 
 #endif // CARD_H

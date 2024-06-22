@@ -39,7 +39,7 @@ void Stack::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         card->loadImage(true);
     }
     layout_->update();

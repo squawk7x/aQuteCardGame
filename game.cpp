@@ -5,8 +5,8 @@
 Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
     , numberOfPlayers_(numberOfPlayers)
-    , mediaPlayer_(QSharedPointer<QMediaPlayer>::create(this))
-    // , audioOutput_(QSharedPointer<QAudioOutput>::create(this))
+    , mediaPlayer_(QSharedPointer<QMediaPlayer>::create())
+    , audioOutput_(QSharedPointer<QAudioOutput>::create())
     , isCardsVisible_(false)
     , isSoundOn_(false)
     , monitor_(QSharedPointer<Monitor>::create())
@@ -92,7 +92,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
             player1()->handdeck().get(),
             &Handdeck::onToggleCardsVisible);
 
-    // mediaPlayer_->setAudioOutput(audioOutput_.data());
+    mediaPlayer_->setAudioOutput(audioOutput_.data());
 
     initializeRound();
 }
@@ -215,6 +215,8 @@ void Game::initializeRound()
     roundChooser()->setEnabled(false);
     roundChooser()->hide();
 
+    // emit setRbNumPlayers(numberOfPlayers_);
+
     collectAllCardsToBlind();
 
     if (!monitor()->cards().isEmpty())
@@ -230,8 +232,8 @@ void Game::initializeRound()
 
     // shuffle the cards
     if (isSoundOn_) {
-        // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
         mediaPlayer_->stop(); // Stop any previous playback
+        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
         mediaPlayer_->play();
     }
     blind_->shuffle();
@@ -257,7 +259,7 @@ void Game::initializeRound()
         blind_->moveTopCardTo(player1_->handdeck().get());
     }
 
-    for (const auto& player : playerList_) {
+    for (const auto& player : std::as_const(playerList_)) {
         player->handdeck()->setEnabled(false);
     }
 
@@ -279,8 +281,8 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
         if (isSoundOn_) {
-            // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/put_card_on_stack.wav"));
             mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/put_card_on_stack.wav"));
             mediaPlayer_->play();
         }
         emit cardAddedToStack(card);
@@ -304,7 +306,7 @@ void Game::handleChoosers()
 
         jsuitChooser()->show();
     }
-    // shown until next player's card is added to stack
+    // JsuitChooser is shown until next player's card is added to stack
     // (slot: onCardAddedToStack)
 
     // EightsChooser
@@ -380,7 +382,7 @@ void Game::updatePlayable()
 {
     playable()->clearCards();
 
-    for (const auto& card : player->handdeck()->cards()) {
+    foreach (const auto& card, player->handdeck()->cards()) {
         if (isThisCardPlayable(card)) {
             player->handdeck()->copyCardTo(card, playable().get());
         }
@@ -525,8 +527,8 @@ void Game::drawCardFromBlind(DrawOption option)
     }
 
     if (isSoundOn_) {
-        // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/draw_card_from_blind.wav"));
         mediaPlayer_->stop(); // Stop any previous playback
+        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/draw_card_from_blind.wav"));
         mediaPlayer_->play();
     }
 
@@ -553,7 +555,7 @@ void Game::rotatePlayerList()
         playerList_.push_back(player);
     }
 
-    for (const auto& player : playerList_) {
+    for (const auto& player : std::as_const(playerList_)) {
         player->handdeck()->setEnabled(false);
     }
 
@@ -613,7 +615,7 @@ void Game::handleSpecialCards()
     int aces = 0;
     int eights = 0;
 
-    for (const auto& card : played()->cards()) {
+    for (const auto& card : std::as_const(played()->cards())) {
         if (card->rank() == "7") {
             sevens++;
         } else if (card->rank() == "8") {
@@ -637,7 +639,7 @@ void Game::handleSpecialCards()
 
         // If the decision is "p", set points for all players in the player list
         else if (jpointsChooser()->decision() == "p") {
-            for (const auto& player : playerList_) {
+            for (const auto& player : std::as_const(playerList_)) {
                 player->setJpoints(points);
             }
             player->setJpoints(0); // active Player
@@ -783,8 +785,8 @@ void Game::refillBlindFromStack()
 
     // Shuffle the blind deck
     if (isSoundOn_) {
-        // mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
         mediaPlayer_->stop(); // Stop any previous playback
+        mediaPlayer_->setSource(QUrl("qrc:/audio/sounds/shuffling.wav"));
         mediaPlayer_->play();
     }
     blind()->shuffle();
@@ -811,7 +813,7 @@ void Game::collectAllCardsToBlind()
 
 void Game::updateDisplay()
 {
-    for (const auto& player : playerList_) {
+    for (const auto& player : std::as_const(playerList_)) {
         if (player->id() == 1) {
             lcdP1()->display(player->score());
         } else if (player->id() == 2) {
@@ -858,7 +860,7 @@ void Game::onRbRank()
 
 void Game::onNewRound()
 {
-    for (const auto& player : playerList_) {
+    for (const auto& player : std::as_const(playerList_)) {
         player->setJpoints(0);
     }
 

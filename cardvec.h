@@ -19,14 +19,14 @@ public:
 
     virtual void addCard(QSharedPointer<Card> card);
     virtual void removeCard(QSharedPointer<Card> card);
-    void clearCards();
-    bool isCardInCards(const QSharedPointer<Card>& card);
     virtual QString cardsAsString() const;
-    void moveCardTo(QSharedPointer<Card> card, CardVec* targetVec);
-    void moveTopCardTo(CardVec* targetVec);
     void copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec);
     void copyTopCardTo(CardVec* targetVec);
+    void moveCardTo(QSharedPointer<Card> card, CardVec* targetVec);
+    void moveTopCardTo(CardVec* targetVec);
     QSharedPointer<Card> topCard();
+    void clearCards();
+    bool isCardInCards(const QSharedPointer<Card>& card);
     QString mostCommonSuit() const;
     void sortCardsByPattern(int pattern);
     void updateLayout();
@@ -34,6 +34,10 @@ public:
     // Getters
     QVector<QSharedPointer<Card>>& cards();
     bool isCardFaceVisible() const;
+
+public slots:
+    virtual void onCardClicked(const QSharedPointer<Card>& card);
+    virtual void onToggleCardsVisible(bool isVisible);
 
 protected:
     QHBoxLayout* layout_;
@@ -44,9 +48,6 @@ private:
     // Setters
     void setIsCardFaceVisible(bool isVisible);
 
-public slots:
-    virtual void onCardClicked(const QSharedPointer<Card>& card);
-    virtual void onToggleCardsVisible(bool isVisible);
 };
 
 #endif // CARDVEC_H

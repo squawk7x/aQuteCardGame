@@ -6,6 +6,8 @@
 
 class Got : public CardVec
 {
+    Q_OBJECT
+
 public:
     explicit Got(QWidget *parent = nullptr);
     virtual ~Got();

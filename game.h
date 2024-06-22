@@ -21,49 +21,11 @@ class Game : public QObject
 {
     Q_OBJECT
 
-private:
-    int numberOfPlayers_;
-    bool isCardsVisible_;
-    bool isSoundOn_;
-    QSharedPointer<QMediaPlayer> mediaPlayer_;
-    QSharedPointer<QAudioOutput> audioOutput_;
-
-    QSharedPointer<Player> player2_;
-    QSharedPointer<Player> player3_;
-
-    QSharedPointer<Monitor> monitor_;
-    QSharedPointer<EightsChooser> eightsChooser_;
-    QSharedPointer<QuteChooser> quteChooser_;
-    QSharedPointer<RoundChooser> roundChooser_;
-    QSharedPointer<JpointsChooser> jpointsChooser_;
-    QSharedPointer<Got> got1_;
-    QSharedPointer<Got> got2_;
-    QSharedPointer<Played> played_;
-    QSharedPointer<Drawn> drawn_;
-
-    QSharedPointer<QLCDNumber> lcdShuffles_;
-    QSharedPointer<Blind> blind_;
-    QSharedPointer<JsuitChooser> jsuitChooser_;
-    QSharedPointer<Stack> stack_;
-
-    QSharedPointer<Playable> playable_;
-    QSharedPointer<QLCDNumber> lcdRound_;
-    QSharedPointer<QLCDNumber> lcdP1_;
-    QSharedPointer<QLCDNumber> lcdP2_;
-    QSharedPointer<QLCDNumber> lcdP3_;
-
-    QSharedPointer<Player> player1_;
-
-    int games = 1;
-    int rounds = 1;
-    int shuffles = 0;
-
 public:
-    enum class DrawOption { MustCard, BadCard };
-
     explicit Game(int numberOfPlayers, QObject* parent = nullptr);
     ~Game();
 
+    enum class DrawOption { MustCard, BadCard };
     void initializeGame();
 
     // Getters
@@ -113,19 +75,6 @@ public:
     void togglePlayerListToScore(bool highest);
     void collectAllCardsToBlind();
 
-signals:
-    void cardAddedToStack(const QSharedPointer<Card>& card);
-    void cardMustFromBlind(const QSharedPointer<Card>& card);
-    void cardBadFromBlind(const QSharedPointer<Card>& card);
-    void cardsPlayed(int numCardsPlayed);
-    void countPoints(int shuffles);
-    void setBlindRed(bool red);
-
-    // Controls and Settings:
-    void setCbVisible(bool isVisible);
-    void setRbUnsorted(bool isSorted);
-    void toggleCardsVisible(bool isVisible);
-
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
@@ -137,6 +86,57 @@ public slots:
     void onRbRank();
     void onNewRound();
     void onNewGame();
+
+signals:
+    void cardAddedToStack(const QSharedPointer<Card>& card);
+    void cardMustFromBlind(const QSharedPointer<Card>& card);
+    void cardBadFromBlind(const QSharedPointer<Card>& card);
+    void cardsPlayed(int numCardsPlayed);
+    void countPoints(int shuffles);
+    void setBlindRed(bool red);
+
+    // Controls and Settings:
+    void setRbNumPlayers(int num);
+    void setRbUnsorted(bool isSorted);
+    void setCbVisible(bool isVisible);
+    void toggleCardsVisible(bool isVisible);
+
+private:
+    int numberOfPlayers_;
+    bool isCardsVisible_;
+    bool isSoundOn_;
+    QSharedPointer<QMediaPlayer> mediaPlayer_;
+    QSharedPointer<QAudioOutput> audioOutput_;
+
+    QSharedPointer<Player> player2_;
+    QSharedPointer<Player> player3_;
+
+    QSharedPointer<Monitor> monitor_;
+    QSharedPointer<EightsChooser> eightsChooser_;
+    QSharedPointer<QuteChooser> quteChooser_;
+    QSharedPointer<RoundChooser> roundChooser_;
+    QSharedPointer<JpointsChooser> jpointsChooser_;
+    QSharedPointer<Got> got1_;
+    QSharedPointer<Got> got2_;
+    QSharedPointer<Played> played_;
+    QSharedPointer<Drawn> drawn_;
+
+    QSharedPointer<QLCDNumber> lcdShuffles_;
+    QSharedPointer<Blind> blind_;
+    QSharedPointer<JsuitChooser> jsuitChooser_;
+    QSharedPointer<Stack> stack_;
+
+    QSharedPointer<Playable> playable_;
+    QSharedPointer<QLCDNumber> lcdRound_;
+    QSharedPointer<QLCDNumber> lcdP1_;
+    QSharedPointer<QLCDNumber> lcdP2_;
+    QSharedPointer<QLCDNumber> lcdP3_;
+
+    QSharedPointer<Player> player1_;
+
+    int games = 1;
+    int rounds = 1;
+    int shuffles = 0;
 };
 
 #endif // GAME_H

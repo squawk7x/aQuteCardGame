@@ -12,16 +12,16 @@ public:
     explicit Monitor(QWidget* parent = nullptr);
     virtual ~Monitor();
 
-    // Override the addCard method
+    // Override the virtual addCard method
     void addCard(QSharedPointer<Card> card) override;
-
-signals:
-    void eightsInMonitor();
-    void fourCardsInMonitor();
 
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card>& card);
     virtual void onToggleCardsVisible(bool isVisible) override;
+
+signals:
+    void eightsInMonitor();
+    void fourCardsInMonitor();
 };
 
 #endif // MONITOR_H

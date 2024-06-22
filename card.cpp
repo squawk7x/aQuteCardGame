@@ -28,7 +28,6 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setText("");
-
     initCard();
 }
 
@@ -37,8 +36,8 @@ Card::Card(const QString& cardStr, QWidget* parent)
     : QPushButton(parent)
 {
     if (cardStr.length() >= 2) {
-        if (suits.contains(cardStr.left(1)) && ranks.contains(cardStr.mid(1))) {
-            suit_ = cardStr.left(1);
+        if (suits.contains(cardStr.at(0)) && ranks.contains(cardStr.mid(1))) {
+            suit_ = cardStr.at(0);
             rank_ = cardStr.mid(1);
             initCard();
         }
@@ -74,6 +73,8 @@ Card::Card(Card&& other) noexcept
     , suit_(std::move(other.suit_))
     , rank_(std::move(other.rank_))
 {
+    //Set the parent of the moved-from object to nullptr to prevent it from accessing the old parent:
+    other.setParent(nullptr);
     initCard();
 }
 
@@ -84,6 +85,7 @@ Card& Card::operator=(Card&& other) noexcept
         this->setParent(other.parentWidget());
         suit_ = std::move(other.suit_);
         rank_ = std::move(other.rank_);
+        other.setParent(nullptr);
         initCard();
     }
     return *this;

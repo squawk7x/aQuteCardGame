@@ -6,6 +6,8 @@
 
 class Drawn : public CardVec
 {
+    Q_OBJECT
+
 public:
     explicit Drawn(QWidget *parent = nullptr);
     virtual ~Drawn();

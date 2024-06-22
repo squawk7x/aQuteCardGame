@@ -141,6 +141,13 @@ void Table::initializeGame(int numberOfPlayers)
 
     connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
 
+    connect(game_.get(), &Game::setRbNumPlayers, this, [this](int num) {
+        if (num == 2) {
+            ui->rbNumPlayers2->setChecked(true);
+        } else {
+            ui->rbNumPlayers3->setChecked(true);
+        }
+    });
     connect(game_.get(), &Game::setCbVisible, this, [this](bool checked) {
         ui->cbVisible->setChecked(checked);
     });
@@ -159,7 +166,7 @@ void Table::initializeGame(int numberOfPlayers)
     emit cbVisibleStatus(ui->cbVisible->isChecked());
 }
 
-void Table::addSpecialCardsToHand(QKeyEvent* event, const QVector<QString>& suits)
+void Table::addSpecialCardsToHand(QKeyEvent* event)
 {
     QMap<int, QString> keyToCard = {{Qt::Key_6, "6"},
                                     {Qt::Key_7, "7"},
@@ -172,9 +179,9 @@ void Table::addSpecialCardsToHand(QKeyEvent* event, const QVector<QString>& suit
                                     {Qt::Key_A, "A"}};
 
     if (keyToCard.contains(event->key())) {
-        QString cardValue = keyToCard[event->key()];
+        QString rank = keyToCard[event->key()];
         for (const auto& suit : suits) {
-            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, cardValue);
+            QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, rank);
             game_->player->handdeck()->addCard(newCard);
         }
     }
@@ -210,9 +217,8 @@ void Table::mousePressEvent(QMouseEvent* event)
 void Table::keyPressEvent(QKeyEvent* event)
 {
     if (event->modifiers() & Qt::ControlModifier) {
-        if (event->key() >= Qt::Key_6 && event->key() <= Qt::Key_A) {
-            QVector<QString> suits = {"clubs", "diamonds", "hearts", "spades"};
-            addSpecialCardsToHand(event, suits);
+        if (event->key() >= Qt::Key_6 && event->key() <= Qt::Key_Q) {
+            addSpecialCardsToHand(event);
         }
     } else {
         sortCardsByPattern(event);

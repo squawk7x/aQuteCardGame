@@ -83,7 +83,7 @@ void Handdeck::onToggleCardsVisible(bool isVisible)
         return; // Safeguard against invalid parent casting
     }
 
-    for (const auto& card : qAsConst(cards_)) { // Using qAsConst to prevent detachment
+    for (const auto& card : std::as_const(cards_)) { // Using as_const() to prevent detachment
         if (handdeck && handdeck->objectName() == "gbPlayer1") {
             card->loadImage(true);
         } else {

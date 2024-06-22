@@ -66,7 +66,7 @@ QSharedPointer<Handdeck> Player::handdeck() const
 int Player::countHand()
 {
     int pointsOnHand = 0;
-    for (const auto& card : handdeck_->cards()) {
+    for (const auto& card : std::as_const(handdeck_->cards())) {
         pointsOnHand += card->value();
     }
     return pointsOnHand;

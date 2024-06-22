@@ -2,8 +2,7 @@
 
 Drawn::Drawn(QWidget* parent)
     : CardVec(parent)
-{
-}
+{}
 
 Drawn::~Drawn()
 {
@@ -12,15 +11,7 @@ Drawn::~Drawn()
 
 void Drawn::onCardMustFromBlind(const QSharedPointer<Card>& card)
 {
-    addCard(card->clone(this));
+    if (card) {
+        addCard(card->clone(this)); // Clone and add the card, setting this as parent
+    }
 }
-
-// void Drawn::onToggleIsCardFaceVisible(bool isVisible)
-// {
-//     isCardFaceVisible_ = isVisible;
-//     for (const auto& card : cards_) {
-//         card->loadImage(isCardFaceVisible_);
-//     }
-//     layout_->update();
-//     update();
-// }

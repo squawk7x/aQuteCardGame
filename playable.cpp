@@ -2,8 +2,7 @@
 
 Playable::Playable(QWidget* parent)
     : CardVec(parent)
-{
-}
+{}
 
 Playable::~Playable()
 {
@@ -25,19 +24,19 @@ void Playable::addCard(QSharedPointer<Card> card)
     }
 }
 
-void Playable::onCardClicked(const QSharedPointer<Card> &card)
+void Playable::onCardClicked(const QSharedPointer<Card>& card)
 {
-    // want to make the card played when clicking on card in playable:
-    if (cards().contains(card)) {
-        emit handCardClicked(card->clone());
-    }
+    // to make the card played when clicking on card in playable:
+    // if (cards().contains(card)) {
+    //     emit handCardClicked(card->clone());
+    // }
 }
 
 void Playable::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         card->loadImage(true);
     }
     layout_->update();

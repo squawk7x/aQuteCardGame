@@ -11,8 +11,8 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
     : CardVec(parent, rhs)
 {
     if (rhs.isEmpty()) {
-        for (const auto& suit : suits) {
-            for (const auto& rank : ranks) {
+        foreach (const auto& suit, suits) {
+            foreach (const auto& rank, ranks) {
                 auto card = QSharedPointer<Card>::create(suit, rank);
                 addCard(card);
             }
@@ -64,7 +64,7 @@ void Blind::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 
-    for (const auto& card : cards_) {
+    foreach (const auto& card, cards_) {
         card->loadImage(isCardFaceVisible_);
     }
     layout_->update();
