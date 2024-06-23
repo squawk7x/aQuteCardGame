@@ -25,6 +25,7 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    // void wheelEvent(QWheelEvent *event) override;
 
 public slots:
     void onRbNumPlayers2();

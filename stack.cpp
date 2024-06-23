@@ -27,12 +27,22 @@ void Stack::addCard(QSharedPointer<Card> card)
 
 void Stack::onCardsPlayed(int numCardsPlayed)
 {
-    QSharedPointer<Card> firstCard;
+    int maxCardsToShow = numCardsPlayed + 10;
 
-    while (cards_.size() > numCardsPlayed + 12) {
-        firstCard = cards_.takeFirst();
-        layout_->removeWidget(firstCard.data());
+    // Ensure all cards are hidden initially
+    for (auto& card : cards_) {
+        card->hide();
     }
+
+    // Show up to maxCardsToShow cards
+    int startIdx = qMax(0, cards_.size() - maxCardsToShow);
+    for (int i = startIdx; i < cards_.size(); ++i) {
+        cards_[i]->show();
+    }
+
+    // Update the layout and widget
+    layout_->update();
+    update();
 }
 
 void Stack::onToggleCardsVisible(bool isVisible)

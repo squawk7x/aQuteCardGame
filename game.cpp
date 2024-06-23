@@ -740,6 +740,14 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
+    int cardsInGame = 0;
+
+    for (auto& player : playerList_) {
+        cardsInGame += player->handdeck()->cards().size();
+    }
+    cardsInGame += blind()->cards().size() + stack()->cards().size();
+    qDebug() << "Cards in game:" << cardsInGame;
+
     emit cardsPlayed(played()->cards().size());
 
     handleSpecialCards();

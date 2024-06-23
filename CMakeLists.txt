@@ -47,6 +47,18 @@ set(PROJECT_SOURCES
 	README.md
 )
 
+# # Use Clang as the compiler
+# set(CMAKE_C_COMPILER "clang")
+# set(CMAKE_CXX_COMPILER "clang++")
+
+# # Add the MemorySanitizer flags
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory -g")
+
+# # If you're using clang, you may need to add these extra flags for MemorySanitizer
+# if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+# 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize-memory-track-origins -fno-omit-frame-pointer")
+# endif()
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 	qt_add_executable(aQuteCardGame
 		MANUAL_FINALIZATION
