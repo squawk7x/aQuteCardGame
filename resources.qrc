@@ -26,6 +26,7 @@
         <file>cards/ace_of_spades.png</file>
         <file>cards/backside_blue_inactive.png</file>
         <file>cards/backside_blue.png</file>
+        <file>cards/backside_grey.png</file>
         <file>cards/backside_red.png</file>
         <file>cards/jack_of_clubs.png</file>
         <file>cards/jack_of_diamonds.png</file>
@@ -43,23 +44,24 @@
         <file>cards/queen_of_diamonds.png</file>
         <file>cards/queen_of_hearts.png</file>
         <file>cards/queen_of_spades.png</file>
-        <file>cards/chooser_eights_a.png</file>
-        <file>cards/chooser_eights_n.png</file>
-        <file>cards/chooser_jpoints_m.png</file>
-        <file>cards/chooser_qute_n.png</file>
-        <file>cards/chooser_qute_y.png</file>
-        <file>cards/chooser_jpoints_p.png</file>
-        <file>cards/backside_grey.png</file>
-        <file>cards/chooser_new_r.png</file>
-        <file>cards/chooser_new_g.png</file>
-        <file>cards/chooser_quit_game.png</file>
-        <file>cards/chooser_new_f.png</file>
+        <file>choosers/chooser_eights_a.png</file>
+        <file>choosers/chooser_eights_n.png</file>
+        <file>choosers/chooser_jpoints_m.png</file>
+        <file>choosers/chooser_qute_n.png</file>
+        <file>choosers/chooser_qute_y.png</file>
+        <file>choosers/chooser_jpoints_p.png</file>
+        <file>choosers/chooser_new_r.png</file>
+        <file>choosers/chooser_new_g.png</file>
+        <file>choosers/chooser_quit_game.png</file>
+        <file>choosers/chooser_new_f.png</file>
+        <file>choosers/jsuit_of_clubs.png</file>
+        <file>choosers/jsuit_of_diamonds.png</file>
+        <file>choosers/jsuit_of_hearts.png</file>
+        <file>choosers/jsuit_of_spades.png</file>
     </qresource>
-    <qresource prefix="/sounds"/>
     <qresource prefix="/audio">
         <file>sounds/put_card_on_stack.wav</file>
         <file>sounds/shuffling.wav</file>
         <file>sounds/draw_card_from_blind.wav</file>
     </qresource>
-    <qresource prefix="/dll"/>
 </RCC>

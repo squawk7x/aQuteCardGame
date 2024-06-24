@@ -255,6 +255,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string extracomment="Counter how often an empty blind was refilled from stack."/>
+          </property>
+          <property name="toolTipDuration">
+           <number>1</number>
+          </property>
           <property name="title">
            <string>Shuffles</string>
           </property>

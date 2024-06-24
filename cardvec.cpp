@@ -136,7 +136,7 @@ QString CardVec::mostCommonSuit() const
             mostCommonSuit = it.key();
         }
     }
-
+    // qDebug() << "mostCommonSuit:" << mostCommonSuit;
     return mostCommonSuit;
 }
 

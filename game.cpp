@@ -219,16 +219,11 @@ void Game::initializeRound()
 
     collectAllCardsToBlind();
 
-    if (!monitor()->cards().isEmpty())
-        monitor_->clearCards();
-    if (!played()->cards().isEmpty())
-        played_->clearCards();
-    if (!drawn()->cards().isEmpty())
-        drawn_->clearCards();
-    if (!got1()->cards().isEmpty())
-        got1_->clearCards();
-    if (!got2()->cards().isEmpty())
-        got2_->clearCards();
+    monitor_->clearCards();
+    played_->clearCards();
+    drawn_->clearCards();
+    got1_->clearCards();
+    got2_->clearCards();
 
     // shuffle the cards
     if (isSoundOn_) {
@@ -287,6 +282,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
         }
         emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
+
         updatePlayable();
         handleChoosers();
     }
@@ -298,14 +294,15 @@ void Game::handleChoosers()
 
     // JsuitChooser
     if (stackCard->rank() == "J") {
-        jsuitChooser()->setEnabled(!player->isRobot());
         if (!player->handdeck()->cards().isEmpty())
             jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
         else
             jsuitChooser()->toggle_to(stackCard->suit());
 
+        jsuitChooser()->setDisabled(player->isRobot());
         jsuitChooser()->show();
     }
+
     // JsuitChooser is shown until next player's card is added to stack
     // (slot: onCardAddedToStack)
 
@@ -497,14 +494,14 @@ bool Game::isNextPlayerPossible()
         return true;
     }
 
-    updatePlayable();
-
     // if (player->isRobot()) {
-    while (isMustDrawCard()) {
+    // while (isMustDrawCard()) {
+    if (isMustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
-        updatePlayable();
+        // updatePlayable();
     }
     // }
+    updatePlayable();
 
     QSharedPointer<Card> stackCard = stack()->topCard();
     if (stackCard->rank() == "6") {
@@ -718,8 +715,9 @@ void Game::handleSpecialCards()
         rotatePlayerList();
     }
 
-    got1()->setEnabled(false);
-    got2()->setEnabled(got1()->cards().isEmpty());
+    // when active player draws for '7' got1 is setEnabled(true)
+    got1()->setEnabled(sevens > 0);
+    got2()->setEnabled(false);
 
     played()->clearCards();
     drawn()->clearCards();
@@ -742,11 +740,13 @@ void Game::activateNextPlayer()
 
     int cardsInGame = 0;
 
+    // Check that 36 cards are in the game
     for (auto& player : playerList_) {
         cardsInGame += player->handdeck()->cards().size();
     }
     cardsInGame += blind()->cards().size() + stack()->cards().size();
     qDebug() << "Cards in game:" << cardsInGame;
+    // End of check
 
     emit cardsPlayed(played()->cards().size());
 
@@ -762,19 +762,44 @@ void Game::autoplay()
     if (player->isRobot() && !roundChooser()->isEnabled()) {
         player->handdeck()->setEnabled(true);
 
-        while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
-            player->handdeck()->sortCardsByPattern(1);
-            for (auto& card : playable()->cards()) {
+        while (!playable()->cards().isEmpty() || !isNextPlayerPossible())
+            while (!playable()->cards().isEmpty()) {
+                qDebug() << playable()->cardsAsString();
+                player->handdeck()->sortCardsByPattern(1);
+
                 for (auto& card : player->handdeck()->cards()) {
                     card->click();
-                    updatePlayable();
-                    handleChoosers();
                 }
+                updatePlayable();
             }
-        }
-        emit cardsPlayed(played()->cards().size());
     }
+    emit cardsPlayed(played()->cards().size());
+
+    handleChoosers();
 }
+
+// void Game::autoplay()
+// {
+//     if (player->isRobot() && !roundChooser()->isEnabled()) {
+//         player->handdeck()->setEnabled(true);
+
+//         while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
+//             if (!playable()->cards().isEmpty()) {
+//                 qDebug() << playable()->cardsAsString();
+//                 player->handdeck()->sortCardsByPattern(1);
+
+//                 for (auto& card : player->handdeck()->cards()) {
+//                     card->click();
+//                 }
+
+//                 updatePlayable();
+//             }
+//         }
+//     }
+//     emit cardsPlayed(played()->cards().size());
+
+//     handleChoosers();
+// }
 
 void Game::refillBlindFromStack()
 {

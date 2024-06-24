@@ -49,7 +49,7 @@ QString JsuitChooser::str()
 
 void JsuitChooser::loadImage()
 {
-    QString imagePath = QString(":images/cards/jsuit_of_%1.png").arg(suitname_);
+    QString imagePath = QString(":images/choosers/jsuit_of_%1.png").arg(suitname_);
     QIcon icon((QString(imagePath)));
     if (!icon.isNull()) {
         setIcon(icon);
@@ -72,6 +72,7 @@ void JsuitChooser::toggle()
         suitname_ = suitnames[index];
         setStr();
         loadImage();
+        // qDebug() << "toggle:" << suit_ << suitname_;
     } else {
         qDebug() << "Current suit not found in the list.";
     }
@@ -79,10 +80,10 @@ void JsuitChooser::toggle()
 
 void JsuitChooser::toggle_to(const QString& target_suit)
 {
-    if (isEnabled())
-        while (suit_ != target_suit) {
-            toggle();
-        }
+    while (suit_ != target_suit) {
+        toggle();
+    }
+    // qDebug() << "toggle_to:" << suit_ << suitname_;
     loadImage();
 }
 
@@ -114,7 +115,7 @@ QString EightsChooser::decision()
 // Methods
 void EightsChooser::loadImage()
 {
-    QString imagePath = QString(":images/cards/chooser_eights_%1.png").arg(decision_);
+    QString imagePath = QString(":images/choosers/chooser_eights_%1.png").arg(decision_);
     QIcon icon((QString(imagePath)));
     if (!icon.isNull()) {
         setIcon(icon);
@@ -172,7 +173,7 @@ QString QuteChooser::decision()
 // Methods
 void QuteChooser::loadImage()
 {
-    QString imagePath = QString(":images/cards/chooser_qute_%1.png").arg(decision_);
+    QString imagePath = QString(":images/choosers/chooser_qute_%1.png").arg(decision_);
     QIcon icon((QString(imagePath)));
     if (!icon.isNull()) {
         setIcon(icon);
@@ -233,14 +234,14 @@ QString JpointsChooser::decision()
 // Methods
 void JpointsChooser::loadImage()
 {
-        QString imagePath = QString(":images/cards/chooser_jpoints_%1.png").arg(decision_);
-        QIcon icon((QString(imagePath)));
-        if (!icon.isNull()) {
-            setIcon(icon);
-            setIconSize(QSize(50, 75));
-            this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-            this->resize(iconSize());
-        }
+    QString imagePath = QString(":images/choosers/chooser_jpoints_%1.png").arg(decision_);
+    QIcon icon((QString(imagePath)));
+    if (!icon.isNull()) {
+        setIcon(icon);
+        setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
+    }
 }
 
 void JpointsChooser::toggle()
@@ -308,7 +309,7 @@ RoundChooser::RoundChooser(QString decision, QWidget* parent)
 // Methods
 void RoundChooser::loadImage()
 {
-    QString imagePath = QString(":images/cards/chooser_new_%1.png").arg(decision_);
+    QString imagePath = QString(":images/choosers/chooser_new_%1.png").arg(decision_);
     QIcon icon((QString(imagePath)));
     if (!icon.isNull()) {
         setIcon(icon);

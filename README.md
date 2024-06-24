@@ -8,8 +8,9 @@ Below is a description of the gameboard layout, detailed rules, game controls, a
 ## Gameboard Layout
 
 1. **Top Row**: Displays the 2 opponent AI players (Player 2 and Player 3). When playing against only 1 opponent, the panel for player 3 is hidden.
-2. **Second Row**: Contains the Monitor (shows cards of the same rank played in sequence), various choosers (Qute Chooser, Eights Chooser, Jpoints Chooser, and Round Chooser),
-   and panels for cards drawn by the next player due to 'Cards drawn by 7s or 8s' and for cards drawn by the overnext player due to 'Cards drawn by 8s'. When playing against only 1 opponent, the panel for the overnext player is hidden.
+2. **Second Row**: Contains the Monitor (shows cards of the same rank played in sequence), various choosers (Qute Chooser, Eights Chooser, Jpoints Chooser, and Round Chooser), and panels for ‘Cards drawn for 7 or 8’ and for ‘Cards drawn for 8’. 
+*Cards drawn for 7s or 8s*: Cards are shown 'enabled' if the active player drew cards due to one or more sevens played by the previous player. Cards are shown 'disabled' if they were drawn for eights, indicating players' turns were skipped.
+*Cards drawn for 8s*: Cards are shown disabled because they were drawn for eights, indicating players' turns were skipped. This panel is hidden when playing against only one opponent.
 3. **Third Row**: Includes the Shuffles counter (indicates how often the blind was refilled and shuffled), the Blind (shows the top card of the draw pile), the JsuitChooser (to choose which suit follows a 'J'), and the Stack (recently played cards).
 4. **Fourth Row**: Indicators for cards drawn (except cards drawn for 7s and 8s) (Drawn),
    playable cards that fit the actual card on the stack (Playable),
@@ -22,7 +23,7 @@ Below is a description of the gameboard layout, detailed rules, game controls, a
 
 5. **Bottom Row**: Contains your own hand of cards (Player 1). When it is your turn just click on a playable card to put it on the stack.
 
-#### Layout with card faces of opponent players not visible (3 players):
+#### Layout with card faces of opponent players visible (3 players):
 ![layout](images/table_layout_3_players.png)
 
 #### Layout with card faces of opponent players visible (2 players):

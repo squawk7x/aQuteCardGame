@@ -15,7 +15,7 @@ void Card::initCard()
     setStr();
     loadImage();
 
-    this->setToolTip(QString("%1 of %2").arg(rankname_, suitname_));
+    // this->setToolTip(QString("%1 of %2").arg(rankname_, suitname_));
 
     connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
 }
