@@ -294,11 +294,12 @@ void Game::handleChoosers()
 
     // JsuitChooser
     if (stackCard->rank() == "J") {
-        if (!player->handdeck()->cards().isEmpty())
+        if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
             jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
-        else
-            jsuitChooser()->toggle_to(stackCard->suit());
+        // if (!player->handdeck()->cards().isEmpty())
+        //     jsuitChooser()->toggle_to(stackCard->suit());
 
+        // Do not allow Player1 toggle JSuitChooser
         jsuitChooser()->setDisabled(player->isRobot());
         jsuitChooser()->show();
     }
@@ -777,29 +778,6 @@ void Game::autoplay()
 
     handleChoosers();
 }
-
-// void Game::autoplay()
-// {
-//     if (player->isRobot() && !roundChooser()->isEnabled()) {
-//         player->handdeck()->setEnabled(true);
-
-//         while (!isNextPlayerPossible() || !playable()->cards().isEmpty()) {
-//             if (!playable()->cards().isEmpty()) {
-//                 qDebug() << playable()->cardsAsString();
-//                 player->handdeck()->sortCardsByPattern(1);
-
-//                 for (auto& card : player->handdeck()->cards()) {
-//                     card->click();
-//                 }
-
-//                 updatePlayable();
-//             }
-//         }
-//     }
-//     emit cardsPlayed(played()->cards().size());
-
-//     handleChoosers();
-// }
 
 void Game::refillBlindFromStack()
 {

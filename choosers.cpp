@@ -80,6 +80,7 @@ void JsuitChooser::toggle()
 
 void JsuitChooser::toggle_to(const QString& target_suit)
 {
+    // if (isEnabled())
     while (suit_ != target_suit) {
         toggle();
     }
