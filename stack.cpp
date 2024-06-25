@@ -20,8 +20,6 @@ void Stack::addCard(QSharedPointer<Card> card)
         card->loadImage(true);
         cards_.append(card);
         layout_->insertWidget(0, card.data());
-        layout_->update();
-        update();
     }
 }
 
@@ -41,8 +39,6 @@ void Stack::onCardsPlayed(int numCardsPlayed)
     }
 
     // Update the layout and widget
-    layout_->update();
-    update();
 }
 
 void Stack::onToggleCardsVisible(bool isVisible)
@@ -52,6 +48,4 @@ void Stack::onToggleCardsVisible(bool isVisible)
     foreach (const auto& card, cards_) {
         card->loadImage(true);
     }
-    layout_->update();
-    update();
 }

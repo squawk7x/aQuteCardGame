@@ -21,8 +21,6 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
         cards_ = rhs;
 
     this->shuffle();
-    layout_->update();
-    update();
 }
 
 Blind::~Blind()
@@ -37,8 +35,6 @@ void Blind::removeCard(QSharedPointer<Card> card)
         card->setParent(nullptr);
         cards_.removeOne(card);
         showTopCard();
-        layout_->update();
-        update();
     }
 }
 
@@ -67,8 +63,6 @@ void Blind::onToggleCardsVisible(bool isVisible)
     foreach (const auto& card, cards_) {
         card->loadImage(isCardFaceVisible_);
     }
-    layout_->update();
-    update();
 }
 
 void Blind::mousePressEvent(QMouseEvent* event)

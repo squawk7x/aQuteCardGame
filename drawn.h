@@ -12,6 +12,8 @@ public:
     explicit Drawn(QWidget *parent = nullptr);
     virtual ~Drawn();
 
+    void addCard(QSharedPointer<Card> card);
+
 public slots:
     void onCardMustFromBlind(const QSharedPointer<Card> &card);
 };

@@ -16,8 +16,6 @@ CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
         card->loadImage(isCardFaceVisible_);
         layout_->addWidget(card.data());
     }
-    layout_->update();
-    update();
 }
 
 CardVec::~CardVec()
@@ -32,8 +30,7 @@ void CardVec::addCard(QSharedPointer<Card> card)
         card->loadImage(isCardFaceVisible_);
         cards_.append(card);
         layout_->addWidget(card.data());
-        layout_->update();
-        update();
+        //
     }
 }
 
@@ -43,8 +40,7 @@ void CardVec::removeCard(QSharedPointer<Card> card)
         layout_->removeWidget(card.data());
         card->setParent(nullptr);
         cards_.removeOne(card);
-        layout_->update();
-        update();
+        //
     }
 }
 
@@ -105,8 +101,6 @@ void CardVec::clearCards()
         cards_[i]->setParent(nullptr);
     }
     cards_.clear();
-    layout_->update();
-    update();
 }
 
 bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
@@ -173,9 +167,6 @@ void CardVec::updateLayout()
         layout_->removeWidget(card.data());
         layout_->addWidget(card.data());
     }
-
-    layout_->update();
-    update();
 }
 
 // Getters
@@ -209,6 +200,5 @@ void CardVec::onToggleCardsVisible(bool isVisible)
     foreach (const auto& card, cards_) {
         card->loadImage(isCardFaceVisible_);
     }
-    layout_->update();
-    update();
+    //
 }

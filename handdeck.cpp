@@ -24,8 +24,6 @@ void Handdeck::addCard(QSharedPointer<Card> card)
         cards_.append(card);
         layout_->addWidget(card.data());
         card->show();
-        layout_->update();
-        update();
     }
 }
 
@@ -36,8 +34,6 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
         layout_->removeWidget(card.data());
         card->setParent(nullptr);
         cards_.removeOne(card);
-        layout_->update();
-        update();
     }
 }
 
@@ -66,6 +62,14 @@ void Handdeck::sortCardsBy(SortOption option)
     updateLayout();
 }
 
+int Handdeck::pointsOnHand()
+{
+    int points = 0;
+    for (const auto& card : cards_)
+        points += card->value();
+    return points;
+}
+
 void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
 {
     if (cards().contains(card)) {
@@ -90,6 +94,4 @@ void Handdeck::onToggleCardsVisible(bool isVisible)
             card->loadImage(isCardFaceVisible_);
         }
     }
-    layout_->update();
-    update();
 }

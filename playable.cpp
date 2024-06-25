@@ -19,8 +19,6 @@ void Playable::addCard(QSharedPointer<Card> card)
         card->loadImage(true);
         cards_.append(card);
         layout_->addWidget(card.data());
-        layout_->update();
-        update();
     }
 }
 
@@ -39,6 +37,4 @@ void Playable::onToggleCardsVisible(bool isVisible)
     foreach (const auto& card, cards_) {
         card->loadImage(true);
     }
-    layout_->update();
-    update();
 }

@@ -38,8 +38,6 @@ void Monitor::addCard(QSharedPointer<Card> card)
     cards_.prepend(card);
     // card->setIsCardFaceVisible(true);
     layout_->insertWidget(0, card.data());
-    layout_->update();
-    update();
 }
 
 // Slots:
@@ -55,6 +53,4 @@ void Monitor::onToggleCardsVisible(bool isVisible)
     foreach (const auto& card, cards_) {
         card->loadImage(true);
     }
-    layout_->update();
-    update();
 }
