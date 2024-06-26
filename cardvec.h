@@ -27,6 +27,8 @@ public:
     QSharedPointer<Card> topCard();
     void clearCards();
     bool isCardInCards(const QSharedPointer<Card>& card);
+    bool isSuitInCards(const QString& suit);
+    bool isRankInCards(const QString& rank);
     QString mostCommonSuit() const;
     void sortCardsByPattern(int pattern);
     void updateLayout();

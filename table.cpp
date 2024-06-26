@@ -214,14 +214,6 @@ void Table::mousePressEvent(QMouseEvent* event)
     QWidget::mousePressEvent(event);
 }
 
-// void Table::wheelEvent(QWheelEvent* event)
-// {
-//     if (event->angleDelta().y() > 50) {
-//         emit rightMouseClicked();
-//     }
-//     QWidget::wheelEvent(event);
-// }
-
 void Table::keyPressEvent(QKeyEvent* event)
 {
     if (event->modifiers() & Qt::ControlModifier) {

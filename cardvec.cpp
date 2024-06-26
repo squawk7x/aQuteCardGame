@@ -114,6 +114,24 @@ bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
     // return false;
 }
 
+bool CardVec::isSuitInCards(const QString& suit)
+{
+    for (const QSharedPointer<Card>& card : cards_) {
+        if (card->suit() == suit)
+            return true;
+    }
+    return false;
+}
+
+bool CardVec::isRankInCards(const QString& rank)
+{
+    for (const QSharedPointer<Card>& card : cards_) {
+        if (card->rank() == rank)
+            return true;
+    }
+    return false;
+}
+
 QString CardVec::mostCommonSuit() const
 {
     QMap<QString, int> suitCounts;
@@ -137,11 +155,9 @@ QString CardVec::mostCommonSuit() const
 void CardVec::sortCardsByPattern(int pattern)
 {
     const std::vector<std::vector<QString>> patterns
-        = {{"9", "7", "8", "10", "Q", "K", "J", "A", "6"},
+        = {{"9", "10", "Q", "K", "A", "J", "6", "7", "8"},
            {"J", "9", "7", "8", "10", "Q", "K", "A", "6"},
-           {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
-           {"6", "7", "8", "9", "10", "Q", "K", "A", "J"},
-           {"J", "A", "K", "Q", "10", "6", "7", "8", "9"}};
+           {"J", "9", "10", "Q", "K", "7", "8", "A", "6"}};
 
     if (pattern < 0 || pattern >= patterns.size()) {
         qWarning() << "Invalid pattern index.";
@@ -149,6 +165,8 @@ void CardVec::sortCardsByPattern(int pattern)
     }
 
     const auto& selected_pattern = patterns[pattern];
+
+    qDebug() << "pattern used:" << pattern << ":" << patterns[pattern];
 
     std::sort(cards_.begin(),
               cards_.end(),
