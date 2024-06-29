@@ -37,6 +37,50 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
     }
 }
 
+void Handdeck::sortWhenSixes(QString stackSuit)
+{
+    // KI swap sixes
+
+    int sixes = countCardsWithRank("6");
+    qDebug() << "number of 6s:" << sixes;
+
+    int count = 0;
+    // pattern used for 6 at the beginning
+    if (sixes > 2 && cards()[0]->rank() == "6") {
+        // assure first '6' suit matches stackcard suit
+        while (cards()[0]->suit() != stackSuit && count < std::tgamma(sixes + 1)) {
+            std::next_permutation(cards().begin(), cards().begin() + sixes - 1);
+            count++;
+            qDebug() << count << "swap for first 6:" << cardsAsString();
+        }
+
+        count = 0;
+        bool found = false;
+        // Permute remaining '6's until next card suit is matched
+        if (sixes > 2 && cards().size() > sixes) { // not only '6' in handdeck
+
+            for (size_t i = sixes; i < cards().size(); ++i) {
+                while (count < std::tgamma(sixes)) {
+                    std::next_permutation(cards().begin() + 1, cards().begin() + sixes);
+
+                    if (cards()[i]->suit() == cards()[sixes - 1]->suit()) {
+                        qDebug() << count << "swap for last 6:" << cardsAsString();
+                        qDebug() << "last 6:" << cards()[sixes - 1]->str();
+                        qDebug() << "found card:" << cards()[i]->str();
+                        found = true;
+                        break;
+                    } // end if loop
+                    count++;
+                } // end while loop
+                if (found)
+                    break;
+            } // end for loop
+
+        } // end if
+    }
+    // End KI swap sixes
+}
+
 void Handdeck::sortCardsBy(SortOption option)
 {
     if (option == SortOption::Suit) {
@@ -69,53 +113,6 @@ int Handdeck::pointsOnHand()
         points += card->value();
     return points;
 }
-
-// KI
-
-QSharedPointer<CardVec> Handdeck::bestPermutation(const QSharedPointer<Card>& card,
-                                                  const QString& jsuit = "",
-                                                  int numPlayers = 3)
-{
-    QString lastRank = card->rank();
-    QString lastSuit = card->suit();
-    if (jsuit != "")
-        lastSuit = jsuit;
-
-    QSharedPointer<QVector<QSharedPointer<CardVec>>> permutStartWith6 = filteredPermutationsFor("6");
-
-    for (const auto& cardVec : *permutStartWith6) {
-        if (cardVec->cards().front()->suit() == lastSuit)
-            qDebug() << cardVec->cardsAsString();
-    }
-
-    return nullptr; // Adjust as needed for actual return
-}
-
-QSharedPointer<QVector<QSharedPointer<CardVec>>> Handdeck::filteredPermutationsFor(QString rank)
-{
-    auto allPermutations = QSharedPointer<QVector<QSharedPointer<CardVec>>>::create();
-    QVector<QSharedPointer<Card>> cardsCopy = cards(); // Copy the cards
-
-    std::sort(cardsCopy.begin(),
-              cardsCopy.end(),
-              [](const QSharedPointer<Card>& a, const QSharedPointer<Card>& b) { return *a < *b; });
-
-    do {
-        if (cardsCopy.front()->rank() == rank) {
-            QSharedPointer<CardVec> permutation = QSharedPointer<CardVec>::create(nullptr,
-                                                                                  cardsCopy);
-            allPermutations->append(permutation);
-            qDebug() << permutation;
-        }
-    } while (std::next_permutation(cardsCopy.begin(),
-                                   cardsCopy.end(),
-                                   [](const QSharedPointer<Card>& a,
-                                      const QSharedPointer<Card>& b) { return *a < *b; }));
-
-    return allPermutations;
-}
-
-// end KI
 
 void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
 {

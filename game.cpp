@@ -1,7 +1,7 @@
 #include "game.h"
 #include <QDebug>
 #include <QTimer>
-#include <algorithm> // for std::next_permutation
+#include <algorithm> // std::next_permutation
 
 Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
@@ -593,6 +593,8 @@ bool Game::isNextPlayerPossible()
     // while (isMustDrawCard()) {
     if (isMustDrawCard()) {
         drawCardFromBlind(Game::DrawOption::MustCard);
+        updatePlayable(); // needed for if, not for while
+        // human player must draw card by card
     }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
@@ -858,48 +860,60 @@ void Game::autoplay()
     if (player->isRobot() && !roundChooser()->isEnabled()) {
         player->handdeck()->setEnabled(true);
 
-        if (player->handdeck()->cards().size() < 5)
-            player->handdeck()->bestPermutation(stackCard,
-                                                jsuitChooser()->isEnabled() ? jsuitChooser()->suit()
-                                                                            : "",
-                                                numberOfPlayers_);
+        // KI use Pattern
 
-        while (!playable()->cards().isEmpty() || !isNextPlayerPossible())
-            while (!playable()->cards().isEmpty()) {
+        // [0] {"8", "7", "6", "J", "A", "K", "Q", "10", "9"}
+        // [1] {"6", "A", "K", "Q", "10", "8", "7", "9", "J"}
+        // [2] {"6", "A", "8", "7", "K", "Q", "10", "9", "J"}
+
+        int pattern;
+
+        // the other player holds only one card
+        if (numberOfPlayers_ == 2 && playerList_[1]->handdeck()->cards().size() == 1) {
+            pattern = 0;
+        }
+
+        // one of the 2 other players holds only one card
+        else if (numberOfPlayers_ == 3
+                 && playerList_[1]->handdeck()->cards().size()
+                            + playerList_[2]->handdeck()->cards().size()
+                        <= 3) {
+            pattern = 0; // play first eights and sevens
+        }
+
+        // every other player holds more than 1 card
+        else {
+            pattern = 1; // get rid of sixes and aces
+        }
+
+        qDebug() << "pattern used:" << pattern;
+
+        // end KI use Pattern
+
+        while (!isNextPlayerPossible()) {
+            while (!playable()->cards().isEmpty()) { // play all cards with same rank
                 // KI sortCardsByPattern
+                player->handdeck()->sortCardsByPattern(pattern);
+                // end KI sortCardsByPattern
 
-                // [0] {"9", "10", "Q", "K", "A", "J", "6", "7", "8"}
-                // [1] {"J", "9", "7", "8", "10", "Q", "K", "A", "6"}
-                // [2] {"J", "9", "10", "Q", "K", "7", "8", "A", "6"}
+                // KI permute sixes
+                QString stackSuit = stackCard->suit();
+                if (stackCard->rank() == "J")
+                    stackSuit = jsuitChooser()->suit();
 
-                // the other player holds only one card
-                if (numberOfPlayers_ == 2 && playerList_[1]->handdeck()->cards().size() == 1)
-                    player->handdeck()->sortCardsByPattern(0);
-
-                // one of the 2 other players holds only one card
-                else if (numberOfPlayers_ == 3
-                         && playerList_[1]->handdeck()->cards().size()
-                                    + playerList_[2]->handdeck()->cards().size()
-                                <= 3)
-                    player->handdeck()->sortCardsByPattern(0); // play first eights and sevens
-
-                // every other player holds more than 1 card
-                else
-                    player->handdeck()->sortCardsByPattern(1); // get rid of sixes and aces
-
-                // permutation(stackCard);
-
-                // end KI
+                if (playable()->isRankInCards("6"))
+                    player->handdeck()->sortWhenSixes(stackSuit);
+                // end KI permute sixes
 
                 for (const auto& card : player->handdeck()->cards()) {
                     card->click();
                 }
                 updatePlayable();
             }
+        }
+        emit cardsPlayed(played()->cards().size());
+        handleChoosers();
     }
-    emit cardsPlayed(played()->cards().size());
-
-    handleChoosers();
 }
 
 void Game::refillBlindFromStack()

@@ -31,6 +31,7 @@ public:
     bool isRankInCards(const QString& rank);
     QString mostCommonSuit() const;
     void sortCardsByPattern(int pattern);
+    int countCardsWithRank(const QString& rank) const;
     void updateLayout();
 
     // Getters

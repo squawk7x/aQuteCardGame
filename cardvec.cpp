@@ -153,9 +153,9 @@ QString CardVec::mostCommonSuit() const
 void CardVec::sortCardsByPattern(int pattern)
 {
     const std::vector<std::vector<QString>> patterns
-        = {{"9", "10", "Q", "K", "A", "J", "6", "7", "8"},
-           {"J", "9", "7", "8", "10", "Q", "K", "A", "6"},
-           {"J", "9", "10", "Q", "K", "7", "8", "A", "6"}};
+        = {{"8", "7", "6", "J", "A", "K", "Q", "10", "9"},
+           {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
+           {"6", "A", "8", "7", "K", "Q", "10", "9", "J"}};
 
     if (pattern < 0 || pattern >= patterns.size()) {
         qWarning() << "Invalid pattern index.";
@@ -164,17 +164,28 @@ void CardVec::sortCardsByPattern(int pattern)
 
     const auto& selected_pattern = patterns[pattern];
 
-    qDebug() << "pattern used:" << pattern << ":" << patterns[pattern];
+    // qDebug() << "pattern used:" << pattern << ":" << patterns[pattern];
 
     std::sort(cards_.begin(),
               cards_.end(),
               [&selected_pattern](QSharedPointer<Card> a, QSharedPointer<Card> b) {
                   auto posA = std::find(selected_pattern.begin(), selected_pattern.end(), a->rank());
                   auto posB = std::find(selected_pattern.begin(), selected_pattern.end(), b->rank());
-                  return posA > posB;
+                  return posA < posB;
               });
 
     updateLayout();
+}
+
+int CardVec::countCardsWithRank(const QString& rank) const
+{
+    int count = 0;
+    for (const auto& card : cards_) {
+        if (card->rank() == rank) {
+            count++;
+        }
+    }
+    return count;
 }
 
 void CardVec::updateLayout()

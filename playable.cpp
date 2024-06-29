@@ -26,7 +26,7 @@ void Playable::onCardClicked(const QSharedPointer<Card>& card)
 {
     // to make the card played when clicking on card in playable:
     // if (cards().contains(card)) {
-    //     emit handCardClicked(card->clone());
+    //     emit handCardClicked(card);
     // }
 }
 
