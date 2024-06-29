@@ -1,6 +1,7 @@
 #include "game.h"
 #include <QDebug>
 #include <QTimer>
+#include <algorithm> // for std::next_permutation
 
 Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
@@ -852,8 +853,16 @@ void Game::activateNextPlayer()
 
 void Game::autoplay()
 {
+    QSharedPointer<Card> stackCard = stack()->topCard();
+
     if (player->isRobot() && !roundChooser()->isEnabled()) {
         player->handdeck()->setEnabled(true);
+
+        if (player->handdeck()->cards().size() < 5)
+            player->handdeck()->bestPermutation(stackCard,
+                                                jsuitChooser()->isEnabled() ? jsuitChooser()->suit()
+                                                                            : "",
+                                                numberOfPlayers_);
 
         while (!playable()->cards().isEmpty() || !isNextPlayerPossible())
             while (!playable()->cards().isEmpty()) {
@@ -862,8 +871,6 @@ void Game::autoplay()
                 // [0] {"9", "10", "Q", "K", "A", "J", "6", "7", "8"}
                 // [1] {"J", "9", "7", "8", "10", "Q", "K", "A", "6"}
                 // [2] {"J", "9", "10", "Q", "K", "7", "8", "A", "6"}
-
-                // playable()->sortCardsByPattern(0);
 
                 // the other player holds only one card
                 if (numberOfPlayers_ == 2 && playerList_[1]->handdeck()->cards().size() == 1)
@@ -880,12 +887,9 @@ void Game::autoplay()
                 else
                     player->handdeck()->sortCardsByPattern(1); // get rid of sixes and aces
 
-                // qDebug() << "sorted playable:" << playable()->cardsAsString();
+                // permutation(stackCard);
 
                 // end KI
-
-                // playable()->sortCardsByPattern(0);
-                // player->handdeck()->sortCardsByPattern(1);
 
                 for (const auto& card : player->handdeck()->cards()) {
                     card->click();

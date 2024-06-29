@@ -32,6 +32,8 @@ public:
     Card& operator=(Card&& other) noexcept; // Move assignment operator
 
     bool operator==(const Card& other) const;
+    bool operator<(const Card& other) const;
+    bool operator>(const Card& other) const;
     QSharedPointer<Card> clone(QWidget* parent = nullptr) const;
 
     // Getters

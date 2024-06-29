@@ -16,7 +16,12 @@ public:
     virtual void addCard(QSharedPointer<Card> card) override;
     virtual void removeCard(QSharedPointer<Card> card) override;
     int pointsOnHand();
-
+    // KI
+    QSharedPointer<QVector<QSharedPointer<CardVec>>> filteredPermutationsFor(QString rank);
+    QSharedPointer<CardVec> bestPermutation(const QSharedPointer<Card>& card,
+                                            const QString& jsuit,
+                                            int numPlayers);
+    // end KI
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card) override;
     virtual void onToggleCardsVisible(bool isVisible) override;

@@ -97,6 +97,24 @@ bool Card::operator==(const Card& other) const
     return suit_ == other.suit_ && rank_ == other.rank_;
 }
 
+// Operator<
+bool Card::operator<(const Card& other) const
+{
+    if (rank_ != other.rank_)
+        return rank_ < other.rank_;
+    else
+        return suit_ < other.suit_;
+}
+
+// Operator<
+bool Card::operator>(const Card& other) const
+{
+    if (rank_ != other.rank_)
+        return rank_ > other.rank_;
+    else
+        return suit_ > other.suit_;
+}
+
 // Clone
 QSharedPointer<Card> Card::clone(QWidget* parent) const
 {

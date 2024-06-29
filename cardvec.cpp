@@ -30,7 +30,6 @@ void CardVec::addCard(QSharedPointer<Card> card)
         card->loadImage(isCardFaceVisible_);
         cards_.append(card);
         layout_->addWidget(card.data());
-        //
     }
 }
 
@@ -40,7 +39,6 @@ void CardVec::removeCard(QSharedPointer<Card> card)
         layout_->removeWidget(card.data());
         card->setParent(nullptr);
         cards_.removeOne(card);
-        //
     }
 }
 
