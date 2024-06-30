@@ -37,128 +37,11 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
     }
 }
 
-void Handdeck::permuteSixes(QString stackSuit)
-{
-    // KI permute sixes
-
-    int sixes = countCardsOfRank("6");
-    qDebug() << "number of 6s:" << sixes;
-
-    int count = 0;
-    if (sixes > 2 && cards()[0]->rank() == "6") {
-        // assure first '6' suit matches stackcard suit
-        while (cards()[0]->suit() != stackSuit && count < std::tgamma(sixes + 1)) {
-            std::next_permutation(cards().begin(), cards().begin() + sixes - 1);
-            count++;
-            qDebug() << count << "swap for first 6:" << cardsAsString();
-        }
-
-        count = 0;
-        bool found = false;
-        // Permute remaining '6's until next card suit is matched
-        if (sixes > 2 && cards().size() > sixes) { // not only '6' in handdeck
-
-            for (size_t i = sixes; i < cards().size(); ++i) {
-                while (count < std::tgamma(sixes)) {
-                    std::next_permutation(cards().begin() + 1, cards().begin() + sixes);
-
-                    if (cards()[i]->suit() == cards()[sixes - 1]->suit()) {
-                        qDebug() << count << "swap for last 6:" << cardsAsString();
-                        qDebug() << "last 6:" << cards()[sixes - 1]->str();
-                        qDebug() << "found card:" << cards()[i]->str();
-                        found = true;
-                        break;
-                    } // end if loop
-                    count++;
-                } // end while loop
-                if (found)
-                    break;
-            } // end for loop
-
-        } // end if
-    }
-    // end KI permute sixes
-}
-
-// void Handdeck::permuteAces(QString stackSuit)
-// {
-//     // KI permute aces
-
-//     int aces = countCardsOfRank("A");
-//     qDebug() << "number of aces:" << aces;
-
-//     auto firstAce = std::find_if(cards().begin(),
-//                                  cards().end(),
-//                                  [](const QSharedPointer<Card>& card) {
-//                                      return card->rank() == "A";
-//                                  });
-
-//     // Find the last element with rank "A"
-//     auto lastAce = std::find_if(cards().rbegin(),
-//                                 cards().rend(),
-//                                 [](const QSharedPointer<Card>& card) {
-//                                     return card->rank() == "A";
-//                                 });
-
-//     int firstIndex = 0;
-//     if (firstAce != cards().end()) {
-//         firstIndex = std::distance(cards().begin(), firstAce);
-//         qDebug() << "First element found at index: " << firstIndex;
-//     } else {
-//         qDebug() << "Element not found in the vector.";
-//     }
-
-//     int lastIndex = 0;
-//     if (lastAce != cards().rend()) {
-//         lastIndex = std::distance(cards().begin(), lastAce.base()) - 1;
-//         qDebug() << "Last element found at index: " << lastIndex;
-//     } else {
-//         qDebug() << "Element not found in the vector.";
-//     }
-
-//     int count = 0;
-//     if (aces > 2) {
-//         // assure first 'A' suit matches stackcard suit
-//         while (cards()[firstIndex]->suit() != stackSuit && count < std::tgamma(aces + 1)) {
-//             std::next_permutation(cards().begin() + firstIndex, cards().begin() + lastIndex);
-//             count++;
-//             qDebug() << count << "swap for first A:" << cardsAsString();
-//         }
-
-//         count = 0;
-//         bool found = false;
-//         // Permute remaining 'A's until next card suit is matched
-//         if (aces > 2 && cards().size() > lastIndex) { // more cards in handdeck
-
-//             for (size_t i = lastIndex + 1; i < cards().size(); ++i) {
-//                 while (count < std::tgamma(aces)) {
-//                     std::next_permutation(cards().begin() + firstIndex + 1,
-//                                           cards().begin() + lastIndex);
-
-//                     if (cards()[i]->suit() == cards()[lastIndex]->suit()) {
-//                         qDebug() << count << "swap for last A:" << cardsAsString();
-//                         qDebug() << "last A" << cards()[lastIndex]->str();
-//                         qDebug() << "found card:" << cards()[i]->str();
-//                         found = true;
-//                         break;
-//                     } // end if
-//                     count++;
-//                 } // end while loop
-//                 if (found)
-//                     break;
-//             } // end for loop
-
-//         } // end if
-//     }
-//     // end KI permute aces
-// }
-
 void Handdeck::permuteRanks(QString rank, const QSharedPointer<Card>& stackCard, QString stackSuit)
 {
     // KI permute ranks
 
     int numRanks = countCardsOfRank(rank);
-    qDebug() << "number cards of rank" << rank << "=" << numRanks;
 
     auto firstRank = std::find_if(cards().begin(),
                                   cards().end(),
@@ -176,7 +59,7 @@ void Handdeck::permuteRanks(QString rank, const QSharedPointer<Card>& stackCard,
     int firstIndex = 0;
     if (firstRank != cards().end()) {
         firstIndex = std::distance(cards().begin(), firstRank);
-        qDebug() << "First" << rank << " found at index: " << firstIndex;
+        // qDebug() << "First" << rank << " found at index: " << firstIndex;
     } else {
         qDebug() << "Element not found in the vector.";
     }
@@ -184,7 +67,7 @@ void Handdeck::permuteRanks(QString rank, const QSharedPointer<Card>& stackCard,
     int lastIndex = 0;
     if (lastRank != cards().rend()) {
         lastIndex = std::distance(cards().begin(), lastRank.base()) - 1;
-        qDebug() << "Last" << rank << "found at index:" << lastIndex;
+        // qDebug() << "Last" << rank << "found at index:" << lastIndex;
     } else {
         qDebug() << "Element not found in the vector.";
     }
@@ -195,7 +78,7 @@ void Handdeck::permuteRanks(QString rank, const QSharedPointer<Card>& stackCard,
         while (cards()[firstIndex]->suit() != stackSuit && count < std::tgamma(numRanks + 1)) {
             std::next_permutation(cards().begin() + firstIndex, cards().begin() + lastIndex);
             count++;
-            qDebug() << count << "permute cards to stackcard suit:" << stackSuit << cardsAsString();
+            // qDebug() << count << "permute cards to stackcard suit:" << stackSuit << cardsAsString();
         }
 
         count = 0;
@@ -208,32 +91,26 @@ void Handdeck::permuteRanks(QString rank, const QSharedPointer<Card>& stackCard,
                 inc = 0;
 
             for (size_t i = lastIndex + 1; i < cards().size(); ++i) {
-                qDebug() << "in for loop ...";
                 while (count < std::tgamma(numRanks)) {
-                    qDebug() << "in while loop ...";
                     std::next_permutation(cards().begin() + firstIndex + inc,
                                           cards().begin() + lastIndex + 1);
 
                     if (cards()[i]->suit() == cards()[lastIndex]->suit()) {
-                        qDebug() << "in if ...";
-
-                        qDebug() << count << "permute for last" << rank << cardsAsString();
-                        qDebug() << "found card that fits to" << cards()[lastIndex]->str() << ":"
-                                 << cards()[i]->str();
+                        // qDebug() << "found card that fits to" << cards()[lastIndex]->str() << ":"
+                        //          << cards()[i]->str();
                         found = true;
                         break;
-                    } // end if
+                    }
                     count++;
-                } // end while loop
+                }
                 if (found)
                     break;
-            } // end for loop
-
+            }
         } // end if
     }
-    // end KI permute ranks
 }
 
+// end KI permute ranks
 void Handdeck::sortCardsBy(SortOption option)
 {
     if (option == SortOption::Suit) {

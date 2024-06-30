@@ -886,7 +886,7 @@ void Game::autoplay()
             pattern = 1; // get rid of sixes and aces
         }
 
-        qDebug() << "pattern used:" << pattern;
+        // qDebug() << "pattern used:" << pattern;
 
         // end KI use Pattern
 
