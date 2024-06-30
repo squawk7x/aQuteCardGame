@@ -177,7 +177,7 @@ void CardVec::sortCardsByPattern(int pattern)
     updateLayout();
 }
 
-int CardVec::countCardsWithRank(const QString& rank) const
+int CardVec::countCardsOfRank(const QString& rank) const
 {
     int count = 0;
     for (const auto& card : cards_) {

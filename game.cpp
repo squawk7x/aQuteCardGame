@@ -349,7 +349,7 @@ void Game::handleChoosers()
                     eightsChooser()->toggle_to("n");
             }
         }
-        // end KI
+        // end KI EightsChooser
 
         eightsChooser()->setDisabled(player->isRobot());
         eightsChooser()->show();
@@ -402,7 +402,7 @@ void Game::handleChoosers()
         else
             quteChooser()->toggle_to("n");
 
-        // end KI
+        // end KI QuteChooser
 
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
@@ -447,7 +447,7 @@ void Game::handleChoosers()
             } else
                 jpointsChooser()->toggleRandom();
         }
-        // end KI
+        // end KI JPointsChooser
 
         jpointsChooser()->toggle_to(jpointsChooser()->decision());
         jpointsChooser()->setDisabled(player->isRobot());
@@ -892,18 +892,25 @@ void Game::autoplay()
 
         while (!isNextPlayerPossible()) {
             while (!playable()->cards().isEmpty()) { // play all cards with same rank
+
+                QString stackSuit = stackCard->suit();
+                if (stackCard->rank() == "J")
+                    stackSuit = jsuitChooser()->suit();
+
                 // KI sortCardsByPattern
                 player->handdeck()->sortCardsByPattern(pattern);
                 // end KI sortCardsByPattern
 
                 // KI permute sixes
-                QString stackSuit = stackCard->suit();
-                if (stackCard->rank() == "J")
-                    stackSuit = jsuitChooser()->suit();
-
                 if (playable()->isRankInCards("6"))
-                    player->handdeck()->sortWhenSixes(stackSuit);
+                    // player->handdeck()->permuteSixes(stackSuit);
+                    player->handdeck()->permuteRanks("6", stackCard, stackSuit);
                 // end KI permute sixes
+
+                // KI permute aces
+                if (!playable()->isRankInCards("6") && playable()->isRankInCards("A"))
+                    player->handdeck()->permuteRanks("A", stackCard, stackSuit);
+                // end KI permute aces
 
                 for (const auto& card : player->handdeck()->cards()) {
                     card->click();
