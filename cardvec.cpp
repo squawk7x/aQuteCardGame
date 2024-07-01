@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <qevent.h>
 
+std::vector<std::vector<QString>> patterns({{"8", "7", "6", "J", "A", "K", "Q", "10", "9"},
+                                            {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
+                                            {"6", "A", "8", "7", "K", "Q", "10", "9", "J"}});
+
 CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     : QWidget(parent)
     , cards_(std::move(rhs))
@@ -152,11 +156,6 @@ QString CardVec::mostCommonSuit() const
 
 void CardVec::sortCardsByPattern(int pattern)
 {
-    const std::vector<std::vector<QString>> patterns
-        = {{"8", "7", "6", "J", "A", "K", "Q", "10", "9"},
-           {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
-           {"6", "A", "8", "7", "K", "Q", "10", "9", "J"}};
-
     if (pattern < 0 || pattern >= patterns.size()) {
         qWarning() << "Invalid pattern index.";
         return;

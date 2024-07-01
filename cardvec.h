@@ -37,6 +37,8 @@ public:
     // Getters
     QVector<QSharedPointer<Card>>& cards();
     bool isCardFaceVisible() const;
+    // const std::vector<std::vector<QString>> patterns();
+    // const std::vector<std::vector<QString>> patterns_;
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);
@@ -50,7 +52,6 @@ protected:
 private:
     // Setters
     void setIsCardFaceVisible(bool isVisible);
-
 };
 
 #endif // CARDVEC_H

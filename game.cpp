@@ -3,6 +3,8 @@
 #include <QTimer>
 #include <algorithm> // std::next_permutation
 
+extern std::vector<std::vector<QString>> patterns;
+
 Game::Game(int numberOfPlayers, QObject* parent)
     : QObject(parent)
     , numberOfPlayers_(numberOfPlayers)
@@ -864,7 +866,6 @@ void Game::autoplay()
 
         // [0] {"8", "7", "6", "J", "A", "K", "Q", "10", "9"}
         // [1] {"6", "A", "K", "Q", "10", "8", "7", "9", "J"}
-        // [2] {"6", "A", "8", "7", "K", "Q", "10", "9", "J"}
 
         int pattern;
 
@@ -886,8 +887,6 @@ void Game::autoplay()
             pattern = 1; // get rid of sixes and aces
         }
 
-        // qDebug() << "pattern used:" << pattern;
-
         // end KI use Pattern
 
         while (!isNextPlayerPossible()) {
@@ -898,24 +897,15 @@ void Game::autoplay()
                     stackSuit = jsuitChooser()->suit();
 
                 // KI sortCardsByPattern
+                playable()->sortCardsByPattern(pattern);
                 player->handdeck()->sortCardsByPattern(pattern);
                 // end KI sortCardsByPattern
 
-                // KI permute sixes
-                if (playable()->isRankInCards("6"))
-                    // player->handdeck()->permuteSixes(stackSuit);
-                    player->handdeck()->permuteRanks("6", stackCard, stackSuit);
-                // end KI permute sixes
-
-                // KI permute aces
-                if (!playable()->isRankInCards("6") && playable()->isRankInCards("A"))
-                    player->handdeck()->permuteRanks("A", stackCard, stackSuit);
-                // end KI permute aces
-
-                // KI permute eights
-                if (!playable()->isRankInCards("6") && playable()->isRankInCards("8"))
-                    player->handdeck()->permuteRanks("8", stackCard, stackSuit);
-                // end KI permute eights
+                // KI permute ranks
+                player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
+                                                 stackCard,
+                                                 stackSuit);
+                // end KI permute ranks
 
                 for (const auto& card : player->handdeck()->cards()) {
                     card->click();
