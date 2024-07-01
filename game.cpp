@@ -912,6 +912,11 @@ void Game::autoplay()
                     player->handdeck()->permuteRanks("A", stackCard, stackSuit);
                 // end KI permute aces
 
+                // KI permute eights
+                if (!playable()->isRankInCards("6") && playable()->isRankInCards("8"))
+                    player->handdeck()->permuteRanks("8", stackCard, stackSuit);
+                // end KI permute eights
+
                 for (const auto& card : player->handdeck()->cards()) {
                     card->click();
                 }

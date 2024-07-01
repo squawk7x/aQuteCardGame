@@ -139,7 +139,7 @@ void Table::initializeGame(int numberOfPlayers)
     QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("gbPlayer1");
     groupBoxPlayer1->setLayout(layoutPlayer1);
 
-    connect(this, &Table::rightMouseClicked, game_.get(), &Game::activateNextPlayer);
+    connect(this, &Table::mouseClicked, game_.get(), &Game::activateNextPlayer);
 
     connect(game_.get(), &Game::setRbNumPlayers, this, [this](int num) {
         if (num == 2) {
@@ -208,8 +208,9 @@ void Table::onRbNumPlayers3()
 
 void Table::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::RightButton) {
-        emit rightMouseClicked();
+    // if (event->button() == Qt::RightButton) {
+    if (event->button() == Qt::LeftButton) {
+        emit mouseClicked();
     }
     QWidget::mousePressEvent(event);
 }

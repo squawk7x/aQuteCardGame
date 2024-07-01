@@ -87,7 +87,7 @@ void Handdeck::permuteRanks(QString rank, const QSharedPointer<Card>& stackCard,
         if (numRanks >= 2 && cards().size() > lastIndex) { // more cards in handdeck
 
             int inc = 1;
-            if (rank == "A" && stackCard->rank() == "A")
+            if (rank == "A" && stackCard->rank() == "A" || rank == "8" && stackCard->rank() == "8")
                 inc = 0;
 
             for (size_t i = lastIndex + 1; i < cards().size(); ++i) {

@@ -10,6 +10,12 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>aQuteCardGame</string>
   </property>
@@ -34,6 +40,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbPlayer2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Player 2</string>
           </property>
@@ -58,6 +70,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbPlayer3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Player 3</string>
           </property>
@@ -86,6 +104,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_02">
         <item>
          <widget class="QGroupBox" name="gbMonitor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Monitor</string>
           </property>
@@ -118,7 +142,7 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -138,7 +162,7 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -158,7 +182,7 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -178,7 +202,7 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -207,6 +231,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbGot1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>cards drawn for 7 or 8</string>
           </property>
@@ -221,6 +251,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbGot2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>cards drawn for 8</string>
           </property>
@@ -250,7 +286,7 @@
         <item>
          <widget class="QGroupBox" name="gbShuffles">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -273,7 +309,7 @@
         <item>
          <widget class="QGroupBox" name="gbBlind">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -290,7 +326,7 @@
         <item>
          <widget class="QGroupBox" name="gbJsuitChooser">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -344,6 +380,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_04">
         <item>
          <widget class="QGroupBox" name="gbDrawn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Drawn</string>
           </property>
@@ -355,6 +397,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbPlayable">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Playable</string>
           </property>
@@ -368,6 +416,12 @@
          <widget class="QGroupBox" name="gbPlayed">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="title">
            <string>Played</string>
@@ -393,6 +447,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbRound">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Round</string>
           </property>
@@ -404,6 +464,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbScores">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Scores</string>
           </property>
@@ -415,6 +481,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbNumberOfPlayers">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Players</string>
           </property>
@@ -424,6 +496,12 @@
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="1" column="0">
             <widget class="QRadioButton" name="rbNumPlayers3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>3</string>
              </property>
@@ -434,6 +512,12 @@
            </item>
            <item row="0" column="0">
             <widget class="QRadioButton" name="rbNumPlayers2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>2</string>
              </property>
@@ -444,6 +528,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbSortCardsBy">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Sort Cards by</string>
           </property>
@@ -453,6 +543,12 @@
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="4" column="0">
             <widget class="QRadioButton" name="rbUnsorted">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Unsorted</string>
              </property>
@@ -463,6 +559,12 @@
            </item>
            <item row="2" column="0">
             <widget class="QRadioButton" name="rbRank">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Rank</string>
              </property>
@@ -470,6 +572,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QRadioButton" name="rbSuit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Suit</string>
              </property>
@@ -483,6 +591,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbSound">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Settings</string>
           </property>
@@ -492,6 +606,12 @@
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="0" column="1">
             <widget class="QCheckBox" name="cbSound">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Sound</string>
              </property>
@@ -502,6 +622,12 @@
            </item>
            <item row="1" column="1">
             <widget class="QCheckBox" name="cbVisible">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Visible</string>
              </property>
@@ -532,6 +658,12 @@
         </item>
         <item>
          <widget class="QGroupBox" name="gbPlayer1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Player 1</string>
           </property>

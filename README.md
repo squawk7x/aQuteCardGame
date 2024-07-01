@@ -88,9 +88,9 @@ Four '6's {"6♦", "6♠", "6♥", "6♣"} and 'Qute' enabled overrides the 'a 6
 ## Game Control
 
 ### Mouse Controls
-- **Click on card**: Play the card onto the stack if it matches.
-- **Right Click**: End the current player's turn.
-- **Toggle Decisions**: Click on the different choosers to toggle to appropriate decisions on 'multiple 8s', 'Jsuit', 'Jpoints', and 'Qute'.
+- **Left click on card**: Play the card onto the stack if it matches.
+- **Left click on choosers**: Toggle decisions of the different choosers to wanted decision on 'multiple 8s', 'Jsuit', 'Jpoints', and 'Qute'.
+- **Left click**: End the current player's turn. Make next player play.
 
 ### Choosers
 - **Multiple 8s**: Decide how the draw cards rule for 'multiple 8s' will apply.
@@ -133,7 +133,7 @@ If you choose 'Continue the round' then the last played '6' must be covered.
 - **D**: Move the last card in the hand deck of the active player back to the blind.
 
 ### How to install
-- **Try the precompiled version** (/build/.../aQuteCardGame). (Ubuntu 22.04LTS)
+- **Try a precompiled version** (/build/.../aQuteCardGame). (Ubuntu 22.04LTS)
   **OR:**
 - **Install git** (if not installed yet)
 - **Clone the repository**: `git clone https://github.com/squawk7x/aQuteCardGame.git`

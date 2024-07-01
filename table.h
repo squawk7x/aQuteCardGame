@@ -35,7 +35,7 @@ private:
     void sortCardsByPattern(QKeyEvent *event);
 
 signals:
-    void rightMouseClicked();
+    void mouseClicked();
     void cbVisibleStatus(int state);
 
 private:
