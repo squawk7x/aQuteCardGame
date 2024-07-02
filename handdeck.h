@@ -15,6 +15,9 @@ public:
     explicit Handdeck(QWidget* parent = nullptr);
     virtual void addCard(QSharedPointer<Card> card) override;
     virtual void removeCard(QSharedPointer<Card> card) override;
+    QVector<QString> patternByRankPoints();
+    void prependRank(QVector<QString>& pattern, const QString& rank);
+    void appendRank(QVector<QString>& pattern, const QString& rank);
     void permuteRanks(const QString& rank,
                       const QSharedPointer<Card>& stackCard,
                       const QString& stackSuit);

@@ -3,10 +3,6 @@
 #include <algorithm>
 #include <qevent.h>
 
-std::vector<std::vector<QString>> patterns({{"8", "7", "6", "J", "A", "K", "Q", "10", "9"},
-                                            {"6", "A", "K", "Q", "10", "8", "7", "9", "J"},
-                                            {"6", "A", "8", "7", "K", "Q", "10", "9", "J"}});
-
 CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     : QWidget(parent)
     , cards_(std::move(rhs))
@@ -154,24 +150,13 @@ QString CardVec::mostCommonSuit() const
     return mostCommonSuit;
 }
 
-void CardVec::sortCardsByPattern(int pattern)
+void CardVec::sortCardsByPattern(const QVector<QString>& pattern)
 {
-    if (pattern < 0 || pattern >= patterns.size()) {
-        qWarning() << "Invalid pattern index.";
-        return;
-    }
-
-    const auto& selected_pattern = patterns[pattern];
-
-    // qDebug() << "pattern used:" << pattern << ":" << patterns[pattern];
-
-    std::sort(cards_.begin(),
-              cards_.end(),
-              [&selected_pattern](QSharedPointer<Card> a, QSharedPointer<Card> b) {
-                  auto posA = std::find(selected_pattern.begin(), selected_pattern.end(), a->rank());
-                  auto posB = std::find(selected_pattern.begin(), selected_pattern.end(), b->rank());
-                  return posA < posB;
-              });
+    std::sort(cards_.begin(), cards_.end(), [&](QSharedPointer<Card> a, QSharedPointer<Card> b) {
+        auto posA = std::find(pattern.begin(), pattern.end(), a->rank());
+        auto posB = std::find(pattern.begin(), pattern.end(), b->rank());
+        return posA < posB;
+    });
 
     updateLayout();
 }

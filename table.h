@@ -32,7 +32,6 @@ public slots:
 
 private:
     void addSpecialCardsToHand(QKeyEvent *event);
-    void sortCardsByPattern(QKeyEvent *event);
 
 signals:
     void mouseClicked();

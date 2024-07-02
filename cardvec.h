@@ -30,15 +30,13 @@ public:
     bool isSuitInCards(const QString& suit);
     bool isRankInCards(const QString& rank);
     QString mostCommonSuit() const;
-    void sortCardsByPattern(int pattern);
+    void sortCardsByPattern(const QVector<QString>& pattern);
     int countCardsOfRank(const QString& rank) const;
     void updateLayout();
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();
     bool isCardFaceVisible() const;
-    // const std::vector<std::vector<QString>> patterns();
-    // const std::vector<std::vector<QString>> patterns_;
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);

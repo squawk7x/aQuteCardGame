@@ -187,15 +187,6 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
     }
 }
 
-void Table::sortCardsByPattern(QKeyEvent* event)
-{
-    int key = event->key();
-    if (key >= Qt::Key_0 && key <= Qt::Key_4) {
-        int pattern = key - Qt::Key_0;
-        game_->player->handdeck()->sortCardsByPattern(pattern);
-    }
-}
-
 void Table::onRbNumPlayers2()
 {
     initializeGame(2);
@@ -221,7 +212,5 @@ void Table::keyPressEvent(QKeyEvent* event)
         if (event->key() >= Qt::Key_6 && event->key() <= Qt::Key_Q) {
             addSpecialCardsToHand(event);
         }
-    } else {
-        sortCardsByPattern(event);
     }
 }

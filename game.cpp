@@ -836,7 +836,7 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
-    int cardsInGame = 0;
+    // int cardsInGame = 0;
 
     // Check that 36 cards are in the game
     // for (auto& player : playerList_) {
@@ -862,33 +862,6 @@ void Game::autoplay()
     if (player->isRobot() && !roundChooser()->isEnabled()) {
         player->handdeck()->setEnabled(true);
 
-        // KI use Pattern
-
-        // [0] {"8", "7", "6", "J", "A", "K", "Q", "10", "9"}
-        // [1] {"6", "A", "K", "Q", "10", "8", "7", "9", "J"}
-
-        int pattern;
-
-        // the other player holds only one card
-        if (numberOfPlayers_ == 2 && playerList_[1]->handdeck()->cards().size() == 1) {
-            pattern = 0;
-        }
-
-        // one of the 2 other players holds only one card
-        else if (numberOfPlayers_ == 3
-                 && playerList_[1]->handdeck()->cards().size()
-                            + playerList_[2]->handdeck()->cards().size()
-                        <= 3) {
-            pattern = 0; // play first eights and sevens
-        }
-
-        // every other player holds more than 1 card
-        else {
-            pattern = 1; // get rid of sixes and aces
-        }
-
-        // end KI use Pattern
-
         while (!isNextPlayerPossible()) {
             while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
@@ -896,10 +869,31 @@ void Game::autoplay()
                 if (stackCard->rank() == "J")
                     stackSuit = jsuitChooser()->suit();
 
-                // KI sortCardsByPattern
-                playable()->sortCardsByPattern(pattern);
+                QVector<QString> pattern = player->handdeck()->patternByRankPoints();
+
+                // KI rankPoints & 6, 7, 8, J
+                // the other player holds only one card
+                if (numberOfPlayers_ == 2 && playerList_[1]->handdeck()->cards().size() == 1) {
+                    player->handdeck()->prependRank(pattern, "7");
+                    player->handdeck()->prependRank(pattern, "8");
+                }
+                // one of the 2 other players holds only one card
+                else if (numberOfPlayers_ == 3 && (playerList_[1]->handdeck()->cards().size() == 1)
+                         || playerList_[2]->handdeck()->cards().size() == 1) {
+                    player->handdeck()->prependRank(pattern, "7");
+                    player->handdeck()->prependRank(pattern, "8");
+                }
+                // every other player holds more than 1 card
+                else {
+                    player->handdeck()->prependRank(pattern, "6");
+                    player->handdeck()->appendRank(pattern, "J");
+                }
+                // end KI rankPoints & 6, 7, 8, J
+
                 player->handdeck()->sortCardsByPattern(pattern);
-                // end KI sortCardsByPattern
+                playable()->sortCardsByPattern(pattern);
+
+                // qDebug() << "pattern used:" << pattern;
 
                 // KI permute ranks
                 player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
