@@ -272,6 +272,7 @@ void Game::initializeRound()
 
     // case a robot player starts a new round
     // all playable cards are played
+
     autoplay();
 }
 
@@ -298,7 +299,10 @@ void Game::handleChoosers()
     // JsuitChooser
     if (stackCard->rank() == "J") {
         if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
-            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
+            // KI toggle JSuit to rank with most points
+            // jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
+            jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints());
+        // end KI toggle JSuit to rank with most points
 
         // Do not allow Player1 toggle JSuitChooser:
         jsuitChooser()->setDisabled(player->isRobot());
@@ -871,24 +875,20 @@ void Game::autoplay()
 
                 QVector<QString> pattern = player->handdeck()->patternByRankPoints();
 
-                // KI rankPoints & 6, 7, 8, J
+                // KI rankPoints 6, 7, 8, J, A
                 // the other player holds only one card
-                if (numberOfPlayers_ == 2 && playerList_[1]->handdeck()->cards().size() == 1) {
+                if (playerList_[1]->handdeck()->cards().size() == 1) {
                     player->handdeck()->prependRank(pattern, "7");
                     player->handdeck()->prependRank(pattern, "8");
-                }
-                // one of the 2 other players holds only one card
-                else if (numberOfPlayers_ == 3 && (playerList_[1]->handdeck()->cards().size() == 1)
-                         || playerList_[2]->handdeck()->cards().size() == 1) {
-                    player->handdeck()->prependRank(pattern, "7");
-                    player->handdeck()->prependRank(pattern, "8");
-                }
-                // every other player holds more than 1 card
+                } else if (player->score()
+                               + player->handdeck()->countCardsOfRank("A") * 15 * shuffles
+                           == 125)
+                    player->handdeck()->appendRank(pattern, "A");
                 else {
                     player->handdeck()->prependRank(pattern, "6");
                     player->handdeck()->appendRank(pattern, "J");
                 }
-                // end KI rankPoints & 6, 7, 8, J
+                // end KI rankPoints 6, 7, 8, J, A
 
                 player->handdeck()->sortCardsByPattern(pattern);
                 playable()->sortCardsByPattern(pattern);

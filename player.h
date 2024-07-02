@@ -32,7 +32,7 @@ public:
     QSharedPointer<Handdeck> handdeck() const;
 
     // Methods
-    int countHand();
+    int pointsOnHand();
 
     // Setters
     void setName(const QString& name);

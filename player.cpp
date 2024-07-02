@@ -12,7 +12,6 @@ Player::Player(QWidget* parent,
     , isRobot_(isRobot)
     , score_(score)
     , jpoints_(0)
-// , handdeck_(handdeck ? handdeck : QSharedPointer<Handdeck>::create(this))
 {
     handdeck_ = QSharedPointer<Handdeck>(new Handdeck(this));
 }
@@ -63,7 +62,7 @@ QSharedPointer<Handdeck> Player::handdeck() const
 }
 
 // Methods
-int Player::countHand()
+int Player::pointsOnHand()
 {
     int pointsOnHand = 0;
     for (const auto& card : std::as_const(handdeck_->cards())) {
@@ -102,7 +101,7 @@ void Player::onCountPoints(int shuffles)
         score_ = 0;
         jpoints_ = 0;
     } else {
-        score_ += countHand() * shuffles;
+        score_ += pointsOnHand() * shuffles;
         score_ += jpoints_ * shuffles;
 
         if (score_ == 125)

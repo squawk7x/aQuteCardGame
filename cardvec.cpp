@@ -172,6 +172,37 @@ int CardVec::countCardsOfRank(const QString& rank) const
     return count;
 }
 
+QString CardVec::suitOfRankWithMostPoints() const
+{
+    QMap<QString, int> rankPoints;
+
+    // Calculate total points for each rank, excluding rank 'J'
+    foreach (const auto& card, cards_) {
+        if (card->rank() != "J") {
+            rankPoints[card->rank()] += card->value();
+        }
+    }
+
+    // Find the rank with the highest points
+    QString rankWithMaxPoints;
+    int maxPoints = 0;
+    for (auto it = rankPoints.constBegin(); it != rankPoints.constEnd(); ++it) {
+        if (it.value() >= maxPoints) {
+            maxPoints = it.value();
+            rankWithMaxPoints = it.key();
+        }
+    }
+
+    // Find a suit for the rank with the highest points
+    foreach (const auto& card, cards_) {
+        if (card->rank() == rankWithMaxPoints) {
+            return card->suit();
+        }
+    }
+
+    return QString(); // Return an empty string if no cards are found (should not happen)
+}
+
 void CardVec::updateLayout()
 {
     foreach (const auto& card, cards_) {

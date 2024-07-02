@@ -32,6 +32,7 @@ public:
     QString mostCommonSuit() const;
     void sortCardsByPattern(const QVector<QString>& pattern);
     int countCardsOfRank(const QString& rank) const;
+    QString suitOfRankWithMostPoints() const;
     void updateLayout();
 
     // Getters
