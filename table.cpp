@@ -156,8 +156,8 @@ void Table::initializeGame(int numberOfPlayers)
     });
 
     connect(this, &Table::cbVisibleStatus, game_.get(), &Game::onCbVisibleStatus);
-    connect(ui->cbVisible, &QCheckBox::stateChanged, game_.get(), &Game::onCbVisible);
-    connect(ui->cbSound, &QCheckBox::stateChanged, game_.get(), &Game::onCbSound);
+    connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
+    connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);

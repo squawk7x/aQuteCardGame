@@ -9,3 +9,6 @@ images/Screenshot*
 CMakeLists.txt.user
 *.orig
 *.backup
+*.log
+*~
+res/

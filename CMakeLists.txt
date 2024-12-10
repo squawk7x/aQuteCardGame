@@ -59,6 +59,9 @@ set(PROJECT_SOURCES
 # 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize-memory-track-origins -fno-omit-frame-pointer")
 # endif()
 
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 	qt_add_executable(aQuteCardGame
 		MANUAL_FINALIZATION
