@@ -29,9 +29,9 @@ public:
     bool isCardInCards(const QSharedPointer<Card>& card);
     bool isSuitInCards(const QString& suit);
     bool isRankInCards(const QString& rank);
-    QString mostCommonSuit() const;
     void sortCardsByPattern(const QVector<QString>& pattern);
     int countCardsOfRank(const QString& rank) const;
+    QString mostCommonSuit() const;
     QString suitOfRankWithMostPoints() const;
     void updateLayout();
 

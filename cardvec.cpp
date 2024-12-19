@@ -114,7 +114,7 @@ bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
 
 bool CardVec::isSuitInCards(const QString& suit)
 {
-    for (const QSharedPointer<Card>& card : cards_) {
+    for (const QSharedPointer<Card> &card : std::as_const(cards_)) {
         if (card->suit() == suit)
             return true;
     }
@@ -123,13 +123,38 @@ bool CardVec::isSuitInCards(const QString& suit)
 
 bool CardVec::isRankInCards(const QString& rank)
 {
-    for (const QSharedPointer<Card>& card : cards_) {
+    for (const QSharedPointer<Card> &card : std::as_const(cards_)) {
         if (card->rank() == rank)
             return true;
     }
     return false;
 }
 
+
+void CardVec::sortCardsByPattern(const QVector<QString>& pattern)
+{
+    std::sort(cards_.begin(), cards_.end(), [&](QSharedPointer<Card> a, QSharedPointer<Card> b) {
+        auto posA = std::find(pattern.begin(), pattern.end(), a->rank());
+        auto posB = std::find(pattern.begin(), pattern.end(), b->rank());
+        return posA < posB;
+    });
+
+    updateLayout();
+}
+
+int CardVec::countCardsOfRank(
+    const QString& rank) const
+{
+    int count = 0;
+    for (const auto& card : cards_) {
+        if (card->rank() == rank) {
+            count++;
+        }
+    }
+    return count;
+}
+
+// used in earlier version for JsuitChooser::toggle_to
 QString CardVec::mostCommonSuit() const
 {
     QMap<QString, int> suitCounts;
@@ -146,48 +171,30 @@ QString CardVec::mostCommonSuit() const
             mostCommonSuit = it.key();
         }
     }
-    // qDebug() << "mostCommonSuit:" << mostCommonSuit;
+    qDebug() << "mostCommonSuit:" << mostCommonSuit;
     return mostCommonSuit;
 }
 
-void CardVec::sortCardsByPattern(const QVector<QString>& pattern)
-{
-    std::sort(cards_.begin(), cards_.end(), [&](QSharedPointer<Card> a, QSharedPointer<Card> b) {
-        auto posA = std::find(pattern.begin(), pattern.end(), a->rank());
-        auto posB = std::find(pattern.begin(), pattern.end(), b->rank());
-        return posA < posB;
-    });
-
-    updateLayout();
-}
-
-int CardVec::countCardsOfRank(const QString& rank) const
-{
-    int count = 0;
-    for (const auto& card : cards_) {
-        if (card->rank() == rank) {
-            count++;
-        }
-    }
-    return count;
-}
-
+// this replaces CardVec::mostCommonSuit()
 QString CardVec::suitOfRankWithMostPoints() const
 {
     QMap<QString, int> rankPoints;
 
-    // Calculate total points for each rank, excluding rank 'J'
+    // for each rank calculate points in handdeck
     foreach (const auto& card, cards_) {
-        if (card->rank() != "J") {
-            rankPoints[card->rank()] += card->value();
+        rankPoints[card->rank()] += card->value();
+
+        if (card->rank() == "J") {
+            rankPoints[card->rank()] = -1; // consider 'J' as last option
         }
+        qDebug() << card->rank() << "-->" << rankPoints[card->rank()];
     }
 
     // Find the rank with the highest points
     QString rankWithMaxPoints;
-    int maxPoints = 0;
+    int maxPoints = -1;
     for (auto it = rankPoints.constBegin(); it != rankPoints.constEnd(); ++it) {
-        if (it.value() >= maxPoints) {
+        if (it.value() > maxPoints) {
             maxPoints = it.value();
             rankWithMaxPoints = it.key();
         }
@@ -199,6 +206,7 @@ QString CardVec::suitOfRankWithMostPoints() const
             return card->suit();
         }
     }
+    qDebug() << "No rank with points >= 0 found";
 
     return QString(); // Return an empty string if no cards are found (should not happen)
 }

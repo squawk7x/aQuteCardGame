@@ -72,20 +72,25 @@ void JsuitChooser::toggle()
         suitname_ = suitnames[index];
         setStr();
         loadImage();
-        // qDebug() << "toggle:" << suit_ << suitname_;
+        qDebug() << "toggle:" << suit_ << suitname_;
     } else {
         qDebug() << "Current suit not found in the list.";
     }
 }
 
-void JsuitChooser::toggle_to(const QString& target_suit)
+void JsuitChooser::toggle_to(
+    const QString& target_suit)
 {
-    // if (isEnabled())
-    while (suit_ != target_suit) {
-        toggle();
+    int toggle_count = 0;      // Initialize a counter to track toggles
+    const int max_toggles = 4; // Define the maximum number of toggles allowed
+
+    while (suit_ != target_suit && toggle_count <= max_toggles) {
+        toggle();       // Perform the toggle
+        toggle_count++; // Increment the toggle counter
     }
-    // qDebug() << "toggle_to:" << suit_ << suitname_;
-    loadImage();
+
+    qDebug() << "toggle_to:" << suit_ << suitname_ << ", toggles performed:" << toggle_count;
+    loadImage(); // Load the image after toggling
 }
 
 // Slots:
