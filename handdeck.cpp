@@ -45,7 +45,7 @@ QVector<QString> Handdeck::patternByRankPoints()
     QMap<QString, int> rankPoints;
 
     // Step 2: Iterate through each card in the hand
-    for (const auto& card : cards_) {
+    for (const auto &card : std::as_const(cards_)) {
         // Add the card's value to the corresponding rank in the map
         rankPoints[card->rank()] += card->value();
     }
@@ -193,7 +193,7 @@ void Handdeck::sortCardsBy(SortOption option)
 int Handdeck::pointsOnHand()
 {
     int points = 0;
-    for (const auto& card : cards_)
+    for (const auto &card : std::as_const(cards_))
         points += card->value();
     return points;
 }

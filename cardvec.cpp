@@ -114,7 +114,7 @@ bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
 
 bool CardVec::isSuitInCards(const QString& suit)
 {
-    for (const QSharedPointer<Card>& card : cards_) {
+    for (const QSharedPointer<Card> &card : std::as_const(cards_)) {
         if (card->suit() == suit)
             return true;
     }
@@ -123,7 +123,7 @@ bool CardVec::isSuitInCards(const QString& suit)
 
 bool CardVec::isRankInCards(const QString& rank)
 {
-    for (const QSharedPointer<Card>& card : cards_) {
+    for (const QSharedPointer<Card> &card : std::as_const(cards_)) {
         if (card->rank() == rank)
             return true;
     }
@@ -176,10 +176,12 @@ QString CardVec::suitOfRankWithMostPoints() const
 {
     QMap<QString, int> rankPoints;
 
-    // Calculate total points for each rank, excluding rank 'J'
+    // for each rank calculate points in handdeck
     foreach (const auto& card, cards_) {
-        if (card->rank() != "J") {
-            rankPoints[card->rank()] += card->value();
+        rankPoints[card->rank()] += card->value();
+
+        if (card->rank() == "J") {
+            rankPoints[card->rank()] = -1; // consider 'J' as last option
         }
     }
 

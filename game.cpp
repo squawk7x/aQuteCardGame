@@ -266,8 +266,8 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    // show card face only for Player 1
-    emit setCbVisible(false);
+    // show card faces
+    emit setCbVisible(true);
     emit setRbUnsorted(true);
 
     // case a robot player starts a new round
@@ -901,7 +901,7 @@ void Game::autoplay()
                                                  stackSuit);
                 // end KI permute ranks
 
-                for (const auto& card : player->handdeck()->cards()) {
+                for (const auto& card : std::as_const(player->handdeck()->cards())) {
                     card->click();
                 }
                 updatePlayable();
