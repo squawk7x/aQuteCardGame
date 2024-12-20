@@ -1,32 +1,32 @@
 #include "player.h"
 
-Player::Player(QWidget* parent,
-               int id,
-               const QString& name,
+Player::Player(int id,
+               const QString &name,
                bool isRobot,
                int score,
-               QSharedPointer<Handdeck> handdeck)
-    : QWidget(parent)
+               QSharedPointer<Handdeck> handdeck,
+               QObject *parent) // QObject constructor
+    : QObject(parent)           // QObject constructor
     , id_(id)
     , name_(name)
     , isRobot_(isRobot)
     , score_(score)
     , jpoints_(0)
 {
-    handdeck_ = QSharedPointer<Handdeck>(new Handdeck(this));
+    handdeck_ = QSharedPointer<Handdeck>(new Handdeck());
 }
 
-bool operator<(const Player& lhs, const Player& rhs)
+bool operator<(const Player &lhs, const Player &rhs)
 {
     return lhs.score_ < rhs.score_;
 }
 
-bool operator>(const Player& lhs, const Player& rhs)
+bool operator>(const Player &lhs, const Player &rhs)
 {
     return lhs.score_ > rhs.score_;
 }
 
-bool operator==(const Player& lhs, const Player& rhs)
+bool operator==(const Player &lhs, const Player &rhs)
 {
     return lhs.score_ == rhs.score_;
 }
@@ -65,14 +65,14 @@ QSharedPointer<Handdeck> Player::handdeck() const
 int Player::pointsOnHand()
 {
     int pointsOnHand = 0;
-    for (const auto& card : std::as_const(handdeck_->cards())) {
+    for (const auto &card : std::as_const(handdeck_->cards())) {
         pointsOnHand += card->value();
     }
     return pointsOnHand;
 }
 
 // Setters
-void Player::setName(const QString& name)
+void Player::setName(const QString &name)
 {
     name_ = name;
 }

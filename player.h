@@ -3,25 +3,25 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include <QWidget>
+#include <QString>
 #include "handdeck.h"
 
-class Player : public QWidget
+class Player : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Player(QWidget* parent = nullptr,
-                    int id = 0,
-                    const QString& name = "",
+    explicit Player(int id = 0,
+                    const QString &name = "",
                     bool isRobot = true,
                     int score = 0,
-                    QSharedPointer<Handdeck> handdeck = QSharedPointer<Handdeck>(nullptr));
+                    QSharedPointer<Handdeck> handdeck = QSharedPointer<Handdeck>(nullptr),
+                    QObject *parent = nullptr); // QObject instead of QWidget
     ~Player() = default;
 
-    friend bool operator<(const Player& lhs, const Player& rhs);
-    friend bool operator>(const Player& lhs, const Player& rhs);
-    friend bool operator==(const Player& lhs, const Player& rhs);
+    friend bool operator<(const Player &lhs, const Player &rhs);
+    friend bool operator>(const Player &lhs, const Player &rhs);
+    friend bool operator==(const Player &lhs, const Player &rhs);
 
     // Getters
     int id() const;
@@ -35,7 +35,7 @@ public:
     int pointsOnHand();
 
     // Setters
-    void setName(const QString& name);
+    void setName(const QString &name);
     void setIsRobot(bool isRobot);
     void setJpoints(int jpoints);
     void setHanddeck(QSharedPointer<Handdeck> handdeck);

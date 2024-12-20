@@ -31,8 +31,8 @@ Game::Game(int numberOfPlayers, QObject* parent)
     , lcdP3_(QSharedPointer<QLCDNumber>::create())
     , lcdShuffles_(QSharedPointer<QLCDNumber>::create())
 {
-    player1_ = QSharedPointer<Player>::create(nullptr, 1, "Player1", false, 0);
-    player2_ = QSharedPointer<Player>::create(nullptr, 2, "Player2", true, 0);
+    player1_ = QSharedPointer<Player>::create(1, "Player1", false, 0);
+    player2_ = QSharedPointer<Player>::create(2, "Player2", true, 0);
     player3_ = nullptr; // or create a dummy player for the third slot
 
     playerList_.clear();
@@ -43,7 +43,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(player2()->handdeck().get(), &Handdeck::handCardClicked, this, &Game::onHandCardClicked);
 
     if (numberOfPlayers_ == 3) {
-        player3_ = QSharedPointer<Player>::create(nullptr, 3, "Player3", true, 0);
+        player3_ = QSharedPointer<Player>::create(3, "Player3", true, 0);
         playerList_.push_back(player3_);
         connect(player3()->handdeck().get(),
                 &Handdeck::handCardClicked,
