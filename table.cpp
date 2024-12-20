@@ -1,10 +1,14 @@
 #include "table.h"
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDir>
+#include <QFileInfo>
 #include <QGroupBox>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QProcess>
 #include <QScreen>
+#include <QShortcut>
 #include "card.h"
 #include "ui_table.h"
 
@@ -163,6 +167,10 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
 
+    // Add F1 shortcut
+    QShortcut *f1Shortcut = new QShortcut(QKeySequence("F1"), this);
+    connect(f1Shortcut, &QShortcut::activated, this, &Table::openHelpFile);
+
     emit cbVisibleStatus(ui->cbVisible->isChecked());
 }
 
@@ -212,5 +220,31 @@ void Table::keyPressEvent(QKeyEvent* event)
         if (event->key() >= Qt::Key_6 && event->key() <= Qt::Key_Q) {
             addSpecialCardsToHand(event);
         }
+    }
+}
+
+void Table::openHelpFile()
+{
+    // Print the current working directory
+    // qDebug() << "Current working directory:" << QDir::currentPath();
+
+    // Using a relative path
+    QString relativeFilePath = "../../README.md";
+
+    // Convert relative path to absolute path
+    QString absoluteFilePath = QDir::current().absoluteFilePath(relativeFilePath);
+    // qDebug() << "Absolute path resolved to:" << absoluteFilePath;
+
+    QFileInfo fileInfo(absoluteFilePath);
+
+    if (!fileInfo.exists()) {
+        qDebug() << "File does not exist:" << absoluteFilePath;
+        return;
+    }
+
+    // Try opening with QDesktopServices
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(absoluteFilePath))) {
+        // If it fails, fall back to a text editor
+        QProcess::startDetached("xdg-open", QStringList() << absoluteFilePath);
     }
 }

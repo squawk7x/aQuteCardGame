@@ -37,6 +37,9 @@ signals:
     void mouseClicked();
     void cbVisibleStatus(int state);
 
+private slots:
+    void openHelpFile();
+
 private:
     Ui::Table *ui;
     QSharedPointer<Game> game_;

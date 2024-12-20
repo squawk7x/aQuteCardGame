@@ -54,7 +54,7 @@ QVector<QString> Handdeck::patternByRankPoints()
     QVector<QString> pattern = {"6", "A", "K", "Q", "10", "8", "7", "9", "J"};
 
     // Ensure all ranks are included in the map, even if they have 0 points
-    for (const auto& rank : pattern) {
+    for (const auto &rank : pattern) {
         if (!rankPoints.contains(rank)) {
             rankPoints[rank] = 0;
         }
@@ -99,7 +99,7 @@ void Handdeck::permuteRanks(const QString& rank,
     if (numRanks >= 2) {
         auto firstRank = std::find_if(cards().begin(),
                                       cards().end(),
-                                      [&](const QSharedPointer<Card>& card) {
+                                      [&](const QSharedPointer<Card> &card) {
                                           return card->rank() == rank;
                                       });
 

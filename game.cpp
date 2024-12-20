@@ -267,12 +267,9 @@ void Game::initializeRound()
     player->handdeck()->cards().last()->click();
 
     // show card faces
-    emit setCbVisible(true);
-    emit setRbUnsorted(true);
+    emit setCbVisible(false);
 
-    // case a robot player starts a new round
-    // all playable cards are played
-
+    // in case a robot player starts a new round all playable cards are played
     autoplay();
 }
 

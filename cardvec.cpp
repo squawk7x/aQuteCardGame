@@ -130,8 +130,8 @@ bool CardVec::isRankInCards(const QString& rank)
     return false;
 }
 
-
-void CardVec::sortCardsByPattern(const QVector<QString>& pattern)
+void CardVec::sortCardsByPattern(
+    const QVector<QString>& pattern)
 {
     std::sort(cards_.begin(), cards_.end(), [&](QSharedPointer<Card> a, QSharedPointer<Card> b) {
         auto posA = std::find(pattern.begin(), pattern.end(), a->rank());
@@ -171,7 +171,7 @@ QString CardVec::mostCommonSuit() const
             mostCommonSuit = it.key();
         }
     }
-    qDebug() << "mostCommonSuit:" << mostCommonSuit;
+    // qDebug() << "mostCommonSuit:" << mostCommonSuit;
     return mostCommonSuit;
 }
 
@@ -187,7 +187,7 @@ QString CardVec::suitOfRankWithMostPoints() const
         if (card->rank() == "J") {
             rankPoints[card->rank()] = -1; // consider 'J' as last option
         }
-        qDebug() << card->rank() << "-->" << rankPoints[card->rank()];
+        // qDebug() << card->rank() << "-->" << rankPoints[card->rank()];
     }
 
     // Find the rank with the highest points
@@ -206,7 +206,7 @@ QString CardVec::suitOfRankWithMostPoints() const
             return card->suit();
         }
     }
-    qDebug() << "No rank with points >= 0 found";
+    // qDebug() << "No rank with points >= 0 found";
 
     return QString(); // Return an empty string if no cards are found (should not happen)
 }
@@ -242,7 +242,6 @@ void CardVec::onCardClicked(const QSharedPointer<Card>& card)
     // To be implemented by subclasses
     qDebug() << "onCardClicked received in CardVec: " << card->str();
 }
-
 void CardVec::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
