@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <algorithm> // std::next_permutation
+#include <thread>
 
 extern std::vector<std::vector<QString>> patterns;
 
@@ -837,15 +838,24 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
+    // Delay activation of next player for:
+    if (playerList_[0]->name() == "Player1" and drawn()->cards().size() > 0
+        and playable()->cards().size() == 0) {
+        qDebug() << "pausing for 2 seconds...";
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
+
+    // // Check that 36 cards are in the game for (auto& player : playerList_)
     // int cardsInGame = 0;
 
-    // Check that 36 cards are in the game
-    // for (auto& player : playerList_) {
+    // for (auto player : playerList_) {
     //     cardsInGame += player->handdeck()->cards().size();
     // }
+
     // cardsInGame += blind()->cards().size() + stack()->cards().size();
+
     // qDebug() << "Cards in game:" << cardsInGame;
-    // end of check
+    // // end of check
 
     emit cardsPlayed(played()->cards().size());
 
