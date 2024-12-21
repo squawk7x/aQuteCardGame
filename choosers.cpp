@@ -4,6 +4,7 @@
 #include "card.h"
 
 /* ************************************************************************* */
+// JsuitChooser Implementation
 
 JsuitChooser::JsuitChooser(QString suit, QWidget* parent)
     : suit_{suit}
@@ -13,22 +14,6 @@ JsuitChooser::JsuitChooser(QString suit, QWidget* parent)
     loadImage();
 
     connect(this, &QPushButton::clicked, this, &JsuitChooser::toggle);
-}
-
-// Setters
-void JsuitChooser::setSuit(const QString& suit)
-{
-    suit_ = suit;
-}
-
-void JsuitChooser::setSuitname(const QString& suit)
-{
-    suitname_ = suitnames[suits.indexOf(suit)];
-}
-
-void JsuitChooser::setStr()
-{
-    str_ = suit_ + suit_;
 }
 
 // Getters
@@ -47,6 +32,50 @@ QString JsuitChooser::str()
     return str_;
 }
 
+// Methods
+void JsuitChooser::toggle()
+{
+    int index = suits.indexOf(suit_);
+    if (index != -1) {
+        index = (index + 1) % suits.size();
+        suit_ = suits[index];
+        suitname_ = suitnames[index];
+        setStr();
+        loadImage();
+    } else {
+        qDebug() << "Current suit not found in the list.";
+    }
+}
+
+void JsuitChooser::toggle_to(const QString& target_suit)
+{
+    int toggle_count = 0;
+    const int max_toggles = 4;
+
+    while (suit_ != target_suit && toggle_count <= max_toggles) {
+        toggle();
+        toggle_count++;
+    }
+
+    loadImage();
+}
+
+// Setters
+void JsuitChooser::setSuit(const QString& suit)
+{
+    suit_ = suit;
+}
+
+void JsuitChooser::setSuitname(const QString& suit)
+{
+    suitname_ = suitnames[suits.indexOf(suit)];
+}
+
+void JsuitChooser::setStr()
+{
+    str_ = suit_ + suit_;
+}
+
 void JsuitChooser::loadImage()
 {
     QString imagePath = QString(":images/choosers/jsuit_of_%1.png").arg(suitname_);
@@ -61,39 +90,7 @@ void JsuitChooser::loadImage()
     }
 }
 
-void JsuitChooser::toggle()
-{
-    // Find the current suit's index
-    int index = suits.indexOf(suit_);
-    if (index != -1) {
-        // Move to the next suit in the list, wrapping around if necessary
-        index = (index + 1) % suits.size();
-        suit_ = suits[index];
-        suitname_ = suitnames[index];
-        setStr();
-        loadImage();
-        // qDebug() << "toggle:" << suit_ << suitname_;
-    } else {
-        qDebug() << "Current suit not found in the list.";
-    }
-}
-
-void JsuitChooser::toggle_to(
-    const QString& target_suit)
-{
-    int toggle_count = 0;      // Initialize a counter to track toggles
-    const int max_toggles = 4; // Define the maximum number of toggles allowed
-
-    while (suit_ != target_suit && toggle_count <= max_toggles) {
-        toggle();       // Perform the toggle
-        toggle_count++; // Increment the toggle counter
-    }
-
-    loadImage(); // Load the image after toggling
-    // qDebug() << "toggle_to:" << suit_ << suitname_ << ", toggles performed:" << toggle_count;
-}
-
-// Slots:
+// Slots
 void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
 {
     hide();
@@ -101,6 +98,7 @@ void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
 }
 
 /* ************************************************************************* */
+// EightsChooser Implementation
 
 EightsChooser::EightsChooser(QString decision, QWidget* parent)
     : decision_{decision}
@@ -110,33 +108,16 @@ EightsChooser::EightsChooser(QString decision, QWidget* parent)
     connect(this, &QPushButton::clicked, this, &EightsChooser::toggle);
 }
 
-
 // Getters
-
 QString EightsChooser::decision()
 {
     return decision_;
 }
 
 // Methods
-void EightsChooser::loadImage()
-{
-    QString imagePath = QString(":images/choosers/chooser_eights_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
-        setIcon(icon);
-        setIconSize(QSize(50, 75));
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
-    }
-}
-
 void EightsChooser::toggle()
 {
-    if (decision_ == "a") {
-        decision_ = "n";
-    } else
-        decision_ = "a";
+    decision_ = (decision_ == "a") ? "n" : "a";
     loadImage();
 }
 
@@ -150,16 +131,24 @@ void EightsChooser::toggle_to(const QString& target_decision)
 
 void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 {
-    // Generate a random number between 0 and 1
-    int randomNumber = QRandomGenerator::global()->bounded(2);
-
-    // If the random number is 0, return dec1, otherwise return dec2
-    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
-
+    decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
     loadImage();
 }
 
+void EightsChooser::loadImage()
+{
+    QString imagePath = QString(":images/choosers/chooser_eights_%1.png").arg(decision_);
+    QIcon icon((QString(imagePath)));
+    if (!icon.isNull()) {
+        setIcon(icon);
+        setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
+    }
+}
+
 /* ************************************************************************* */
+// QuteChooser Implementation
 
 QuteChooser::QuteChooser(QString decision, QWidget* parent)
     : decision_{decision}
@@ -170,31 +159,15 @@ QuteChooser::QuteChooser(QString decision, QWidget* parent)
 }
 
 // Getters
-
 QString QuteChooser::decision()
 {
     return decision_;
 }
 
 // Methods
-void QuteChooser::loadImage()
-{
-    QString imagePath = QString(":images/choosers/chooser_qute_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
-        setIcon(icon);
-        setIconSize(QSize(50, 75));
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
-    }
-}
-
 void QuteChooser::toggle()
 {
-    if (decision_ == "y") {
-        decision_ = "n";
-    } else
-        decision_ = "y";
+    decision_ = (decision_ == "y") ? "n" : "y";
     emit quteDecisionChanged(decision_);
     loadImage();
 }
@@ -209,19 +182,24 @@ void QuteChooser::toggle_to(const QString& target_decision)
 
 void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
 {
-    // Generate a random number between 0 and 1
-    int randomNumber = QRandomGenerator::global()->bounded(2);
-
-    // If the random number is 0, return dec1, otherwise return dec2
-    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
-
+    decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
     loadImage();
 }
 
-// Slots:
-// void QuteChooser::onFourCardsInMonitor() {}
+void QuteChooser::loadImage()
+{
+    QString imagePath = QString(":images/choosers/chooser_qute_%1.png").arg(decision_);
+    QIcon icon((QString(imagePath)));
+    if (!icon.isNull()) {
+        setIcon(icon);
+        setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
+    }
+}
 
 /* ************************************************************************* */
+// JpointsChooser Implementation
 
 JpointsChooser::JpointsChooser(QString decision, QWidget* parent)
     : decision_{decision}
@@ -238,24 +216,9 @@ QString JpointsChooser::decision()
 }
 
 // Methods
-void JpointsChooser::loadImage()
-{
-    QString imagePath = QString(":images/choosers/chooser_jpoints_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
-        setIcon(icon);
-        setIconSize(QSize(50, 75));
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
-    }
-}
-
 void JpointsChooser::toggle()
 {
-    if (decision_ == "m") {
-        decision_ = "p";
-    } else
-        decision_ = "m";
+    decision_ = (decision_ == "m") ? "p" : "m";
     loadImage();
 }
 
@@ -269,32 +232,38 @@ void JpointsChooser::toggle_to(const QString& target_decision)
 
 void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 {
-    // Generate a random number between 0 and 1
-    int randomNumber = QRandomGenerator::global()->bounded(2);
-
-    // If the random number is 0, return dec1, otherwise return dec2
-    (randomNumber == 0) ? decision_ = dec1 : decision_ = dec2;
-
+    decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
     loadImage();
 }
 
-// Slots:
-// void JpointsChooser::onJpoints() {}
+void JpointsChooser::loadImage()
+{
+    QString imagePath = QString(":images/choosers/chooser_jpoints_%1.png").arg(decision_);
+    QIcon icon((QString(imagePath)));
+    if (!icon.isNull()) {
+        setIcon(icon);
+        setIconSize(QSize(50, 75));
+        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+        this->resize(iconSize());
+    }
+}
 
-// Slots:
+// Slots
 void JpointsChooser::onQuteDecisionChanged(const QString& dec)
 {
     if (dec == "y") {
-        this->setEnabled(true);
-        this->show();
+        setEnabled(true);
+        show();
     } else {
-        this->hide();
-        this->setEnabled(false);
+        hide();
+        setEnabled(false);
     }
     loadImage();
 }
 
 /* ************************************************************************* */
+// RoundChooser Implementation
+
 RoundChooser::RoundChooser(QString decision, QWidget* parent)
     : decision_{decision}
 {
@@ -312,6 +281,19 @@ RoundChooser::RoundChooser(QString decision, QWidget* parent)
     });
 }
 
+// Getters
+QString RoundChooser::decision()
+{
+    return decision_;
+}
+
+// Setters
+void RoundChooser::setDecision(const QString& target_decision)
+{
+    decision_ = target_decision;
+    loadImage();
+}
+
 // Methods
 void RoundChooser::loadImage()
 {
@@ -325,27 +307,15 @@ void RoundChooser::loadImage()
     }
 }
 
-// Getters
-QString RoundChooser::decision()
-{
-    return decision_;
-}
-
-void RoundChooser::setDecision(const QString& target_decision)
-{
-    decision_ = target_decision;
-    loadImage();
-}
-
-// Slots:
+// Slots
 void RoundChooser::onQuteDecisionChanged(const QString& dec)
 {
     if (dec == "y") {
-        this->setEnabled(true);
-        this->show();
+        setEnabled(true);
+        show();
     } else {
-        this->hide();
-        this->setEnabled(false);
+        hide();
+        setEnabled(false);
     }
 }
 

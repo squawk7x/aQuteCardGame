@@ -2,6 +2,8 @@
 #include <QGroupBox>
 #include <QMap>
 #include <QPair>
+#include <algorithm>
+#include <cmath>
 
 Handdeck::Handdeck(QWidget* parent)
     : CardVec(parent)
@@ -41,31 +43,24 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
 
 QVector<QString> Handdeck::patternByRankPoints()
 {
-    // Step 1: Create a map to store the sum of points for each rank
     QMap<QString, int> rankPoints;
 
-    // Step 2: Iterate through each card in the hand
-    for (const auto &card : std::as_const(cards_)) {
-        // Add the card's value to the corresponding rank in the map
+    for (const auto& card : std::as_const(cards_)) {
         rankPoints[card->rank()] += card->value();
     }
 
-    // Define all possible ranks in the desired order
     QVector<QString> pattern = {"6", "A", "K", "Q", "10", "8", "7", "9", "J"};
 
-    // Ensure all ranks are included in the map, even if they have 0 points
-    for (const auto &rank : pattern) {
+    for (const auto& rank : pattern) {
         if (!rankPoints.contains(rank)) {
             rankPoints[rank] = 0;
         }
     }
 
-    // Step 3: Sort allRanks based on the points in rankPoints map
     std::sort(pattern.begin(), pattern.end(), [&](const QString& a, const QString& b) {
         return rankPoints[a] > rankPoints[b];
     });
 
-    // Step 4: Return the sorted ranks
     return pattern;
 }
 
@@ -73,8 +68,8 @@ void Handdeck::prependRank(QVector<QString>& pattern, const QString& rank)
 {
     auto it = std::find(pattern.begin(), pattern.end(), rank);
     if (it != pattern.end()) {
-        pattern.erase(it);     // Remove the rank from its current position
-        pattern.prepend(rank); // Push the rank to the front
+        pattern.erase(it);
+        pattern.prepend(rank);
     }
 }
 
@@ -82,8 +77,8 @@ void Handdeck::appendRank(QVector<QString>& pattern, const QString& rank)
 {
     auto it = std::find(pattern.begin(), pattern.end(), rank);
     if (it != pattern.end()) {
-        pattern.erase(it);    // Remove the rank from its current position
-        pattern.append(rank); // Append the rank at the end
+        pattern.erase(it);
+        pattern.append(rank);
     }
 }
 
@@ -91,19 +86,15 @@ void Handdeck::permuteRanks(const QString& rank,
                             const QSharedPointer<Card>& stackCard,
                             const QString& stackSuit)
 {
-    // KI permute ranks
-
     int numRanks = countCardsOfRank(rank);
 
-    // permute makes sense when 2 or more cards of rank
     if (numRanks >= 2) {
         auto firstRank = std::find_if(cards().begin(),
                                       cards().end(),
-                                      [&](const QSharedPointer<Card> &card) {
+                                      [&](const QSharedPointer<Card>& card) {
                                           return card->rank() == rank;
                                       });
 
-        // Find the last element with given rank
         auto lastRank = std::find_if(cards().rbegin(),
                                      cards().rend(),
                                      [&](const QSharedPointer<Card>& card) {
@@ -123,33 +114,27 @@ void Handdeck::permuteRanks(const QString& rank,
         } else {
             qDebug() << "Element not found in the vector.";
         }
-        // end find indeces of rank
 
-        int count = 0; // counter to avoid endless looping if no permutation matches
+        int count = 0;
 
-        // assure first cards's suit matches stackcard suit    // n! == tgamma(n+1)
         while (cards()[firstIndex]->suit() != stackSuit && count < std::tgamma(numRanks + 1)) {
-            std::next_permutation(cards().begin() + firstIndex,
-                                  cards().begin() + lastIndex + 1); // range [first, last)
+            std::next_permutation(cards().begin() + firstIndex, cards().begin() + lastIndex + 1);
             count++;
         }
 
         count = 0;
         bool found = false;
 
-        // over how many cards can be permuted
-        int inc = 1; // permute over numRanks - 1   // first card must fit to stackCard
+        int inc = 1;
         if (rank == stackCard->rank()) {
-            inc = 0; // permute over numRanks       // all cards used to permute
+            inc = 0;
         }
 
-        // Permute ranks until another suit of next rank(s) is matched
         for (int i = 0; i < cards().size(); i++) {
             while (count < std::tgamma(numRanks + 1)) {
                 std::next_permutation(cards().begin() + firstIndex + inc,
-                                      cards().begin() + lastIndex + 1); // range [first, last)
+                                      cards().begin() + lastIndex + 1);
 
-                // check all cards in handdeck in order of pattern if a rank fits
                 if (cards()[lastIndex]->rank() != cards()[i]->rank()
                     && cards()[lastIndex]->suit() == cards()[i]->suit()) {
                     found = true;
@@ -163,9 +148,43 @@ void Handdeck::permuteRanks(const QString& rank,
         }
     }
 }
-// end KI permute ranks
 
-void Handdeck::sortCardsBy(SortOption option)
+int Handdeck::pointsOnHand()
+{
+    int points = 0;
+    for (const auto& card : std::as_const(cards_)) {
+        points += card->value();
+    }
+    return points;
+}
+
+void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
+{
+    if (cards().contains(card)) {
+        emit handCardClicked(card);
+    }
+}
+
+void Handdeck::onToggleCardsVisible(bool isVisible)
+{
+    isCardFaceVisible_ = isVisible;
+
+    QGroupBox* handdeck = qobject_cast<QGroupBox*>(parent());
+
+    if (!handdeck) {
+        return;
+    }
+
+    for (const auto& card : std::as_const(cards_)) {
+        if (handdeck && handdeck->objectName() == "gbPlayer1") {
+            card->loadImage(true);
+        } else {
+            card->loadImage(isCardFaceVisible_);
+        }
+    }
+}
+
+void Handdeck::sortCardsBy(Handdeck::SortOption option)
 {
     if (option == SortOption::Suit) {
         std::sort(cards_.begin(),
@@ -188,38 +207,4 @@ void Handdeck::sortCardsBy(SortOption option)
     }
 
     updateLayout();
-}
-
-int Handdeck::pointsOnHand()
-{
-    int points = 0;
-    for (const auto &card : std::as_const(cards_))
-        points += card->value();
-    return points;
-}
-
-void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
-{
-    if (cards().contains(card)) {
-        emit handCardClicked(card);
-    }
-}
-
-void Handdeck::onToggleCardsVisible(bool isVisible)
-{
-    isCardFaceVisible_ = isVisible;
-
-    QGroupBox* handdeck = qobject_cast<QGroupBox*>(parent());
-
-    if (!handdeck) {
-        return; // Safeguard against invalid parent casting
-    }
-
-    for (const auto& card : std::as_const(cards_)) { // Using as_const() to prevent detachment
-        if (handdeck && handdeck->objectName() == "gbPlayer1") {
-            card->loadImage(true);
-        } else {
-            card->loadImage(isCardFaceVisible_);
-        }
-    }
 }

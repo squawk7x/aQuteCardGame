@@ -7,6 +7,7 @@ QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
+// Private Methods
 void Card::initCard()
 {
     setSuitname(suit_);
@@ -15,143 +16,9 @@ void Card::initCard()
     setStr();
     loadImage();
 
-    // this->setToolTip(QString("%1 of %2").arg(rankname_, suitname_));
-
     connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
 }
 
-// Standard Constructor
-Card::Card(const QString& suit, const QString& rank, QWidget* parent)
-    : QPushButton(parent)
-    , suit_(suit)
-    , rank_(rank)
-{
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    setText("");
-    initCard();
-}
-
-// Constructor by str
-Card::Card(const QString& cardStr, QWidget* parent)
-    : QPushButton(parent)
-{
-    if (cardStr.length() >= 2) {
-        if (suits.contains(cardStr.at(0)) && ranks.contains(cardStr.mid(1))) {
-            suit_ = cardStr.at(0);
-            rank_ = cardStr.mid(1);
-            initCard();
-        }
-    } else {
-        qDebug() << "Invalid card string format:" << cardStr;
-    }
-}
-
-// Copy Constructor
-Card::Card(const Card& other)
-    : QPushButton(other.parentWidget())
-    , suit_(other.suit_)
-    , rank_(other.rank_)
-{
-    initCard();
-}
-
-// Copy Assignment Operator
-Card& Card::operator=(const Card& other)
-{
-    if (this != &other) {
-        this->setParent(other.parentWidget());
-        suit_ = other.suit_;
-        rank_ = other.rank_;
-        initCard();
-    }
-    return *this;
-}
-
-// Move Constructor
-Card::Card(Card&& other) noexcept
-    : QPushButton(other.parentWidget())
-    , suit_(std::move(other.suit_))
-    , rank_(std::move(other.rank_))
-{
-    //Set the parent of the moved-from object to nullptr to prevent it from accessing the old parent:
-    other.setParent(nullptr);
-    initCard();
-}
-
-// Move Assignment Operator
-Card& Card::operator=(Card&& other) noexcept
-{
-    if (this != &other) {
-        this->setParent(other.parentWidget());
-        suit_ = std::move(other.suit_);
-        rank_ = std::move(other.rank_);
-        other.setParent(nullptr);
-        initCard();
-    }
-    return *this;
-}
-
-// Operator==
-bool Card::operator==(const Card& other) const
-{
-    return suit_ == other.suit_ && rank_ == other.rank_;
-}
-
-// Operator<
-bool Card::operator<(const Card& other) const
-{
-    if (rank_ != other.rank_)
-        return rank_ < other.rank_;
-    else
-        return suit_ < other.suit_;
-}
-
-// Operator<
-bool Card::operator>(const Card& other) const
-{
-    if (rank_ != other.rank_)
-        return rank_ > other.rank_;
-    else
-        return suit_ > other.suit_;
-}
-
-// Clone
-QSharedPointer<Card> Card::clone(QWidget* parent) const
-{
-    QSharedPointer<Card> clonedCard = QSharedPointer<Card>::create(*this);
-    if (parent) {
-        clonedCard->setParent(parent);
-    }
-    return clonedCard;
-}
-
-// Getters
-QString Card::suit() const
-{
-    return suit_;
-}
-QString Card::rank() const
-{
-    return rank_;
-}
-QString Card::suitname() const
-{
-    return suitname_;
-}
-QString Card::rankname() const
-{
-    return rankname_;
-}
-QString Card::str() const
-{
-    return str_;
-}
-int Card::value() const
-{
-    return value_;
-}
-
-// Setters
 void Card::setSuitname(const QString& suit)
 {
     int index = suits.indexOf(suit);
@@ -186,6 +53,135 @@ void Card::setValue(const QString& rank)
     }
 }
 
+// Constructors
+Card::Card(const QString& suit, const QString& rank, QWidget* parent)
+    : QPushButton(parent)
+    , suit_(suit)
+    , rank_(rank)
+{
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    setText("");
+    initCard();
+}
+
+Card::Card(const QString& cardStr, QWidget* parent)
+    : QPushButton(parent)
+{
+    if (cardStr.length() >= 2) {
+        if (suits.contains(cardStr.at(0)) && ranks.contains(cardStr.mid(1))) {
+            suit_ = cardStr.at(0);
+            rank_ = cardStr.mid(1);
+            initCard();
+        }
+    } else {
+        qDebug() << "Invalid card string format:" << cardStr;
+    }
+}
+
+Card::Card(const Card& other)
+    : QPushButton(other.parentWidget())
+    , suit_(other.suit_)
+    , rank_(other.rank_)
+{
+    initCard();
+}
+
+Card& Card::operator=(const Card& other)
+{
+    if (this != &other) {
+        this->setParent(other.parentWidget());
+        suit_ = other.suit_;
+        rank_ = other.rank_;
+        initCard();
+    }
+    return *this;
+}
+
+Card::Card(Card&& other) noexcept
+    : QPushButton(other.parentWidget())
+    , suit_(std::move(other.suit_))
+    , rank_(std::move(other.rank_))
+{
+    other.setParent(nullptr);
+    initCard();
+}
+
+Card& Card::operator=(Card&& other) noexcept
+{
+    if (this != &other) {
+        this->setParent(other.parentWidget());
+        suit_ = std::move(other.suit_);
+        rank_ = std::move(other.rank_);
+        other.setParent(nullptr);
+        initCard();
+    }
+    return *this;
+}
+
+// Comparison Operators
+bool Card::operator==(const Card& other) const
+{
+    return suit_ == other.suit_ && rank_ == other.rank_;
+}
+
+bool Card::operator<(const Card& other) const
+{
+    if (rank_ != other.rank_)
+        return rank_ < other.rank_;
+    else
+        return suit_ < other.suit_;
+}
+
+bool Card::operator>(const Card& other) const
+{
+    if (rank_ != other.rank_)
+        return rank_ > other.rank_;
+    else
+        return suit_ > other.suit_;
+}
+
+// Clone
+QSharedPointer<Card> Card::clone(QWidget* parent) const
+{
+    QSharedPointer<Card> clonedCard = QSharedPointer<Card>::create(*this);
+    if (parent) {
+        clonedCard->setParent(parent);
+    }
+    return clonedCard;
+}
+
+// Getters
+QString Card::suit() const
+{
+    return suit_;
+}
+
+QString Card::rank() const
+{
+    return rank_;
+}
+
+QString Card::suitname() const
+{
+    return suitname_;
+}
+
+QString Card::rankname() const
+{
+    return rankname_;
+}
+
+QString Card::str() const
+{
+    return str_;
+}
+
+int Card::value() const
+{
+    return value_;
+}
+
+// Setters
 void Card::loadImage(bool isCardFaceVisible)
 {
     QString imagePath;
@@ -199,11 +195,7 @@ void Card::loadImage(bool isCardFaceVisible)
     if (!icon.isNull()) {
         this->setIcon(icon);
         this->setIconSize(QSize(50, 75));
-
-        // Ensure there are no margins or padding around the icon
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-
-        // Resize the button to fit the icon size
         this->resize(iconSize());
     } else {
         this->setText(str_);

@@ -16,6 +16,7 @@ class Card : public QPushButton
 {
     Q_OBJECT
 
+private:
     QString suit_;
     QString rank_;
     QString suitname_;
@@ -47,12 +48,6 @@ public:
     // Setters
     void loadImage(bool isCardFaceVisible = true);
 
-public slots:
-    // no slots defined here
-
-signals:
-    void cardClicked(const QSharedPointer<Card>& card);
-
 private:
     void initCard();
     void setSuitname(const QString& suit);
@@ -60,6 +55,11 @@ private:
     void setStr();
     void setValue(const QString& rank);
 
+signals:
+    void cardClicked(const QSharedPointer<Card>& card);
+
+public slots:
+    // no slots defined here
 };
 
 #endif // CARD_H

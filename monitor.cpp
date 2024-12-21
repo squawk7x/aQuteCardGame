@@ -36,11 +36,9 @@ void Monitor::addCard(QSharedPointer<Card> card)
     // Add the new card to the layout and vector
     card->setParent(this);
     cards_.prepend(card);
-    // card->setIsCardFaceVisible(true);
     layout_->insertWidget(0, card.data());
 }
 
-// Slots:
 void Monitor::onCardAddedToStack(const QSharedPointer<Card>& card)
 {
     card->loadImage(true);

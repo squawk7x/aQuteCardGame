@@ -11,16 +11,16 @@ class Blind : public CardVec
 public:
     explicit Blind(QWidget* parent = nullptr, const QVector<QSharedPointer<Card>>& rhs = {});
     virtual ~Blind();
-    virtual void removeCard(QSharedPointer<Card> card) override;
 
+    virtual void removeCard(QSharedPointer<Card> card) override;
     void shuffle();
     void showTopCard();
 
-signals:
-    void blindClicked(); // Signal emitted when the blind is clicked
-
 protected:
     void mousePressEvent(QMouseEvent* event) override;
+
+signals:
+    void blindClicked(); // Signal emitted when the blind is clicked
 
 public slots:
     virtual void onToggleCardsVisible(bool isVisible) override;

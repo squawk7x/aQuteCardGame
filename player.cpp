@@ -16,6 +16,7 @@ Player::Player(int id,
     handdeck_ = QSharedPointer<Handdeck>(new Handdeck());
 }
 
+// Operators
 bool operator<(const Player &lhs, const Player &rhs)
 {
     return lhs.score_ < rhs.score_;
@@ -31,6 +32,7 @@ bool operator==(const Player &lhs, const Player &rhs)
     return lhs.score_ == rhs.score_;
 }
 
+// Getters
 int Player::id() const
 {
     return id_;
@@ -94,7 +96,7 @@ void Player::setHanddeck(QSharedPointer<Handdeck> handdeck)
     }
 }
 
-// Slots:
+// Slots
 void Player::onCountPoints(int shuffles)
 {
     if (shuffles == 0) {

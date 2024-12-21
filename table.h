@@ -16,6 +16,10 @@ class Table : public QWidget
 {
     Q_OBJECT
 
+private:
+    Ui::Table *ui;
+    QSharedPointer<Game> game_;
+
 public:
     explicit Table(int numberOfPlayers = 3, QWidget *parent = nullptr);
     ~Table();
@@ -26,10 +30,6 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
-public slots:
-    void onRbNumPlayers2();
-    void onRbNumPlayers3();
-
 private:
     void addSpecialCardsToHand(QKeyEvent *event);
 
@@ -37,12 +37,10 @@ signals:
     void mouseClicked();
     void cbVisibleStatus(int state);
 
-private slots:
+public slots:
+    void onRbNumPlayers2();
+    void onRbNumPlayers3();
     void openHelpFile();
-
-private:
-    Ui::Table *ui;
-    QSharedPointer<Game> game_;
 };
 
 #endif // TABLE_H

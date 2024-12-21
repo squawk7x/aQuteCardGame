@@ -14,12 +14,12 @@ public:
 
     virtual void addCard(QSharedPointer<Card> card) override;
 
+signals:
+    void handCardClicked(QSharedPointer<Card> card);
+
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card) override;
     virtual void onToggleCardsVisible(bool isVisible) override;
-
-signals:
-    void handCardClicked(QSharedPointer<Card> card);
 };
 
 #endif // PLAYABLE_H

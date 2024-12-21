@@ -42,6 +42,15 @@ void CardVec::removeCard(QSharedPointer<Card> card)
     }
 }
 
+QString CardVec::cardsAsString() const
+{
+    QString cardsStr;
+    foreach (const auto& card, cards_) {
+        cardsStr += card->str() + " ";
+    }
+    return cardsStr.trimmed();
+}
+
 void CardVec::copyCardTo(const QSharedPointer<Card>& card, CardVec* targetVec)
 {
     if (card && targetVec != nullptr) {
@@ -82,18 +91,8 @@ QSharedPointer<Card> CardVec::topCard()
     return nullptr;
 }
 
-QString CardVec::cardsAsString() const
-{
-    QString cardsStr;
-    foreach (const auto& card, cards_) {
-        cardsStr += card->str() + " ";
-    }
-    return cardsStr.trimmed();
-}
-
 void CardVec::clearCards()
 {
-    // Using index-based loop to avoid detachment
     for (int i = 0; i < cards_.size(); ++i) {
         layout_->removeWidget(cards_[i].data());
         cards_[i]->setParent(nullptr);
@@ -104,17 +103,11 @@ void CardVec::clearCards()
 bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
 {
     return std::any_of(cards_.cbegin(), cards_.cend(), [&](const auto& c) { return card == c; });
-
-    // foreach (const auto& c, cards_) {
-    //     if (card == c)
-    //         return true;
-    // }
-    // return false;
 }
 
 bool CardVec::isSuitInCards(const QString& suit)
 {
-    for (const QSharedPointer<Card> &card : std::as_const(cards_)) {
+    for (const QSharedPointer<Card>& card : std::as_const(cards_)) {
         if (card->suit() == suit)
             return true;
     }
@@ -123,15 +116,14 @@ bool CardVec::isSuitInCards(const QString& suit)
 
 bool CardVec::isRankInCards(const QString& rank)
 {
-    for (const QSharedPointer<Card> &card : std::as_const(cards_)) {
+    for (const QSharedPointer<Card>& card : std::as_const(cards_)) {
         if (card->rank() == rank)
             return true;
     }
     return false;
 }
 
-void CardVec::sortCardsByPattern(
-    const QVector<QString>& pattern)
+void CardVec::sortCardsByPattern(const QVector<QString>& pattern)
 {
     std::sort(cards_.begin(), cards_.end(), [&](QSharedPointer<Card> a, QSharedPointer<Card> b) {
         auto posA = std::find(pattern.begin(), pattern.end(), a->rank());
@@ -142,8 +134,7 @@ void CardVec::sortCardsByPattern(
     updateLayout();
 }
 
-int CardVec::countCardsOfRank(
-    const QString& rank) const
+int CardVec::countCardsOfRank(const QString& rank) const
 {
     int count = 0;
     for (const auto& card : cards_) {
@@ -154,7 +145,6 @@ int CardVec::countCardsOfRank(
     return count;
 }
 
-// used in earlier version for JsuitChooser::toggle_to
 QString CardVec::mostCommonSuit() const
 {
     QMap<QString, int> suitCounts;
@@ -171,26 +161,21 @@ QString CardVec::mostCommonSuit() const
             mostCommonSuit = it.key();
         }
     }
-    // qDebug() << "mostCommonSuit:" << mostCommonSuit;
     return mostCommonSuit;
 }
 
-// this replaces CardVec::mostCommonSuit()
 QString CardVec::suitOfRankWithMostPoints() const
 {
     QMap<QString, int> rankPoints;
 
-    // for each rank calculate points in handdeck
     foreach (const auto& card, cards_) {
         rankPoints[card->rank()] += card->value();
 
         if (card->rank() == "J") {
-            rankPoints[card->rank()] = -1; // consider 'J' as last option
+            rankPoints[card->rank()] = -1;
         }
-        // qDebug() << card->rank() << "-->" << rankPoints[card->rank()];
     }
 
-    // Find the rank with the highest points
     QString rankWithMaxPoints;
     int maxPoints = -1;
     for (auto it = rankPoints.constBegin(); it != rankPoints.constEnd(); ++it) {
@@ -200,15 +185,12 @@ QString CardVec::suitOfRankWithMostPoints() const
         }
     }
 
-    // Find a suit for the rank with the highest points
     foreach (const auto& card, cards_) {
         if (card->rank() == rankWithMaxPoints) {
             return card->suit();
         }
     }
-    // qDebug() << "No rank with points >= 0 found";
-
-    return QString(); // Return an empty string if no cards are found (should not happen)
+    return QString();
 }
 
 void CardVec::updateLayout()
@@ -219,7 +201,6 @@ void CardVec::updateLayout()
     }
 }
 
-// Getters
 QVector<QSharedPointer<Card>>& CardVec::cards()
 {
     return cards_;
@@ -230,18 +211,16 @@ bool CardVec::isCardFaceVisible() const
     return isCardFaceVisible_;
 }
 
-// Setters
 void CardVec::setIsCardFaceVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 }
 
-// Slots
 void CardVec::onCardClicked(const QSharedPointer<Card>& card)
 {
-    // To be implemented by subclasses
     qDebug() << "onCardClicked received in CardVec: " << card->str();
 }
+
 void CardVec::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
@@ -249,5 +228,4 @@ void CardVec::onToggleCardsVisible(bool isVisible)
     foreach (const auto& card, cards_) {
         card->loadImage(isCardFaceVisible_);
     }
-    //
 }

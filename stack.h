@@ -15,8 +15,8 @@ public:
     virtual void addCard(QSharedPointer<Card> card) override;
 
 public slots:
-    virtual void onToggleCardsVisible(bool isVisible) override;
     void onCardsPlayed(int numCardsPlayed);
+    virtual void onToggleCardsVisible(bool isVisible) override;
 };
 
 #endif // STACK_H
