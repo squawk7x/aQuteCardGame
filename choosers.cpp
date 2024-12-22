@@ -79,14 +79,27 @@ void JsuitChooser::setStr()
 void JsuitChooser::loadImage()
 {
     QString imagePath = QString(":images/choosers/jsuit_of_%1.png").arg(suitname_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
+
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+    if (!pixmap.isNull()) {
+        // Set a maximum size for the icon (adjust as needed)
+        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+
+        // Scale the image to fit within the maximum size while keeping aspect ratio
+        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // Set the icon and icon size to the scaled pixmap size
+        QIcon icon(scaledPixmap);
         setIcon(icon);
-        setIconSize(QSize(50, 75));
+        setIconSize(scaledPixmap.size());
+
+        // Resize the widget to fit the scaled image size
+        this->resize(scaledPixmap.size());
+
+        // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
     } else {
-        qDebug() << "Failed to load card image:" << imagePath;
+        qDebug() << "Failed to load image:" << imagePath;
     }
 }
 
@@ -138,12 +151,26 @@ void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 void EightsChooser::loadImage()
 {
     QString imagePath = QString(":images/choosers/chooser_eights_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+    if (!pixmap.isNull()) {
+        // Set a maximum size for the icon (adjust as needed)
+        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+
+        // Scale the image to fit within the maximum size while keeping aspect ratio
+        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // Set the icon and icon size to the scaled pixmap size
+        QIcon icon(scaledPixmap);
         setIcon(icon);
-        setIconSize(QSize(50, 75));
+        setIconSize(scaledPixmap.size());
+
+        // Resize the widget to fit the scaled image size
+        this->resize(scaledPixmap.size());
+
+        // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
+    } else {
+        qDebug() << "Failed to load image:" << imagePath;
     }
 }
 
@@ -189,12 +216,26 @@ void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
 void QuteChooser::loadImage()
 {
     QString imagePath = QString(":images/choosers/chooser_qute_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+    if (!pixmap.isNull()) {
+        // Set a maximum size for the icon (adjust as needed)
+        const QSize maxSize(80, 160); // Maximum width and height (adjust these values as needed)
+
+        // Scale the image to fit within the maximum size while keeping the aspect ratio
+        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // Set the icon and icon size to the scaled pixmap size
+        QIcon icon(scaledPixmap);
         setIcon(icon);
-        setIconSize(QSize(50, 75));
+        setIconSize(scaledPixmap.size());
+
+        // Resize the widget to fit the scaled image size
+        this->resize(scaledPixmap.size());
+
+        // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
+    } else {
+        qDebug() << "Failed to load image:" << imagePath;
     }
 }
 
@@ -239,12 +280,26 @@ void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 void JpointsChooser::loadImage()
 {
     QString imagePath = QString(":images/choosers/chooser_jpoints_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+    if (!pixmap.isNull()) {
+        // Set a maximum size for the icon (adjust as needed)
+        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+
+        // Scale the image to fit within the maximum size while keeping aspect ratio
+        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // Set the icon and icon size to the scaled pixmap size
+        QIcon icon(scaledPixmap);
         setIcon(icon);
-        setIconSize(QSize(50, 75));
+        setIconSize(scaledPixmap.size());
+
+        // Resize the widget to fit the scaled image size
+        this->resize(scaledPixmap.size());
+
+        // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
+    } else {
+        qDebug() << "Failed to load image:" << imagePath;
     }
 }
 
@@ -298,12 +353,26 @@ void RoundChooser::setDecision(const QString& target_decision)
 void RoundChooser::loadImage()
 {
     QString imagePath = QString(":images/choosers/chooser_new_%1.png").arg(decision_);
-    QIcon icon((QString(imagePath)));
-    if (!icon.isNull()) {
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+    if (!pixmap.isNull()) {
+        // Set a maximum size for the icon (adjust as needed)
+        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+
+        // Scale the image to fit within the maximum size while keeping aspect ratio
+        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // Set the icon and icon size to the scaled pixmap size
+        QIcon icon(scaledPixmap);
         setIcon(icon);
-        setIconSize(QSize(50, 75));
+        setIconSize(scaledPixmap.size());
+
+        // Resize the widget to fit the scaled image size
+        this->resize(scaledPixmap.size());
+
+        // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
+    } else {
+        qDebug() << "Failed to load image:" << imagePath;
     }
 }
 

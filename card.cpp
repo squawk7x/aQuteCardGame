@@ -182,6 +182,27 @@ int Card::value() const
 }
 
 // Setters
+// void Card::loadImage(bool isCardFaceVisible)
+// {
+//     QString imagePath;
+//     if (isCardFaceVisible)
+//         imagePath = QString(":/images/cards/%1_of_%2.png").arg(rankname_, suitname_);
+//     else {
+//         imagePath = QString(":/images/cards/backside_blue.png");
+//     }
+
+//     QIcon icon(imagePath);
+//     if (!icon.isNull()) {
+//         this->setIcon(icon);
+//         this->setIconSize(QSize(50, 75));
+//         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+//         this->resize(iconSize());
+//     } else {
+//         this->setText(str_);
+//         qDebug() << "Failed to load card image:" << imagePath;
+//     }
+// }
+
 void Card::loadImage(bool isCardFaceVisible)
 {
     QString imagePath;
@@ -191,12 +212,21 @@ void Card::loadImage(bool isCardFaceVisible)
         imagePath = QString(":/images/cards/backside_blue.png");
     }
 
-    QIcon icon(imagePath);
-    if (!icon.isNull()) {
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+    if (!pixmap.isNull()) {
+        // Set a maximum size for the card (adjust as needed)
+        const QSize maxSize(80, 160); // Maximum width and height
+        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        QIcon icon(scaledPixmap); // Create an icon from the scaled pixmap
         this->setIcon(icon);
-        this->setIconSize(QSize(50, 75));
+        this->setIconSize(scaledPixmap.size()); // Set the icon size to the scaled image size
+
+        // Resize the widget to fit the scaled image size
+        this->resize(scaledPixmap.size());
+
+        // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-        this->resize(iconSize());
     } else {
         this->setText(str_);
         qDebug() << "Failed to load card image:" << imagePath;

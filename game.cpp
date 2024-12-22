@@ -838,12 +838,12 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
-    // Delay activation of next player for:
-    if (playerList_[0]->name() == "Player1" and drawn()->cards().size() > 0
-        and playable()->cards().size() == 0) {
-        qDebug() << "pausing for 2 seconds...";
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-    }
+    // // Delay activation of next player for:
+    // if (playerList_[0]->name() == "Player1" and drawn()->cards().size() > 0
+    //     and playable()->cards().size() == 0) {
+    //     qDebug() << "pausing for 2 seconds...";
+    //     std::this_thread::sleep_for(std::chrono::seconds(2));
+    // }
 
     // // Check that 36 cards are in the game for (auto& player : playerList_)
     // int cardsInGame = 0;
