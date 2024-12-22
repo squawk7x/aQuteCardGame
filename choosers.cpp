@@ -1,6 +1,8 @@
 #include "choosers.h"
+#include <QApplication>
 #include <QDebug>
 #include <QRandomGenerator>
+#include <QScreen>
 #include "card.h"
 
 /* ************************************************************************* */
@@ -82,8 +84,14 @@ void JsuitChooser::loadImage()
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
-        // Set a maximum size for the icon (adjust as needed)
-        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+        // Fetch the size of the application's primary screen
+        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+        QSize maxSize;
+
+        // Calculate max size as a percentage of the screen size
+        int height = screenSize.height() * 0.15; // 15% of the screen height
+        int width = height * 0.5;                // 50% of height for the width
+        maxSize = QSize(width, height);
 
         // Scale the image to fit within the maximum size while keeping aspect ratio
         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -153,8 +161,14 @@ void EightsChooser::loadImage()
     QString imagePath = QString(":images/choosers/chooser_eights_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
-        // Set a maximum size for the icon (adjust as needed)
-        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+        // Fetch the size of the application's primary screen
+        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+        QSize maxSize;
+
+        // Calculate max size as a percentage of the screen size
+        int height = screenSize.height() * 0.15; // 15% of the screen height
+        int width = height * 0.5;                // 50% of height for the width
+        maxSize = QSize(width, height);
 
         // Scale the image to fit within the maximum size while keeping aspect ratio
         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -282,8 +296,14 @@ void JpointsChooser::loadImage()
     QString imagePath = QString(":images/choosers/chooser_jpoints_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
-        // Set a maximum size for the icon (adjust as needed)
-        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+        // Fetch the size of the application's primary screen
+        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+        QSize maxSize;
+
+        // Calculate max size as a percentage of the screen size
+        int height = screenSize.height() * 0.15; // 15% of the screen height
+        int width = height * 0.5;                // 50% of height for the width
+        maxSize = QSize(width, height);
 
         // Scale the image to fit within the maximum size while keeping aspect ratio
         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -355,8 +375,14 @@ void RoundChooser::loadImage()
     QString imagePath = QString(":images/choosers/chooser_new_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
-        // Set a maximum size for the icon (adjust as needed)
-        const QSize maxSize(80, 160); // Maximum width and height (you can adjust these values)
+        // Fetch the size of the application's primary screen
+        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+        QSize maxSize;
+
+        // Calculate max size as a percentage of the screen size
+        int height = screenSize.height() * 0.15; // 15% of the screen height
+        int width = height * 0.5;                // 50% of height for the width
+        maxSize = QSize(width, height);
 
         // Scale the image to fit within the maximum size while keeping aspect ratio
         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);

@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QTimer>
 #include <algorithm> // std::next_permutation
-#include <thread>
 
 extern std::vector<std::vector<QString>> patterns;
 
@@ -874,6 +873,7 @@ void Game::autoplay()
         player->handdeck()->setEnabled(true);
 
         while (!isNextPlayerPossible()) {
+            // TODO: KI make robots play all possible ranks at first move
             while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
                 QString stackSuit = stackCard->suit();

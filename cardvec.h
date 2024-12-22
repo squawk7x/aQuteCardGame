@@ -34,6 +34,7 @@ public:
     QString mostCommonSuit() const;
     QString suitOfRankWithMostPoints() const;
     void updateLayout();
+    // void showEvent(QShowEvent* event);
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();

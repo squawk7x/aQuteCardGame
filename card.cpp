@@ -1,5 +1,6 @@
 #include "card.h"
 #include <QDebug>
+#include <qgroupbox.h>
 
 // Definitions for the global card properties
 QVector<QString> suits = {"♦", "♠", "♥", "♣"};
@@ -203,6 +204,9 @@ int Card::value() const
 //     }
 // }
 
+#include <QApplication>
+#include <QScreen>
+
 void Card::loadImage(bool isCardFaceVisible)
 {
     QString imagePath;
@@ -214,8 +218,16 @@ void Card::loadImage(bool isCardFaceVisible)
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
-        // Set a maximum size for the card (adjust as needed)
-        const QSize maxSize(80, 160); // Maximum width and height
+        // Fetch the size of the application’s primary screen
+        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+        QSize maxSize;
+
+        // Calculate max size as a percentage of the screen size
+        int height = screenSize.height() * 0.15; // 15% of the screen height
+        int width = height * 0.5;                // 50% of height for the width
+        maxSize = QSize(width, height);
+
+        // Scale the pixmap to fit within the calculated size
         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         QIcon icon(scaledPixmap); // Create an icon from the scaled pixmap
