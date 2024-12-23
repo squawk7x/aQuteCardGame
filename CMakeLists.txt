@@ -46,7 +46,7 @@ set(PROJECT_SOURCES
 	got.cpp
 	got.h
 	table.ui
-	resources.qrc
+
 	README.md
 )
 
