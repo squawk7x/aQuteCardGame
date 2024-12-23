@@ -52,7 +52,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutPlayer2"/>
+          <layout class="QHBoxLayout" name="layoutPlayer2">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -82,7 +98,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutPlayer3"/>
+          <layout class="QHBoxLayout" name="layoutPlayer3">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -117,8 +149,23 @@
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <layout class="QHBoxLayout" name="layoutMonitor">
+           <property name="spacing">
+            <number>5</number>
+           </property>
            <property name="sizeConstraint">
             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
            </property>
           </layout>
          </widget>
@@ -153,7 +200,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutQuteChooser"/>
+          <layout class="QHBoxLayout" name="layoutQuteChooser">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -173,7 +236,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutEightsChooser"/>
+          <layout class="QHBoxLayout" name="layoutEightsChooser">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -193,7 +272,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutJpointsChooser"/>
+          <layout class="QHBoxLayout" name="layoutJpointsChooser">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -213,7 +308,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutRoundChooser"/>
+          <layout class="QHBoxLayout" name="layoutRoundChooser">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -246,7 +357,23 @@
           <property name="flat">
            <bool>false</bool>
           </property>
-          <layout class="QHBoxLayout" name="layoutGot1"/>
+          <layout class="QHBoxLayout" name="layoutGot1">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -263,7 +390,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutGot2"/>
+          <layout class="QHBoxLayout" name="layoutGot2">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -303,7 +446,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutShuffles"/>
+          <layout class="QHBoxLayout" name="layoutShuffles">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -320,7 +470,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutBlind"/>
+          <layout class="QHBoxLayout" name="layoutBlind">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -337,7 +494,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutJsuitChooser"/>
+          <layout class="QHBoxLayout" name="layoutJsuitChooser">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -355,8 +519,14 @@
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <layout class="QHBoxLayout" name="layoutStack">
+           <property name="spacing">
+            <number>5</number>
+           </property>
            <property name="sizeConstraint">
             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
            </property>
           </layout>
          </widget>
@@ -392,7 +562,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutDrawn"/>
+          <layout class="QHBoxLayout" name="layoutDrawn">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -409,7 +586,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutPlayable"/>
+          <layout class="QHBoxLayout" name="layoutPlayable">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -429,7 +613,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutPlayed"/>
+          <layout class="QHBoxLayout" name="layoutPlayed">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -459,7 +650,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutRound"/>
+          <layout class="QHBoxLayout" name="layoutRound">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -476,7 +674,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutScores"/>
+          <layout class="QHBoxLayout" name="layoutScores">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -494,6 +699,12 @@
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <property name="spacing">
+            <number>5</number>
+           </property>
            <item row="1" column="0">
             <widget class="QRadioButton" name="rbNumPlayers3">
              <property name="sizePolicy">
@@ -527,72 +738,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="gbSortCardsBy">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Sort Cards by</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="4" column="0">
-            <widget class="QRadioButton" name="rbUnsorted">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Unsorted</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QRadioButton" name="rbRank">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Rank</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QRadioButton" name="rbSuit">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Suit</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
          <widget class="QGroupBox" name="gbSound">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -607,6 +752,12 @@
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <property name="spacing">
+            <number>5</number>
+           </property>
            <item row="0" column="1">
             <widget class="QCheckBox" name="cbSound">
              <property name="enabled">
@@ -676,7 +827,23 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QHBoxLayout" name="layoutPlayer1"/>
+          <layout class="QHBoxLayout" name="layoutPlayer1">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+          </layout>
          </widget>
         </item>
         <item>
@@ -691,6 +858,62 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbSortCardsBy">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Sort Cards by</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item row="1" column="0">
+            <widget class="QRadioButton" name="rbSuit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Suit</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QRadioButton" name="rbRank">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Rank</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </item>

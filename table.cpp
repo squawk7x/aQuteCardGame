@@ -156,7 +156,7 @@ void Table::initializeGame(int numberOfPlayers)
         ui->cbVisible->setChecked(checked);
     });
     connect(game_.get(), &Game::setRbUnsorted, this, [this](bool checked) {
-        ui->rbUnsorted->setChecked(checked);
+        ui->rbRank->setChecked(checked);
     });
 
     connect(this, &Table::cbVisibleStatus, game_.get(), &Game::onCbVisibleStatus);

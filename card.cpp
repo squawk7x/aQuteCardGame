@@ -1,6 +1,7 @@
 #include "card.h"
+#include <QApplication>
 #include <QDebug>
-#include <qgroupbox.h>
+#include <QScreen>
 
 // Definitions for the global card properties
 QVector<QString> suits = {"♦", "♠", "♥", "♣"};
@@ -8,13 +9,14 @@ QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
+bool forAndroid = true;
+
 // Private Methods
 void Card::initCard()
 {
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
-    setStr();
     loadImage();
 
     connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
@@ -60,7 +62,7 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
     , suit_(suit)
     , rank_(rank)
 {
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
     setText("");
     initCard();
 }
@@ -68,6 +70,12 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
 Card::Card(const QString& cardStr, QWidget* parent)
     : QPushButton(parent)
 {
+    // Customize the palette for the button's disabled state
+    QPalette palette = this->palette();
+    palette.setColor(QPalette::ButtonText, Qt::black); // Default (enabled) text color
+    palette.setColor(QPalette::Disabled, QPalette::ButtonText, Qt::gray); // Disabled text color
+    setPalette(palette);
+
     if (cardStr.length() >= 2) {
         if (suits.contains(cardStr.at(0)) && ranks.contains(cardStr.mid(1))) {
             suit_ = cardStr.at(0);
@@ -187,9 +195,9 @@ int Card::value() const
 // {
 //     QString imagePath;
 //     if (isCardFaceVisible)
-//         imagePath = QString(":/cards_small/%1_of_%2.png").arg(rankname_, suitname_);
+//         imagePath = QString(":/cards/%1_of_%2.png").arg(rankname_, suitname_);
 //     else {
-//         imagePath = QString(":/cards_small/backside_blue.png");
+//         imagePath = QString(":/cards/backside_blue.png");
 //     }
 
 //     QIcon icon(imagePath);
@@ -204,20 +212,19 @@ int Card::value() const
 //     }
 // }
 
-#include <QApplication>
-#include <QScreen>
-
 void Card::loadImage(bool isCardFaceVisible)
 {
+    setStr();
+
     QString imagePath;
     if (isCardFaceVisible)
-        imagePath = QString(":/cards_small/%1_of_%2.png").arg(rankname_, suitname_);
+        imagePath = QString(":/cards/%1_of_%2.png").arg(rankname_, suitname_);
     else {
-        imagePath = QString(":/cards_small/backside_blue.png");
+        imagePath = QString(":/cards/backside_blue.png");
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull()) {
+    if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application’s primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -240,7 +247,12 @@ void Card::loadImage(bool isCardFaceVisible)
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
     } else {
-        this->setText(str_);
-        qDebug() << "Failed to load card image:" << imagePath;
+        if (isCardFaceVisible) {
+            this->setStyleSheet("color: black");
+            this->setText(str_);
+        } else {
+            this->setStyleSheet("color: blue");
+            this->setText("▒▒");
+        }
     }
 }

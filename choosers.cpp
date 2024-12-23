@@ -12,7 +12,6 @@ JsuitChooser::JsuitChooser(QString suit, QWidget* parent)
     : suit_{suit}
 {
     setSuitname(suit_);
-    setStr();
     loadImage();
 
     connect(this, &QPushButton::clicked, this, &JsuitChooser::toggle);
@@ -42,7 +41,6 @@ void JsuitChooser::toggle()
         index = (index + 1) % suits.size();
         suit_ = suits[index];
         suitname_ = suitnames[index];
-        setStr();
         loadImage();
     } else {
         qDebug() << "Current suit not found in the list.";
@@ -58,8 +56,6 @@ void JsuitChooser::toggle_to(const QString& target_suit)
         toggle();
         toggle_count++;
     }
-
-    loadImage();
 }
 
 // Setters
@@ -80,10 +76,11 @@ void JsuitChooser::setStr()
 
 void JsuitChooser::loadImage()
 {
-    QString imagePath = QString(":/choosers_small/jsuit_of_%1.png").arg(suitname_);
+    setStr();
 
+    QString imagePath = QString(":/choosers/jsuit_of_%1.png").arg(suitname_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull()) {
+    if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -107,7 +104,7 @@ void JsuitChooser::loadImage()
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
     } else {
-        qDebug() << "Failed to load image:" << imagePath;
+        this->setText(str());
     }
 }
 
@@ -124,6 +121,7 @@ void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
 EightsChooser::EightsChooser(QString decision, QWidget* parent)
     : decision_{decision}
 {
+    setStr();
     loadImage();
 
     connect(this, &QPushButton::clicked, this, &EightsChooser::toggle);
@@ -135,6 +133,17 @@ QString EightsChooser::decision()
     return decision_;
 }
 
+void EightsChooser::setStr()
+{
+    if (decision_ == "a") {
+        str_ = "ALL";
+    } else if (decision_ == "n") {
+        str_ = "NEXT";
+    } else {
+        str_ = "Unknown";
+    }
+}
+
 // Methods
 void EightsChooser::toggle()
 {
@@ -142,12 +151,16 @@ void EightsChooser::toggle()
     loadImage();
 }
 
+QString EightsChooser::str()
+{
+    return str_;
+}
+
 void EightsChooser::toggle_to(const QString& target_decision)
 {
     while (decision_ != target_decision) {
         toggle();
     }
-    loadImage();
 }
 
 void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
@@ -158,9 +171,11 @@ void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
 void EightsChooser::loadImage()
 {
-    QString imagePath = QString(":/choosers_small/chooser_eights_%1.png").arg(decision_);
+    setStr();
+
+    QString imagePath = QString(":/choosers/chooser_eights_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull()) {
+    if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -184,7 +199,7 @@ void EightsChooser::loadImage()
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
     } else {
-        qDebug() << "Failed to load image:" << imagePath;
+        this->setText(str());
     }
 }
 
@@ -200,6 +215,11 @@ QuteChooser::QuteChooser(QString decision, QWidget* parent)
 }
 
 // Getters
+QString QuteChooser::str()
+{
+    return str_;
+}
+
 QString QuteChooser::decision()
 {
     return decision_;
@@ -218,7 +238,6 @@ void QuteChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
-    loadImage();
 }
 
 void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
@@ -227,11 +246,26 @@ void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
     loadImage();
 }
 
+// Setters
+
+void QuteChooser::setStr()
+{
+    if (decision_ == "y") {
+        str_ = "QUTE";
+    } else if (decision_ == "n") {
+        str_ = "CONTINUE";
+    } else {
+        str_ = "";
+    }
+}
+
 void QuteChooser::loadImage()
 {
-    QString imagePath = QString(":/choosers_small/chooser_qute_%1.png").arg(decision_);
+    setStr();
+
+    QString imagePath = QString(":/choosers/chooser_qute_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull()) {
+    if (!pixmap.isNull() and not forAndroid) {
         // Set a maximum size for the icon (adjust as needed)
         const QSize maxSize(80, 160); // Maximum width and height (adjust these values as needed)
 
@@ -249,7 +283,7 @@ void QuteChooser::loadImage()
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
     } else {
-        qDebug() << "Failed to load image:" << imagePath;
+        this->setText(str());
     }
 }
 
@@ -265,11 +299,26 @@ JpointsChooser::JpointsChooser(QString decision, QWidget* parent)
 }
 
 // Getters
+QString JpointsChooser::str()
+{
+    return str_;
+}
+
 QString JpointsChooser::decision()
 {
     return decision_;
 }
 
+void JpointsChooser::setStr()
+{
+    if (decision_ == "m") {
+        str_ = "MINUS";
+    } else if (decision_ == "p") {
+        str_ = "PLUS";
+    } else {
+        str_ = "";
+    }
+}
 // Methods
 void JpointsChooser::toggle()
 {
@@ -282,7 +331,6 @@ void JpointsChooser::toggle_to(const QString& target_decision)
     while (decision_ != target_decision) {
         toggle();
     }
-    loadImage();
 }
 
 void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
@@ -293,9 +341,11 @@ void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
 void JpointsChooser::loadImage()
 {
-    QString imagePath = QString(":/choosers_small/chooser_jpoints_%1.png").arg(decision_);
+    setStr();
+
+    QString imagePath = QString(":/choosers/chooser_jpoints_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull()) {
+    if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -319,7 +369,7 @@ void JpointsChooser::loadImage()
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
     } else {
-        qDebug() << "Failed to load image:" << imagePath;
+        this->setText(str());
     }
 }
 
@@ -357,11 +407,28 @@ RoundChooser::RoundChooser(QString decision, QWidget* parent)
 }
 
 // Getters
+QString RoundChooser::str()
+{
+    return str_;
+}
+
 QString RoundChooser::decision()
 {
     return decision_;
 }
 
+void RoundChooser::setStr()
+{
+    if (decision_ == "f") {
+        str_ = "FINISH";
+    } else if (decision_ == "r") {
+        str_ = "NEW ROUND";
+    } else if (decision_ == "g") {
+        str_ = "NEW GAME";
+    } else {
+        str_ = "";
+    }
+}
 // Setters
 void RoundChooser::setDecision(const QString& target_decision)
 {
@@ -372,9 +439,11 @@ void RoundChooser::setDecision(const QString& target_decision)
 // Methods
 void RoundChooser::loadImage()
 {
-    QString imagePath = QString(":/choosers_small/chooser_new_%1.png").arg(decision_);
+    setStr();
+
+    QString imagePath = QString(":/choosers/chooser_new_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull()) {
+    if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -398,7 +467,7 @@ void RoundChooser::loadImage()
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
     } else {
-        qDebug() << "Failed to load image:" << imagePath;
+        this->setText(str());
     }
 }
 

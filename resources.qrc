@@ -25,8 +25,6 @@
         <file>cards/ace_of_hearts.png</file>
         <file>cards/ace_of_spades.png</file>
         <file>cards/backside_blue.png</file>
-        <file>cards/backside_blue_inactive.png</file>
-        <file>cards/backside_grey.png</file>
         <file>cards/backside_red.png</file>
         <file>cards/jack_of_clubs.png</file>
         <file>cards/jack_of_diamonds.png</file>
@@ -90,10 +88,6 @@
         <file>cards_small/ace_of_spades.xcf</file>
         <file>cards_small/backside_blue.png</file>
         <file>cards_small/backside_blue.xcf</file>
-        <file>cards_small/backside_blue_inactive.png</file>
-        <file>cards_small/backside_blue_inactive.xcf</file>
-        <file>cards_small/backside_grey.png</file>
-        <file>cards_small/backside_grey.xcf</file>
         <file>cards_small/backside_red.png</file>
         <file>cards_small/backside_red.xcf</file>
         <file>cards_small/jack_of_clubs.png</file>
@@ -120,7 +114,6 @@
         <file>cards_small/queen_of_hearts.xcf</file>
         <file>cards_small/queen_of_spades.png</file>
         <file>cards_small/queen_of_spades.xcf</file>
-        <file>cards_small/xcfToPng.sh</file>
         <file>choosers/chooser_eights_a.png</file>
         <file>choosers/chooser_eights_a.xcf</file>
         <file>choosers/chooser_eights_n.png</file>
@@ -175,7 +168,6 @@
         <file>choosers_small/jsuit_of_hearts.xcf</file>
         <file>choosers_small/jsuit_of_spades.png</file>
         <file>choosers_small/jsuit_of_spades.xcf</file>
-        <file>choosers_small/xcfToPng.sh</file>
         <file>layout/chooser_eights_a.png</file>
         <file>layout/chooser_eights_n.png</file>
         <file>layout/chooser_jpoints_m.png</file>

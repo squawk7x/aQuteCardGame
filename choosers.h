@@ -48,6 +48,7 @@ class EightsChooser : public QPushButton
 
 private:
     QString decision_;
+    QString str_;
 
 public:
     explicit EightsChooser(QString decision = "a", QWidget* parent = nullptr);
@@ -58,10 +59,12 @@ public:
     void toggleRandom(const QString& dec1 = "a", const QString& dec2 = "n");
 
     // Getters
+    QString str();
     QString decision();
 
 private:
     // Setters
+    void setStr();
     void loadImage();
 
     // public slots:
@@ -76,6 +79,7 @@ class QuteChooser : public QPushButton
 
 private:
     QString decision_;
+    QString str_;
 
 public:
     explicit QuteChooser(QString decision = "y", QWidget* parent = nullptr);
@@ -86,10 +90,12 @@ public:
     void toggleRandom(const QString& dec1 = "y", const QString& dec2 = "n");
 
     // Getters
+    QString str();
     QString decision();
 
 private:
     // Setters
+    void setStr();
     void loadImage();
 
 signals:
@@ -107,6 +113,7 @@ class JpointsChooser : public QPushButton
 
 private:
     QString decision_;
+    QString str_;
 
 public:
     explicit JpointsChooser(QString decision = "m", QWidget* parent = nullptr);
@@ -117,10 +124,12 @@ public:
     void toggleRandom(const QString& dec1 = "m", const QString& dec2 = "p");
 
     // Getters
+    QString str();
     QString decision();
 
 private:
     // Setters
+    void setStr();
     void loadImage();
 
 public slots:
@@ -135,14 +144,17 @@ class RoundChooser : public QPushButton
 
 private:
     QString decision_;
+    QString str_;
 
 public:
     explicit RoundChooser(QString decision = "f", QWidget* parent = nullptr);
 
     // Getters
+    QString str();
     QString decision();
 
     // Setters
+    void setStr();
     void loadImage();
     void setDecision(const QString& target_decision);
 

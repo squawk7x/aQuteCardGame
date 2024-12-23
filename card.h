@@ -11,6 +11,7 @@ extern QVector<QString> suits;
 extern QVector<QString> ranks;
 extern QVector<QString> ranknames;
 extern QVector<QString> suitnames;
+extern bool forAndroid;
 
 class Card : public QPushButton
 {

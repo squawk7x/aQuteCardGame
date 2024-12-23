@@ -278,7 +278,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
     if (isThisCardPlayable(card)) {
         if (isSoundOn_) {
             mediaPlayer_->stop(); // Stop any previous playback
-            mediaPlayer_->setSource(QUrl(":/sounds/put_card_on_stack.wav"));
+            mediaPlayer_->setSource(QUrl("qrc:/sounds/put_card_on_stack.wav"));
             mediaPlayer_->play();
         }
         emit cardAddedToStack(card);
