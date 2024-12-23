@@ -80,7 +80,7 @@ void JsuitChooser::setStr()
 
 void JsuitChooser::loadImage()
 {
-    QString imagePath = QString(":images/choosers/jsuit_of_%1.png").arg(suitname_);
+    QString imagePath = QString(":/choosers_small/jsuit_of_%1.png").arg(suitname_);
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
@@ -158,7 +158,7 @@ void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
 void EightsChooser::loadImage()
 {
-    QString imagePath = QString(":images/choosers/chooser_eights_%1.png").arg(decision_);
+    QString imagePath = QString(":/choosers_small/chooser_eights_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
         // Fetch the size of the application's primary screen
@@ -229,7 +229,7 @@ void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
 void QuteChooser::loadImage()
 {
-    QString imagePath = QString(":images/choosers/chooser_qute_%1.png").arg(decision_);
+    QString imagePath = QString(":/choosers_small/chooser_qute_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
         // Set a maximum size for the icon (adjust as needed)
@@ -293,7 +293,7 @@ void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
 
 void JpointsChooser::loadImage()
 {
-    QString imagePath = QString(":images/choosers/chooser_jpoints_%1.png").arg(decision_);
+    QString imagePath = QString(":/choosers_small/chooser_jpoints_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
         // Fetch the size of the application's primary screen
@@ -372,7 +372,7 @@ void RoundChooser::setDecision(const QString& target_decision)
 // Methods
 void RoundChooser::loadImage()
 {
-    QString imagePath = QString(":images/choosers/chooser_new_%1.png").arg(decision_);
+    QString imagePath = QString(":/choosers_small/chooser_new_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull()) {
         // Fetch the size of the application's primary screen

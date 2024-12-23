@@ -187,9 +187,9 @@ int Card::value() const
 // {
 //     QString imagePath;
 //     if (isCardFaceVisible)
-//         imagePath = QString(":/images/cards/%1_of_%2.png").arg(rankname_, suitname_);
+//         imagePath = QString(":/cards_small/%1_of_%2.png").arg(rankname_, suitname_);
 //     else {
-//         imagePath = QString(":/images/cards/backside_blue.png");
+//         imagePath = QString(":/cards_small/backside_blue.png");
 //     }
 
 //     QIcon icon(imagePath);
@@ -211,9 +211,9 @@ void Card::loadImage(bool isCardFaceVisible)
 {
     QString imagePath;
     if (isCardFaceVisible)
-        imagePath = QString(":/images/cards/%1_of_%2.png").arg(rankname_, suitname_);
+        imagePath = QString(":/cards_small/%1_of_%2.png").arg(rankname_, suitname_);
     else {
-        imagePath = QString(":/images/cards/backside_blue.png");
+        imagePath = QString(":/cards_small/backside_blue.png");
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
