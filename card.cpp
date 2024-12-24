@@ -70,12 +70,6 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
 Card::Card(const QString& cardStr, QWidget* parent)
     : QPushButton(parent)
 {
-    // Customize the palette for the button's disabled state
-    QPalette palette = this->palette();
-    palette.setColor(QPalette::ButtonText, Qt::black); // Default (enabled) text color
-    palette.setColor(QPalette::Disabled, QPalette::ButtonText, Qt::gray); // Disabled text color
-    setPalette(palette);
-
     if (cardStr.length() >= 2) {
         if (suits.contains(cardStr.at(0)) && ranks.contains(cardStr.mid(1))) {
             suit_ = cardStr.at(0);
@@ -246,13 +240,12 @@ void Card::loadImage(bool isCardFaceVisible)
 
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+
+        // forAndoid or pixmap.isNull()
     } else {
-        if (isCardFaceVisible) {
-            this->setStyleSheet("color: black");
-            this->setText(str_);
-        } else {
-            this->setStyleSheet("color: blue");
-            this->setText("▒▒");
-        }
+        if (isCardFaceVisible and isEnabled()) {
+            setText(str_);
+        } else
+            setText("▒▒");
     }
 }

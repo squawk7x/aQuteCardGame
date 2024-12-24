@@ -159,7 +159,7 @@ void Table::initializeGame(int numberOfPlayers)
         ui->rbRank->setChecked(checked);
     });
 
-    connect(this, &Table::cbVisibleStatus, game_.get(), &Game::onCbVisibleStatus);
+    connect(this, &Table::cbVisible, game_.get(), &Game::onCbVisible);
     connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
     connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
@@ -170,8 +170,9 @@ void Table::initializeGame(int numberOfPlayers)
     // Add F1 shortcut
     QShortcut *f1Shortcut = new QShortcut(QKeySequence("F1"), this);
     connect(f1Shortcut, &QShortcut::activated, this, &Table::openHelpFile);
+    QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
 
-    emit cbVisibleStatus(ui->cbVisible->isChecked());
+    emit cbVisible(ui->cbVisible->isChecked());
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -247,4 +248,12 @@ void Table::openHelpFile()
         // If it fails, fall back to a text editor
         QProcess::startDetached("xdg-open", QStringList() << absoluteFilePath);
     }
+}
+
+void Table::onResetCbVisible(bool isVisible)
+{
+    ui->cbVisible->setChecked(!isVisible);
+    ui->cbVisible->setChecked(isVisible);
+
+    emit cbVisible(ui->cbVisible->isChecked());
 }

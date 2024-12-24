@@ -125,13 +125,14 @@ signals:
     void setRbUnsorted(bool isSorted);
     void setCbVisible(bool isVisible);
     void toggleCardsVisible(bool isVisible);
+    void resetCbVisible(bool isVisible);
+    void setCardText();
 
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
     // void onBlindClicked();
-    void onCbVisible(int state);
-    void onCbVisibleStatus(int state);
+    void onCbVisible(bool isVisible);
     void onCbSound(int state);
     void onRbSuit();
     void onRbRank();

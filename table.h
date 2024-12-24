@@ -35,12 +35,13 @@ private:
 
 signals:
     void mouseClicked();
-    void cbVisibleStatus(int state);
+    void cbVisible(bool isVisible);
 
 public slots:
     void onRbNumPlayers2();
     void onRbNumPlayers3();
     void openHelpFile();
+    void onResetCbVisible(bool isVisible);
 };
 
 #endif // TABLE_H

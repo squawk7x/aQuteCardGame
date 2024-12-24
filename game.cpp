@@ -266,8 +266,9 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    // show card faces
     emit setCbVisible(false);
+    // if (forAndroid)
+    //     emit resetCbVisible(false);
 
     // in case a robot player starts a new round all playable cards are played
     autoplay();
@@ -409,7 +410,6 @@ void Game::handleChoosers()
 
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
-
     }
 
     // No Qute Condition
@@ -822,6 +822,13 @@ void Game::handleSpecialCards()
     drawn()->clearCards();
 
     if (isFinished) {
+        // make all cards visible for counting points
+        if (forAndroid) {
+            for (const auto& player : playerList_) {
+                player->handdeck()->setEnabled(true);
+            }
+        }
+        //
         emit countPoints(shuffles);
         emit setCbVisible(true);
         playable()->clearCards();
@@ -863,6 +870,9 @@ void Game::activateNextPlayer()
     updatePlayable();
 
     autoplay();
+    if (forAndroid and isCardsVisible_) {
+        emit resetCbVisible(isCardsVisible_);
+    }
 }
 
 void Game::autoplay()
@@ -975,16 +985,12 @@ void Game::updateDisplay()
     }
 }
 
-void Game::onCbVisible(int state)
+void Game::onCbVisible(bool isVisible)
 {
-    emit toggleCardsVisible(state);
+    isCardsVisible_ = isVisible;
+    emit toggleCardsVisible(isVisible);
 }
 
-void Game::onCbVisibleStatus(int state)
-{
-    isCardsVisible_ = state;
-    emit toggleCardsVisible(state);
-}
 
 void Game::onCbSound(int state)
 {
