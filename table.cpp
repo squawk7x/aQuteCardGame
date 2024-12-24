@@ -170,9 +170,11 @@ void Table::initializeGame(int numberOfPlayers)
     // Add F1 shortcut
     QShortcut *f1Shortcut = new QShortcut(QKeySequence("F1"), this);
     connect(f1Shortcut, &QShortcut::activated, this, &Table::openHelpFile);
-    QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
-
     emit cbVisible(ui->cbVisible->isChecked());
+
+    // forAndroid
+    QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
+    //
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)

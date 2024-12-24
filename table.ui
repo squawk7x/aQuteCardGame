@@ -195,7 +195,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Qute Chooser</string>
+           <string>Qute</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -231,7 +231,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Eights Chooser</string>
+           <string>Eights</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -267,7 +267,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Jpoints Chooser</string>
+           <string>Jpoints</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -303,7 +303,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Round Chooser</string>
+           <string>Round</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -349,7 +349,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>cards drawn for 7 or 8</string>
+           <string>Drawn for 7 or 8</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -385,7 +385,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>cards drawn for 8</string>
+           <string>Drawn for 8</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -868,7 +868,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Sort Cards by</string>
+           <string>Sort by</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>

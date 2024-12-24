@@ -246,6 +246,6 @@ void Card::loadImage(bool isCardFaceVisible)
         if (isCardFaceVisible and isEnabled()) {
             setText(str_);
         } else
-            setText("▒▒");
+            setText("▓▓");
     }
 }

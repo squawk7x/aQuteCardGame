@@ -827,6 +827,7 @@ void Game::handleSpecialCards()
             for (const auto& player : playerList_) {
                 player->handdeck()->setEnabled(true);
             }
+            emit resetCbVisible(true);
         }
         //
         emit countPoints(shuffles);
@@ -844,89 +845,75 @@ void Game::activateNextPlayer()
     if (isRoundFinished())
         return;
 
-    // // Delay activation of next player for:
-    // if (playerList_[0]->name() == "Player1" and drawn()->cards().size() > 0
-    //     and playable()->cards().size() == 0) {
-    //     qDebug() << "pausing for 2 seconds...";
-    //     std::this_thread::sleep_for(std::chrono::seconds(2));
-    // }
-
-    // // Check that 36 cards are in the game for (auto& player : playerList_)
-    // int cardsInGame = 0;
-
-    // for (auto player : playerList_) {
-    //     cardsInGame += player->handdeck()->cards().size();
-    // }
-
-    // cardsInGame += blind()->cards().size() + stack()->cards().size();
-
-    // qDebug() << "Cards in game:" << cardsInGame;
-    // // end of check
-
     emit cardsPlayed(played()->cards().size());
 
     handleSpecialCards();
 
     updatePlayable();
 
+    // if (forAndroid and isCardsVisible_) {
+    //     if (!player->isRobot())
+    //         player->handdeck()->setEnabled(true);
+    //     emit resetCbVisible(isCardsVisible_);
+    // }
+
     autoplay();
-    if (forAndroid and isCardsVisible_) {
-        emit resetCbVisible(isCardsVisible_);
-    }
 }
 
 void Game::autoplay()
 {
     QSharedPointer<Card> stackCard = stack()->topCard();
 
-    if (player->isRobot() && !roundChooser()->isEnabled()) {
+    if (!roundChooser()->isEnabled())
         player->handdeck()->setEnabled(true);
 
-        while (!isNextPlayerPossible()) {
-            // TODO: KI make robots play all possible ranks at first move
-            while (!playable()->cards().isEmpty()) { // play all cards with same rank
+    if (forAndroid)
+        emit resetCbVisible(isCardsVisible_);
 
-                QString stackSuit = stackCard->suit();
-                if (stackCard->rank() == "J")
-                    stackSuit = jsuitChooser()->suit();
+    while (player->isRobot() && !isNextPlayerPossible()) {
+        // TODO: KI make robots play all possible ranks at first move
+        while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
-                QVector<QString> pattern = player->handdeck()->patternByRankPoints();
+            QString stackSuit = stackCard->suit();
+            if (stackCard->rank() == "J")
+                stackSuit = jsuitChooser()->suit();
 
-                // KI rankPoints 6, 7, 8, J, A
-                // the other player holds only one card
-                if (playerList_[1]->handdeck()->cards().size() == 1) {
-                    player->handdeck()->prependRank(pattern, "7");
-                    player->handdeck()->prependRank(pattern, "8");
-                } else if (player->score()
-                               + player->handdeck()->countCardsOfRank("A") * 15 * shuffles
-                           == 125)
-                    player->handdeck()->appendRank(pattern, "A");
-                else {
-                    player->handdeck()->prependRank(pattern, "6");
-                    player->handdeck()->appendRank(pattern, "J");
-                }
-                // end KI rankPoints 6, 7, 8, J, A
+            QVector<QString> pattern = player->handdeck()->patternByRankPoints();
 
-                player->handdeck()->sortCardsByPattern(pattern);
-                playable()->sortCardsByPattern(pattern);
-
-                // qDebug() << "pattern used:" << pattern;
-
-                // KI permute ranks
-                player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
-                                                 stackCard,
-                                                 stackSuit);
-                // end KI permute ranks
-
-                for (const auto& card : std::as_const(player->handdeck()->cards())) {
-                    card->click();
-                }
-                updatePlayable();
+            // KI rankPoints 6, 7, 8, J, A
+            // the other player holds only one card
+            if (playerList_[1]->handdeck()->cards().size() == 1) {
+                player->handdeck()->prependRank(pattern, "7");
+                player->handdeck()->prependRank(pattern, "8");
+            } else if (player->score() + player->handdeck()->countCardsOfRank("A") * 15 * shuffles
+                       == 125)
+                player->handdeck()->appendRank(pattern, "A");
+            else {
+                player->handdeck()->prependRank(pattern, "6");
+                player->handdeck()->appendRank(pattern, "J");
             }
+            // end KI rankPoints 6, 7, 8, J, A
+
+            player->handdeck()->sortCardsByPattern(pattern);
+            playable()->sortCardsByPattern(pattern);
+
+            // qDebug() << "pattern used:" << pattern;
+
+            // KI permute ranks
+            player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
+                                             stackCard,
+                                             stackSuit);
+            // end KI permute ranks
+
+            for (const auto& card : std::as_const(player->handdeck()->cards())) {
+                card->click();
+            }
+            updatePlayable();
         }
-        emit cardsPlayed(played()->cards().size());
-        handleChoosers();
     }
+
+    emit cardsPlayed(played()->cards().size());
+    handleChoosers();
 }
 
 void Game::refillBlindFromStack()
