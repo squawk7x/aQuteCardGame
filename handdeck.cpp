@@ -184,7 +184,7 @@ void Handdeck::onToggleCardsVisible(bool isVisible)
     }
 }
 
-void Handdeck::sortCardsBy(Handdeck::SortOption option)
+void Handdeck::sortCardsBy(SortOption option)
 {
     if (option == SortOption::Suit) {
         std::sort(cards_.begin(),

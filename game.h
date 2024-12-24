@@ -17,6 +17,8 @@
 #include "player.h"
 #include "stack.h"
 
+enum class DrawOption { MustCard, BadCard };
+
 class Game : public QObject
 {
     Q_OBJECT
@@ -62,7 +64,6 @@ public:
     explicit Game(int numberOfPlayers, QObject* parent = nullptr);
     ~Game();
 
-    enum class DrawOption { MustCard, BadCard };
     void initializeGame();
 
     // Getters
@@ -131,13 +132,13 @@ signals:
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
-    // void onBlindClicked();
     void onCbVisible(bool isVisible);
     void onCbSound(int state);
     void onRbSuit();
     void onRbRank();
     void onNewRound();
     void onNewGame();
+    void onBlindClicked();
 };
 
 #endif // GAME_H

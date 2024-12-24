@@ -594,8 +594,8 @@ bool Game::isNextPlayerPossible()
     }
 
     // while (isMustDrawCard()) {
-    if (isMustDrawCard()) {
-        drawCardFromBlind(Game::DrawOption::MustCard);
+    if (isMustDrawCard() && player->isRobot()) {
+        drawCardFromBlind(DrawOption::MustCard);
         updatePlayable(); // needed for if, not for while
         // human player must draw card by card
     }
@@ -754,7 +754,7 @@ void Game::handleSpecialCards()
 
     for (int i = 0; i < sevens; ++i) {
         connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
-        drawCardFromBlind(Game::DrawOption::BadCard);
+        drawCardFromBlind(DrawOption::BadCard);
         // if Player1 gets a card, cards are unsorted
         if (!player->isRobot())
             emit setRbUnsorted(true);
@@ -783,8 +783,8 @@ void Game::handleSpecialCards()
                     connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
                 else
                     connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
-                drawCardFromBlind(Game::DrawOption::BadCard);
-                drawCardFromBlind(Game::DrawOption::BadCard);
+                drawCardFromBlind(DrawOption::BadCard);
+                drawCardFromBlind(DrawOption::BadCard);
                 // if Player1 gets a card, cards are unsorted
                 if (!player->isRobot())
                     emit setRbUnsorted(true);
@@ -804,8 +804,8 @@ void Game::handleSpecialCards()
     if (eights > 0) {
         connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
         for (int i = 0; i < eights; ++i) {
-            drawCardFromBlind(Game::DrawOption::BadCard);
-            drawCardFromBlind(Game::DrawOption::BadCard);
+            drawCardFromBlind(DrawOption::BadCard);
+            drawCardFromBlind(DrawOption::BadCard);
             // if Player1 gets a card, cards are unsorted
             if (!player->isRobot())
                 emit setRbUnsorted(true);
@@ -850,12 +850,6 @@ void Game::activateNextPlayer()
     handleSpecialCards();
 
     updatePlayable();
-
-    // if (forAndroid and isCardsVisible_) {
-    //     if (!player->isRobot())
-    //         player->handdeck()->setEnabled(true);
-    //     emit resetCbVisible(isCardsVisible_);
-    // }
 
     autoplay();
 }
@@ -986,21 +980,21 @@ void Game::onCbSound(int state)
 
 void Game::onRbSuit()
 {
-    player->handdeck()->sortCardsBy(Handdeck::SortOption::Suit);
+    player->handdeck()->sortCardsBy(SortOption::Suit);
 }
 void Game::onRbRank()
 {
-    player->handdeck()->sortCardsBy(Handdeck::SortOption::Rank);
+    player->handdeck()->sortCardsBy(SortOption::Rank);
 }
 
-// void Game::onBlindClicked()
-// {
-//     if (!player->isRobot() && isMustDrawCard()) {
-//         drawCardFromBlind(Game::DrawOption::MustCard);
-//         updatePlayable();
-//         // emit setBlindRed(false);
-//     }
-// }
+// human player must draw card from blind manually, not autoplay
+void Game::onBlindClicked()
+{
+    if (!player->isRobot() && isMustDrawCard()) {
+        drawCardFromBlind(DrawOption::MustCard);
+        updatePlayable();
+    }
+}
 
 void Game::onNewRound()
 {

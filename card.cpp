@@ -9,7 +9,7 @@ QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
-bool forAndroid = true;
+bool forAndroid = false;
 
 // Private Methods
 void Card::initCard()
@@ -62,7 +62,7 @@ Card::Card(const QString& suit, const QString& rank, QWidget* parent)
     , suit_(suit)
     , rank_(rank)
 {
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
     setText("");
     initCard();
 }

@@ -40,8 +40,10 @@ signals:
 public slots:
     void onRbNumPlayers2();
     void onRbNumPlayers3();
-    void openHelpFile();
     void onResetCbVisible(bool isVisible);
+    void onNextClicked();
+    void onDrawClicked();
+    void onHelpClicked();
 };
 
 #endif // TABLE_H

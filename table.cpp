@@ -62,6 +62,9 @@ void Table::initializeGame(int numberOfPlayers)
     QHBoxLayout* layoutRound = findChild<QHBoxLayout*>("layoutRound");
     QHBoxLayout* layoutScores = findChild<QHBoxLayout*>("layoutScores");
     QHBoxLayout* layoutPlayer1 = findChild<QHBoxLayout*>("layoutPlayer1");
+    QPushButton* pbNext = findChild<QPushButton*>("pbNext");
+    QPushButton* pbDraw = findChild<QPushButton*>("pbDraw");
+    QPushButton* pbHelp = findChild<QPushButton*>("pbHelp");
 
     // Add widgets to their respective layouts
     layoutPlayer2->addWidget(game_->player2()->handdeck().get());
@@ -167,14 +170,16 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
 
-    // Add F1 shortcut
-    QShortcut *f1Shortcut = new QShortcut(QKeySequence("F1"), this);
-    connect(f1Shortcut, &QShortcut::activated, this, &Table::openHelpFile);
-    emit cbVisible(ui->cbVisible->isChecked());
-
     // forAndroid
     QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
     //
+
+    // Pushbuttons
+    QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
+    QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
+    QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
+
+    emit cbVisible(ui->cbVisible->isChecked());
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -212,7 +217,7 @@ void Table::mousePressEvent(QMouseEvent* event)
 {
     // if (event->button() == Qt::RightButton) {
     if (event->button() == Qt::LeftButton) {
-        emit mouseClicked();
+        // emit mouseClicked();
     }
     QWidget::mousePressEvent(event);
 }
@@ -226,7 +231,7 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 }
 
-void Table::openHelpFile()
+void Table::onHelpClicked()
 {
     // Print the current working directory
     // qDebug() << "Current working directory:" << QDir::currentPath();
@@ -258,4 +263,13 @@ void Table::onResetCbVisible(bool isVisible)
     ui->cbVisible->setChecked(isVisible);
 
     emit cbVisible(ui->cbVisible->isChecked());
+}
+
+void Table::onNextClicked()
+{
+    game_->activateNextPlayer();
+}
+void Table::onDrawClicked()
+{
+    game_->onBlindClicked();
 }
