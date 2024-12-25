@@ -176,7 +176,7 @@ void Table::initializeGame(int numberOfPlayers)
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
     QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
 
-    emit cbVisible(ui->cbVisible->isChecked());
+    onResetCbVisible(false);
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -254,7 +254,6 @@ void Table::onResetCbVisible(bool isVisible)
 
 void Table::onNextClicked()
 {
-    qDebug() << "onNextClicked";
     game_->activateNextPlayer();
 }
 

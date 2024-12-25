@@ -963,7 +963,7 @@
         <item alignment="Qt::AlignmentFlag::AlignLeft">
          <widget class="QGroupBox" name="gbCardType">
           <property name="enabled">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -1024,136 +1024,7 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>rbCardsSmall</sender>
-   <signal>clicked()</signal>
-   <receiver>Table</receiver>
-   <slot>onRbCardsSmall()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>976</x>
-     <y>693</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1023</x>
-     <y>698</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbCardsNormal</sender>
-   <signal>clicked()</signal>
-   <receiver>Table</receiver>
-   <slot>onRbCardsNormal()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>957</x>
-     <y>741</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1020</x>
-     <y>742</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbNumPlayers2</sender>
-   <signal>clicked()</signal>
-   <receiver>Table</receiver>
-   <slot>onRbNumPlayers2()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>876</x>
-     <y>538</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1019</x>
-     <y>361</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbNumPlayers3</sender>
-   <signal>clicked()</signal>
-   <receiver>Table</receiver>
-   <slot>onRbNumPlayers3()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>883</x>
-     <y>605</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1024</x>
-     <y>459</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbRank</sender>
-   <signal>clicked()</signal>
-   <receiver>Table</receiver>
-   <slot>onRbRank()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>851</x>
-     <y>754</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>644</x>
-     <y>798</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbSuit</sender>
-   <signal>clicked()</signal>
-   <receiver>Table</receiver>
-   <slot>onRbSuit()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>845</x>
-     <y>685</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>741</x>
-     <y>797</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbVisible</sender>
-   <signal>checkStateChanged(Qt::CheckState)</signal>
-   <receiver>Table</receiver>
-   <slot>onCbVisible()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>969</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1025</x>
-     <y>595</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbSound</sender>
-   <signal>checkStateChanged(Qt::CheckState)</signal>
-   <receiver>Table</receiver>
-   <slot>onCbSound()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>968</x>
-     <y>546</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1017</x>
-     <y>537</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <signal>nextClicked()</signal>
   <signal>drawClicked()</signal>
