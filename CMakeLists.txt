@@ -48,19 +48,20 @@ set(PROJECT_SOURCES
 )
 
 # Resources directory
-set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/res/android/res)
+# set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/res/android/res)
+# set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/res/cards)
 
-# List of resources (icons for Android)
-set(RESOURCE_FILES
-    ${RESOURCES_DIR}/mipmap-hdpi/icon.png
-    ${RESOURCES_DIR}/mipmap-mdpi/icon.png
-    ${RESOURCES_DIR}/mipmap-xhdpi/icon.png
-    ${RESOURCES_DIR}/mipmap-xxhdpi/icon.png
-    ${RESOURCES_DIR}/mipmap-xxxhdpi/icon.png
-)
+# # List of resources (icons for Android)
+# set(RESOURCE_FILES
+#     ${RESOURCES_DIR}/mipmap-hdpi/icon.png
+#     ${RESOURCES_DIR}/mipmap-mdpi/icon.png
+#     ${RESOURCES_DIR}/mipmap-xhdpi/icon.png
+#     ${RESOURCES_DIR}/mipmap-xxhdpi/icon.png
+#     ${RESOURCES_DIR}/mipmap-xxxhdpi/icon.png
+# )
 
 # For Qt6, use `qt_add_resources` for handling resources
-qt_add_resources(RESOURCES resources.qrc)
+# qt_add_resources(RESOURCES resources.qrc)
 
 # Create executable (or shared library for Android)
 qt_add_executable(aQuteCardGame

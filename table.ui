@@ -698,14 +698,27 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="bottomMargin">
-            <number>5</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
            <property name="spacing">
             <number>5</number>
            </property>
-           <item row="1" column="0">
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QRadioButton" name="rbNumPlayers2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>2</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QRadioButton" name="rbNumPlayers3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -718,19 +731,6 @@
              </property>
              <property name="checked">
               <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QRadioButton" name="rbNumPlayers2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>2</string>
              </property>
             </widget>
            </item>
@@ -751,14 +751,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <property name="bottomMargin">
-            <number>5</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="spacing">
             <number>5</number>
            </property>
-           <item row="0" column="1">
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <item>
             <widget class="QCheckBox" name="cbSound">
              <property name="enabled">
               <bool>true</bool>
@@ -777,7 +777,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
+           <item>
             <widget class="QCheckBox" name="cbVisible">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -918,14 +918,14 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <property name="bottomMargin">
-            <number>5</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
            <property name="spacing">
             <number>5</number>
            </property>
-           <item row="1" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <item>
             <widget class="QRadioButton" name="rbSuit">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -941,7 +941,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item>
             <widget class="QRadioButton" name="rbRank">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -983,63 +983,37 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-          <widget class="QRadioButton" name="radioButton">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>60</y>
-             <width>96</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>small</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="radioButton_2">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>90</y>
-             <width>96</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>normal</string>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="radioButton_3">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>30</y>
-             <width>96</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>ascii</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QRadioButton" name="rbCardsSmall">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>small</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="rbCardsNormal">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>normal</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -1052,50 +1026,130 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pbNext</sender>
+   <sender>rbCardsSmall</sender>
    <signal>clicked()</signal>
    <receiver>Table</receiver>
-   <slot>onNextClicked()</slot>
+   <slot>onRbCardsSmall()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>530</x>
-     <y>734</y>
+     <x>976</x>
+     <y>693</y>
     </hint>
     <hint type="destinationlabel">
-     <x>494</x>
-     <y>803</y>
+     <x>1023</x>
+     <y>698</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pbDraw</sender>
+   <sender>rbCardsNormal</sender>
    <signal>clicked()</signal>
    <receiver>Table</receiver>
-   <slot>onDrawClicked()</slot>
+   <slot>onRbCardsNormal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>363</x>
-     <y>688</y>
+     <x>957</x>
+     <y>741</y>
     </hint>
     <hint type="destinationlabel">
-     <x>367</x>
-     <y>800</y>
+     <x>1020</x>
+     <y>742</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pbHelp</sender>
+   <sender>rbNumPlayers2</sender>
    <signal>clicked()</signal>
    <receiver>Table</receiver>
-   <slot>onHelpClicked()</slot>
+   <slot>onRbNumPlayers2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>61</x>
-     <y>666</y>
+     <x>876</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
-     <x>0</x>
-     <y>684</y>
+     <x>1019</x>
+     <y>361</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbNumPlayers3</sender>
+   <signal>clicked()</signal>
+   <receiver>Table</receiver>
+   <slot>onRbNumPlayers3()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>883</x>
+     <y>605</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1024</x>
+     <y>459</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbRank</sender>
+   <signal>clicked()</signal>
+   <receiver>Table</receiver>
+   <slot>onRbRank()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>851</x>
+     <y>754</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>644</x>
+     <y>798</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbSuit</sender>
+   <signal>clicked()</signal>
+   <receiver>Table</receiver>
+   <slot>onRbSuit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>845</x>
+     <y>685</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>741</x>
+     <y>797</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbVisible</sender>
+   <signal>checkStateChanged(Qt::CheckState)</signal>
+   <receiver>Table</receiver>
+   <slot>onCbVisible()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>969</x>
+     <y>594</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1025</x>
+     <y>595</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbSound</sender>
+   <signal>checkStateChanged(Qt::CheckState)</signal>
+   <receiver>Table</receiver>
+   <slot>onCbSound()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>968</x>
+     <y>546</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1017</x>
+     <y>537</y>
     </hint>
    </hints>
   </connection>
@@ -1106,5 +1160,13 @@
   <slot>onDrawClicked()</slot>
   <slot>onNextClicked()</slot>
   <slot>onHelpClicked()</slot>
+  <slot>onRbCardsSmall()</slot>
+  <slot>onRbCardsNormal()</slot>
+  <slot>onCbSound()</slot>
+  <slot>onCbVisible()</slot>
+  <slot>onRbSuit()</slot>
+  <slot>onRbRank()</slot>
+  <slot>onRbNumPlayers2()</slot>
+  <slot>onRbNumPlayers3()</slot>
  </slots>
 </ui>

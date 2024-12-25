@@ -212,9 +212,9 @@ void Card::loadImage(bool isCardFaceVisible)
 
     QString imagePath;
     if (isCardFaceVisible)
-        imagePath = QString(":/cards/%1_of_%2.png").arg(rankname_, suitname_);
+        imagePath = QString(":res/cards/%1_of_%2.png").arg(rankname_, suitname_);
     else {
-        imagePath = QString(":/cards/backside_blue.png");
+        imagePath = QString(":res/cards/backside_blue.png");
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap

@@ -146,8 +146,6 @@ void Table::initializeGame(int numberOfPlayers)
     QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("gbPlayer1");
     groupBoxPlayer1->setLayout(layoutPlayer1);
 
-    connect(this, &Table::mouseClicked, game_.get(), &Game::activateNextPlayer);
-
     connect(game_.get(), &Game::setRbNumPlayers, this, [this](int num) {
         if (num == 2) {
             ui->rbNumPlayers2->setChecked(true);
@@ -155,20 +153,19 @@ void Table::initializeGame(int numberOfPlayers)
             ui->rbNumPlayers3->setChecked(true);
         }
     });
+
     connect(game_.get(), &Game::setCbVisible, this, [this](bool checked) {
         ui->cbVisible->setChecked(checked);
     });
-    connect(game_.get(), &Game::setRbUnsorted, this, [this](bool checked) {
-        ui->rbRank->setChecked(checked);
-    });
 
-    connect(this, &Table::cbVisible, game_.get(), &Game::onCbVisible);
-    connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
-    connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
-    connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
-    connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
+    connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
+    connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
+    connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
+    connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
+    connect(ui->rbCardsSmall, &QRadioButton::pressed, this, &Table::onRbCardsSmall);   // ToDo
+    connect(ui->rbCardsNormal, &QRadioButton::pressed, this, &Table::onRbCardsNormal); // ToDo
 
     // forAndroid
     QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
@@ -203,24 +200,14 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
     }
 }
 
-void Table::onRbNumPlayers2()
-{
-    initializeGame(2);
-}
-
-void Table::onRbNumPlayers3()
-{
-    initializeGame(3);
-}
-
-void Table::mousePressEvent(QMouseEvent* event)
-{
-    // if (event->button() == Qt::RightButton) {
-    if (event->button() == Qt::LeftButton) {
-        // emit mouseClicked();
-    }
-    QWidget::mousePressEvent(event);
-}
+// void Table::mousePressEvent(QMouseEvent* event)
+// {
+//     // if (event->button() == Qt::RightButton) {
+//     if (event->button() == Qt::LeftButton) {
+//         // emit mouseClicked();
+//     }
+//     QWidget::mousePressEvent(event);
+// }
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
@@ -267,9 +254,39 @@ void Table::onResetCbVisible(bool isVisible)
 
 void Table::onNextClicked()
 {
+    qDebug() << "onNextClicked";
     game_->activateNextPlayer();
 }
+
 void Table::onDrawClicked()
 {
     game_->onBlindClicked();
+}
+
+void Table::onRbNumPlayers2()
+{
+    initializeGame(2);
+}
+
+void Table::onRbNumPlayers3()
+{
+    initializeGame(3);
+}
+
+void Table::onCbSound() {}
+
+void Table::onCbVisible() {}
+
+void Table::onRbSuit() {}
+
+void Table::onRbRank() {}
+
+void Table::onRbCardsSmall()
+{
+    qDebug() << "rbCardsSmall clicked";
+}
+
+void Table::onRbCardsNormal()
+{
+    qDebug() << "rbCardsNormal clicked";
 }

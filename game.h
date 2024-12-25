@@ -119,7 +119,6 @@ signals:
     void cardBadFromBlind(const QSharedPointer<Card>& card);
     void cardsPlayed(int numCardsPlayed);
     void countPoints(int shuffles);
-    void setBlindRed(bool red);
 
     // Controls and Settings:
     void setRbNumPlayers(int num);
