@@ -1,5 +1,5 @@
 ﻿<RCC>
-    <qresource prefix="">
+    <qresource prefix="/">
         <file>res/cards/10_of_clubs.png</file>
         <file>res/cards/10_of_diamonds.png</file>
         <file>res/cards/10_of_hearts.png</file>
