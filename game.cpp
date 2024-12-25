@@ -231,7 +231,7 @@ void Game::initializeRound()
     // shuffle the cards
     if (isSoundOn_) {
         mediaPlayer_->stop(); // Stop any previous playback
-        mediaPlayer_->setSource(QUrl(":/sounds/shuffling.wav"));
+        mediaPlayer_->setSource(QUrl(":res/sounds/shuffling.wav"));
         mediaPlayer_->play();
     }
     blind_->shuffle();
@@ -279,7 +279,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
     if (isThisCardPlayable(card)) {
         if (isSoundOn_) {
             mediaPlayer_->stop(); // Stop any previous playback
-            mediaPlayer_->setSource(QUrl("qrc:/sounds/put_card_on_stack.wav"));
+            mediaPlayer_->setSource(QUrl("qrc:res/sounds/put_card_on_stack.wav"));
             mediaPlayer_->play();
         }
         emit cardAddedToStack(card);
@@ -624,7 +624,7 @@ void Game::drawCardFromBlind(DrawOption option)
 
     if (isSoundOn_) {
         mediaPlayer_->stop(); // Stop any previous playback
-        mediaPlayer_->setSource(QUrl(":/sounds/draw_card_from_blind.wav"));
+        mediaPlayer_->setSource(QUrl(":res/sounds/draw_card_from_blind.wav"));
         mediaPlayer_->play();
     }
 
@@ -927,7 +927,7 @@ void Game::refillBlindFromStack()
     // Shuffle the blind deck
     if (isSoundOn_) {
         mediaPlayer_->stop(); // Stop any previous playback
-        mediaPlayer_->setSource(QUrl(":/sounds/shuffling.wav"));
+        mediaPlayer_->setSource(QUrl(":res/sounds/shuffling.wav"));
         mediaPlayer_->play();
     }
     blind()->shuffle();

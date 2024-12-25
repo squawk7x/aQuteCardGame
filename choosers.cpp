@@ -78,7 +78,7 @@ void JsuitChooser::loadImage()
 {
     setStr();
 
-    QString imagePath = QString(":/choosers/jsuit_of_%1.png").arg(suitname_);
+    QString imagePath = QString(":res/choosers/jsuit_of_%1.png").arg(suitname_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
@@ -173,7 +173,7 @@ void EightsChooser::loadImage()
 {
     setStr();
 
-    QString imagePath = QString(":/choosers/chooser_eights_%1.png").arg(decision_);
+    QString imagePath = QString(":res/choosers/chooser_eights_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
@@ -263,7 +263,7 @@ void QuteChooser::loadImage()
 {
     setStr();
 
-    QString imagePath = QString(":/choosers/chooser_qute_%1.png").arg(decision_);
+    QString imagePath = QString(":res/choosers/chooser_qute_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull() and not forAndroid) {
         // Set a maximum size for the icon (adjust as needed)
@@ -343,7 +343,7 @@ void JpointsChooser::loadImage()
 {
     setStr();
 
-    QString imagePath = QString(":/choosers/chooser_jpoints_%1.png").arg(decision_);
+    QString imagePath = QString(":res/choosers/chooser_jpoints_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen
@@ -441,7 +441,7 @@ void RoundChooser::loadImage()
 {
     setStr();
 
-    QString imagePath = QString(":/choosers/chooser_new_%1.png").arg(decision_);
+    QString imagePath = QString(":res/choosers/chooser_new_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
     if (!pixmap.isNull() and not forAndroid) {
         // Fetch the size of the application's primary screen

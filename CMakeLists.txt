@@ -61,7 +61,7 @@ set(PROJECT_SOURCES
 # )
 
 # For Qt6, use `qt_add_resources` for handling resources
-# qt_add_resources(RESOURCES resources.qrc)
+qt_add_resources(RESOURCES resources.qrc)
 
 # Create executable (or shared library for Android)
 qt_add_executable(aQuteCardGame
