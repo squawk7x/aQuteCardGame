@@ -12,7 +12,8 @@ extern QVector<QString> ranks;
 extern QVector<QString> ranknames;
 extern QVector<QString> suitnames;
 
-extern bool forAndroid;
+// cards and choosers use text not image
+extern bool isAndroidVersion;
 
 class Card : public QPushButton
 {
@@ -59,9 +60,6 @@ private:
 
 signals:
     void cardClicked(const QSharedPointer<Card>& card);
-
-public slots:
-    // void onSetCardText();
 };
 
 #endif // CARD_H

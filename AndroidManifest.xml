@@ -1,10 +1,10 @@
 <application
-    android:icon="@res/android/res/mipmap/ic_launcher"
+    android:icon="@drawable/ic_launcher"
     android:label="aQuteCardGame"
     android:theme="@android:style/Theme.DeviceDefault">
     <!-- Your activity and other components go here -->
     <activity
-        android:name="org.qtproject.example.aqutecardgame"
+        android:name="de.ottburg.aqutecardgame"
         android:label="aQuteCardGame"
         android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale"
         android:launchMode="singleTask"

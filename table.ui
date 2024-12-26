@@ -406,6 +406,9 @@
            <property name="bottomMargin">
             <number>5</number>
            </property>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_3"/>
+           </item>
           </layout>
          </widget>
         </item>

@@ -9,7 +9,7 @@ QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
-bool forAndroid = true;
+bool isAndroidVersion = false;
 
 // Private Methods
 void Card::initCard()
@@ -218,7 +218,7 @@ void Card::loadImage(bool isCardFaceVisible)
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not forAndroid) {
+    if (!pixmap.isNull() and not isAndroidVersion) {
         // Fetch the size of the application’s primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -241,7 +241,7 @@ void Card::loadImage(bool isCardFaceVisible)
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
 
-        // forAndoid or pixmap.isNull()
+        // isAndroidVersion = true or pixmap.isNull()
     } else {
         if (isCardFaceVisible and isEnabled()) {
             setText(str_);

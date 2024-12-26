@@ -81,10 +81,11 @@
         <file>res/sounds/draw_card_from_blind.wav</file>
         <file>res/sounds/put_card_on_stack.wav</file>
         <file>res/sounds/shuffling.wav</file>
-        <file>res/android/res/mipmap-hdpi/ic_launcher.png</file>
-        <file>res/android/res/mipmap-mdpi/ic_launcher.png</file>
-        <file>res/android/res/mipmap-xhdpi/ic_launcher.png</file>
-        <file>res/android/res/mipmap-xxhdpi/ic_launcher.png</file>
-        <file>res/android/res/mipmap-xxxhdpi/ic_launcher.png</file>
+        <file>android/res/drawable/ic_launcher.png</file>
+        <file>android/res/drawable-hdpi/ic_launcher.png</file>
+        <file>android/res/drawable-mdpi/ic_launcher.png</file>
+        <file>android/res/drawable-xhdpi/ic_launcher.png</file>
+        <file>android/res/drawable-xxhdpi/ic_launcher.png</file>
+        <file>android/res/drawable-xxxhdpi/ic_launcher.png</file>
     </qresource>
 </RCC>

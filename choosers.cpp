@@ -5,7 +5,7 @@
 #include <QScreen>
 #include "card.h"
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 // JsuitChooser Implementation
 
 JsuitChooser::JsuitChooser(QString suit, QWidget* parent)
@@ -43,8 +43,8 @@ void JsuitChooser::toggle()
         suitname_ = suitnames[index];
         loadImage();
         // Jsuit must update when suit has changed
-        if (forAndroid)
-            emit jsuitToggled();
+        if (isAndroidVersion)
+            emit chooserToggled();
     } else {
         qDebug() << "Current suit not found in the list.";
     }
@@ -83,7 +83,7 @@ void JsuitChooser::loadImage()
 
     QString imagePath = QString(":res/choosers/jsuit_of_%1.png").arg(suitname_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not forAndroid) {
+    if (!pixmap.isNull() and not isAndroidVersion) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -111,14 +111,6 @@ void JsuitChooser::loadImage()
     }
 }
 
-// forAndroid needs to update loadImage
-// void JsuitChooser::mousePressEvent(QMouseEvent* event)
-// {
-//     QPushButton::mousePressEvent(event); // Call the base class implementation
-//     update();
-//     repaint();
-// }
-
 // Slots
 void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
 {
@@ -126,7 +118,7 @@ void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
     setEnabled(false);
 }
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 // EightsChooser Implementation
 
 EightsChooser::EightsChooser(QString decision, QWidget* parent)
@@ -186,7 +178,7 @@ void EightsChooser::loadImage()
 
     QString imagePath = QString(":res/choosers/chooser_eights_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not forAndroid) {
+    if (!pixmap.isNull() and not isAndroidVersion) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -214,7 +206,7 @@ void EightsChooser::loadImage()
     }
 }
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 // QuteChooser Implementation
 
 QuteChooser::QuteChooser(QString decision, QWidget* parent)
@@ -276,7 +268,7 @@ void QuteChooser::loadImage()
 
     QString imagePath = QString(":res/choosers/chooser_qute_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not forAndroid) {
+    if (!pixmap.isNull() and not isAndroidVersion) {
         // Set a maximum size for the icon (adjust as needed)
         const QSize maxSize(80, 160); // Maximum width and height (adjust these values as needed)
 
@@ -298,7 +290,7 @@ void QuteChooser::loadImage()
     }
 }
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 // JpointsChooser Implementation
 
 JpointsChooser::JpointsChooser(QString decision, QWidget* parent)
@@ -356,7 +348,7 @@ void JpointsChooser::loadImage()
 
     QString imagePath = QString(":res/choosers/chooser_jpoints_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not forAndroid) {
+    if (!pixmap.isNull() and not isAndroidVersion) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -397,7 +389,7 @@ void JpointsChooser::onQuteDecisionChanged(const QString& dec)
     loadImage();
 }
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 // RoundChooser Implementation
 
 RoundChooser::RoundChooser(QString decision, QWidget* parent)
@@ -454,7 +446,7 @@ void RoundChooser::loadImage()
 
     QString imagePath = QString(":res/choosers/chooser_new_%1.png").arg(decision_);
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not forAndroid) {
+    if (!pixmap.isNull() and not isAndroidVersion) {
         // Fetch the size of the application's primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -494,4 +486,4 @@ void RoundChooser::onQuteDecisionChanged(const QString& dec)
     }
 }
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------

@@ -27,8 +27,7 @@ public:
     void openReadmeFile();
 
 protected:
-    // void mousePressEvent(QMouseEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override; // Special Keys -> extra cards for testing
 
 private:
     void addSpecialCardsToHand(QKeyEvent *event);
@@ -50,7 +49,7 @@ public slots:
     void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
     void onHelpClicked();                  // Game Control
-    void onJsuitToggled();                 // forAndroid to refresh Jsuit
+    void onChooserToggled(); // if (isAndroidVersion) -> refresh Jsuit, Qute, Eights, Jpoints, Round
 };
 
 #endif // TABLE_H

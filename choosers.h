@@ -6,9 +6,17 @@
 #include <QVector>
 #include "card.h"
 
-/* ************************************************************************* */
+class BaseChooser : public QPushButton
+{
+    Q_OBJECT
 
-class JsuitChooser : public QPushButton
+signals:
+    virtual void chooserToggled();
+};
+
+// -----------------------------------------------------------------------
+
+class JsuitChooser : public BaseChooser
 {
     Q_OBJECT
 
@@ -28,7 +36,6 @@ public:
     // Methods
     void toggle();
     void toggle_to(const QString& target_suit);
-    // void mousePressEvent(QMouseEvent* event) override;
 
 private:
     // Setters
@@ -37,16 +44,16 @@ private:
     void setStr();
     void loadImage();
 
-signals:
-    void jsuitToggled();
+    // signals:
+    //     void jsuitToggled();
 
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card>& card);
 };
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 
-class EightsChooser : public QPushButton
+class EightsChooser : public BaseChooser
 {
     Q_OBJECT
 
@@ -75,9 +82,9 @@ private:
     //     void onEightsInMonitor();
 };
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 
-class QuteChooser : public QPushButton
+class QuteChooser : public BaseChooser
 {
     Q_OBJECT
 
@@ -109,9 +116,9 @@ public slots:
     // void onFourCardsInMonitor(); // this is handled otherwise
 };
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 
-class JpointsChooser : public QPushButton
+class JpointsChooser : public BaseChooser
 {
     Q_OBJECT
 
@@ -140,9 +147,9 @@ public slots:
     void onQuteDecisionChanged(const QString& dec);
 };
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 
-class RoundChooser : public QPushButton
+class RoundChooser : public BaseChooser
 {
     Q_OBJECT
 
@@ -169,8 +176,9 @@ signals:
 
 public slots:
     void onQuteDecisionChanged(const QString& dec);
+    // Qute rejected -> Roundchooser is removed
 };
 
-/* ************************************************************************* */
+// -----------------------------------------------------------------------
 
 #endif //CHOOSERS_H

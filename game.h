@@ -33,6 +33,7 @@ private:
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
 
+    QSharedPointer<BaseChooser> baseChooser_;
     QSharedPointer<Monitor> monitor_;
     QSharedPointer<EightsChooser> eightsChooser_;
     QSharedPointer<QuteChooser> quteChooser_;
@@ -82,6 +83,7 @@ public:
 
     QSharedPointer<QLCDNumber> lcdShuffles();
     QSharedPointer<Blind> blind();
+    QSharedPointer<BaseChooser> baseChooser();
     QSharedPointer<JsuitChooser> jsuitChooser();
     QSharedPointer<Stack> stack();
 

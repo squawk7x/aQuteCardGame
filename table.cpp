@@ -167,13 +167,30 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbCardsSmall, &QRadioButton::pressed, this, &Table::onRbCardsSmall);   // ToDo
     connect(ui->rbCardsNormal, &QRadioButton::pressed, this, &Table::onRbCardsNormal); // ToDo
 
-    // forAndroid
-    QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
-    QObject::connect(game_.get()->jsuitChooser().get(),
-                     &JsuitChooser::jsuitToggled,
-                     this,
-                     &Table::onJsuitToggled);
-    //
+    // Eventloop in Android Version different to PC Version
+    if (isAndroidVersion) {
+        QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
+        QObject::connect(game_.get()->jsuitChooser().get(),
+                         &JsuitChooser::chooserToggled,
+                         this,
+                         &Table::onChooserToggled);
+        QObject::connect(game_.get()->quteChooser().get(),
+                         &QuteChooser::chooserToggled,
+                         this,
+                         &Table::onChooserToggled);
+        QObject::connect(game_.get()->eightsChooser().get(),
+                         &EightsChooser::chooserToggled,
+                         this,
+                         &Table::onChooserToggled);
+        QObject::connect(game_.get()->jpointsChooser().get(),
+                         &JpointsChooser::chooserToggled,
+                         this,
+                         &Table::onChooserToggled);
+        QObject::connect(game_.get()->roundChooser().get(),
+                         &RoundChooser::chooserToggled,
+                         this,
+                         &Table::onChooserToggled);
+    }
 
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
@@ -203,15 +220,6 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
         }
     }
 }
-
-// void Table::mousePressEvent(QMouseEvent* event)
-// {
-//     // if (event->button() == Qt::RightButton) {
-//     if (event->button() == Qt::LeftButton) {
-//         // emit mouseClicked();
-//     }
-//     QWidget::mousePressEvent(event);
-// }
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
@@ -276,26 +284,26 @@ void Table::onRbNumPlayers3()
     initializeGame(3);
 }
 
-void Table::onCbSound() {}
+void Table::onCbSound() {} // Transfer to Game
 
-void Table::onCbVisible() {}
+void Table::onCbVisible() {} // Transfer to Game
 
-void Table::onRbSuit() {}
+void Table::onRbSuit() {} // Transfer to Game
 
-void Table::onRbRank() {}
+void Table::onRbRank() {} // Transfer to Game
 
 void Table::onRbCardsSmall()
 {
-    qDebug() << "rbCardsSmall clicked";
+    qDebug() << "rbCardsSmall clicked"; // ToDo
 }
 
 void Table::onRbCardsNormal()
 {
-    qDebug() << "rbCardsNormal clicked";
+    qDebug() << "rbCardsNormal clicked"; // ToDo
 }
 
-void Table::onJsuitToggled()
+void Table::onChooserToggled()
 {
-    if (forAndroid)
+    if (isAndroidVersion)
         update();
 }

@@ -19,6 +19,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
     , roundChooser_(QSharedPointer<RoundChooser>::create())
     , played_(QSharedPointer<Played>::create())
     , blind_(QSharedPointer<Blind>::create())
+    , baseChooser_(QSharedPointer<BaseChooser>::create())
     , jsuitChooser_(QSharedPointer<JsuitChooser>::create())
     , stack_(QSharedPointer<Stack>::create())
     , got1_(QSharedPointer<Got>::create())
@@ -180,6 +181,11 @@ QSharedPointer<Blind> Game::blind()
     return blind_;
 }
 
+QSharedPointer<BaseChooser> Game::baseChooser()
+{
+    return baseChooser_;
+}
+
 QSharedPointer<JsuitChooser> Game::jsuitChooser()
 {
     return jsuitChooser_;
@@ -267,7 +273,7 @@ void Game::initializeRound()
     player->handdeck()->cards().last()->click();
 
     emit setCbVisible(false);
-    // if (forAndroid)
+    // if (isAndroidVersion)
     //     emit resetCbVisible(false);
 
     // in case a robot player starts a new round all playable cards are played
@@ -309,8 +315,8 @@ void Game::handleChoosers()
         // (slot: onCardAddedToStack)
 
         // Eventloop in Android seems to be different to Eventloop on PC.
-        if (forAndroid)
-            emit jsuitChooser()->jsuitToggled();
+        if (isAndroidVersion)
+            emit baseChooser()->chooserToggled();
 
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
@@ -328,6 +334,10 @@ void Game::handleChoosers()
             eightsChooser()->toggle_to("n");
             eightsChooser()->setDisabled(true);
             eightsChooser()->show();
+
+            if (isAndroidVersion)
+                emit baseChooser()->chooserToggled();
+
             // Shuffle the blind deck
             if (isSoundOn_) {
                 // mediaPlayer_->stop(); // Stop any previous playback
@@ -373,6 +383,10 @@ void Game::handleChoosers()
 
         eightsChooser()->setDisabled(player->isRobot());
         eightsChooser()->show();
+
+        if (isAndroidVersion)
+            emit baseChooser()->chooserToggled();
+
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
@@ -431,6 +445,10 @@ void Game::handleChoosers()
 
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
+
+        if (isAndroidVersion)
+            emit baseChooser()->chooserToggled();
+
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
@@ -481,6 +499,10 @@ void Game::handleChoosers()
         jpointsChooser()->toggle_to(jpointsChooser()->decision());
         jpointsChooser()->setDisabled(player->isRobot());
         jpointsChooser()->show();
+
+        if (isAndroidVersion)
+            emit baseChooser()->chooserToggled();
+
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
@@ -500,6 +522,10 @@ void Game::handleChoosers()
         roundChooser()->setDecision("f");
         roundChooser()->setEnabled(true);
         roundChooser()->show();
+
+        if (isAndroidVersion)
+            emit baseChooser()->chooserToggled();
+
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
@@ -859,7 +885,7 @@ void Game::handleSpecialCards()
 
     if (isFinished) {
         // make all cards visible for counting points
-        if (forAndroid) {
+        if (isAndroidVersion) {
             for (const auto& player : playerList_) {
                 player->handdeck()->setEnabled(true);
             }
@@ -897,7 +923,7 @@ void Game::autoplay()
     if (!roundChooser()->isEnabled())
         player->handdeck()->setEnabled(true);
 
-    if (forAndroid)
+    if (isAndroidVersion)
         emit resetCbVisible(isCardsVisible_);
 
     while (player->isRobot() && !isNextPlayerPossible()) {
@@ -946,7 +972,7 @@ void Game::autoplay()
 
     // cardvecs and choosers need to be refreshed.
     // JsuitChooser must be refreshed separately when toggling suit
-    if (forAndroid)
+    if (isAndroidVersion)
         emit resetCbVisible(isCardsVisible_);
 }
 
