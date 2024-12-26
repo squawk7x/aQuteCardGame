@@ -37,6 +37,9 @@ private:
     void setStr();
     void loadImage();
 
+signals:
+    void jsuitToggled();
+
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card>& card);
 };

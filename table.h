@@ -50,6 +50,7 @@ public slots:
     void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
     void onHelpClicked();                  // Game Control
+    void onJsuitToggled();                 // forAndroid to refresh Jsuit
 };
 
 #endif // TABLE_H

@@ -169,6 +169,10 @@ void Table::initializeGame(int numberOfPlayers)
 
     // forAndroid
     QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
+    QObject::connect(game_.get()->jsuitChooser().get(),
+                     &JsuitChooser::jsuitToggled,
+                     this,
+                     &Table::onJsuitToggled);
     //
 
     // Pushbuttons
@@ -288,4 +292,10 @@ void Table::onRbCardsSmall()
 void Table::onRbCardsNormal()
 {
     qDebug() << "rbCardsNormal clicked";
+}
+
+void Table::onJsuitToggled()
+{
+    if (forAndroid)
+        update();
 }

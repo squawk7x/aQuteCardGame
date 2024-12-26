@@ -42,6 +42,9 @@ void JsuitChooser::toggle()
         suit_ = suits[index];
         suitname_ = suitnames[index];
         loadImage();
+        // Jsuit must update when suit has changed
+        if (forAndroid)
+            emit jsuitToggled();
     } else {
         qDebug() << "Current suit not found in the list.";
     }
@@ -111,8 +114,9 @@ void JsuitChooser::loadImage()
 // forAndroid needs to update loadImage
 // void JsuitChooser::mousePressEvent(QMouseEvent* event)
 // {
-//     update();                            // Custom behavior on mouse press
 //     QPushButton::mousePressEvent(event); // Call the base class implementation
+//     update();
+//     repaint();
 // }
 
 // Slots
@@ -147,7 +151,7 @@ void EightsChooser::setStr()
     } else if (decision_ == "n") {
         str_ = "NEXT";
     } else {
-        str_ = "Unknown";
+        str_ = "";
     }
 }
 

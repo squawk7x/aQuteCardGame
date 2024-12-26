@@ -307,6 +307,11 @@ void Game::handleChoosers()
         jsuitChooser()->show();
         // JsuitChooser is shown until next player's card is added to stack
         // (slot: onCardAddedToStack)
+
+        // Eventloop in Android seems to be different to Eventloop on PC.
+        if (forAndroid)
+            emit jsuitChooser()->jsuitToggled();
+
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
