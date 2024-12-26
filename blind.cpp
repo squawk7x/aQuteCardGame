@@ -56,14 +56,14 @@ void Blind::showTopCard()
     }
 }
 
-void Blind::onToggleCardsVisible(bool isVisible)
-{
-    isCardFaceVisible_ = isVisible;
+// void Blind::onToggleCardsVisible(bool isVisible)
+// {
+//     isCardFaceVisible_ = isVisible;
 
-    foreach (const auto& card, cards_) {
-        card->loadImage(isCardFaceVisible_);
-    }
-}
+//     foreach (const auto& card, cards_) {
+//         card->loadImage(isVisible);
+//     }
+// }
 
 void Blind::mousePressEvent(QMouseEvent* event)
 {

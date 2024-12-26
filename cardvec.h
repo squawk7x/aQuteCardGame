@@ -34,20 +34,14 @@ public:
     QString mostCommonSuit() const;
     QString suitOfRankWithMostPoints() const;
     void updateLayout();
-    // void showEvent(QShowEvent* event);
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();
-    bool isCardFaceVisible() const;
 
 protected:
     QHBoxLayout* layout_;
     QVector<QSharedPointer<Card>> cards_;
     bool isCardFaceVisible_;
-
-private:
-    // Setters
-    void setIsCardFaceVisible(bool isVisible);
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);

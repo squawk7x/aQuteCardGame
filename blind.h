@@ -23,7 +23,7 @@ signals:
     void blindClicked(); // Signal emitted when the blind is clicked
 
 public slots:
-    virtual void onToggleCardsVisible(bool isVisible) override;
+    // virtual void onToggleCardsVisible(bool isVisible) override;
 };
 
 #endif // BLIND_H

@@ -216,16 +216,6 @@ QVector<QSharedPointer<Card>>& CardVec::cards()
     return cards_;
 }
 
-bool CardVec::isCardFaceVisible() const
-{
-    return isCardFaceVisible_;
-}
-
-void CardVec::setIsCardFaceVisible(bool isVisible)
-{
-    isCardFaceVisible_ = isVisible;
-}
-
 void CardVec::onCardClicked(const QSharedPointer<Card>& card)
 {
     qDebug() << "onCardClicked received in CardVec: " << card->str();
@@ -236,6 +226,6 @@ void CardVec::onToggleCardsVisible(bool isVisible)
     isCardFaceVisible_ = isVisible;
 
     foreach (const auto& card, cards_) {
-        card->loadImage(isCardFaceVisible_);
+        card->loadImage(isVisible);
     }
 }
