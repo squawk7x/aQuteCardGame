@@ -28,6 +28,7 @@ public:
     // Methods
     void toggle();
     void toggle_to(const QString& target_suit);
+    // void mousePressEvent(QMouseEvent* event) override;
 
 private:
     // Setters
@@ -102,7 +103,7 @@ signals:
     void quteDecisionChanged(const QString& dec);
 
 public slots:
-    // void onFourCardsInMonitor();
+    // void onFourCardsInMonitor(); // this is handled otherwise
 };
 
 /* ************************************************************************* */

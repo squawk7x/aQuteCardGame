@@ -230,7 +230,7 @@ void Game::initializeRound()
 
     // shuffle the cards
     if (isSoundOn_) {
-        mediaPlayer_->stop(); // Stop any previous playback
+        // mediaPlayer_->stop(); // Stop any previous playback
         mediaPlayer_->setSource(QUrl(":res/sounds/shuffling.wav"));
         mediaPlayer_->play();
     }
@@ -278,7 +278,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
 {
     if (isThisCardPlayable(card)) {
         if (isSoundOn_) {
-            mediaPlayer_->stop(); // Stop any previous playback
+            // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl("qrc:res/sounds/put_card_on_stack.wav"));
             mediaPlayer_->play();
         }
@@ -307,6 +307,11 @@ void Game::handleChoosers()
         jsuitChooser()->show();
         // JsuitChooser is shown until next player's card is added to stack
         // (slot: onCardAddedToStack)
+        if (isSoundOn_) {
+            // mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
+            mediaPlayer_->play();
+        }
     }
 
     // EightsChooser
@@ -318,6 +323,12 @@ void Game::handleChoosers()
             eightsChooser()->toggle_to("n");
             eightsChooser()->setDisabled(true);
             eightsChooser()->show();
+            // Shuffle the blind deck
+            if (isSoundOn_) {
+                // mediaPlayer_->stop(); // Stop any previous playback
+                mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
+                mediaPlayer_->play();
+            }
         }
 
         // 3 Players
@@ -357,6 +368,11 @@ void Game::handleChoosers()
 
         eightsChooser()->setDisabled(player->isRobot());
         eightsChooser()->show();
+        if (isSoundOn_) {
+            // mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
+            mediaPlayer_->play();
+        }
     }
 
     // no Eights condition:
@@ -410,6 +426,11 @@ void Game::handleChoosers()
 
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
+        if (isSoundOn_) {
+            // mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
+            mediaPlayer_->play();
+        }
     }
 
     // No Qute Condition
@@ -455,6 +476,11 @@ void Game::handleChoosers()
         jpointsChooser()->toggle_to(jpointsChooser()->decision());
         jpointsChooser()->setDisabled(player->isRobot());
         jpointsChooser()->show();
+        if (isSoundOn_) {
+            // mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
+            mediaPlayer_->play();
+        }
     }
 
     // No Jpoints Condition
@@ -469,6 +495,11 @@ void Game::handleChoosers()
         roundChooser()->setDecision("f");
         roundChooser()->setEnabled(true);
         roundChooser()->show();
+        if (isSoundOn_) {
+            // mediaPlayer_->stop(); // Stop any previous playback
+            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
+            mediaPlayer_->play();
+        }
     } else {
         roundChooser()->hide();
         roundChooser()->setEnabled(false);
@@ -623,7 +654,7 @@ void Game::drawCardFromBlind(DrawOption option)
     }
 
     if (isSoundOn_) {
-        mediaPlayer_->stop(); // Stop any previous playback
+        // mediaPlayer_->stop(); // Stop any previous playback
         mediaPlayer_->setSource(QUrl(":res/sounds/draw_card_from_blind.wav"));
         mediaPlayer_->play();
     }
@@ -833,7 +864,7 @@ void Game::handleSpecialCards()
         emit countPoints(shuffles);
         emit setCbVisible(true);
         playable()->clearCards();
-        updateDisplay();
+        updateLcdDisplays();
     }
 }
 
@@ -907,6 +938,11 @@ void Game::autoplay()
         handleChoosers();
     }
     emit cardsPlayed(played()->cards().size());
+
+    // cardvecs and choosers need to be refreshed.
+    // JsuitChooser must be refreshed separately when toggling suit
+    if (forAndroid)
+        emit resetCbVisible(isCardsVisible_);
 }
 
 void Game::refillBlindFromStack()
@@ -926,7 +962,7 @@ void Game::refillBlindFromStack()
 
     // Shuffle the blind deck
     if (isSoundOn_) {
-        mediaPlayer_->stop(); // Stop any previous playback
+        // mediaPlayer_->stop(); // Stop any previous playback
         mediaPlayer_->setSource(QUrl(":res/sounds/shuffling.wav"));
         mediaPlayer_->play();
     }
@@ -952,7 +988,7 @@ void Game::collectAllCardsToBlind()
     }
 }
 
-void Game::updateDisplay()
+void Game::updateLcdDisplays()
 {
     for (const auto& player : std::as_const(playerList_)) {
         if (player->id() == 1) {
@@ -1019,7 +1055,7 @@ void Game::onNewGame()
     games += 1;
     rounds = 1;
 
-    updateDisplay();
+    updateLcdDisplays();
 
     // qDebug() << "Starting new game ...";
 

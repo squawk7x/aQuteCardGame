@@ -201,16 +201,6 @@ void CardVec::updateLayout()
     }
 }
 
-// void CardVec::showEvent(QShowEvent* event)
-// {
-//     QWidget::showEvent(event);
-
-//     // After the CardVec is shown, load images for all cards
-//     foreach (const auto& card, cards_) {
-//         card->loadImage(isCardFaceVisible_);
-//     }
-// }
-
 QVector<QSharedPointer<Card>>& CardVec::cards()
 {
     return cards_;

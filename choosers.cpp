@@ -108,6 +108,13 @@ void JsuitChooser::loadImage()
     }
 }
 
+// forAndroid needs to update loadImage
+// void JsuitChooser::mousePressEvent(QMouseEvent* event)
+// {
+//     update();                            // Custom behavior on mouse press
+//     QPushButton::mousePressEvent(event); // Call the base class implementation
+// }
+
 // Slots
 void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
 {

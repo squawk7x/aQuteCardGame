@@ -109,7 +109,7 @@ public:
     void autoplay();
     bool isRoundFinished();
     void countRound();
-    void updateDisplay();
+    void updateLcdDisplays();
     void togglePlayerListToScore(bool highest);
     void collectAllCardsToBlind();
 

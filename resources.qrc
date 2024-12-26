@@ -77,6 +77,7 @@
         <file>res/layout/table_layout_qute_with_eights.png</file>
         <file>res/layout/table_layout_qute_with_jacks.png</file>
         <file>res/layout/table_layout_qute_with_kings.png</file>
+        <file>res/sounds/chooser.wav</file>
         <file>res/sounds/draw_card_from_blind.wav</file>
         <file>res/sounds/put_card_on_stack.wav</file>
         <file>res/sounds/shuffling.wav</file>
