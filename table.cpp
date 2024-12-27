@@ -230,30 +230,51 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 }
 
+#include <QDebug>
+#include <QDesktopServices>
+#include <QFile>
+#include <QProcess>
+#include <QTemporaryFile>
+
 void Table::onHelpClicked()
 {
-    // Print the current working directory
-    // qDebug() << "Current working directory:" << QDir::currentPath();
+    // Using qrc path
+    QString resourcePath = ":README.md";
 
-    // Using a relative path
-    QString relativeFilePath = "../../README.md";
-
-    // Convert relative path to absolute path
-    QString absoluteFilePath = QDir::current().absoluteFilePath(relativeFilePath);
-    // qDebug() << "Absolute path resolved to:" << absoluteFilePath;
-
-    QFileInfo fileInfo(absoluteFilePath);
-
-    if (!fileInfo.exists()) {
-        qDebug() << "File does not exist:" << absoluteFilePath;
+    QFile resourceFile(resourcePath);
+    if (!resourceFile.exists()) {
+        qDebug() << "File does not exist in resources:" << resourcePath;
         return;
     }
 
-    // Try opening with QDesktopServices
-    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(absoluteFilePath))) {
-        // If it fails, fall back to a text editor
-        QProcess::startDetached("xdg-open", QStringList() << absoluteFilePath);
+    // Open the resource file
+    if (!resourceFile.open(QIODevice::ReadOnly)) {
+        qDebug() << "Failed to open resource file:" << resourcePath;
+        return;
     }
+
+    // Create a temporary file to hold the resource content
+    QTemporaryFile tempFile;
+    if (!tempFile.open()) {
+        qDebug() << "Failed to create a temporary file";
+        return;
+    }
+
+    // Write the resource content to the temporary file
+    tempFile.write(resourceFile.readAll());
+    tempFile.flush(); // Ensure content is written to disk
+    resourceFile.close();
+
+    // Get the path of the temporary file
+    QString tempFilePath = tempFile.fileName();
+
+    // Try opening with QDesktopServices
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(tempFilePath))) {
+        // If it fails, fall back to a text editor
+        QProcess::startDetached("xdg-open", QStringList() << tempFilePath);
+    }
+
+    // Temporary file will automatically delete when it goes out of scope
 }
 
 void Table::onResetCbVisible(bool isVisible)

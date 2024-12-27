@@ -42,7 +42,6 @@ void JsuitChooser::toggle()
         suit_ = suits[index];
         suitname_ = suitnames[index];
         loadImage();
-        // Jsuit must update when suit has changed
         if (isAndroidVersion)
             emit chooserToggled();
     } else {
@@ -152,6 +151,8 @@ void EightsChooser::toggle()
 {
     decision_ = (decision_ == "a") ? "n" : "a";
     loadImage();
+    if (isAndroidVersion)
+        emit chooserToggled();
 }
 
 QString EightsChooser::str()
@@ -234,6 +235,8 @@ void QuteChooser::toggle()
     decision_ = (decision_ == "y") ? "n" : "y";
     emit quteDecisionChanged(decision_);
     loadImage();
+    if (isAndroidVersion)
+        emit chooserToggled();
 }
 
 void QuteChooser::toggle_to(const QString& target_decision)
@@ -327,6 +330,8 @@ void JpointsChooser::toggle()
 {
     decision_ = (decision_ == "m") ? "p" : "m";
     loadImage();
+    if (isAndroidVersion)
+        emit chooserToggled();
 }
 
 void JpointsChooser::toggle_to(const QString& target_decision)
@@ -425,7 +430,7 @@ void RoundChooser::setStr()
     if (decision_ == "f") {
         str_ = "FINISH";
     } else if (decision_ == "r") {
-        str_ = "NEW ROUND";
+        str_ = "NEW";
     } else if (decision_ == "g") {
         str_ = "NEW GAME";
     } else {

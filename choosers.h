@@ -11,7 +11,7 @@ class BaseChooser : public QPushButton
     Q_OBJECT
 
 signals:
-    virtual void chooserToggled();
+    void chooserToggled();
 };
 
 // -----------------------------------------------------------------------

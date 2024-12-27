@@ -19,7 +19,6 @@ Game::Game(int numberOfPlayers, QObject* parent)
     , roundChooser_(QSharedPointer<RoundChooser>::create())
     , played_(QSharedPointer<Played>::create())
     , blind_(QSharedPointer<Blind>::create())
-    , baseChooser_(QSharedPointer<BaseChooser>::create())
     , jsuitChooser_(QSharedPointer<JsuitChooser>::create())
     , stack_(QSharedPointer<Stack>::create())
     , got1_(QSharedPointer<Got>::create())
@@ -181,11 +180,6 @@ QSharedPointer<Blind> Game::blind()
     return blind_;
 }
 
-QSharedPointer<BaseChooser> Game::baseChooser()
-{
-    return baseChooser_;
-}
-
 QSharedPointer<JsuitChooser> Game::jsuitChooser()
 {
     return jsuitChooser_;
@@ -316,7 +310,7 @@ void Game::handleChoosers()
 
         // Eventloop in Android seems to be different to Eventloop on PC.
         if (isAndroidVersion)
-            emit baseChooser()->chooserToggled();
+            emit jsuitChooser()->chooserToggled();
 
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
@@ -336,8 +330,7 @@ void Game::handleChoosers()
             eightsChooser()->show();
 
             if (isAndroidVersion)
-                emit baseChooser()->chooserToggled();
-
+                emit eightsChooser()->chooserToggled();
             // Shuffle the blind deck
             if (isSoundOn_) {
                 // mediaPlayer_->stop(); // Stop any previous playback
@@ -385,8 +378,7 @@ void Game::handleChoosers()
         eightsChooser()->show();
 
         if (isAndroidVersion)
-            emit baseChooser()->chooserToggled();
-
+            emit eightsChooser()->chooserToggled();
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
@@ -445,14 +437,13 @@ void Game::handleChoosers()
 
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
-
-        if (isAndroidVersion)
-            emit baseChooser()->chooserToggled();
-
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
             mediaPlayer_->play();
+
+            if (isAndroidVersion)
+                emit quteChooser()->chooserToggled();
         }
     }
 
@@ -501,7 +492,7 @@ void Game::handleChoosers()
         jpointsChooser()->show();
 
         if (isAndroidVersion)
-            emit baseChooser()->chooserToggled();
+            emit jpointsChooser()->chooserToggled();
 
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
@@ -524,7 +515,7 @@ void Game::handleChoosers()
         roundChooser()->show();
 
         if (isAndroidVersion)
-            emit baseChooser()->chooserToggled();
+            emit roundChooser()->chooserToggled();
 
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
@@ -963,8 +954,8 @@ void Game::autoplay()
 
             for (const auto& card : std::as_const(player->handdeck()->cards())) {
                 card->click();
+                updatePlayable();
             }
-            updatePlayable();
         }
         handleChoosers();
     }
