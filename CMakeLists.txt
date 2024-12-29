@@ -45,6 +45,8 @@ set(PROJECT_SOURCES
     got.h
     table.ui
     README.md
+    ./../QuteChoosers/chooser.cpp
+    ./../QuteChoosers/chooser.h
 )
 
 # For Qt6, use `qt_add_resources` for handling resources

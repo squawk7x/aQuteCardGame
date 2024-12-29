@@ -325,7 +325,8 @@ void Game::handleChoosers()
         // 2 Players
         if (numberOfPlayers_ == 2) {
             // if 2 players not allowing toggling to "a"
-            eightsChooser()->toggle_to("n");
+            // eightsChooser()->toggle_to("n");
+            eightsChooser()->toggle_to(QString("NEXT"));
             eightsChooser()->setDisabled(true);
             eightsChooser()->show();
 
@@ -354,22 +355,26 @@ void Game::handleChoosers()
             if (player->isRobot()) {
                 if (playerList_[1]->handdeck()->cards().size() == 1
                     && playerList_[2]->handdeck()->cards().size() > 1) {
-                    eightsChooser()->toggle_to("n");
+                    // eightsChooser()->toggle_to("n");
+                    eightsChooser()->toggle_to(QString("NEXT"));
                 }
 
                 else if (playerList_[1]->handdeck()->cards().size() > 1
                          && playerList_[2]->handdeck()->cards().size() == 1) {
-                    eightsChooser()->toggle_to("a");
+                    // eightsChooser()->toggle_to("a");
+                    eightsChooser()->toggle_to(QString("ALL"));
                 }
 
                 // if suit of last played 8 in handdeck toggle_to('a')
                 else if (player->handdeck()->isSuitInCards(stackCard->suit())) {
-                    eightsChooser()->toggle_to("a");
+                    // eightsChooser()->toggle_to("a");
+                    eightsChooser()->toggle_to(QString("ALL"));
                 }
 
                 else
                     // eightsChooser()->toggleRandom();
-                    eightsChooser()->toggle_to("n");
+                    // eightsChooser()->toggle_to("n");
+                    eightsChooser()->toggle_to(QString("NEXT"));
             }
         }
         // end KI EightsChooser
@@ -827,7 +832,7 @@ void Game::handleSpecialCards()
         }
     }
 
-    if (eights >= 2 && eightsChooser()->decision() == "a") {
+    if (eights >= 2 && eightsChooser()->decision() == QString("ALL")) {
         int leap = 1;
         int num = 0;
         while (leap <= eights) {

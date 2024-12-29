@@ -53,34 +53,34 @@ public slots:
 
 // -----------------------------------------------------------------------
 
-class EightsChooser : public BaseChooser
-{
-    Q_OBJECT
+// class EightsChooser : public BaseChooser
+// {
+//     Q_OBJECT
 
-private:
-    QString decision_;
-    QString str_;
+// private:
+//     QString decision_;
+//     QString str_;
 
-public:
-    explicit EightsChooser(QString decision = "a", QWidget* parent = nullptr);
+// public:
+//     explicit EightsChooser(QString decision = "a", QWidget* parent = nullptr);
 
-    // Methods
-    void toggle();
-    void toggle_to(const QString& target_decision);
-    void toggleRandom(const QString& dec1 = "a", const QString& dec2 = "n");
+//     // Methods
+//     void toggle();
+//     void toggle_to(const QString& target_decision);
+//     void toggleRandom(const QString& dec1 = "a", const QString& dec2 = "n");
 
-    // Getters
-    QString str();
-    QString decision();
+//     // Getters
+//     QString str();
+//     QString decision();
 
-private:
-    // Setters
-    void setStr();
-    void loadImage();
+// private:
+//     // Setters
+//     void setStr();
+//     void loadImage();
 
-    // public slots:
-    //     void onEightsInMonitor();
-};
+//     // public slots:
+//     //     void onEightsInMonitor();
+// };
 
 // -----------------------------------------------------------------------
 

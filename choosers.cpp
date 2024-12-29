@@ -120,92 +120,92 @@ void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
 // -----------------------------------------------------------------------
 // EightsChooser Implementation
 
-EightsChooser::EightsChooser(QString decision, QWidget* parent)
-    : decision_{decision}
-{
-    setStr();
-    loadImage();
+// EightsChooser::EightsChooser(QString decision, QWidget* parent)
+//     : decision_{decision}
+// {
+//     setStr();
+//     loadImage();
 
-    connect(this, &QPushButton::clicked, this, &EightsChooser::toggle);
-}
+//     connect(this, &QPushButton::clicked, this, &EightsChooser::toggle);
+// }
 
-// Getters
-QString EightsChooser::decision()
-{
-    return decision_;
-}
+// // Getters
+// QString EightsChooser::decision()
+// {
+//     return decision_;
+// }
 
-void EightsChooser::setStr()
-{
-    if (decision_ == "a") {
-        str_ = "ALL";
-    } else if (decision_ == "n") {
-        str_ = "NEXT";
-    } else {
-        str_ = "";
-    }
-}
+// void EightsChooser::setStr()
+// {
+//     if (decision_ == "a") {
+//         str_ = "ALL";
+//     } else if (decision_ == "n") {
+//         str_ = "NEXT";
+//     } else {
+//         str_ = "";
+//     }
+// }
 
-// Methods
-void EightsChooser::toggle()
-{
-    decision_ = (decision_ == "a") ? "n" : "a";
-    loadImage();
-    if (isAndroidVersion)
-        emit chooserToggled();
-}
+// // Methods
+// void EightsChooser::toggle()
+// {
+//     decision_ = (decision_ == "a") ? "n" : "a";
+//     loadImage();
+//     if (isAndroidVersion)
+//         emit chooserToggled();
+// }
 
-QString EightsChooser::str()
-{
-    return str_;
-}
+// QString EightsChooser::str()
+// {
+//     return str_;
+// }
 
-void EightsChooser::toggle_to(const QString& target_decision)
-{
-    while (decision_ != target_decision) {
-        toggle();
-    }
-}
+// void EightsChooser::toggle_to(const QString& target_decision)
+// {
+//     while (decision_ != target_decision) {
+//         toggle();
+//     }
+// }
 
-void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
-{
-    decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
-    loadImage();
-}
+// void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
+// {
+//     decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
+//     loadImage();
+// }
 
-void EightsChooser::loadImage()
-{
-    setStr();
+// void EightsChooser::loadImage()
+// {
+//     setStr();
 
-    QString imagePath = QString(":res/choosers/chooser_eights_%1.png").arg(decision_);
-    QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not isAndroidVersion) {
-        // Fetch the size of the application's primary screen
-        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
-        QSize maxSize;
+//     QString imagePath = QString(":res/choosers/chooser_eights_%1.png").arg(decision_);
+//     QPixmap pixmap(imagePath); // Load the image as a QPixmap
+//     if (!pixmap.isNull() and not isAndroidVersion) {
+//         // Fetch the size of the application's primary screen
+//         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+//         QSize maxSize;
 
-        // Calculate max size as a percentage of the screen size
-        int height = screenSize.height() * 0.15; // 15% of the screen height
-        int width = height * 0.5;                // 50% of height for the width
-        maxSize = QSize(width, height);
+//         // Calculate max size as a percentage of the screen size
+//         int height = screenSize.height() * 0.15; // 15% of the screen height
+//         int width = height * 0.5;                // 50% of height for the width
+//         maxSize = QSize(width, height);
 
-        // Scale the image to fit within the maximum size while keeping aspect ratio
-        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+//         // Scale the image to fit within the maximum size while keeping aspect ratio
+//         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-        // Set the icon and icon size to the scaled pixmap size
-        QIcon icon(scaledPixmap);
-        setIcon(icon);
-        setIconSize(scaledPixmap.size());
+//         // Set the icon and icon size to the scaled pixmap size
+//         QIcon icon(scaledPixmap);
+//         setIcon(icon);
+//         setIconSize(scaledPixmap.size());
 
-        // Resize the widget to fit the scaled image size
-        this->resize(scaledPixmap.size());
+//         // Resize the widget to fit the scaled image size
+//         this->resize(scaledPixmap.size());
 
-        // Optional: Remove padding and margins
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-    } else {
-        this->setText(str());
-    }
-}
+//         // Optional: Remove padding and margins
+//         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
+//     } else {
+//         this->setText(str());
+//     }
+// }
 
 // -----------------------------------------------------------------------
 // QuteChooser Implementation
