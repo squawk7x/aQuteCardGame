@@ -65,6 +65,7 @@ if(ANDROID)
     )
 endif()
 
+
 # Finalize the executable if using Qt 6
 qt_finalize_executable(aQuteCardGame)
 
