@@ -84,7 +84,7 @@ class RoundChooser : public BaseChooser
     Q_OBJECT
 
 public:
-    explicit RoundChooser(QVector<QString> decs = {"FINISH", "NEW", "GAME"},
+    explicit RoundChooser(QVector<QString> decs = {"", "FINISH", "NEW", "GAME"},
                           QObject* parent = nullptr);
 
 signals:

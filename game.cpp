@@ -775,6 +775,8 @@ bool Game::isRoundFinished()
 
 void Game::handleSpecialCards()
 {
+    qDebug() << "handling special Cards ...";
+
     // Count occurrences of sevens, eights, and aces
     int jacks = 0;
     int sevens = 0;

@@ -140,7 +140,7 @@ void QuteChooser::toggle()
 
         if (isAndroidVersion) {
             emit chooserToggled();
-            qDebug() << this << "chooserToggled emitted";
+            qDebug() << this << "chooserToggled emitted from QuteChooserToggle";
         }
 
         qDebug() << this << decision();
@@ -172,18 +172,22 @@ void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
 RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
     : BaseChooser(decs)
 {
+    disconnect(this, &QPushButton::clicked, this, &BaseChooser::toggle);
+
     connect(this, &QPushButton::clicked, this, [this]() {
         if (decision() == QString("FINISH")) {
             qDebug() << this << decision();
             toggle_to(QString("NEW"));
-            qDebug() << this << decision();
             emit finishRound();
+            qDebug() << "finishRound emitted";
         } else if (decision() == QString("NEW")) {
             qDebug() << this << decision();
             emit newRound();
+            qDebug() << "newRound emitted";
         } else if (decision() == QString("GAME")) {
             qDebug() << this << decision();
             emit newGame();
+            qDebug() << "newGame emitted";
         }
     });
 }
@@ -197,6 +201,7 @@ void RoundChooser::onQuteDecisionChanged(const QString &quteDec)
         setEnabled(true);
         show();
     } else {
+        toggle_to(QString(""));
         hide();
         setEnabled(false);
     }
