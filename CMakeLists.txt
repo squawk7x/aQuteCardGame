@@ -19,8 +19,8 @@ set(PROJECT_SOURCES
     table.h
     card.cpp
     card.h
-    choosers.cpp
-    choosers.h
+    choosers_old.cpp
+    choosers_old.h
     blind.cpp
     blind.h
     stack.cpp
@@ -45,8 +45,6 @@ set(PROJECT_SOURCES
     got.h
     table.ui
     README.md
-    ./../QuteChoosers/chooser.cpp
-    ./../QuteChoosers/chooser.h
 )
 
 # For Qt6, use `qt_add_resources` for handling resources
@@ -55,6 +53,7 @@ qt_add_resources(RESOURCES resources.qrc)
 qt_add_executable(aQuteCardGame
     ${PROJECT_SOURCES}
     ${RESOURCES}
+    choosers.h choosers.cpp
 )
 
 # Link Qt libraries to the project

@@ -1,390 +1,165 @@
 #include "choosers.h"
-#include <QApplication>
 #include <QDebug>
-#include <QRandomGenerator>
-#include <QScreen>
-#include "card.h"
+#include <random>
 
 // -----------------------------------------------------------------------
-// JsuitChooser Implementation
-
-JsuitChooser::JsuitChooser(QString suit, QWidget* parent)
-    : suit_{suit}
+int getRandomNumber(int max)
 {
-    setSuitname(suit_);
-    loadImage();
+    std::random_device rd;                              // Seed generator
+    std::mt19937 gen(rd());                             // Random number engine
+    std::uniform_int_distribution<int> distrib(0, max); // Range [0, max]
 
-    connect(this, &QPushButton::clicked, this, &JsuitChooser::toggle);
+    return distrib(gen);
+}
+
+// -----------------------------------------------------------------------
+// Constructor
+BaseChooser::BaseChooser(QVector<QString> decs, QObject *parent)
+    : decs_(decs)
+{
+    if (!decs_.isEmpty()) {
+        setData();
+    }
+    connect(this, &QPushButton::clicked, this, &BaseChooser::toggle);
+}
+
+// Methods
+void BaseChooser::toggle()
+{
+    if (!decs().isEmpty()) {
+        auto firstElement = decs().front(); // Access the first element
+        decs().erase(decs().begin());       // Remove the first element
+        decs().push_back(firstElement);
+        setData();
+        if (isAndroidVersion) {
+            emit chooserToggled();
+            qDebug() << this << "chooserToggled emitted";
+        }
+        qDebug() << this << decision();
+    }
+}
+
+void BaseChooser::toggle_to(const QString &target_decision)
+{
+    while (decs_.at(0) != target_decision) {
+        toggle();
+        qDebug() << this << decision();
+    }
+}
+
+void BaseChooser::toggleRandom()
+{
+    for (int i = 0; i < getRandomNumber(decs().size()); i++) {
+        toggle();
+    }
 }
 
 // Getters
-QString JsuitChooser::suit()
+QVector<QString> &BaseChooser::decs()
 {
-    return suit_;
+    return decs_;
 }
 
-QString JsuitChooser::suitname()
+QString BaseChooser::decision()
 {
-    return suitname_;
+    return decision_;
 }
 
-QString JsuitChooser::str()
+QString BaseChooser::str()
 {
     return str_;
 }
 
-// Methods
-void JsuitChooser::toggle()
+QString BaseChooser::name()
 {
-    int index = suits.indexOf(suit_);
-    if (index != -1) {
-        index = (index + 1) % suits.size();
-        suit_ = suits[index];
-        suitname_ = suitnames[index];
-        loadImage();
-        if (isAndroidVersion)
-            emit chooserToggled();
-    } else {
-        qDebug() << "Current suit not found in the list.";
-    }
-}
-
-void JsuitChooser::toggle_to(const QString& target_suit)
-{
-    int toggle_count = 0;
-    const int max_toggles = 4;
-
-    while (suit_ != target_suit && toggle_count <= max_toggles) {
-        toggle();
-        toggle_count++;
-    }
+    return name_;
 }
 
 // Setters
-void JsuitChooser::setSuit(const QString& suit)
+void BaseChooser::setDecision()
 {
-    suit_ = suit;
+    decision_ = decs_.at(0);
 }
 
-void JsuitChooser::setSuitname(const QString& suit)
+void BaseChooser::setStr()
 {
-    suitname_ = suitnames[suits.indexOf(suit)];
+    str_ = decs_.at(0);
 }
 
-void JsuitChooser::setStr()
+void BaseChooser::setName()
 {
-    str_ = suit_ + suit_;
+    name_ = decs_.at(0);
 }
 
-void JsuitChooser::loadImage()
+void BaseChooser::setData()
+{
+    setDecision();
+    setStr();
+    setName();
+    loadImage();
+}
+
+void BaseChooser::loadImage()
 {
     setStr();
-
-    QString imagePath = QString(":res/choosers/jsuit_of_%1.png").arg(suitname_);
-    QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not isAndroidVersion) {
-        // Fetch the size of the application's primary screen
-        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
-        QSize maxSize;
-
-        // Calculate max size as a percentage of the screen size
-        int height = screenSize.height() * 0.15; // 15% of the screen height
-        int width = height * 0.5;                // 50% of height for the width
-        maxSize = QSize(width, height);
-
-        // Scale the image to fit within the maximum size while keeping aspect ratio
-        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-        // Set the icon and icon size to the scaled pixmap size
-        QIcon icon(scaledPixmap);
-        setIcon(icon);
-        setIconSize(scaledPixmap.size());
-
-        // Resize the widget to fit the scaled image size
-        this->resize(scaledPixmap.size());
-
-        // Optional: Remove padding and margins
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-    } else {
-        this->setText(str());
-    }
+    qDebug() << str();
+    this->setText(str());
 }
 
-// Slots
-void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card>& card)
+// -----------------------------------------------------------------------
+
+JsuitChooser::JsuitChooser(QVector<QString> decs, QObject *parent)
+    : BaseChooser(decs)
+{}
+
+QString JsuitChooser::suit()
+{
+    return str();
+}
+
+void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card> &card)
 {
     hide();
     setEnabled(false);
 }
 
 // -----------------------------------------------------------------------
-// EightsChooser Implementation
+QuteChooser::QuteChooser(QVector<QString> decs, QObject *parent)
+    : BaseChooser(decs)
+{}
 
-// EightsChooser::EightsChooser(QString decision, QWidget* parent)
-//     : decision_{decision}
-// {
-//     setStr();
-//     loadImage();
-
-//     connect(this, &QPushButton::clicked, this, &EightsChooser::toggle);
-// }
-
-// // Getters
-// QString EightsChooser::decision()
-// {
-//     return decision_;
-// }
-
-// void EightsChooser::setStr()
-// {
-//     if (decision_ == "a") {
-//         str_ = "ALL";
-//     } else if (decision_ == "n") {
-//         str_ = "NEXT";
-//     } else {
-//         str_ = "";
-//     }
-// }
-
-// // Methods
-// void EightsChooser::toggle()
-// {
-//     decision_ = (decision_ == "a") ? "n" : "a";
-//     loadImage();
-//     if (isAndroidVersion)
-//         emit chooserToggled();
-// }
-
-// QString EightsChooser::str()
-// {
-//     return str_;
-// }
-
-// void EightsChooser::toggle_to(const QString& target_decision)
-// {
-//     while (decision_ != target_decision) {
-//         toggle();
-//     }
-// }
-
-// void EightsChooser::toggleRandom(const QString& dec1, const QString& dec2)
-// {
-//     decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
-//     loadImage();
-// }
-
-// void EightsChooser::loadImage()
-// {
-//     setStr();
-
-//     QString imagePath = QString(":res/choosers/chooser_eights_%1.png").arg(decision_);
-//     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-//     if (!pixmap.isNull() and not isAndroidVersion) {
-//         // Fetch the size of the application's primary screen
-//         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
-//         QSize maxSize;
-
-//         // Calculate max size as a percentage of the screen size
-//         int height = screenSize.height() * 0.15; // 15% of the screen height
-//         int width = height * 0.5;                // 50% of height for the width
-//         maxSize = QSize(width, height);
-
-//         // Scale the image to fit within the maximum size while keeping aspect ratio
-//         QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-//         // Set the icon and icon size to the scaled pixmap size
-//         QIcon icon(scaledPixmap);
-//         setIcon(icon);
-//         setIconSize(scaledPixmap.size());
-
-//         // Resize the widget to fit the scaled image size
-//         this->resize(scaledPixmap.size());
-
-//         // Optional: Remove padding and margins
-//         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-//     } else {
-//         this->setText(str());
-//     }
-// }
-
-// -----------------------------------------------------------------------
-// QuteChooser Implementation
-
-QuteChooser::QuteChooser(QString decision, QWidget* parent)
-    : decision_{decision}
-{
-    loadImage();
-
-    connect(this, &QPushButton::clicked, this, &QuteChooser::toggle);
-}
-
-// Getters
-QString QuteChooser::str()
-{
-    return str_;
-}
-
-QString QuteChooser::decision()
-{
-    return decision_;
-}
-
-// Methods
 void QuteChooser::toggle()
 {
-    decision_ = (decision_ == "y") ? "n" : "y";
-    emit quteDecisionChanged(decision_);
-    loadImage();
-    if (isAndroidVersion)
-        emit chooserToggled();
-}
+    if (!decs().isEmpty()) {
+        auto firstElement = decs().front(); // Access the first element
+        decs().erase(decs().begin());       // Remove the first element
+        decs().push_back(firstElement);
+        setData();
 
-void QuteChooser::toggle_to(const QString& target_decision)
-{
-    while (decision_ != target_decision) {
-        toggle();
-    }
-}
+        emit quteDecisionChanged(decision());
 
-void QuteChooser::toggleRandom(const QString& dec1, const QString& dec2)
-{
-    decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
-    loadImage();
-}
+        if (isAndroidVersion) {
+            emit chooserToggled();
+            qDebug() << this << "chooserToggled emitted";
+        }
 
-// Setters
-
-void QuteChooser::setStr()
-{
-    if (decision_ == "y") {
-        str_ = "QUTE";
-    } else if (decision_ == "n") {
-        str_ = "CONTINUE";
-    } else {
-        str_ = "";
-    }
-}
-
-void QuteChooser::loadImage()
-{
-    setStr();
-
-    QString imagePath = QString(":res/choosers/chooser_qute_%1.png").arg(decision_);
-    QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not isAndroidVersion) {
-        // Set a maximum size for the icon (adjust as needed)
-        const QSize maxSize(80, 160); // Maximum width and height (adjust these values as needed)
-
-        // Scale the image to fit within the maximum size while keeping the aspect ratio
-        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-        // Set the icon and icon size to the scaled pixmap size
-        QIcon icon(scaledPixmap);
-        setIcon(icon);
-        setIconSize(scaledPixmap.size());
-
-        // Resize the widget to fit the scaled image size
-        this->resize(scaledPixmap.size());
-
-        // Optional: Remove padding and margins
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-    } else {
-        this->setText(str());
+        qDebug() << this << decision();
     }
 }
 
 // -----------------------------------------------------------------------
-// JpointsChooser Implementation
+EightsChooser::EightsChooser(QVector<QString> decs, QObject *parent)
+    : BaseChooser(decs)
+{}
+// -----------------------------------------------------------------------
+JpointsChooser::JpointsChooser(QVector<QString> decs, QObject *parent)
+    : BaseChooser(decs)
+{}
 
-JpointsChooser::JpointsChooser(QString decision, QWidget* parent)
-    : decision_{decision}
+void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
 {
-    loadImage();
-
-    connect(this, &QPushButton::clicked, this, &JpointsChooser::toggle);
-}
-
-// Getters
-QString JpointsChooser::str()
-{
-    return str_;
-}
-
-QString JpointsChooser::decision()
-{
-    return decision_;
-}
-
-void JpointsChooser::setStr()
-{
-    if (decision_ == "m") {
-        str_ = "MINUS";
-    } else if (decision_ == "p") {
-        str_ = "PLUS";
-    } else {
-        str_ = "";
-    }
-}
-// Methods
-void JpointsChooser::toggle()
-{
-    decision_ = (decision_ == "m") ? "p" : "m";
-    loadImage();
-    if (isAndroidVersion)
-        emit chooserToggled();
-}
-
-void JpointsChooser::toggle_to(const QString& target_decision)
-{
-    while (decision_ != target_decision) {
-        toggle();
-    }
-}
-
-void JpointsChooser::toggleRandom(const QString& dec1, const QString& dec2)
-{
-    decision_ = (QRandomGenerator::global()->bounded(2) == 0) ? dec1 : dec2;
-    loadImage();
-}
-
-void JpointsChooser::loadImage()
-{
-    setStr();
-
-    QString imagePath = QString(":res/choosers/chooser_jpoints_%1.png").arg(decision_);
-    QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not isAndroidVersion) {
-        // Fetch the size of the application's primary screen
-        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
-        QSize maxSize;
-
-        // Calculate max size as a percentage of the screen size
-        int height = screenSize.height() * 0.15; // 15% of the screen height
-        int width = height * 0.5;                // 50% of height for the width
-        maxSize = QSize(width, height);
-
-        // Scale the image to fit within the maximum size while keeping aspect ratio
-        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-        // Set the icon and icon size to the scaled pixmap size
-        QIcon icon(scaledPixmap);
-        setIcon(icon);
-        setIconSize(scaledPixmap.size());
-
-        // Resize the widget to fit the scaled image size
-        this->resize(scaledPixmap.size());
-
-        // Optional: Remove padding and margins
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-    } else {
-        this->setText(str());
-    }
-}
-
-// Slots
-void JpointsChooser::onQuteDecisionChanged(const QString& dec)
-{
-    if (dec == "y") {
+    qDebug() << this << "has received signal " << quteDec;
+    if (quteDec == QString("QUTE")) {
         setEnabled(true);
         show();
     } else {
@@ -393,102 +168,38 @@ void JpointsChooser::onQuteDecisionChanged(const QString& dec)
     }
     loadImage();
 }
-
 // -----------------------------------------------------------------------
-// RoundChooser Implementation
-
-RoundChooser::RoundChooser(QString decision, QWidget* parent)
-    : decision_{decision}
+RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
+    : BaseChooser(decs)
 {
-    loadImage();
-
     connect(this, &QPushButton::clicked, this, [this]() {
-        if (decision_ == "f") {
+        if (decision() == QString("FINISH")) {
+            qDebug() << this << decision();
+            toggle_to(QString("NEW"));
+            qDebug() << this << decision();
             emit finishRound();
-            setDecision("r");
-        } else if (decision_ == "r") {
+        } else if (decision() == QString("NEW")) {
+            qDebug() << this << decision();
             emit newRound();
-        } else if (decision_ == "g") {
+        } else if (decision() == QString("GAME")) {
+            qDebug() << this << decision();
             emit newGame();
         }
     });
 }
 
-// Getters
-QString RoundChooser::str()
+void RoundChooser::onQuteDecisionChanged(const QString &quteDec)
+
 {
-    return str_;
-}
-
-QString RoundChooser::decision()
-{
-    return decision_;
-}
-
-void RoundChooser::setStr()
-{
-    if (decision_ == "f") {
-        str_ = "FINISH";
-    } else if (decision_ == "r") {
-        str_ = "NEW";
-    } else if (decision_ == "g") {
-        str_ = "NEW GAME";
-    } else {
-        str_ = "";
-    }
-}
-// Setters
-void RoundChooser::setDecision(const QString& target_decision)
-{
-    decision_ = target_decision;
-    loadImage();
-}
-
-// Methods
-void RoundChooser::loadImage()
-{
-    setStr();
-
-    QString imagePath = QString(":res/choosers/chooser_new_%1.png").arg(decision_);
-    QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not isAndroidVersion) {
-        // Fetch the size of the application's primary screen
-        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
-        QSize maxSize;
-
-        // Calculate max size as a percentage of the screen size
-        int height = screenSize.height() * 0.15; // 15% of the screen height
-        int width = height * 0.5;                // 50% of height for the width
-        maxSize = QSize(width, height);
-
-        // Scale the image to fit within the maximum size while keeping aspect ratio
-        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-        // Set the icon and icon size to the scaled pixmap size
-        QIcon icon(scaledPixmap);
-        setIcon(icon);
-        setIconSize(scaledPixmap.size());
-
-        // Resize the widget to fit the scaled image size
-        this->resize(scaledPixmap.size());
-
-        // Optional: Remove padding and margins
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-    } else {
-        this->setText(str());
-    }
-}
-
-// Slots
-void RoundChooser::onQuteDecisionChanged(const QString& dec)
-{
-    if (dec == "y") {
+    qDebug() << this << "has received signal " << quteDec;
+    if (quteDec == QString("QUTE")) {
+        toggle_to(QString("FINISH"));
         setEnabled(true);
         show();
     } else {
         hide();
         setEnabled(false);
     }
+    loadImage();
 }
-
 // -----------------------------------------------------------------------

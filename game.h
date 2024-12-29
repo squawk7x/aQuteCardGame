@@ -7,7 +7,6 @@
 #include <QMouseEvent>
 #include <QObject>
 #include <QVector>
-#include "./../QuteChoosers/chooser.h"
 #include "blind.h"
 #include "choosers.h"
 #include "drawn.h"
@@ -34,7 +33,7 @@ private:
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
 
-    QSharedPointer<BasicChooser> basicChooser_;
+    // QSharedPointer<BasicChooser> basicChooser_;
     QSharedPointer<BaseChooser> baseChooser_;
     QSharedPointer<Monitor> monitor_;
     QSharedPointer<EightsChooser> eightsChooser_;
@@ -85,7 +84,7 @@ public:
 
     QSharedPointer<QLCDNumber> lcdShuffles();
     QSharedPointer<Blind> blind();
-    QSharedPointer<BasicChooser> basicChooser();
+    // QSharedPointer<BasicChooser> basicChooser();
     QSharedPointer<BaseChooser> baseChooser();
     QSharedPointer<JsuitChooser> jsuitChooser();
     QSharedPointer<Stack> stack();

@@ -422,21 +422,25 @@ void Game::handleChoosers()
 
         if ((player->handdeck()->pointsOnHand() - jacks * 20) <= 0) {
             quteChooser()->toggle_to("y");
+            quteChooser()->toggle_to(QString("QUTE"));
         }
 
         // score == 125
         else if (player->handdeck()->pointsOnHand() * shuffles + player->score() == 125) {
-            quteChooser()->toggle_to("y");
+            // quteChooser()->toggle_to("y");
+            quteChooser()->toggle_to(QString("QUTE"));
         }
 
         // score == 125
         else if ((player->handdeck()->pointsOnHand() - jacks * 20) * shuffles + player->score()
                  == 125) {
-            quteChooser()->toggle_to("y");
+            // quteChooser()->toggle_to("y");
+            quteChooser()->toggle_to(QString("QUTE"));
         }
 
         else
-            quteChooser()->toggle_to("n");
+            // quteChooser()->toggle_to("n");
+            quteChooser()->toggle_to(QString("CONTINUE"));
 
         // end KI QuteChooser
 
@@ -460,13 +464,15 @@ void Game::handleChoosers()
                    &JpointsChooser::onQuteDecisionChanged);
         quteChooser()->hide();
         quteChooser()->setDisabled(true);
-        quteChooser()->toggle_to("y"); // prepare for next 'Qute'
+        // quteChooser()->toggle_to("y"); // prepare for next 'Qute'
+        quteChooser()->toggle_to(QString("QUTE")); // prepare for next 'Qute'
     }
 
     // JPointsChooser
     if (stackCard->rank() == "J" && player->handdeck()->cards().isEmpty()
         || (stackCard->rank() == "J")
-               && (quteChooser()->isVisible() && quteChooser()->decision() == "y")) {
+               // && (quteChooser()->isVisible() && quteChooser()->decision() == "y")) {
+               && (quteChooser()->isVisible() && quteChooser()->decision() == QString("QUTE"))) {
         // KI JPointsChooser
         if (player->isRobot()) {
             int jacks = 0;
@@ -478,15 +484,18 @@ void Game::handleChoosers()
 
             if ((player->handdeck()->pointsOnHand() - jacks * 20) * shuffles + player->score()
                 == 125) {
-                jpointsChooser()->toggle_to("m");
+                // jpointsChooser()->toggle_to("m");
+                jpointsChooser()->toggle_to(QString("MINUS"));
             }
 
             else if (player->handdeck()->pointsOnHand() * shuffles + player->score() == 125) {
-                jpointsChooser()->toggle_to("p");
+                // jpointsChooser()->toggle_to("p");
+                jpointsChooser()->toggle_to(QString("PLUS"));
             }
 
             else if ((player->handdeck()->pointsOnHand() - jacks * 20) <= 0) {
-                jpointsChooser()->toggle_to("m");
+                // jpointsChooser()->toggle_to("m");
+                jpointsChooser()->toggle_to(QString("MINUS"));
             } else
                 jpointsChooser()->toggleRandom();
         }
@@ -514,8 +523,10 @@ void Game::handleChoosers()
 
     // RoundChooser
     if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
-        || quteChooser()->isVisible() && quteChooser()->decision() == "y") {
-        roundChooser()->setDecision("f");
+        || quteChooser()->isVisible() && quteChooser()->decision() == QString("QUTE")) {
+        // || quteChooser()->isVisible() && quteChooser()->decision() == "y") {
+        // roundChooser()->setDecision("f");
+        roundChooser()->toggle_to(QString("FINISH"));
         roundChooser()->setEnabled(true);
         roundChooser()->show();
 
@@ -751,7 +762,8 @@ bool Game::isRoundFinished()
         return true;
     }
 
-    if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
+    // if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
+    if (quteChooser()->isEnabled() && quteChooser()->decision() == QString("QUTE")) {
         return true;
     }
 
@@ -787,12 +799,14 @@ void Game::handleSpecialCards()
         int points = 20 * jacks;
 
         // Set points for the current player
-        if (jpointsChooser()->decision() == "m") {
+        // if (jpointsChooser()->decision() == "m") {
+        if (jpointsChooser()->decision() == QString("MINUS")) {
             player->setJpoints(-points);
         }
 
         // If the decision is "p", set points for all players in the player list
-        else if (jpointsChooser()->decision() == "p") {
+        // else if (jpointsChooser()->decision() == "p") {
+        else if (jpointsChooser()->decision() == QString("PLUS")) {
             for (const auto& player : std::as_const(playerList_)) {
                 player->setJpoints(points);
             }
@@ -1066,12 +1080,15 @@ void Game::onNewRound()
 
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
+        roundChooser()->toggle_to(QString("NEW"));
         // qDebug() << "Starting new Round ...";
         rounds += 1;
         initializeRound();
     } else {
         // qDebug() << "Game is over...";
-        roundChooser()->setDecision("g");
+        // roundChooser()->setDecision("g");
+        // roundChooser()->setDecision(QString("GAME"));
+        roundChooser()->toggle_to(QString("GAME"));
     }
 }
 
