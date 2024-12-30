@@ -195,7 +195,7 @@ void Table::initializeGame(int numberOfPlayers)
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
-    QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
+    // QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
 
     onResetCbVisible(false);
 }

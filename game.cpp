@@ -312,12 +312,6 @@ void Game::handleChoosers()
         // Eventloop in Android is different to eventloop on PC.
         if (isAndroidVersion)
             emit jsuitChooser()->chooserToggled();
-
-        if (isSoundOn_) {
-            // mediaPlayer_->stop(); // Stop any previous playback
-            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
-            mediaPlayer_->play();
-        }
     }
 
     // -----------------------------------------------------------------------
@@ -376,11 +370,6 @@ void Game::handleChoosers()
 
         if (isAndroidVersion)
             emit eightsChooser()->chooserToggled();
-        if (isSoundOn_) {
-            // mediaPlayer_->stop(); // Stop any previous playback
-            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
-            mediaPlayer_->play();
-        }
     }
 
     // no Eights condition:
@@ -535,7 +524,6 @@ void Game::handleChoosers()
         } else {
             jpointsChooser()->toggle_to("PLUS");
         }
-        // jpointsChooser()->toggle_to(jpointsChooser()->decision());
         jpointsChooser()->setDisabled(player->isRobot());
         jpointsChooser()->show();
     }
@@ -566,12 +554,6 @@ void Game::handleChoosers()
 
         if (isAndroidVersion)
             emit roundChooser()->chooserToggled();
-
-        if (isSoundOn_) {
-            // mediaPlayer_->stop(); // Stop any previous playback
-            mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
-            mediaPlayer_->play();
-        }
     } else {
         roundChooser()->hide();
         roundChooser()->setEnabled(false);

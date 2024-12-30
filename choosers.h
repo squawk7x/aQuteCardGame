@@ -31,9 +31,9 @@ public:
     QString name();
 
 protected:
+    QString imagePath_ = "";
     void setDecision();
     void setStr();
-    void setName();
     void setData();
 
 signals:

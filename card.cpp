@@ -9,7 +9,7 @@ QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
-bool isAndroidVersion = true;
+bool isAndroidVersion = false;
 
 // Private Methods
 void Card::initCard()
