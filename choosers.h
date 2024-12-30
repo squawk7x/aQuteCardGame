@@ -5,7 +5,7 @@
 #include "card.h"
 
 // -----------------------------------------------------------------------
-class BaseChooser : public QPushButton
+class Chooser : public QPushButton
 {
     Q_OBJECT
 
@@ -16,7 +16,7 @@ private:
     QString name_;
 
 public:
-    explicit BaseChooser(QVector<QString> decs = {""}, QObject* parent = nullptr);
+    explicit Chooser(QVector<QString> decs = {""}, QObject* parent = nullptr);
 
     // Methods
     virtual void toggle();
@@ -42,14 +42,14 @@ signals:
 
 // -----------------------------------------------------------------------
 
-class QuteChooser : public BaseChooser
+class QuteChooser : public Chooser
 {
     Q_OBJECT
 
 public:
     explicit QuteChooser(QVector<QString> decs = {"QUTE", "CONTINUE"}, QObject* parent = nullptr);
 
-    void toggle();
+    virtual void toggle();
 
 signals:
     void quteDecisionChanged(const QString& quteDec);
@@ -57,7 +57,7 @@ signals:
 
 // -----------------------------------------------------------------------
 
-class EightsChooser : public BaseChooser
+class EightsChooser : public Chooser
 {
     Q_OBJECT
 
@@ -67,7 +67,7 @@ public:
 
 // -----------------------------------------------------------------------
 
-class JpointsChooser : public BaseChooser
+class JpointsChooser : public Chooser
 {
     Q_OBJECT
 
@@ -79,7 +79,7 @@ public slots:
 };
 
 // -----------------------------------------------------------------------
-class RoundChooser : public BaseChooser
+class RoundChooser : public Chooser
 {
     Q_OBJECT
 
@@ -97,7 +97,7 @@ public slots:
 };
 
 // -----------------------------------------------------------------------
-class JsuitChooser : public BaseChooser
+class JsuitChooser : public Chooser
 {
     Q_OBJECT
 

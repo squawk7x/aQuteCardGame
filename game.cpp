@@ -297,7 +297,6 @@ void Game::handleChoosers()
     // JsuitChooser
     if (stackCard->rank() == "J") {
         if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
-            // KI toggle JSuit to rank with most points
             // jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
             jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints());
         // end KI toggle JSuit to rank with most points
@@ -306,9 +305,9 @@ void Game::handleChoosers()
         jsuitChooser()->setDisabled(player->isRobot());
         jsuitChooser()->show();
         // JsuitChooser is shown until next player's card is added to stack
-        // (slot: onCardAddedToStack)
+        // and removed by cardAddedToStack -> onCardAddedToStack
 
-        // Eventloop in Android seems to be different to Eventloop on PC.
+        // Eventloop in Android is different to eventloop on PC.
         if (isAndroidVersion)
             emit jsuitChooser()->chooserToggled();
 
@@ -324,8 +323,7 @@ void Game::handleChoosers()
         && played()->cards().size() >= 2) {
         // 2 Players
         if (numberOfPlayers_ == 2) {
-            // if 2 players not allowing toggling to "a"
-            // eightsChooser()->toggle_to("n");
+            // if 2 players -> NOT allowing toggling to "ALL"
             eightsChooser()->toggle_to(QString("NEXT"));
             eightsChooser()->setDisabled(true);
             eightsChooser()->show();
@@ -344,36 +342,31 @@ void Game::handleChoosers()
         if (numberOfPlayers_ == 3) {
             // KI EightsChooser
 
-            /*      number of cards hold by ...
-             *      next overnext player        decision
-             *      == 1   >  1                     n
-             *      >  1   == 1                     a
-             *      last 8's suit in handdeck       a
-             *         else                         n
+            /* number of cards hold by next overnext player    decision
+             *                         == 1        >  1          NEXT
+             *                         >  1        == 1          ALL
+             *                     last 8's suit in handdeck     ALL
+             *                               else                NEXT / RANDOM
             */
 
             if (player->isRobot()) {
                 if (playerList_[1]->handdeck()->cards().size() == 1
                     && playerList_[2]->handdeck()->cards().size() > 1) {
-                    // eightsChooser()->toggle_to("n");
                     eightsChooser()->toggle_to(QString("NEXT"));
                 }
 
                 else if (playerList_[1]->handdeck()->cards().size() > 1
                          && playerList_[2]->handdeck()->cards().size() == 1) {
-                    // eightsChooser()->toggle_to("a");
                     eightsChooser()->toggle_to(QString("ALL"));
                 }
 
                 // if suit of last played 8 in handdeck toggle_to('a')
                 else if (player->handdeck()->isSuitInCards(stackCard->suit())) {
-                    // eightsChooser()->toggle_to("a");
                     eightsChooser()->toggle_to(QString("ALL"));
                 }
 
                 else
                     // eightsChooser()->toggleRandom();
-                    // eightsChooser()->toggle_to("n");
                     eightsChooser()->toggle_to(QString("NEXT"));
             }
         }
@@ -398,6 +391,7 @@ void Game::handleChoosers()
     }
 
     // QuteChooser
+    // Qute Condition -> connect Q - J
     if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
         int jacks = 0;
         if (stackCard->rank() == "J") {
@@ -412,51 +406,20 @@ void Game::handleChoosers()
                     &JpointsChooser::onQuteDecisionChanged);
         }
 
-        // KI QuteChooser
-
-        /*                                          decision
-         *  points on hand - jacks * 20 <    0         y (JpointsChooser = m)
-         *  score                       == 125         y (JpointsChooser = auto m)
-         *              else                           n
-        */
-
-        if ((player->handdeck()->pointsOnHand() - jacks * 20) <= 0) {
-            quteChooser()->toggle_to("y");
-            quteChooser()->toggle_to(QString("QUTE"));
-        }
-
-        // score == 125
-        else if (player->handdeck()->pointsOnHand() * shuffles + player->score() == 125) {
-            // quteChooser()->toggle_to("y");
-            quteChooser()->toggle_to(QString("QUTE"));
-        }
-
-        // score == 125
-        else if ((player->handdeck()->pointsOnHand() - jacks * 20) * shuffles + player->score()
-                 == 125) {
-            // quteChooser()->toggle_to("y");
-            quteChooser()->toggle_to(QString("QUTE"));
-        }
-
-        else
-            // quteChooser()->toggle_to("n");
-            quteChooser()->toggle_to(QString("CONTINUE"));
-
-        // end KI QuteChooser
-
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
+
+        if (isAndroidVersion)
+            emit quteChooser()->chooserToggled();
+
         if (isSoundOn_) {
             // mediaPlayer_->stop(); // Stop any previous playback
             mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
             mediaPlayer_->play();
-
-            if (isAndroidVersion)
-                emit quteChooser()->chooserToggled();
         }
     }
 
-    // No Qute Condition
+    // No Qute Condition -> disconnect Q - J
     else {
         disconnect(quteChooser().get(),
                    &QuteChooser::quteDecisionChanged,
@@ -464,16 +427,23 @@ void Game::handleChoosers()
                    &JpointsChooser::onQuteDecisionChanged);
         quteChooser()->hide();
         quteChooser()->setDisabled(true);
-        // quteChooser()->toggle_to("y"); // prepare for next 'Qute'
-        quteChooser()->toggle_to(QString("QUTE")); // prepare for next 'Qute'
+        // quteChooser()->toggle_to(QString("QUTE")); // prepare for next 'Qute'
     }
 
-    // JPointsChooser
+    // KI QuteChooser
+    // KI JpointsChooser
+
+    /*           Condition                                  decision
+     *                                               Q            J
+     *  score by PLUS or MINUS Jpoints == 125      QUTE      PLUS / MINUS   
+     *  score by PLUS or MINUS Jpoints >  100      QUTE         MINUS
+     *  points on hand - jacks * 20 <=    0        QUTE         MINUS
+     *              else                           CONTINUE     Random
+    */
+
     if (stackCard->rank() == "J" && player->handdeck()->cards().isEmpty()
         || (stackCard->rank() == "J")
-               // && (quteChooser()->isVisible() && quteChooser()->decision() == "y")) {
                && (quteChooser()->isVisible() && quteChooser()->decision() == QString("QUTE"))) {
-        // KI JPointsChooser
         if (player->isRobot()) {
             int jacks = 0;
             for (const auto& card : std::as_const(played()->cards())) {
@@ -482,24 +452,39 @@ void Game::handleChoosers()
                 }
             }
 
-            if ((player->handdeck()->pointsOnHand() - jacks * 20) * shuffles + player->score()
+            // score == 125 -> score = 0
+            if ((player->handdeck()->pointsOnHand() + jacks * 20) * shuffles + player->score()
                 == 125) {
-                // jpointsChooser()->toggle_to("m");
-                jpointsChooser()->toggle_to(QString("MINUS"));
+                jpointsChooser()->toggle_to("PLUS");
+                quteChooser()->toggle_to(QString("QUTE"));
             }
 
-            else if (player->handdeck()->pointsOnHand() * shuffles + player->score() == 125) {
-                // jpointsChooser()->toggle_to("p");
-                jpointsChooser()->toggle_to(QString("PLUS"));
+            // score == 125 -> score = 0
+            else if ((player->handdeck()->pointsOnHand() - jacks * 20) * shuffles + player->score()
+                     == 125) {
+                jpointsChooser()->toggle_to("MINUS");
+                quteChooser()->toggle_to(QString("QUTE"));
             }
 
+            // better chances to reach 125 in next round
+            else if ((player->handdeck()->pointsOnHand() - jacks * 20) * shuffles + player->score()
+                     > 100) {
+                jpointsChooser()->toggle_to("MINUS");
+                quteChooser()->toggle_to(QString("QUTE"));
+            }
+
+            // if score will not grow
             else if ((player->handdeck()->pointsOnHand() - jacks * 20) <= 0) {
-                // jpointsChooser()->toggle_to("m");
-                jpointsChooser()->toggle_to(QString("MINUS"));
-            } else
-                jpointsChooser()->toggleRandom();
+                jpointsChooser()->toggle_to("MINUS");
+                quteChooser()->toggle_to(QString("QUTE"));
+            }
+
+        } else {
+            quteChooser()->toggle_to(QString("CONTINUE"));
         }
+
         // end KI JPointsChooser
+        // end KI QuteChooser
 
         jpointsChooser()->toggle_to(jpointsChooser()->decision());
         jpointsChooser()->setDisabled(player->isRobot());
@@ -517,15 +502,13 @@ void Game::handleChoosers()
 
     // No Jpoints Condition
     else {
+        jpointsChooser()->setEnabled(player->isRobot());
         jpointsChooser()->hide();
-        jpointsChooser()->setEnabled(false);
     }
 
     // RoundChooser
     if (player->handdeck()->cards().isEmpty() && stack()->topCard()->rank() != '6'
         || quteChooser()->isVisible() && quteChooser()->decision() == QString("QUTE")) {
-        // || quteChooser()->isVisible() && quteChooser()->decision() == "y") {
-        // roundChooser()->setDecision("f");
         roundChooser()->toggle_to(QString("FINISH"));
         roundChooser()->setEnabled(true);
         roundChooser()->show();
@@ -762,7 +745,6 @@ bool Game::isRoundFinished()
         return true;
     }
 
-    // if (quteChooser()->isEnabled() && quteChooser()->decision() == "y") {
     if (quteChooser()->isEnabled() && quteChooser()->decision() == QString("QUTE")) {
         return true;
     }
@@ -801,13 +783,11 @@ void Game::handleSpecialCards()
         int points = 20 * jacks;
 
         // Set points for the current player
-        // if (jpointsChooser()->decision() == "m") {
         if (jpointsChooser()->decision() == QString("MINUS")) {
             player->setJpoints(-points);
         }
 
-        // If the decision is "p", set points for all players in the player list
-        // else if (jpointsChooser()->decision() == "p") {
+        // If the decision is "PLUS", set points for all players in the player list
         else if (jpointsChooser()->decision() == QString("PLUS")) {
             for (const auto& player : std::as_const(playerList_)) {
                 player->setJpoints(points);
@@ -939,7 +919,6 @@ void Game::autoplay()
         emit resetCbVisible(isCardsVisible_);
 
     while (player->isRobot() && !isNextPlayerPossible()) {
-        // TODO: KI make robots play all possible ranks at first move
         while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
             QString stackSuit = stackCard->suit();

@@ -3,6 +3,8 @@
 #include <random>
 
 // -----------------------------------------------------------------------
+
+// used for random toggle
 int getRandomNumber(int max)
 {
     std::random_device rd;                              // Seed generator
@@ -14,17 +16,17 @@ int getRandomNumber(int max)
 
 // -----------------------------------------------------------------------
 // Constructor
-BaseChooser::BaseChooser(QVector<QString> decs, QObject *parent)
+Chooser::Chooser(QVector<QString> decs, QObject *parent)
     : decs_(decs)
 {
     if (!decs_.isEmpty()) {
         setData();
     }
-    connect(this, &QPushButton::clicked, this, &BaseChooser::toggle);
+    connect(this, &QPushButton::clicked, this, &Chooser::toggle);
 }
 
 // Methods
-void BaseChooser::toggle()
+void Chooser::toggle()
 {
     if (!decs().isEmpty()) {
         auto firstElement = decs().front(); // Access the first element
@@ -39,7 +41,7 @@ void BaseChooser::toggle()
     }
 }
 
-void BaseChooser::toggle_to(const QString &target_decision)
+void Chooser::toggle_to(const QString &target_decision)
 {
     while (decs_.at(0) != target_decision) {
         toggle();
@@ -47,7 +49,7 @@ void BaseChooser::toggle_to(const QString &target_decision)
     }
 }
 
-void BaseChooser::toggleRandom()
+void Chooser::toggleRandom()
 {
     for (int i = 0; i < getRandomNumber(decs().size()); i++) {
         toggle();
@@ -55,43 +57,43 @@ void BaseChooser::toggleRandom()
 }
 
 // Getters
-QVector<QString> &BaseChooser::decs()
+QVector<QString> &Chooser::decs()
 {
     return decs_;
 }
 
-QString BaseChooser::decision()
+QString Chooser::decision()
 {
     return decision_;
 }
 
-QString BaseChooser::str()
+QString Chooser::str()
 {
     return str_;
 }
 
-QString BaseChooser::name()
+QString Chooser::name()
 {
     return name_;
 }
 
 // Setters
-void BaseChooser::setDecision()
+void Chooser::setDecision()
 {
     decision_ = decs_.at(0);
 }
 
-void BaseChooser::setStr()
+void Chooser::setStr()
 {
     str_ = decs_.at(0);
 }
 
-void BaseChooser::setName()
+void Chooser::setName()
 {
     name_ = decs_.at(0);
 }
 
-void BaseChooser::setData()
+void Chooser::setData()
 {
     setDecision();
     setStr();
@@ -99,17 +101,17 @@ void BaseChooser::setData()
     loadImage();
 }
 
-void BaseChooser::loadImage()
+void Chooser::loadImage()
 {
     setStr();
-    qDebug() << str();
     this->setText(str());
+    // qDebug() << str();
 }
 
 // -----------------------------------------------------------------------
 
 JsuitChooser::JsuitChooser(QVector<QString> decs, QObject *parent)
-    : BaseChooser(decs)
+    : Chooser(decs)
 {}
 
 QString JsuitChooser::suit()
@@ -125,7 +127,7 @@ void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card> &card)
 
 // -----------------------------------------------------------------------
 QuteChooser::QuteChooser(QVector<QString> decs, QObject *parent)
-    : BaseChooser(decs)
+    : Chooser(decs)
 {}
 
 void QuteChooser::toggle()
@@ -149,11 +151,11 @@ void QuteChooser::toggle()
 
 // -----------------------------------------------------------------------
 EightsChooser::EightsChooser(QVector<QString> decs, QObject *parent)
-    : BaseChooser(decs)
+    : Chooser(decs)
 {}
 // -----------------------------------------------------------------------
 JpointsChooser::JpointsChooser(QVector<QString> decs, QObject *parent)
-    : BaseChooser(decs)
+    : Chooser(decs)
 {}
 
 void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
@@ -170,20 +172,20 @@ void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
 }
 // -----------------------------------------------------------------------
 RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
-    : BaseChooser(decs)
+    : Chooser(decs)
 {
-    disconnect(this, &QPushButton::clicked, this, &BaseChooser::toggle);
+    disconnect(this, &QPushButton::clicked, this, &Chooser::toggle);
 
     connect(this, &QPushButton::clicked, this, [this]() {
         if (decision() == QString("FINISH")) {
             qDebug() << this << decision();
             toggle_to(QString("NEW"));
             emit finishRound();
-            qDebug() << "finishRound emitted";
+            qDebug() << this << "finishRound emitted";
         } else if (decision() == QString("NEW")) {
-            qDebug() << this << decision();
+            qDebug() << this << this << decision();
             emit newRound();
-            qDebug() << "newRound emitted";
+            qDebug() << this << "newRound emitted";
         } else if (decision() == QString("GAME")) {
             qDebug() << this << decision();
             emit newGame();

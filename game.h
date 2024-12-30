@@ -33,13 +33,17 @@ private:
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
 
-    // QSharedPointer<BasicChooser> basicChooser_;
-    QSharedPointer<BaseChooser> baseChooser_;
     QSharedPointer<Monitor> monitor_;
+
+    // Choosers
+    QSharedPointer<Chooser> chooser_;
     QSharedPointer<EightsChooser> eightsChooser_;
     QSharedPointer<QuteChooser> quteChooser_;
     QSharedPointer<RoundChooser> roundChooser_;
     QSharedPointer<JpointsChooser> jpointsChooser_;
+    QSharedPointer<JsuitChooser> jsuitChooser_;
+    //
+
     QSharedPointer<Got> got1_;
     QSharedPointer<Got> got2_;
     QSharedPointer<Played> played_;
@@ -47,7 +51,6 @@ private:
 
     QSharedPointer<QLCDNumber> lcdShuffles_;
     QSharedPointer<Blind> blind_;
-    QSharedPointer<JsuitChooser> jsuitChooser_;
     QSharedPointer<Stack> stack_;
 
     QSharedPointer<Playable> playable_;
@@ -73,10 +76,16 @@ public:
     QSharedPointer<Player> player3() const;
 
     QSharedPointer<Monitor> monitor();
-    QSharedPointer<EightsChooser> eightsChooser();
+
+    // Choosers
+    QSharedPointer<Chooser> chooser();
     QSharedPointer<QuteChooser> quteChooser();
-    QSharedPointer<RoundChooser> roundChooser();
+    QSharedPointer<EightsChooser> eightsChooser();
     QSharedPointer<JpointsChooser> jpointsChooser();
+    QSharedPointer<RoundChooser> roundChooser();
+    QSharedPointer<JsuitChooser> jsuitChooser();
+    //
+
     QSharedPointer<Got> got1();
     QSharedPointer<Got> got2();
     QSharedPointer<Played> played();
@@ -84,9 +93,6 @@ public:
 
     QSharedPointer<QLCDNumber> lcdShuffles();
     QSharedPointer<Blind> blind();
-    // QSharedPointer<BasicChooser> basicChooser();
-    QSharedPointer<BaseChooser> baseChooser();
-    QSharedPointer<JsuitChooser> jsuitChooser();
     QSharedPointer<Stack> stack();
 
     QSharedPointer<Playable> playable();
