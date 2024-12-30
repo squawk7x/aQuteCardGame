@@ -335,12 +335,6 @@ void Game::handleChoosers()
 
             if (isAndroidVersion)
                 emit eightsChooser()->chooserToggled();
-            // Shuffle the blind deck
-            if (isSoundOn_) {
-                // mediaPlayer_->stop(); // Stop any previous playback
-                mediaPlayer_->setSource(QUrl(":res/sounds/chooser.wav"));
-                mediaPlayer_->play();
-            }
         }
 
         // 3 Players
@@ -407,6 +401,8 @@ void Game::handleChoosers()
                 &JpointsChooser::onQuteDecisionChanged);
 
         if (stackCard->rank() == "J") {
+            // jpointsChooser()->setDisabled(player->isRobot());
+            // jpointsChooser()->show();
             // Qute && Jpoints
             //           Condition                            Decision
             // score by PLUS or MINUS Jpoints == 125      QUTE      PLUS / MINUS
@@ -451,6 +447,8 @@ void Game::handleChoosers()
             }
         }
         if (stackCard->rank() != "J") {
+            jpointsChooser()->toggle_to(QString(""));
+            jpointsChooser()->hide();
             // Qute && !Jpoints
             //           Condition                      Decision
             //             score == 125                   QUTE
@@ -474,7 +472,6 @@ void Game::handleChoosers()
             else {
                 quteChooser()->toggle_to(QString("CONTINUE"));
             }
-            jpointsChooser()->hide();
         }
         quteChooser()->setDisabled(player->isRobot());
         quteChooser()->show();
@@ -490,6 +487,7 @@ void Game::handleChoosers()
         quteChooser()->setEnabled(false);
         quteChooser()->hide();
     }
+    emit quteChooser()->quteDecisionChanged(quteChooser()->decision());
 
     if (isAndroidVersion)
         emit quteChooser()->chooserToggled();
@@ -537,15 +535,20 @@ void Game::handleChoosers()
         } else {
             jpointsChooser()->toggle_to("PLUS");
         }
-        jpointsChooser()->toggle_to(jpointsChooser()->decision());
+        // jpointsChooser()->toggle_to(jpointsChooser()->decision());
         jpointsChooser()->setDisabled(player->isRobot());
         jpointsChooser()->show();
     }
     // end KI JPointsChooser
 
-    // No Jpoints Condition
-    else {
-        jpointsChooser()->setDisabled(true);
+    // Qute situation
+    else if (stackCard->rank() == "J" && quteChooser()->isEnabled()) {
+        jpointsChooser()->setDisabled(player->isRobot());
+        jpointsChooser()->show();
+
+        // No Jpoints Condition
+    } else {
+        jpointsChooser()->toggle_to("");
         jpointsChooser()->hide();
     }
 
@@ -809,8 +812,6 @@ void Game::handleSpecialCards()
 {
     QSharedPointer<CardVec> cardVec(new CardVec(nullptr, played_->cards()));
     bool isFinished = isRoundFinished();
-
-    qDebug() << "handling special Cards ...";
 
     // Count occurrences of sevens, eights, aces and jacks in played cards
     int sevens = 0;

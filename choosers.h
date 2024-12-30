@@ -72,7 +72,8 @@ class JpointsChooser : public Chooser
     Q_OBJECT
 
 public:
-    explicit JpointsChooser(QVector<QString> decs = {"MINUS", "PLUS"}, QObject* parent = nullptr);
+    explicit JpointsChooser(QVector<QString> decs = {"", "MINUS", "PLUS"},
+                            QObject* parent = nullptr);
 
 public slots:
     void onQuteDecisionChanged(const QString& quteDec);

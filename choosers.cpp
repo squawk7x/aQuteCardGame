@@ -35,9 +35,9 @@ void Chooser::toggle()
         setData();
         if (isAndroidVersion) {
             emit chooserToggled();
-            qDebug() << this << "chooserToggled emitted";
+            // qDebug() << this << "chooserToggled emitted";
         }
-        qDebug() << this << decision();
+        // qDebug() << this << decision();
     }
 }
 
@@ -45,7 +45,7 @@ void Chooser::toggle_to(const QString &target_decision)
 {
     while (decs_.at(0) != target_decision) {
         toggle();
-        qDebug() << this << decision();
+        // qDebug() << this << decision();
     }
 }
 
@@ -105,7 +105,6 @@ void Chooser::loadImage()
 {
     setStr();
     this->setText(str());
-    // qDebug() << str();
 }
 
 // -----------------------------------------------------------------------
@@ -142,10 +141,10 @@ void QuteChooser::toggle()
 
         if (isAndroidVersion) {
             emit chooserToggled();
-            qDebug() << this << "chooserToggled emitted from QuteChooserToggle";
+            // qDebug() << this << "chooserToggled emitted from QuteChooserToggle";
         }
 
-        qDebug() << this << decision();
+        // qDebug() << this << decision();
     }
 }
 
@@ -161,7 +160,7 @@ JpointsChooser::JpointsChooser(QVector<QString> decs, QObject *parent)
 void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
 {
     qDebug() << this << "has received signal " << quteDec;
-    if (quteDec == QString("QUTE")) {
+    if (decision() != "" && quteDec == QString("QUTE")) {
         setEnabled(true);
         show();
     } else {
@@ -178,18 +177,18 @@ RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
 
     connect(this, &QPushButton::clicked, this, [this]() {
         if (decision() == QString("FINISH")) {
-            qDebug() << this << decision();
+            // qDebug() << this << decision();
             toggle_to(QString("NEW"));
             emit finishRound();
-            qDebug() << this << "finishRound emitted";
+            // qDebug() << this << "finishRound emitted";
         } else if (decision() == QString("NEW")) {
-            qDebug() << this << this << decision();
+            // qDebug() << this << decision();
             emit newRound();
-            qDebug() << this << "newRound emitted";
+            // qDebug() << this << "newRound emitted";
         } else if (decision() == QString("GAME")) {
-            qDebug() << this << decision();
+            // qDebug() << this << decision();
             emit newGame();
-            qDebug() << "newGame emitted";
+            // qDebug() << "newGame emitted";
         }
     });
 }
