@@ -141,12 +141,12 @@ signals:
 public slots:
     void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
-    void onCbVisible(bool isVisible);
-    void onCbSound(int state);
-    void onRbSuit();
-    void onRbRank();
     void onNewRound();
     void onNewGame();
+    void onCbSound(int state);
+    void onCbVisible(bool isVisible);
+    void onRbSuit();
+    void onRbRank();
     void onBlindClicked();
 };
 

@@ -87,10 +87,14 @@ void Table::initializeGame(int numberOfPlayers)
     layoutStack->addWidget(game_->stack().get());
     layoutPlayable->addWidget(game_->playable().get());
     layoutRound->addWidget(game_->lcdRound().get());
+    // game_->lcdRound().get()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layoutScores->addWidget(game_->lcdP1().get());
+    // game_->lcdP1().get()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layoutScores->addWidget(game_->lcdP2().get());
+    // game_->lcdP2().get()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     if (numberOfPlayers == 3) {
         layoutScores->addWidget(game_->lcdP3().get());
+        // game_->lcdP3().get()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     }
     layoutPlayer1->addWidget(game_->player1()->handdeck().get());
 
@@ -164,8 +168,6 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
-    connect(ui->rbCardsSmall, &QRadioButton::pressed, this, &Table::onRbCardsSmall);   // ToDo
-    connect(ui->rbCardsNormal, &QRadioButton::pressed, this, &Table::onRbCardsNormal); // ToDo
 
     // Eventloop in Android Version different to PC Version
     if (isAndroidVersion) {
@@ -312,16 +314,6 @@ void Table::onCbVisible() {} // Transfer to Game
 void Table::onRbSuit() {} // Transfer to Game
 
 void Table::onRbRank() {} // Transfer to Game
-
-void Table::onRbCardsSmall()
-{
-    qDebug() << "rbCardsSmall clicked"; // ToDo
-}
-
-void Table::onRbCardsNormal()
-{
-    qDebug() << "rbCardsNormal clicked"; // ToDo
-}
 
 void Table::onChooserToggled()
 {

@@ -184,28 +184,6 @@ int Card::value() const
     return value_;
 }
 
-// Setters
-// void Card::loadImage(bool isCardFaceVisible)
-// {
-//     QString imagePath;
-//     if (isCardFaceVisible)
-//         imagePath = QString(":/cards/%1_of_%2.png").arg(rankname_, suitname_);
-//     else {
-//         imagePath = QString(":/cards/backside_blue.png");
-//     }
-
-//     QIcon icon(imagePath);
-//     if (!icon.isNull()) {
-//         this->setIcon(icon);
-//         this->setIconSize(QSize(50, 75));
-//         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-//         this->resize(iconSize());
-//     } else {
-//         this->setText(str_);
-//         qDebug() << "Failed to load card image:" << imagePath;
-//     }
-// }
-
 void Card::loadImage(bool isCardFaceVisible)
 {
     setStr();

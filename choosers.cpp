@@ -22,6 +22,11 @@ Chooser::Chooser(QVector<QString> decs, QObject *parent)
     if (!decs_.isEmpty()) {
         setData();
     }
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    QFont font = this->font();
+    font.setPointSize(16); // Set the font size to 16 points
+    this->setFont(font);
+    this->setStyleSheet("background-color: #FFFF99;"); // Light yellow color
     connect(this, &QPushButton::clicked, this, &Chooser::toggle);
 }
 
@@ -35,9 +40,7 @@ void Chooser::toggle()
         setData();
         if (isAndroidVersion) {
             emit chooserToggled();
-            // qDebug() << this << "chooserToggled emitted";
         }
-        // qDebug() << this << decision();
     }
 }
 
@@ -88,16 +91,10 @@ void Chooser::setStr()
     str_ = decs_.at(0);
 }
 
-void Chooser::setName()
-{
-    name_ = decs_.at(0);
-}
-
 void Chooser::setData()
 {
     setDecision();
     setStr();
-    setName();
     loadImage();
 }
 
@@ -141,10 +138,7 @@ void QuteChooser::toggle()
 
         if (isAndroidVersion) {
             emit chooserToggled();
-            // qDebug() << this << "chooserToggled emitted from QuteChooserToggle";
         }
-
-        // qDebug() << this << decision();
     }
 }
 
@@ -159,7 +153,6 @@ JpointsChooser::JpointsChooser(QVector<QString> decs, QObject *parent)
 
 void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
 {
-    qDebug() << this << "has received signal " << quteDec;
     if (decision() != "" && quteDec == QString("QUTE")) {
         setEnabled(true);
         show();
@@ -177,18 +170,12 @@ RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
 
     connect(this, &QPushButton::clicked, this, [this]() {
         if (decision() == QString("FINISH")) {
-            // qDebug() << this << decision();
             toggle_to(QString("NEW"));
             emit finishRound();
-            // qDebug() << this << "finishRound emitted";
         } else if (decision() == QString("NEW")) {
-            // qDebug() << this << decision();
             emit newRound();
-            // qDebug() << this << "newRound emitted";
         } else if (decision() == QString("GAME")) {
-            // qDebug() << this << decision();
             emit newGame();
-            // qDebug() << "newGame emitted";
         }
     });
 }
@@ -196,7 +183,6 @@ RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
 void RoundChooser::onQuteDecisionChanged(const QString &quteDec)
 
 {
-    qDebug() << this << "has received signal " << quteDec;
     if (quteDec == QString("QUTE")) {
         toggle_to(QString("FINISH"));
         setEnabled(true);

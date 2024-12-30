@@ -43,8 +43,6 @@ public slots:
     void onCbVisible();                    // Transfer to Game
     void onRbSuit();                       // Transfer to Game
     void onRbRank();                       // Transfer to Game
-    void onRbCardsSmall();                 // ToDo
-    void onRbCardsNormal();                // ToDo
     void onResetCbVisible(bool isVisible); // forAndoid
     void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
