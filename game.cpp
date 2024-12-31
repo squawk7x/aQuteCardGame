@@ -986,8 +986,8 @@ void Game::autoplay()
 
             for (const auto& card : std::as_const(player->handdeck()->cards())) {
                 card->click();
+                updatePlayable();
             }
-            updatePlayable();
         }
         handleChoosers();
     }
