@@ -15,6 +15,8 @@ extern QVector<QString> suitnames;
 // cards and choosers use text not image
 extern bool isAndroidVersion;
 
+enum class cardType { small, normal };
+
 class Card : public QPushButton
 {
     Q_OBJECT
@@ -26,6 +28,7 @@ private:
     QString rankname_;
     QString str_;
     int value_;
+    cardType type_;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
@@ -60,6 +63,9 @@ private:
 
 signals:
     void cardClicked(const QSharedPointer<Card>& card);
+
+public slots:
+    void onCardTypeChanged(cardType newType);
 };
 
 #endif // CARD_H

@@ -365,6 +365,9 @@
          </spacer>
         </item>
         <item>
+         <layout class="QGridLayout" name="gridLayout_4"/>
+        </item>
+        <item>
          <widget class="QGroupBox" name="gbGot1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -2063,7 +2066,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QRadioButton" name="rbCardsSmall">
+            <widget class="QRadioButton" name="rbCardTypeSmall">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -2079,7 +2082,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="rbCardsNormal">
+            <widget class="QRadioButton" name="rbCardTypeNormal">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
