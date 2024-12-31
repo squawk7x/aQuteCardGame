@@ -49,7 +49,7 @@
   "workbench.preferredDarkColorTheme": "Default Dark+",
   "workbench.preferredHighContrastLightColorTheme": "Default Dark+",
   "workbench.preferredLightColorTheme": "Default Light+",
-  "workbench.sideBar.location": "right",
+  "workbench.sideBar.location": "left",
   "workbench.colorTheme": "Default Light Modern",
   "workbench.colorCustomizations": {
     "terminal.background": "#ffffdd",

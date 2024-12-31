@@ -9,6 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_PREFIX_PATH "/home/andreas/Qt/6.8.1/gcc_64/lib/cmake/Qt6" ${CMAKE_PREFIX_PATH})
+
 # Ensure Qt 6 is being used
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Multimedia)
 

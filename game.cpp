@@ -986,8 +986,9 @@ void Game::autoplay()
 
             for (const auto& card : std::as_const(player->handdeck()->cards())) {
                 card->click();
-                updatePlayable();
+                updatePlayable(); // to make robots play all playable cards at game start
             }
+            updatePlayable();
         }
         handleChoosers();
     }
