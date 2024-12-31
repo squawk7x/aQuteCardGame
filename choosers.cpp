@@ -38,9 +38,7 @@ void Chooser::toggle()
         decs().erase(decs().begin());       // Remove the first element
         decs().push_back(firstElement);
         setData();
-        if (isAndroidVersion) {
-            emit chooserToggled();
-        }
+        emit chooserToggled();
     }
 }
 
@@ -135,10 +133,7 @@ void QuteChooser::toggle()
         setData();
 
         emit quteDecisionChanged(decision());
-
-        if (isAndroidVersion) {
-            emit chooserToggled();
-        }
+        emit chooserToggled();
     }
 }
 

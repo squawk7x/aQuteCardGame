@@ -47,15 +47,12 @@ public slots:
     void onRbSuit();                       // Transfer to Game
     void onRbRank();                       // Transfer to Game
 
-    // void onRbCardTypeSmall();
-    // void onRbCardTypeNormal();
-
     void onHelpClicked();                  // Game Control
     void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
 
-    void onResetCbVisible(bool isVisible); // forAndoid
-    void onChooserToggled(); // if (isAndroidVersion) -> refresh Jsuit, Qute, Eights, Jpoints, Round
+    void onResetCbVisible(bool isVisible); // for Andoid Version
+    void onChooserToggled();
 };
 
 #endif // TABLE_H

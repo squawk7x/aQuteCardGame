@@ -195,7 +195,7 @@ QString CardVec::suitOfRankWithMostPoints() const
 
 void CardVec::updateLayout()
 {
-    foreach (const auto& card, cards_) {
+    for (const auto& card : cards_) {
         layout_->removeWidget(card.data());
         layout_->addWidget(card.data());
     }
@@ -215,14 +215,9 @@ void CardVec::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 
-    foreach (const auto& card, cards_) {
+    for (const auto& card : cards_) {
         card->loadImage(isVisible);
+        // card->update();
     }
-}
-
-void CardVec::onToggleCardsType(cardType newType)
-{
-    foreach (const auto& card, cards_) {
-        card->loadImage(isCardFaceVisible_, newType);
-    }
+    // updateLayout();
 }

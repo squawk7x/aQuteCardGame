@@ -46,7 +46,7 @@ protected:
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);
     virtual void onToggleCardsVisible(bool isVisible);
-    virtual void onToggleCardsType(cardType newType);
+    // virtual void onToggleCardsType(cardType newType);
 };
 
 #endif // CARDVEC_H

@@ -162,33 +162,42 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
     connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
     connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
+    // connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
+    //     game_->toggleCardsType(cardType::small);
+    // });
+    // connect(ui->rbCardTypeNormal, &QRadioButton::clicked, game_.get(), [&]() {
+    //     game_->toggleCardsType(cardType::normal);
+    // });
+    connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
+        game_->onRbCardType(cardType::small);
+    });
+    connect(ui->rbCardTypeNormal, &QRadioButton::clicked, game_.get(), [&]() {
+        game_->onRbCardType(cardType::normal);
+    });
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
 
-    // Eventloop in Android Version different to PC Version
-    if (isAndroidVersion) {
-        QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
-        QObject::connect(game_.get()->jsuitChooser().get(),
-                         &JsuitChooser::chooserToggled,
-                         this,
-                         &Table::onChooserToggled);
-        QObject::connect(game_.get()->quteChooser().get(),
-                         &QuteChooser::chooserToggled,
-                         this,
-                         &Table::onChooserToggled);
-        QObject::connect(game_.get()->eightsChooser().get(),
-                         &EightsChooser::chooserToggled,
-                         this,
-                         &Table::onChooserToggled);
-        QObject::connect(game_.get()->jpointsChooser().get(),
-                         &JpointsChooser::chooserToggled,
-                         this,
-                         &Table::onChooserToggled);
-        QObject::connect(game_.get()->roundChooser().get(),
-                         &RoundChooser::chooserToggled,
-                         this,
-                         &Table::onChooserToggled);
-    }
+    QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
+    QObject::connect(game_.get()->jsuitChooser().get(),
+                     &JsuitChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->quteChooser().get(),
+                     &QuteChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->eightsChooser().get(),
+                     &EightsChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->jpointsChooser().get(),
+                     &JpointsChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->roundChooser().get(),
+                     &RoundChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
 
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
@@ -313,6 +322,5 @@ void Table::onRbRank() {} // Transfer to Game
 
 void Table::onChooserToggled()
 {
-    if (isAndroidVersion)
-        update();
+    update();
 }

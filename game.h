@@ -135,7 +135,6 @@ signals:
     void setRbUnsorted(bool isSorted);
     void setCbVisible(bool isVisible);
     void toggleCardsVisible(bool isVisible);
-    void toggleCardsType(cardType type);
     void resetCbVisible(bool isVisible);
     void setCardText();
 
@@ -146,7 +145,7 @@ public slots:
     void onNewGame();
     void onCbSound(int state);
     void onCbVisible(bool isVisible);
-    // void onRbCardType(cardType type);
+    void onRbCardType(cardType type);
     void onRbSuit();
     void onRbRank();
     void onBlindClicked();

@@ -12,9 +12,6 @@ extern QVector<QString> ranks;
 extern QVector<QString> ranknames;
 extern QVector<QString> suitnames;
 
-// cards and choosers use text not image
-extern bool isAndroidVersion;
-
 enum class cardType { small, normal };
 
 class Card : public QPushButton
@@ -28,6 +25,7 @@ private:
     QString rankname_;
     QString str_;
     int value_;
+    cardType type_;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
@@ -49,9 +47,9 @@ public:
     QString rankname() const;
     QString str() const;
     int value() const;
+    void setCardType(cardType type);
 
-    // Setters
-    void loadImage(bool isCardFaceVisible = true, cardType type = cardType::small);
+    void loadImage(bool isCardFaceVisible = true);
 
 private:
     void initCard();
