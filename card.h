@@ -28,7 +28,6 @@ private:
     QString rankname_;
     QString str_;
     int value_;
-    cardType type_;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
@@ -52,7 +51,7 @@ public:
     int value() const;
 
     // Setters
-    void loadImage(bool isCardFaceVisible = true);
+    void loadImage(bool isCardFaceVisible = true, cardType type = cardType::small);
 
 private:
     void initCard();
@@ -63,9 +62,6 @@ private:
 
 signals:
     void cardClicked(const QSharedPointer<Card>& card);
-
-public slots:
-    void onCardTypeChanged(cardType newType);
 };
 
 #endif // CARD_H

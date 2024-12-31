@@ -164,14 +164,6 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
-    connect(ui->rbCardTypeSmall, &QRadioButton::pressed, this, [this]() {
-        qDebug() << "small pressed";
-        emit cardTypeChanged(cardType::small);
-    });
-    connect(ui->rbCardTypeNormal, &QRadioButton::pressed, this, [this]() {
-        qDebug() << "normal pressed";
-        emit cardTypeChanged(cardType::normal);
-    });
 
     // Eventloop in Android Version different to PC Version
     if (isAndroidVersion) {

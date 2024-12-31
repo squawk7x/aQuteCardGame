@@ -17,7 +17,6 @@ void Card::initCard()
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
-    type_ = cardType::small;
     loadImage();
 
     connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
@@ -185,7 +184,7 @@ int Card::value() const
     return value_;
 }
 
-void Card::loadImage(bool isCardFaceVisible)
+void Card::loadImage(bool isCardFaceVisible, cardType type)
 {
     setStr();
 
@@ -198,7 +197,7 @@ void Card::loadImage(bool isCardFaceVisible)
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
                                // if (!pixmap.isNull() and not isAndroidVersion) {
-    if (!pixmap.isNull() && type_ == cardType::normal) {
+    if (!pixmap.isNull() && type == cardType::normal) {
         // Fetch the size of the application’s primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -228,10 +227,4 @@ void Card::loadImage(bool isCardFaceVisible)
         } else
             setText("▓▓");
     }
-}
-
-void Card::onCardTypeChanged(cardType newType)
-{
-    qDebug() << "signal received";
-    type_ = newType;
 }

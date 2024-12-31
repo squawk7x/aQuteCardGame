@@ -36,7 +36,6 @@ private:
 signals:
     // void mouseClicked();
     void cbVisible(bool isVisible);
-    void cardTypeChanged(cardType newType);
 
 public slots:
     void onRbNumPlayers2();                // Table initializes new game

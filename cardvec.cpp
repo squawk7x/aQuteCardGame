@@ -219,3 +219,10 @@ void CardVec::onToggleCardsVisible(bool isVisible)
         card->loadImage(isVisible);
     }
 }
+
+void CardVec::onToggleCardsType(cardType newType)
+{
+    foreach (const auto& card, cards_) {
+        card->loadImage(isCardFaceVisible_, newType);
+    }
+}

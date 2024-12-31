@@ -89,6 +89,12 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(this, &Game::toggleCardsVisible, playable().get(), &Playable::onToggleCardsVisible);
     connect(this, &Game::toggleCardsVisible, drawn().get(), &Drawn::onToggleCardsVisible);
 
+    connect(this, &Game::toggleCardsType, monitor().get(), &CardVec::onToggleCardsType);
+    connect(this, &Game::toggleCardsType, got1().get(), &CardVec::onToggleCardsType);
+    connect(this, &Game::toggleCardsType, got2().get(), &CardVec::onToggleCardsType);
+    connect(this, &Game::toggleCardsType, blind().get(), &CardVec::onToggleCardsType);
+    connect(this, &Game::toggleCardsType, stack().get(), &CardVec::onToggleCardsType);
+
     // in handdeck of player 1 card face always shown
     connect(this,
             &Game::toggleCardsVisible,
@@ -950,7 +956,7 @@ void Game::autoplay()
     if (isAndroidVersion)
         emit resetCbVisible(isCardsVisible_);
 
-    while (player->isRobot() && !isNextPlayerPossible()) {
+    while (player->isRobot()) {
         while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
             QString stackSuit = stackCard->suit();
@@ -976,8 +982,6 @@ void Game::autoplay()
             player->handdeck()->sortCardsByPattern(pattern);
             playable()->sortCardsByPattern(pattern);
 
-            // qDebug() << "pattern used:" << pattern;
-
             // KI permute ranks
             player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
                                              stackCard,
@@ -989,6 +993,8 @@ void Game::autoplay()
             }
             updatePlayable();
         }
+        if (isNextPlayerPossible())
+            break;
         updatePlayable();
     }
     handleChoosers();
@@ -1062,7 +1068,6 @@ void Game::onCbVisible(bool isVisible)
     emit toggleCardsVisible(isVisible);
 }
 
-
 void Game::onCbSound(int state)
 {
     isSoundOn_ = state;
@@ -1095,13 +1100,9 @@ void Game::onNewRound()
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
         roundChooser()->toggle_to(QString("NEW"));
-        // qDebug() << "Starting new Round ...";
         rounds += 1;
         initializeRound();
     } else {
-        // qDebug() << "Game is over...";
-        // roundChooser()->setDecision("g");
-        // roundChooser()->setDecision(QString("GAME"));
         roundChooser()->toggle_to(QString("GAME"));
     }
 }
@@ -1114,8 +1115,6 @@ void Game::onNewGame()
     rounds = 1;
 
     updateLcdDisplays();
-
-    // qDebug() << "Starting new game ...";
 
     initializeRound();
 }
