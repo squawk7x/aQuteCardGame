@@ -950,7 +950,7 @@ void Game::autoplay()
     if (isAndroidVersion)
         emit resetCbVisible(isCardsVisible_);
 
-    while (player->isRobot() && !isNextPlayerPossible()) {
+    while (player->isRobot()) {
         while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
             QString stackSuit = stackCard->suit();
@@ -989,6 +989,8 @@ void Game::autoplay()
             }
             updatePlayable();
         }
+        if (isNextPlayerPossible())
+            break;
         updatePlayable();
     }
     handleChoosers();
