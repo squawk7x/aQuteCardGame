@@ -59,21 +59,11 @@ qt_add_executable(aQuteCardGame
     MANUAL_FINALIZATION
 )
 
+# Finalize the executable if using Qt 6
 qt_finalize_executable(aQuteCardGame)
 
 # Link Qt libraries to the project
 target_link_libraries(aQuteCardGame PRIVATE Qt6::Widgets Qt6::Multimedia)
-
-# Android-specific settings
-if(ANDROID)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android"
-    )
-endif()
-
-
-# Finalize the executable if using Qt 6
-qt_finalize_executable(aQuteCardGame)
 
 # Install the target
 include(GNUInstallDirs)
@@ -82,3 +72,10 @@ install(TARGETS aQuteCardGame
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+# Android-specific settings
+if(ANDROID)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android"
+    )
+endif()

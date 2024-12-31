@@ -910,7 +910,7 @@ void Game::handleSpecialCards()
     if (isFinished) {
         // make all cards visible for counting points
         if (isAndroidVersion) {
-            for (const auto& player : playerList_) {
+            for (const auto& player : std::as_const(playerList_)) {
                 player->handdeck()->setEnabled(true);
             }
             emit resetCbVisible(true);

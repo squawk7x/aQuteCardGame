@@ -23,7 +23,7 @@ void Drawn::onCardMustFromBlind(const QSharedPointer<Card>& card)
     if (card) {
         addCard(card->clone(this)); // Clone and add the card, setting this as parent
 
-        for (auto const& c : cards_)
+        for (auto const& c : std::as_const(cards_))
             c->loadImage(isCardFaceVisible_);
     }
 }

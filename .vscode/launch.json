@@ -1,25 +1,32 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-      {
-          "name": "Launch aQuteCardGame",
-          "type": "cppdbg",
-          "request": "launch",
-          "program": "${workspaceFolder}/build/aQuteCardGame",
-          "args": [],
-          "stopAtEntry": false,
-          "cwd": "${workspaceFolder}",
-          "environment": [],
-          "externalConsole": false,
-          "MIMode": "gdb",
-          "miDebuggerPath": "/usr/bin/gdb",
-          "setupCommands": [
-              {
-                  "description": "Enable pretty-printing for gdb",
-                  "text": "-enable-pretty-printing",
-                  "ignoreFailures": true
-              }
-          ]
-      }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug aQuteCardGame",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/aQuteCardGame",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "build aQuteCardGame",
+            "logging": {
+                "moduleLoad": false,
+                "trace": false,
+                "engineLogging": false
+            },
+            "visualizerFile": "/home/andreas/.config/Code/User/workspaceStorage/dbb71d84477fa27739044cfd7f099ffe/tonka3000.qtvsctools/qt.natvis.xml"
+        }
+    ]
 }
