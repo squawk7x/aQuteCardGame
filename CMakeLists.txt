@@ -56,7 +56,10 @@ qt_add_executable(aQuteCardGame
     ${PROJECT_SOURCES}
     ${RESOURCES}
     choosers.h choosers.cpp
+    MANUAL_FINALIZATION
 )
+
+qt_finalize_executable(aQuteCardGame)
 
 # Link Qt libraries to the project
 target_link_libraries(aQuteCardGame PRIVATE Qt6::Widgets Qt6::Multimedia)

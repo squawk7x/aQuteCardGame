@@ -1,37 +1,25 @@
 {
   "version": "0.2.0",
   "configurations": [
-    {
-      "name": "Debug aQuteCardGame",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/build/aQuteCardGame",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "gdb",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ],
-      "miDebuggerPath": "/usr/bin/gdb",
-      "preLaunchTask": "CMake: Build",
-      "miDebuggerArgs": "",
-      "logging": {
-        "engineLogging": false,
-        "trace": false
-      },
-      "sourceFileMap": {
-        "/mnt/c/": "/"
-      },
-      "osx": {
-        "MIMode": "lldb"
+      {
+          "name": "Launch aQuteCardGame",
+          "type": "cppdbg",
+          "request": "launch",
+          "program": "${workspaceFolder}/build/aQuteCardGame",
+          "args": [],
+          "stopAtEntry": false,
+          "cwd": "${workspaceFolder}",
+          "environment": [],
+          "externalConsole": false,
+          "MIMode": "gdb",
+          "miDebuggerPath": "/usr/bin/gdb",
+          "setupCommands": [
+              {
+                  "description": "Enable pretty-printing for gdb",
+                  "text": "-enable-pretty-printing",
+                  "ignoreFailures": true
+              }
+          ]
       }
-    }
   ]
 }
