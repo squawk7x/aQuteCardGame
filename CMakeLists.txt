@@ -21,8 +21,8 @@ set(PROJECT_SOURCES
     table.h
     card.cpp
     card.h
-    choosers_old.cpp
-    choosers_old.h
+
+
     blind.cpp
     blind.h
     stack.cpp
