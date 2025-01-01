@@ -1056,24 +1056,26 @@ void Game::onRbCardType(cardType type)
     for (auto& card : player3()->handdeck()->cards()) {
         card->setCardType(type);
     }
-    for (auto& card : monitor()->cards()) {
-        card->setCardType(type);
-    }
+    // Always small cards for monitor
+    // for (auto& card : monitor()->cards()) {
+    //     card->setCardType(type);
+    // }
     for (auto& card : blind()->cards()) {
         card->setCardType(type);
     }
     for (auto& card : stack()->cards()) {
         card->setCardType(type);
     }
-    for (auto& card : drawn()->cards()) {
-        card->setCardType(type);
-    }
-    for (auto& card : playable()->cards()) {
-        card->setCardType(type);
-    }
-    for (auto& card : played()->cards()) {
-        card->setCardType(type);
-    }
+    // Always small cards for drawn, playable, played
+    // for (auto& card : drawn()->cards()) {
+    //     card->setCardType(type);
+    // }
+    // for (auto& card : playable()->cards()) {
+    //     card->setCardType(type);
+    // }
+    // for (auto& card : played()->cards()) {
+    //     card->setCardType(type);
+    // }
     for (auto& card : player1()->handdeck()->cards()) {
         card->setCardType(type);
     }

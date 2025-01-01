@@ -47,8 +47,9 @@ public:
     QString rankname() const;
     QString str() const;
     int value() const;
-    void setCardType(cardType type);
 
+    //Setters
+    void setCardType(cardType type);
     void loadImage(bool isCardFaceVisible = true);
 
 private:

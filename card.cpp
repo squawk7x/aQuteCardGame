@@ -224,7 +224,7 @@ void Card::loadImage(bool isCardFaceVisible)
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
 
-    } else if (type_ == cardType::small) {
+    } else {
         // Remove the icon by setting an empty QIcon
         this->setIcon(QIcon()); // This clears the icon
 
