@@ -4,6 +4,7 @@
 #include <QGroupBox>
 #include <QSharedPointer>
 #include <QWidget>
+#include "card.h"
 #include "game.h"
 
 QT_BEGIN_NAMESPACE
@@ -37,17 +38,21 @@ signals:
     void cbVisible(bool isVisible);
 
 public slots:
-    void onRbNumPlayers2();                // Table initializes new game
-    void onRbNumPlayers3();                // Table initializes new game
+    void onRbNumPlayers2(); // from Game initializes new game
+    void onRbNumPlayers3(); // from Game initializes new game
+
     void onCbSound();                      // Transfer to Game
     void onCbVisible();                    // Transfer to Game
+
     void onRbSuit();                       // Transfer to Game
     void onRbRank();                       // Transfer to Game
-    void onResetCbVisible(bool isVisible); // forAndoid
+
+    void onHelpClicked();                  // Game Control
     void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
-    void onHelpClicked();                  // Game Control
-    void onChooserToggled(); // if (isAndroidVersion) -> refresh Jsuit, Qute, Eights, Jpoints, Round
+
+    void onResetCbVisible(); // for Andoid Version
+    void onChooserToggled();
 };
 
 #endif // TABLE_H

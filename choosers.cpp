@@ -22,11 +22,15 @@ Chooser::Chooser(QVector<QString> decs, QObject *parent)
     if (!decs_.isEmpty()) {
         setData();
     }
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+
+    this->setStyleSheet("background-color: yellow; border: 1px solid black; border-radius: 4px; "
+                        "padding: 1px 7px; margin: 2px; min-width: 30px; height: 40px;");
+
+    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+
     QFont font = this->font();
-    font.setPointSize(16); // Set the font size to 16 points
+    font.setPointSize(14); // Set the font size to 16 points
     this->setFont(font);
-    this->setStyleSheet("background-color: #FFFF99;"); // Light yellow color
     connect(this, &QPushButton::clicked, this, &Chooser::toggle);
 }
 
@@ -38,9 +42,7 @@ void Chooser::toggle()
         decs().erase(decs().begin());       // Remove the first element
         decs().push_back(firstElement);
         setData();
-        if (isAndroidVersion) {
-            emit chooserToggled();
-        }
+        emit chooserToggled();
     }
 }
 
@@ -135,10 +137,7 @@ void QuteChooser::toggle()
         setData();
 
         emit quteDecisionChanged(decision());
-
-        if (isAndroidVersion) {
-            emit chooserToggled();
-        }
+        emit chooserToggled();
     }
 }
 

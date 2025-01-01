@@ -9,14 +9,13 @@ QVector<QString> ranks = {"6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 QVector<QString> ranknames = {"6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 
-bool isAndroidVersion = true;
-
 // Private Methods
 void Card::initCard()
 {
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
+    setCardType(cardType::small);
     loadImage();
 
     connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
@@ -54,6 +53,11 @@ void Card::setValue(const QString& rank)
     } else {
         value_ = 0;
     }
+}
+
+void Card::setCardType(cardType type)
+{
+    type_ = type;
 }
 
 // Constructors
@@ -188,6 +192,11 @@ void Card::loadImage(bool isCardFaceVisible)
 {
     setStr();
 
+    this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 2px; "
+                        "padding: 1px 7px; margin: 2px; font-size: 14px;");
+
+    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+
     QString imagePath;
     if (isCardFaceVisible)
         imagePath = QString(":res/cards/%1_of_%2.png").arg(rankname_, suitname_);
@@ -196,7 +205,8 @@ void Card::loadImage(bool isCardFaceVisible)
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() and not isAndroidVersion) {
+    if (!pixmap.isNull() && type_ == cardType::normal) {
+        setText("");
         // Fetch the size of the application’s primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
         QSize maxSize;
@@ -219,11 +229,14 @@ void Card::loadImage(bool isCardFaceVisible)
         // Optional: Remove padding and margins
         this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
 
-        // isAndroidVersion = true or pixmap.isNull()
     } else {
-        if (isCardFaceVisible and isEnabled()) {
+        // Remove the icon by setting an empty QIcon
+        this->setIcon(QIcon()); // This clears the icon
+
+        if (isCardFaceVisible && isEnabled()) {
             setText(str_);
-        } else
+        } else {
             setText("▓▓");
+        }
     }
 }

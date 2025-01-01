@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <algorithm> // std::next_permutation
 
+
 extern std::vector<std::vector<QString>> patterns;
 
 Game::Game(int numberOfPlayers, QObject* parent)
@@ -89,13 +90,17 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(this, &Game::toggleCardsVisible, playable().get(), &Playable::onToggleCardsVisible);
     connect(this, &Game::toggleCardsVisible, drawn().get(), &Drawn::onToggleCardsVisible);
 
-    // in handdeck of player 1 card face always shown
+    // Handdeck of player 1 card face always isVisible == true
     connect(this,
             &Game::toggleCardsVisible,
             player1()->handdeck().get(),
             &Handdeck::onToggleCardsVisible);
 
     mediaPlayer_->setAudioOutput(audioOutput_.data());
+
+    // start game with small cards (Android)
+    emit setRbCardType(cardType::small);
+    onRbCardType(cardType::small);
 
     initializeRound();
 }
@@ -299,8 +304,8 @@ void Game::handleChoosers()
     // JsuitChooser
     if (stackCard->rank() == "J") {
         if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
-            // jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
-            jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints());
+            // jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints()); // infinite loop suspected when J only in handdeck
+            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
         // end KI toggle JSuit to rank with most points
 
         // Do not allow Player1 toggle JSuitChooser:
@@ -310,8 +315,7 @@ void Game::handleChoosers()
         // and removed by cardAddedToStack -> onCardAddedToStack
 
         // Eventloop in Android is different to eventloop on PC.
-        if (isAndroidVersion)
-            emit jsuitChooser()->chooserToggled();
+        emit jsuitChooser()->chooserToggled();
     }
 
     // -----------------------------------------------------------------------
@@ -327,8 +331,7 @@ void Game::handleChoosers()
             // eightsChooser()->setDisabled(player->isRobot());
             // eightsChooser()->show();
 
-            if (isAndroidVersion)
-                emit eightsChooser()->chooserToggled();
+            emit eightsChooser()->chooserToggled();
         }
 
         // 3 Players
@@ -368,8 +371,7 @@ void Game::handleChoosers()
         eightsChooser()->setDisabled(player->isRobot());
         eightsChooser()->show();
 
-        if (isAndroidVersion)
-            emit eightsChooser()->chooserToggled();
+        emit eightsChooser()->chooserToggled();
     }
 
     // no Eights condition:
@@ -478,8 +480,7 @@ void Game::handleChoosers()
     }
     emit quteChooser()->quteDecisionChanged(quteChooser()->decision());
 
-    if (isAndroidVersion)
-        emit quteChooser()->chooserToggled();
+    emit quteChooser()->chooserToggled();
 
     // -----------------------------------------------------------------------
 
@@ -540,8 +541,7 @@ void Game::handleChoosers()
         jpointsChooser()->hide();
     }
 
-    if (isAndroidVersion)
-        emit jpointsChooser()->chooserToggled();
+    emit jpointsChooser()->chooserToggled();
 
     // -----------------------------------------------------------------------
 
@@ -552,8 +552,7 @@ void Game::handleChoosers()
         roundChooser()->setEnabled(true);
         roundChooser()->show();
 
-        if (isAndroidVersion)
-            emit roundChooser()->chooserToggled();
+        emit roundChooser()->chooserToggled();
     } else {
         roundChooser()->hide();
         roundChooser()->setEnabled(false);
@@ -909,15 +908,13 @@ void Game::handleSpecialCards()
 
     if (isFinished) {
         // make all cards visible for counting points
-        if (isAndroidVersion) {
-            for (const auto& player : std::as_const(playerList_)) {
-                player->handdeck()->setEnabled(true);
-            }
-            emit resetCbVisible(true);
+        for (const auto& player : std::as_const(playerList_)) {
+            player->handdeck()->setEnabled(true);
         }
         //
         emit countPoints(shuffles);
         emit setCbVisible(true);
+        emit resetCbVisible();
         playable()->clearCards();
         updateLcdDisplays();
     }
@@ -947,8 +944,7 @@ void Game::autoplay()
     if (!roundChooser()->isEnabled())
         player->handdeck()->setEnabled(true);
 
-    if (isAndroidVersion)
-        emit resetCbVisible(isCardsVisible_);
+    emit resetCbVisible();
 
     while (player->isRobot()) {
         while (!playable()->cards().isEmpty()) { // play all cards with same rank
@@ -976,7 +972,7 @@ void Game::autoplay()
             player->handdeck()->sortCardsByPattern(pattern);
             playable()->sortCardsByPattern(pattern);
 
-            // qDebug() << "pattern used:" << pattern;
+    
 
             // KI permute ranks
             player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
@@ -991,15 +987,14 @@ void Game::autoplay()
         }
         if (isNextPlayerPossible())
             break;
-        // updatePlayable();
+        // updatePlayable(); // executed in isNextPlayerPossible()
     }
     handleChoosers();
     emit cardsPlayed(played()->cards().size());
 
     // cardvecs and choosers need to be refreshed.
     // JsuitChooser must be refreshed separately when toggling suit
-    if (isAndroidVersion)
-        emit resetCbVisible(isCardsVisible_);
+    emit resetCbVisible();
 }
 
 void Game::refillBlindFromStack()
@@ -1064,6 +1059,44 @@ void Game::onCbVisible(bool isVisible)
     emit toggleCardsVisible(isVisible);
 }
 
+void Game::onRbCardType(cardType type)
+{
+    for (auto& card : player2()->handdeck()->cards()) {
+        card->setCardType(type);
+        card->loadImage(isCardsVisible_);
+    }
+    for (auto& card : player3()->handdeck()->cards()) {
+        card->setCardType(type);
+        card->loadImage(isCardsVisible_);
+    }
+    // Always small cards for monitor
+    // for (auto& card : monitor()->cards()) {
+    //     card->setCardType(type);
+    // }
+    for (auto& card : blind()->cards()) {
+        card->setCardType(type);
+        card->loadImage(isCardsVisible_);
+    }
+    for (auto& card : stack()->cards()) {
+        card->setCardType(type);
+        card->loadImage(true);
+    }
+    // Always small cards for drawn, playable, played
+    // for (auto& card : drawn()->cards()) {
+    //     card->setCardType(type);
+    // }
+    // for (auto& card : playable()->cards()) {
+    //     card->setCardType(type);
+    // }
+    // for (auto& card : played()->cards()) {
+    //     card->setCardType(type);
+    // }
+    for (auto& card : player1()->handdeck()->cards()) {
+        card->setCardType(type);
+        card->loadImage(true);
+    }
+    emit resetCbVisible();
+}
 
 void Game::onCbSound(int state)
 {
@@ -1097,13 +1130,11 @@ void Game::onNewRound()
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
         roundChooser()->toggle_to(QString("NEW"));
-        // qDebug() << "Starting new Round ...";
+      
         rounds += 1;
         initializeRound();
     } else {
-        // qDebug() << "Game is over...";
-        // roundChooser()->setDecision("g");
-        // roundChooser()->setDecision(QString("GAME"));
+        
         roundChooser()->toggle_to(QString("GAME"));
     }
 }
@@ -1117,7 +1148,7 @@ void Game::onNewGame()
 
     updateLcdDisplays();
 
-    // qDebug() << "Starting new game ...";
+
 
     initializeRound();
 }
