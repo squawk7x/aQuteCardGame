@@ -98,6 +98,10 @@ Game::Game(int numberOfPlayers, QObject* parent)
 
     mediaPlayer_->setAudioOutput(audioOutput_.data());
 
+    // start game with small cards (Android)
+    emit setRbCardType(cardType::small);
+    onRbCardType(cardType::small);
+
     initializeRound();
 }
 
@@ -267,10 +271,8 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    emit setCbVisible(isCardsVisible_);
-    emit toggleCardsVisible(isCardsVisible_);
-    emit setRbCardType(cardType::small);
-    onRbCardType(cardType::small);
+    emit setCbVisible(false); // start new round with card face hidden
+    emit toggleCardsVisible(false);
 
     autoplay();
 }
