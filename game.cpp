@@ -11,8 +11,8 @@ Game::Game(int numberOfPlayers, QObject* parent)
     , numberOfPlayers_(numberOfPlayers)
     , mediaPlayer_(QSharedPointer<QMediaPlayer>::create())
     , audioOutput_(QSharedPointer<QAudioOutput>::create())
-    , isCardsVisible_(false)
     , isSoundOn_(false)
+    , isCardsVisible_(false)
     , monitor_(QSharedPointer<Monitor>::create())
     , eightsChooser_(QSharedPointer<EightsChooser>::create())
     , quteChooser_(QSharedPointer<QuteChooser>::create())
@@ -90,11 +90,11 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(this, &Game::toggleCardsVisible, playable().get(), &Playable::onToggleCardsVisible);
     connect(this, &Game::toggleCardsVisible, drawn().get(), &Drawn::onToggleCardsVisible);
 
-    // in handdeck of player 1 card face always shown
-    connect(this,
-            &Game::toggleCardsVisible,
-            player1()->handdeck().get(),
-            &Handdeck::onToggleCardsVisible);
+    // Handdeck of player 1 card face always isVisible == true
+    // connect(this,
+    //         &Game::toggleCardsVisible,
+    //         player1()->handdeck().get(),
+    //         &Handdeck::onToggleCardsVisible);
 
     mediaPlayer_->setAudioOutput(audioOutput_.data());
 
@@ -214,9 +214,6 @@ QSharedPointer<Drawn> Game::drawn()
 // Methods
 void Game::initializeRound()
 {
-    emit setCbVisible(false); // to ui->cbVisible
-    emit resetCbVisible();    // to table
-
     jpointsChooser()->setDisabled(true);
     jpointsChooser()->hide();
     roundChooser()->setEnabled(false);
@@ -270,7 +267,11 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    // in case a robot player starts a new round all playable cards are played
+    emit setCbVisible(isCardsVisible_);
+    emit toggleCardsVisible(isCardsVisible_);
+    emit setRbCardType(cardType::small);
+    onRbCardType(cardType::small);
+
     autoplay();
 }
 
@@ -1053,9 +1054,11 @@ void Game::onRbCardType(cardType type)
 {
     for (auto& card : player2()->handdeck()->cards()) {
         card->setCardType(type);
+        card->loadImage(isCardsVisible_);
     }
     for (auto& card : player3()->handdeck()->cards()) {
         card->setCardType(type);
+        card->loadImage(isCardsVisible_);
     }
     // Always small cards for monitor
     // for (auto& card : monitor()->cards()) {
@@ -1063,6 +1066,7 @@ void Game::onRbCardType(cardType type)
     // }
     for (auto& card : blind()->cards()) {
         card->setCardType(type);
+        card->loadImage(isCardsVisible_);
     }
     for (auto& card : stack()->cards()) {
         card->setCardType(type);
@@ -1080,6 +1084,7 @@ void Game::onRbCardType(cardType type)
     // }
     for (auto& card : player1()->handdeck()->cards()) {
         card->setCardType(type);
+        card->loadImage(true);
     }
     emit resetCbVisible();
 }

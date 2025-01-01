@@ -38,8 +38,8 @@ signals:
     void cbVisible(bool isVisible);
 
 public slots:
-    void onRbNumPlayers2();                // Table initializes new game
-    void onRbNumPlayers3();                // Table initializes new game
+    void onRbNumPlayers2(); // from Game initializes new game
+    void onRbNumPlayers3(); // from Game initializes new game
 
     void onCbSound();                      // Transfer to Game
     void onCbVisible();                    // Transfer to Game

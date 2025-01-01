@@ -158,6 +158,16 @@ void Table::initializeGame(int numberOfPlayers)
         ui->cbVisible->setChecked(checked);
     });
 
+    connect(game_.get(), &Game::setRbCardType, this, [this](cardType type) {
+        if (type == cardType::small) {
+            ui->rbCardTypeSmall->setChecked(true); // Ensures the button is checked
+            ui->rbCardTypeSmall->click();          // Simulate the click
+        } else if (type == cardType::normal) {
+            ui->rbCardTypeNormal->setChecked(true); // Ensures the button is checked
+            ui->rbCardTypeNormal->click();          // Simulate the click
+        }
+    });
+
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
     connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);

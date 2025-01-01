@@ -134,6 +134,7 @@ signals:
     void setRbNumPlayers(int num);
     void setRbUnsorted(bool isSorted);
     void setCbVisible(bool isVisible);
+    void setRbCardType(cardType);
     void toggleCardsVisible(bool isVisible);
     void resetCbVisible();
     void setCardText();

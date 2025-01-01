@@ -2105,7 +2105,24 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>gbBlind</sender>
+   <signal>clicked()</signal>
+   <receiver>pbDraw</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>373</x>
+     <y>685</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <signal>nextClicked()</signal>
   <signal>drawClicked()</signal>

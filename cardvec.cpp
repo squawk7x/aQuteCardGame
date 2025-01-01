@@ -6,7 +6,7 @@
 CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     : QWidget(parent)
     , cards_(std::move(rhs))
-    , isCardFaceVisible_(true)
+    , isCardFaceVisible_(false)
 {
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
@@ -185,7 +185,7 @@ QString CardVec::suitOfRankWithMostPoints() const
         }
     }
 
-    foreach (const auto& card, cards_) {
+    for (const auto& card : cards_) {
         if (card->rank() == rankWithMaxPoints) {
             return card->suit();
         }
@@ -217,7 +217,5 @@ void CardVec::onToggleCardsVisible(bool isVisible)
 
     for (const auto& card : cards_) {
         card->loadImage(isVisible);
-        // card->update();
     }
-    // updateLayout();
 }

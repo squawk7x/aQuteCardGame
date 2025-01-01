@@ -228,6 +228,10 @@ void Card::loadImage(bool isCardFaceVisible)
         // Remove the icon by setting an empty QIcon
         this->setIcon(QIcon()); // This clears the icon
 
+        this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 5px; "
+                            "padding: 5px; margin: 0px; height: 40px;");
+        this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+
         if (isCardFaceVisible && isEnabled()) {
             setText(str_);
         } else {
