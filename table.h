@@ -51,7 +51,7 @@ public slots:
     void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
 
-    void onResetCbVisible(bool isVisible); // for Andoid Version
+    void onResetCbVisible(); // for Andoid Version
     void onChooserToggled();
 };
 

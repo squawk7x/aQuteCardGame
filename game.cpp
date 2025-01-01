@@ -214,6 +214,9 @@ QSharedPointer<Drawn> Game::drawn()
 // Methods
 void Game::initializeRound()
 {
+    emit setCbVisible(false); // to ui->cbVisible
+    emit resetCbVisible();    // to table
+
     jpointsChooser()->setDisabled(true);
     jpointsChooser()->hide();
     roundChooser()->setEnabled(false);
@@ -267,8 +270,6 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    emit setCbVisible(false);
-
     // in case a robot player starts a new round all playable cards are played
     autoplay();
 }
@@ -281,8 +282,8 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
             mediaPlayer_->setSource(QUrl("qrc:res/sounds/put_card_on_stack.wav"));
             mediaPlayer_->play();
         }
-        emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
+        emit cardAddedToStack(card);
 
         updatePlayable();
         handleChoosers();
@@ -902,10 +903,10 @@ void Game::handleSpecialCards()
         for (const auto& player : std::as_const(playerList_)) {
             player->handdeck()->setEnabled(true);
         }
-        emit resetCbVisible(true);
         //
         emit countPoints(shuffles);
         emit setCbVisible(true);
+        emit resetCbVisible();
         playable()->clearCards();
         updateLcdDisplays();
     }
@@ -935,7 +936,7 @@ void Game::autoplay()
     if (!roundChooser()->isEnabled())
         player->handdeck()->setEnabled(true);
 
-    emit resetCbVisible(isCardsVisible_);
+    emit resetCbVisible();
 
     while (player->isRobot()) {
         while (!playable()->cards().isEmpty()) { // play all cards with same rank
@@ -983,7 +984,7 @@ void Game::autoplay()
 
     // cardvecs and choosers need to be refreshed.
     // JsuitChooser must be refreshed separately when toggling suit
-    emit resetCbVisible(isCardsVisible_);
+    emit resetCbVisible();
 }
 
 void Game::refillBlindFromStack()
@@ -1065,6 +1066,7 @@ void Game::onRbCardType(cardType type)
     }
     for (auto& card : stack()->cards()) {
         card->setCardType(type);
+        card->loadImage(true);
     }
     // Always small cards for drawn, playable, played
     // for (auto& card : drawn()->cards()) {
@@ -1079,7 +1081,7 @@ void Game::onRbCardType(cardType type)
     for (auto& card : player1()->handdeck()->cards()) {
         card->setCardType(type);
     }
-    emit resetCbVisible(false);
+    emit resetCbVisible();
 }
 
 void Game::onCbSound(int state)

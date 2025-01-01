@@ -204,7 +204,7 @@ void Table::initializeGame(int numberOfPlayers)
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
     QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
 
-    onResetCbVisible(false);
+    // onResetCbVisible();
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -284,8 +284,9 @@ void Table::onHelpClicked()
     // Temporary file will automatically delete when it goes out of scope
 }
 
-void Table::onResetCbVisible(bool isVisible)
+void Table::onResetCbVisible()
 {
+    bool isVisible = ui->cbVisible->isChecked();
     ui->cbVisible->setChecked(!isVisible);
     ui->cbVisible->setChecked(isVisible);
 

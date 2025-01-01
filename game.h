@@ -135,7 +135,7 @@ signals:
     void setRbUnsorted(bool isSorted);
     void setCbVisible(bool isVisible);
     void toggleCardsVisible(bool isVisible);
-    void resetCbVisible(bool isVisible);
+    void resetCbVisible();
     void setCardText();
 
 public slots:
