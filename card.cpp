@@ -192,6 +192,11 @@ void Card::loadImage(bool isCardFaceVisible)
 {
     setStr();
 
+    this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 2px; "
+                        "padding: 1px 7px; margin: 2px; font-size: 14px;");
+
+    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+
     QString imagePath;
     if (isCardFaceVisible)
         imagePath = QString(":res/cards/%1_of_%2.png").arg(rankname_, suitname_);
@@ -227,11 +232,6 @@ void Card::loadImage(bool isCardFaceVisible)
     } else {
         // Remove the icon by setting an empty QIcon
         this->setIcon(QIcon()); // This clears the icon
-
-        this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 2px; "
-                            "padding: 1px 7px; margin: 2px; font-size: 14px;");
-
-        this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         if (isCardFaceVisible && isEnabled()) {
             setText(str_);

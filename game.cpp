@@ -302,8 +302,8 @@ void Game::handleChoosers()
     // JsuitChooser
     if (stackCard->rank() == "J") {
         if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
-            // jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
-            jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints());
+            // jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints()); // infinite loop suspected when J only in handdeck
+            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
         // end KI toggle JSuit to rank with most points
 
         // Do not allow Player1 toggle JSuitChooser:
