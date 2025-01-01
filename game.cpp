@@ -991,7 +991,7 @@ void Game::autoplay()
         }
         if (isNextPlayerPossible())
             break;
-        updatePlayable();
+        // updatePlayable();
     }
     handleChoosers();
     emit cardsPlayed(played()->cards().size());
