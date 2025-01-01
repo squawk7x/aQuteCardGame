@@ -91,10 +91,10 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(this, &Game::toggleCardsVisible, drawn().get(), &Drawn::onToggleCardsVisible);
 
     // Handdeck of player 1 card face always isVisible == true
-    // connect(this,
-    //         &Game::toggleCardsVisible,
-    //         player1()->handdeck().get(),
-    //         &Handdeck::onToggleCardsVisible);
+    connect(this,
+            &Game::toggleCardsVisible,
+            player1()->handdeck().get(),
+            &Handdeck::onToggleCardsVisible);
 
     mediaPlayer_->setAudioOutput(audioOutput_.data());
 

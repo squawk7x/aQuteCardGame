@@ -229,7 +229,7 @@ void Card::loadImage(bool isCardFaceVisible)
         this->setIcon(QIcon()); // This clears the icon
 
         this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 2px; "
-                            "padding: 1px; margin: 0px; font-size: 14px;");
+                            "padding: 1px 7px; margin: 2px; font-size: 14px;");
 
         this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 

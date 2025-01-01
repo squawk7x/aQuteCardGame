@@ -23,8 +23,9 @@ Chooser::Chooser(QVector<QString> decs, QObject *parent)
         setData();
     }
 
-    this->setStyleSheet("background-color: yellow; border: 1px solid black; border-radius: 5px; "
-                        "padding: 5px; margin: 0px; min-width: 30px; height: 40px;");
+    this->setStyleSheet("background-color: yellow; border: 1px solid black; border-radius: 4px; "
+                        "padding: 1px 7px; margin: 2px; min-width: 30px; height: 40px;");
+
     this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     QFont font = this->font();
