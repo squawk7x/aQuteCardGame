@@ -2,7 +2,9 @@
 
 Got::Got(QWidget* parent)
     : CardVec(parent)
-{}
+{
+    cardFace_ = CardFace::Closed;
+}
 
 Got::~Got()
 {

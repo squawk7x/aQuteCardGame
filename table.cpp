@@ -64,7 +64,7 @@ void Table::initializeGame(int numberOfPlayers)
     QHBoxLayout* layoutPlayer1 = findChild<QHBoxLayout*>("layoutPlayer1");
     QPushButton* pbNext = findChild<QPushButton*>("pbNext");
     QPushButton* pbDraw = findChild<QPushButton*>("pbDraw");
-    QPushButton* pbHelp = findChild<QPushButton*>("pbHelp");
+    // QPushButton* pbHelp = findChild<QPushButton*>("pbHelp");
 
     // Add widgets to their respective layouts
     layoutPlayer2->addWidget(game_->player2()->handdeck().get());
@@ -146,7 +146,7 @@ void Table::initializeGame(int numberOfPlayers)
     QGroupBox* groupBoxPlayer1 = findChild<QGroupBox*>("gbPlayer1");
     groupBoxPlayer1->setLayout(layoutPlayer1);
 
-    connect(game_.get(), &Game::setRbNumPlayers, this, [this](int num) {
+    connect(game_.get(), &Game::setRbNumPlayers, this, [&](int num) {
         if (num == 2) {
             ui->rbNumPlayers2->setChecked(true);
         } else {
@@ -154,15 +154,15 @@ void Table::initializeGame(int numberOfPlayers)
         }
     });
 
-    connect(game_.get(), &Game::setCbVisible, this, [this](bool checked) {
+    connect(game_.get(), &Game::setCbVisible, this, [&](bool checked) {
         ui->cbVisible->setChecked(checked);
     });
 
-    connect(game_.get(), &Game::setRbCardType, this, [this](cardType type) {
-        if (type == cardType::small) {
+    connect(game_.get(), &Game::setRbCardType, this, [&](CardType type) {
+        if (type == CardType::Small) {
             ui->rbCardTypeSmall->setChecked(true); // Ensures the button is checked
             ui->rbCardTypeSmall->click();          // Simulate the click
-        } else if (type == cardType::normal) {
+        } else if (type == CardType::Normal) {
             ui->rbCardTypeNormal->setChecked(true); // Ensures the button is checked
             ui->rbCardTypeNormal->click();          // Simulate the click
         }
@@ -172,22 +172,17 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
     connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
     connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
-    // connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
-    //     game_->toggleCardsType(cardType::small);
-    // });
-    // connect(ui->rbCardTypeNormal, &QRadioButton::clicked, game_.get(), [&]() {
-    //     game_->toggleCardsType(cardType::normal);
-    // });
-    connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
-        game_->onRbCardType(cardType::small);
-    });
-    connect(ui->rbCardTypeNormal, &QRadioButton::clicked, game_.get(), [&]() {
-        game_->onRbCardType(cardType::normal);
-    });
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
+    connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
+        game_->onRbCardType(CardType::Small);
+    });
+    connect(ui->rbCardTypeNormal, &QRadioButton::clicked, game_.get(), [&]() {
+        game_->onRbCardType(CardType::Normal);
+    });
 
     QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
+
     QObject::connect(game_.get()->jsuitChooser().get(),
                      &JsuitChooser::chooserToggled,
                      this,
@@ -212,7 +207,7 @@ void Table::initializeGame(int numberOfPlayers)
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
-    QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
+    // QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
 
     // onResetCbVisible();
 }
@@ -300,7 +295,7 @@ void Table::onResetCbVisible()
     ui->cbVisible->setChecked(!isVisible);
     ui->cbVisible->setChecked(isVisible);
 
-    emit cbVisible(ui->cbVisible->isChecked());
+    // emit cbVisible(ui->cbVisible->isChecked());
 }
 
 void Table::onNextClicked()

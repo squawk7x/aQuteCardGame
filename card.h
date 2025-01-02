@@ -12,7 +12,7 @@ extern QVector<QString> ranks;
 extern QVector<QString> ranknames;
 extern QVector<QString> suitnames;
 
-enum class cardType { small, normal };
+enum class CardType { Small, Normal };
 
 class Card : public QPushButton
 {
@@ -25,7 +25,7 @@ private:
     QString rankname_;
     QString str_;
     int value_;
-    cardType type_;
+    CardType type_;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
@@ -49,7 +49,7 @@ public:
     int value() const;
 
     //Setters
-    void setCardType(cardType type);
+    void setCardType(CardType type);
     void loadImage(bool isCardFaceVisible = true);
 
 private:

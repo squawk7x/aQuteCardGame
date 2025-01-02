@@ -7,7 +7,11 @@
 
 Handdeck::Handdeck(QWidget* parent)
     : CardVec(parent)
-{}
+{
+    // cardFace_ different for player1 and other players
+    // cardFace_ = CardFace::Open;
+    // cardFace_ = CardFace::Closed;
+}
 
 void Handdeck::addCard(QSharedPointer<Card> card)
 {

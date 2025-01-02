@@ -10,6 +10,8 @@ extern QVector<QString> ranks;
 Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
     : CardVec(parent, rhs)
 {
+    cardFace_ = CardFace::Closed;
+
     if (rhs.isEmpty()) {
         foreach (const auto& suit, suits) {
             foreach (const auto& rank, ranks) {

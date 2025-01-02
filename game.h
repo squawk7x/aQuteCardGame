@@ -18,6 +18,7 @@
 #include "stack.h"
 
 enum class DrawOption { MustCard, BadCard };
+enum class ButtonColor { Green, Red };
 
 class Game : public QObject
 {
@@ -132,21 +133,20 @@ signals:
 
     // Controls and Settings:
     void setRbNumPlayers(int num);
-    void setRbUnsorted(bool isSorted);
     void setCbVisible(bool isVisible);
-    void setRbCardType(cardType);
+    void setRbCardType(CardType);
+    void setCardText();
     void toggleCardsVisible(bool isVisible);
     void resetCbVisible();
-    void setCardText();
 
 public slots:
-    void onHandCardClicked(const QSharedPointer<Card>& card);
     void activateNextPlayer();
+    void onHandCardClicked(const QSharedPointer<Card>& card);
     void onNewRound();
     void onNewGame();
     void onCbSound(int state);
     void onCbVisible(bool isVisible);
-    void onRbCardType(cardType type);
+    void onRbCardType(CardType type);
     void onRbSuit();
     void onRbRank();
     void onBlindClicked();

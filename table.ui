@@ -867,19 +867,6 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_05">
         <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="QGroupBox" name="groupBox_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -1392,6 +1379,19 @@
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <layout class="QGridLayout" name="gridLayout_2"/>
         </item>
         <item>
@@ -1426,6 +1426,19 @@
            </property>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QGroupBox" name="groupBox">
@@ -1939,19 +1952,6 @@
           </layout>
          </widget>
         </item>
-        <item>
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item alignment="Qt::AlignmentFlag::AlignLeft">
          <widget class="QGroupBox" name="gbSortCardsBy">
           <property name="sizePolicy">
@@ -2078,27 +2078,11 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>gbBlind</sender>
-   <signal>clicked()</signal>
-   <receiver>pbDraw</receiver>
-   <slot>animateClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>158</x>
-     <y>415</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>373</x>
-     <y>685</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <signal>nextClicked()</signal>
   <signal>drawClicked()</signal>
+  <signal>colorNextButton()</signal>
   <slot>onDrawClicked()</slot>
   <slot>onNextClicked()</slot>
   <slot>onHelpClicked()</slot>

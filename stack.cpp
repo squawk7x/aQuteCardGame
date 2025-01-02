@@ -5,6 +5,7 @@ Stack::Stack(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
     : CardVec(parent, rhs)
 {
     // Initialization code specific to Stack can go here if needed
+    cardFace_ = CardFace::Open;
 }
 
 Stack::~Stack()

@@ -15,10 +15,10 @@ void Card::initCard()
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
-    setCardType(cardType::small);
+    setCardType(CardType::Small);
     loadImage();
 
-    connect(this, &QPushButton::clicked, this, [this]() { emit cardClicked(this->clone()); });
+    connect(this, &QPushButton::clicked, this, [&]() { emit cardClicked(this->clone()); });
 }
 
 void Card::setSuitname(const QString& suit)
@@ -55,7 +55,7 @@ void Card::setValue(const QString& rank)
     }
 }
 
-void Card::setCardType(cardType type)
+void Card::setCardType(CardType type)
 {
     type_ = type;
 }
@@ -205,7 +205,7 @@ void Card::loadImage(bool isCardFaceVisible)
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
-    if (!pixmap.isNull() && type_ == cardType::normal) {
+    if (!pixmap.isNull() && type_ == CardType::Normal) {
         setText("");
         // Fetch the size of the application’s primary screen
         QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen

@@ -99,8 +99,8 @@ Game::Game(int numberOfPlayers, QObject* parent)
     mediaPlayer_->setAudioOutput(audioOutput_.data());
 
     // start game with small cards (Android)
-    emit setRbCardType(cardType::small);
-    onRbCardType(cardType::small);
+    // emit setRbCardType(CardType::Small);
+    // onRbCardType(CardType::Small);
 
     initializeRound();
 }
@@ -271,9 +271,11 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
+    emit setRbCardType(CardType::Small);
     emit setCbVisible(false);
-    // if (isAndroidVersion)
-    //     emit resetCbVisible(false);
+    emit toggleCardsVisible(false);
+    // Android
+    // emit resetCbVisible();
 
     // in case a robot player starts a new round all playable cards are played
     autoplay();
@@ -314,7 +316,7 @@ void Game::handleChoosers()
         // JsuitChooser is shown until next player's card is added to stack
         // and removed by cardAddedToStack -> onCardAddedToStack
 
-        // Eventloop in Android is different to eventloop on PC.
+        // Android
         emit jsuitChooser()->chooserToggled();
     }
 
@@ -693,8 +695,11 @@ bool Game::isNextPlayerPossible()
 
     updatePlayable();
 
-    return !played()->cards().isEmpty()
-           || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty());
+    if (!played()->cards().isEmpty()
+        || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty()))
+        return true;
+    else
+        return false;
 }
 
 void Game::drawCardFromBlind(DrawOption option)
@@ -840,9 +845,6 @@ void Game::handleSpecialCards()
     for (int i = 0; i < sevens; ++i) {
         connect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
         drawCardFromBlind(DrawOption::BadCard);
-        // if Player1 gets a card, cards are unsorted
-        if (!player->isRobot())
-            emit setRbUnsorted(true);
         disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
     }
 
@@ -870,9 +872,6 @@ void Game::handleSpecialCards()
                     connect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 drawCardFromBlind(DrawOption::BadCard);
                 drawCardFromBlind(DrawOption::BadCard);
-                // if Player1 gets a card, cards are unsorted
-                if (!player->isRobot())
-                    emit setRbUnsorted(true);
                 disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
                 disconnect(this, &Game::cardBadFromBlind, got2_.get(), &Got::onCardBadFromBlind);
                 rotatePlayerList();
@@ -891,9 +890,6 @@ void Game::handleSpecialCards()
         for (int i = 0; i < eights; ++i) {
             drawCardFromBlind(DrawOption::BadCard);
             drawCardFromBlind(DrawOption::BadCard);
-            // if Player1 gets a card, cards are unsorted
-            if (!player->isRobot())
-                emit setRbUnsorted(true);
         }
         disconnect(this, &Game::cardBadFromBlind, got1_.get(), &Got::onCardBadFromBlind);
         rotatePlayerList();
@@ -944,6 +940,7 @@ void Game::autoplay()
     if (!roundChooser()->isEnabled())
         player->handdeck()->setEnabled(true);
 
+    // Android
     emit resetCbVisible();
 
     while (player->isRobot()) {
@@ -994,6 +991,7 @@ void Game::autoplay()
 
     // cardvecs and choosers need to be refreshed.
     // JsuitChooser must be refreshed separately when toggling suit
+    // Android
     emit resetCbVisible();
 }
 
@@ -1059,7 +1057,7 @@ void Game::onCbVisible(bool isVisible)
     emit toggleCardsVisible(isVisible);
 }
 
-void Game::onRbCardType(cardType type)
+void Game::onRbCardType(CardType type)
 {
     for (auto& card : player2()->handdeck()->cards()) {
         card->setCardType(type);
@@ -1095,6 +1093,7 @@ void Game::onRbCardType(cardType type)
         card->setCardType(type);
         card->loadImage(true);
     }
+    // Android
     emit resetCbVisible();
 }
 

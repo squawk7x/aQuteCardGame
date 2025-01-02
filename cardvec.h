@@ -9,6 +9,8 @@
 #include <QWidget>
 #include "card.h"
 
+enum class CardFace { Open, Closed };
+
 class CardVec : public QWidget
 {
     Q_OBJECT
@@ -42,11 +44,12 @@ protected:
     QHBoxLayout* layout_;
     QVector<QSharedPointer<Card>> cards_;
     bool isCardFaceVisible_;
+    CardFace cardFace_;
 
 public slots:
     virtual void onCardClicked(const QSharedPointer<Card>& card);
     virtual void onToggleCardsVisible(bool isVisible);
-    // virtual void onToggleCardsType(cardType newType);
+    // virtual void onToggleCardsType(CardType newType);
 };
 
 #endif // CARDVEC_H

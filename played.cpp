@@ -3,7 +3,9 @@
 
 Played::Played(QWidget* parent)
     : CardVec(parent)
-{}
+{
+    cardFace_ = CardFace::Open;
+}
 
 Played::~Played()
 {

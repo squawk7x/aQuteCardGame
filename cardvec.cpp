@@ -8,6 +8,8 @@ CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     , cards_(std::move(rhs))
     , isCardFaceVisible_(false)
 {
+    cardFace_ = CardFace::Closed;
+
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
 

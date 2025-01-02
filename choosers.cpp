@@ -167,7 +167,7 @@ RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
 {
     disconnect(this, &QPushButton::clicked, this, &Chooser::toggle);
 
-    connect(this, &QPushButton::clicked, this, [this]() {
+    connect(this, &QPushButton::clicked, this, [&]() {
         if (decision() == QString("FINISH")) {
             toggle_to(QString("NEW"));
             emit finishRound();

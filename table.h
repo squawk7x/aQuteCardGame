@@ -4,7 +4,7 @@
 #include <QGroupBox>
 #include <QSharedPointer>
 #include <QWidget>
-#include "card.h"
+// #include "card.h"
 #include "game.h"
 
 QT_BEGIN_NAMESPACE

@@ -2,7 +2,10 @@
 
 Playable::Playable(QWidget* parent)
     : CardVec(parent)
-{}
+{
+    // cardFaces for Player 2+3 not shown in autoplay;
+    cardFace_ = CardFace::Open;
+}
 
 Playable::~Playable()
 {
