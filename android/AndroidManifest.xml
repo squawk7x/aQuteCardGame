@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aQuteCardGame">
+    package="de.ottburg.aQuteCardGame">
 
     <!-- Minimum and Target SDK versions -->
     <uses-sdk android:minSdkVersion="12" android:targetSdkVersion="33" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/aQuteCardGame"
         android:theme="@style/Theme.App">
 

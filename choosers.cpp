@@ -24,12 +24,12 @@ Chooser::Chooser(QVector<QString> decs, QObject *parent)
     }
 
     this->setStyleSheet("background-color: yellow; border: 1px solid black; border-radius: 4px; "
-                        "padding: 1px 7px; margin: 2px; min-width: 30px; height: 40px;");
+                        "padding: 1px 2px; margin: 8px 2px;font-size: 16px;");
 
     this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     QFont font = this->font();
-    font.setPointSize(14); // Set the font size to 16 points
+    font.setPointSize(16);
     this->setFont(font);
     connect(this, &QPushButton::clicked, this, &Chooser::toggle);
 }

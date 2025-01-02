@@ -41,7 +41,7 @@
         <item>
          <widget class="QGroupBox" name="gbPlayer2">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -57,16 +57,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -87,7 +87,7 @@
         <item>
          <widget class="QGroupBox" name="gbPlayer3">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -103,16 +103,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -137,7 +137,7 @@
         <item>
          <widget class="QGroupBox" name="gbMonitor">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -156,16 +156,16 @@
             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -189,14 +189,14 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>80</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -211,16 +211,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -231,14 +231,14 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>80</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -253,16 +253,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -273,14 +273,14 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>80</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -295,16 +295,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -315,15 +315,21 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>80</width>
+            <width>0</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="title">
@@ -337,16 +343,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -370,7 +376,7 @@
         <item>
          <widget class="QGroupBox" name="gbGot1">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -389,16 +395,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -406,7 +412,7 @@
         <item>
          <widget class="QGroupBox" name="gbGot2">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -422,20 +428,17 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_3"/>
-           </item>
           </layout>
          </widget>
         </item>
@@ -459,10 +462,16 @@
         <item>
          <widget class="QGroupBox" name="gbShuffles">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="toolTip">
            <string extracomment="Counter how often an empty blind was refilled from stack."/>
@@ -480,8 +489,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -489,14 +507,14 @@
         <item>
          <widget class="QGroupBox" name="gbBlind">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -510,8 +528,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -519,14 +546,14 @@
         <item>
          <widget class="QGroupBox" name="gbJsuitChooser">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>25</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -540,8 +567,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -549,14 +585,14 @@
         <item>
          <widget class="QGroupBox" name="gbStack">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -573,8 +609,17 @@
            <property name="sizeConstraint">
             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -599,15 +644,21 @@
         <item>
          <widget class="QGroupBox" name="gbDrawn">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>0</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="title">
@@ -620,8 +671,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -629,15 +689,21 @@
         <item>
          <widget class="QGroupBox" name="gbPlayable">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>0</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="title">
@@ -650,8 +716,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -662,15 +737,21 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>0</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="title">
@@ -683,8 +764,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -705,10 +795,22 @@
         <item>
          <widget class="QGroupBox" name="gbRound">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="title">
            <string>Round</string>
@@ -720,8 +822,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -729,10 +840,22 @@
         <item>
          <widget class="QGroupBox" name="gbScores">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="title">
            <string>Scores</string>
@@ -744,8 +867,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -753,10 +885,22 @@
         <item>
          <widget class="QGroupBox" name="gbNumberOfPlayers">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="title">
            <string>Players</string>
@@ -768,8 +912,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <item>
             <widget class="QRadioButton" name="rbNumPlayers2">
@@ -778,6 +931,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LayoutDirection::LeftToRight</enum>
              </property>
              <property name="text">
               <string>2</string>
@@ -791,6 +947,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LayoutDirection::LeftToRight</enum>
              </property>
              <property name="text">
               <string>3</string>
@@ -806,10 +965,22 @@
         <item>
          <widget class="QGroupBox" name="gbSound">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="title">
            <string>Settings</string>
@@ -821,8 +992,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <item>
             <widget class="QCheckBox" name="cbSound">
@@ -1397,7 +1577,7 @@
         <item>
          <widget class="QGroupBox" name="gbPlayer1">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -1413,16 +1593,16 @@
             <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
           </layout>
          </widget>
@@ -1955,14 +2135,14 @@
         <item alignment="Qt::AlignmentFlag::AlignLeft">
          <widget class="QGroupBox" name="gbSortCardsBy">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>80</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -1976,8 +2156,17 @@
            <property name="spacing">
             <number>5</number>
            </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>1</number>
            </property>
            <item>
             <widget class="QRadioButton" name="rbSuit">
@@ -2020,14 +2209,14 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>80</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -2038,6 +2227,18 @@
            <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <widget class="QRadioButton" name="rbCardTypeSmall">
              <property name="sizePolicy">

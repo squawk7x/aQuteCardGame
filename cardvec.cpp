@@ -29,10 +29,9 @@ void CardVec::addCard(QSharedPointer<Card> card)
 {
     if (card) {
         card->setParent(this);
-        this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 2px; "
-                            "padding: 1px 7px; margin: 2px; font-size: 14px;");
-
-        this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        card->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
+                            "padding: 1px 2px; margin: 0px; font-size: 16px;");
+        card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
         card->loadImage(isCardFaceVisible_);
         cards_.append(card);
         layout_->addWidget(card.data());
@@ -196,7 +195,7 @@ QString CardVec::suitOfRankWithMostPoints() const
             return card->suit();
         }
     }
-    return QString();
+    return QString("♦"); // suspect program crash here when only 'J' in handdeck and finish round
 }
 
 void CardVec::updateLayout()

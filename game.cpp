@@ -271,11 +271,12 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    emit setRbCardType(CardType::Small);
-    emit setCbVisible(false);
-    emit toggleCardsVisible(false);
+    emit setRbCardType(CardType::Small); // to Table
+    emit setCbVisible(false);            // to Table
+    emit toggleCardsVisible(false);      // to CardVec
+
     // Android
-    // emit resetCbVisible();
+    emit resetCbVisible(); // to Table
 
     // in case a robot player starts a new round all playable cards are played
     autoplay();
@@ -306,8 +307,9 @@ void Game::handleChoosers()
     // JsuitChooser
     if (stackCard->rank() == "J") {
         if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
-            // jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints()); // infinite loop suspected when J only in handdeck
-            jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
+            jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints());
+        // program crash suspected ↑ when J only in handdeck and finishing round
+        // jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
         // end KI toggle JSuit to rank with most points
 
         // Do not allow Player1 toggle JSuitChooser:

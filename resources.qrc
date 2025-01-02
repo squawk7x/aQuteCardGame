@@ -185,24 +185,17 @@
         <file>res/choosers_small/jsuit_of_hearts.xcf</file>
         <file>res/choosers_small/jsuit_of_spades.png</file>
         <file>res/choosers_small/jsuit_of_spades.xcf</file>
-        <file>android/mipmap-anydpi-v26/ic_launcher.xml</file>
-        <file>android/mipmap-anydpi-v26/ic_launcher_adaptive_back.png</file>
-        <file>android/mipmap-anydpi-v26/ic_launcher_adaptive_fore.png</file>
-        <file>android/mipmap-hdpi/ic_launcher.png</file>
-        <file>android/mipmap-hdpi/ic_launcher_adaptive_back.png</file>
-        <file>android/mipmap-hdpi/ic_launcher_adaptive_fore.png</file>
-        <file>android/mipmap-mdpi/ic_launcher.png</file>
-        <file>android/mipmap-mdpi/ic_launcher_adaptive_back.png</file>
-        <file>android/mipmap-mdpi/ic_launcher_adaptive_fore.png</file>
-        <file>android/mipmap-xhdpi/ic_launcher.png</file>
-        <file>android/mipmap-xhdpi/ic_launcher_adaptive_back.png</file>
-        <file>android/mipmap-xhdpi/ic_launcher_adaptive_fore.png</file>
-        <file>android/mipmap-xxhdpi/ic_launcher.png</file>
-        <file>android/mipmap-xxhdpi/ic_launcher_adaptive_back.png</file>
-        <file>android/mipmap-xxhdpi/ic_launcher_adaptive_fore.png</file>
-        <file>android/mipmap-xxxhdpi/ic_launcher.png</file>
-        <file>android/mipmap-xxxhdpi/ic_launcher_adaptive_back.png</file>
-        <file>android/mipmap-xxxhdpi/ic_launcher_adaptive_fore.png</file>
-                <file>android/AndroidManifest.xml</file>
+        <file>android/res/drawable-anydpi-v21/ic_launcher.xml</file>
+        <file>android/res/drawable-anydpi-v21/ic_launcher_adaptive_back.xml</file>
+        <file>android/res/drawable-anydpi-v21/ic_launcher_adaptive_fore.xml</file>
+        <file>android/res/drawable-hdpi-v4/ic_launcher.xml</file>
+        <file>android/res/drawable-hdpi-v4/ic_launcher_adaptive_back.xml</file>
+        <file>android/res/drawable-hdpi-v4/ic_launcher_adaptive_fore.xml</file>
+        <file>android/res/drawable-mdpi-v4/ic_launcher.xml</file>
+        <file>android/res/drawable-mdpi-v4/ic_launcher_adaptive_back.xml</file>
+        <file>android/res/drawable-mdpi-v4/ic_launcher_adaptive_fore.xml</file>
+        <file>android/AndroidManifest.xml</file>
+        <file>android/res/drawable/ic_launcher.xml</file>
+        <file>android/res/xml/qtprovider_paths.xml</file>
     </qresource>
 </RCC>

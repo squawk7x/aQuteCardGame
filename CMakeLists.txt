@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(aQuteCardGame VERSION 0.1 LANGUAGES CXX)
+project(
+  aQuteCardGame
+  VERSION 0.1
+  LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -9,7 +12,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_PREFIX_PATH "/home/andreas/Qt/6.8.1/gcc_64/lib/cmake/Qt6" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "~/Qt/6.8.1/gcc_64/lib/cmake/Qt6" ${CMAKE_PREFIX_PATH})
 
 # Ensure Qt 6 is being used
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Multimedia)
@@ -21,8 +24,6 @@ set(PROJECT_SOURCES
     table.h
     card.cpp
     card.h
-
-
     blind.cpp
     blind.h
     stack.cpp
@@ -46,18 +47,15 @@ set(PROJECT_SOURCES
     got.cpp
     got.h
     table.ui
-    README.md
-)
+    choosers.h
+    choosers.cpp
+    README.md)
 
 # For Qt6, use `qt_add_resources` for handling resources
 qt_add_resources(RESOURCES resources.qrc)
 
-qt_add_executable(aQuteCardGame
-    ${PROJECT_SOURCES}
-    ${RESOURCES}
-    choosers.h choosers.cpp
-    MANUAL_FINALIZATION
-)
+qt_add_executable(aQuteCardGame ${PROJECT_SOURCES} ${RESOURCES}
+                  MANUAL_FINALIZATION)
 
 # Finalize the executable if using Qt 6
 qt_finalize_executable(aQuteCardGame)
@@ -67,15 +65,28 @@ target_link_libraries(aQuteCardGame PRIVATE Qt6::Widgets Qt6::Multimedia)
 
 # Install the target
 include(GNUInstallDirs)
-install(TARGETS aQuteCardGame
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+install(
+  TARGETS aQuteCardGame
+  BUNDLE DESTINATION .
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-# Android-specific settings
+set(APP_NAME "aQuteCardGame")
+
+# Specify Android package source directory
 if(ANDROID)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android"
+  set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android")
+
+  # Ensure the directory exists
+  if(NOT EXISTS ${ANDROID_PACKAGE_SOURCE_DIR})
+    message(
+      FATAL_ERROR
+        "Android package source directory does not exist: ${ANDROID_PACKAGE_SOURCE_DIR}"
     )
+  endif()
+
+  # Generate deployment settings for Android
+  set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android")
+  qt_android_generate_deployment_settings(${APP_NAME} PACKAGE_SOURCE_DIR
+                                          "${ANDROID_PACKAGE_SOURCE_DIR}")
 endif()

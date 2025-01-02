@@ -192,9 +192,10 @@ void Card::loadImage(bool isCardFaceVisible)
 {
     setStr();
 
-    this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 2px; "
-                        "padding: 1px 7px; margin: 2px; font-size: 14px;");
+    this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
+                        "padding: 1px 2px; margin: 0px; font-size: 16px;");
 
+    // Set the button's size policy to expand vertically and have a minimum width
     this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
 
     QString imagePath;

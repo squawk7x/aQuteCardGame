@@ -138,6 +138,7 @@ signals:
     void setCardText();
     void toggleCardsVisible(bool isVisible);
     void resetCbVisible();
+    void clickToTable(); // to Table
 
 public slots:
     void activateNextPlayer();

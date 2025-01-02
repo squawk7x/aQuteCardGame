@@ -208,8 +208,6 @@ void Table::initializeGame(int numberOfPlayers)
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
     // QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
-
-    // onResetCbVisible();
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -240,6 +238,15 @@ void Table::keyPressEvent(QKeyEvent* event)
             addSpecialCardsToHand(event);
         }
     }
+    // if (event->key() == Qt::Key_Down) {
+    //     qDebug() << "Arrow Down pressed";
+    //     ui->pbDraw->click(); // Simulate pbDraw button click
+    // } else if (event->key() == Qt::Key_Right) {
+    //     qDebug() << "Arrow Right pressed";
+    //     ui->pbNext->click(); // Simulate pbNext button click
+    // } else {
+    //     Table::keyPressEvent(event); // Pass to base class for default handling
+    // }
 }
 
 #include <QDebug>
