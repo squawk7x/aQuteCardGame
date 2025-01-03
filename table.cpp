@@ -1,14 +1,22 @@
 #include "table.h"
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDialog>
 #include <QDir>
+#include <QFile>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QGroupBox>
 #include <QKeyEvent>
+#include <QMessageBox>
 #include <QMouseEvent>
 #include <QProcess>
+#include <QPushButton>
 #include <QScreen>
 #include <QShortcut>
+#include <QTextEdit>
+#include <QTextStream>
+#include <QVBoxLayout>
 #include "card.h"
 #include "ui_table.h"
 
@@ -64,7 +72,7 @@ void Table::initializeGame(int numberOfPlayers)
     QHBoxLayout* layoutPlayer1 = findChild<QHBoxLayout*>("layoutPlayer1");
     QPushButton* pbNext = findChild<QPushButton*>("pbNext");
     QPushButton* pbDraw = findChild<QPushButton*>("pbDraw");
-    // QPushButton* pbHelp = findChild<QPushButton*>("pbHelp");
+    QPushButton* pbInfo = findChild<QPushButton*>("pbInfo");
 
     // Add widgets to their respective layouts
     layoutPlayer2->addWidget(game_->player2()->handdeck().get());
@@ -209,7 +217,7 @@ void Table::initializeGame(int numberOfPlayers)
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
-    // QObject::connect(pbHelp, &QPushButton::clicked, this, &Table::onHelpClicked);
+    QObject::connect(pbInfo, &QPushButton::clicked, this, &Table::onInfoClicked);
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -251,51 +259,73 @@ void Table::keyPressEvent(QKeyEvent* event)
     // }
 }
 
-#include <QDebug>
-#include <QDesktopServices>
-#include <QFile>
-#include <QProcess>
-#include <QTemporaryFile>
-
-void Table::onHelpClicked()
+void Table::onInfoClicked()
 {
-    // Using qrc path
+    // Load markdown content from a resource file
     QString resourcePath = ":README.md";
 
     QFile resourceFile(resourcePath);
     if (!resourceFile.exists()) {
-        qDebug() << "File does not exist in resources:" << resourcePath;
+        QMessageBox::warning(this, "Error", "File does not exist in resources: " + resourcePath);
         return;
     }
 
-    // Open the resource file
-    if (!resourceFile.open(QIODevice::ReadOnly)) {
-        qDebug() << "Failed to open resource file:" << resourcePath;
+    if (!resourceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Error", "Failed to open resource file: " + resourcePath);
         return;
     }
 
-    // Create a temporary file to hold the resource content
-    QTemporaryFile tempFile;
-    if (!tempFile.open()) {
-        qDebug() << "Failed to create a temporary file";
-        return;
-    }
-
-    // Write the resource content to the temporary file
-    tempFile.write(resourceFile.readAll());
-    tempFile.flush(); // Ensure content is written to disk
+    QTextStream stream(&resourceFile);
+    QString fileContent = stream.readAll();
     resourceFile.close();
 
-    // Get the path of the temporary file
-    QString tempFilePath = tempFile.fileName();
+    // Create a custom dialog
+    QDialog dialog(this);
+    dialog.setWindowTitle("Markdown Editor");
+    dialog.resize(800, 600); // Set an initial size for the dialog
 
-    // Try opening with QDesktopServices
-    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(tempFilePath))) {
-        // If it fails, fall back to a text editor
-        QProcess::startDetached("xdg-open", QStringList() << tempFilePath);
-    }
+    // Create a text editor for markdown
+    QTextEdit* editor = new QTextEdit(&dialog);
+    editor->setMarkdown(fileContent); // Display markdown content
 
-    // Temporary file will automatically delete when it goes out of scope
+    // Create Save and Cancel buttons
+    QPushButton* saveButton = new QPushButton("Save", &dialog);
+    QPushButton* cancelButton = new QPushButton("Cancel", &dialog);
+
+    // Connect Save button
+    connect(saveButton, &QPushButton::clicked, [&]() {
+        QString editedContent = editor->toMarkdown();
+        QString savePath = QFileDialog::getSaveFileName(&dialog,
+                                                        "Save Markdown File",
+                                                        "README.md",
+                                                        "Markdown Files (*.md);;All Files (*)");
+        if (!savePath.isEmpty()) {
+            QFile saveFile(savePath);
+            if (saveFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QTextStream out(&saveFile);
+                out << editedContent;
+                saveFile.close();
+                QMessageBox::information(&dialog, "Success", "File saved successfully!");
+                dialog.accept();
+            } else {
+                QMessageBox::warning(&dialog, "Error", "Failed to save the file!");
+            }
+        }
+    });
+
+    // Connect Cancel button
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+
+    // Layout for the dialog
+    QVBoxLayout* layout = new QVBoxLayout(&dialog);
+    layout->addWidget(editor);
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(saveButton);
+    buttonLayout->addWidget(cancelButton);
+    layout->addLayout(buttonLayout);
+
+    // Execute the dialog
+    dialog.exec();
 }
 
 void Table::onResetCbVisible()
@@ -307,14 +337,14 @@ void Table::onResetCbVisible()
     // emit cbVisible(ui->cbVisible->isChecked());
 }
 
-void Table::onNextClicked()
-{
-    game_->activateNextPlayer();
-}
-
 void Table::onDrawClicked()
 {
     game_->onBlindClicked();
+}
+
+void Table::onNextClicked()
+{
+    game_->activateNextPlayer();
 }
 
 void Table::onRbNumPlayers2()

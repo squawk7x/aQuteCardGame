@@ -49,9 +49,9 @@ public slots:
     void onRbSuit();                       // Transfer to Game
     void onRbRank();                       // Transfer to Game
 
-    void onHelpClicked();                  // Game Control
-    void onNextClicked();                  // Game Control
     void onDrawClicked();                  // Game Control
+    void onNextClicked();                  // Game Control
+    void onInfoClicked();
 
     void onResetCbVisible(); // for Andoid Version
     void onChooserToggled();
