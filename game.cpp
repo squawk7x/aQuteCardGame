@@ -292,10 +292,22 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
         }
         emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
-
         updatePlayable();
-        handleChoosers();
+
+        QSharedPointer<Card> stackCard = stack()->topCard();
+
+        if (stackCard->rank() != '6') {
+            emit paintNextButton(NextOption::Possible);
+            emit paintDrawButton(DrawOption::NoCard);
+        } else {
+            emit paintNextButton(NextOption::NotPossible);
+            if (playable()->cards().isEmpty())
+                emit paintDrawButton(DrawOption::MustCard);
+            else
+                emit paintDrawButton(DrawOption::NoCard);
+        }
     }
+    handleChoosers();
 }
 
 void Game::handleChoosers()
@@ -646,17 +658,16 @@ bool Game::isMustDrawCard()
 
     // played card '6' must be covered
     if (stackCard->rank() == "6" && playable()->cards().isEmpty()) {
-        // emit setBlindRed(true);
-        // emit paintButton(DrawOption::MustCard, NextOption::NotPossible, ButtonColor::Yellow);
+        emit paintDrawButton(DrawOption::MustCard);
+        return true;
+    }
+    // at least one card must be played or drawn (if no playable card on hand)
+    if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
+        emit paintDrawButton(DrawOption::MustCard);
         return true;
     }
 
-    // at least one card must be played or drawn (if no playable card on hand)
-    if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
-        // emit setBlindRed(true);
-        // emit paintButton(DrawOption::MustCard, NextOption::NotPossible, ButtonColor::Yellow);
-        return true;
-    }
+    emit paintDrawButton(DrawOption::NoCard);
 
     return false;
 }
@@ -678,34 +689,55 @@ bool Game::isMustDrawCard()
                 6       1      0||1       N
                 6       0      0||1       N   <-- must draw card
 */
+// bool Game::isNextPlayerPossible()
+// if (isRoundFinished()) {
+//     return true;
+// }
+
+// // while (isMustDrawCard()) {
+// if (isMustDrawCard() && player->isRobot()) {
+//     drawCardFromBlind(DrawOption::MustCard);
+//     updatePlayable(); // needed for if, not for while
+//     // human player must draw card by card
+// }
+
+// QSharedPointer<Card> stackCard = stack()->topCard();
+// if (stackCard->rank() == "6") {
+//     return false;
+// }
+
+// updatePlayable();
+
+// if (!played()->cards().isEmpty()
+//     || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty()))
+//     return true;
+// else
+//     return false;
+// }
 
 bool Game::isNextPlayerPossible()
 {
-    emit paintDrawButton(DrawOption::NoCard); // ButtonColor only needed for player 1
-    emit paintNextButton(NextOption::NotPossible);
+    // emit paintNextButton(NextOption::NotPossible);
 
     if (isRoundFinished()) {
-        emit paintDrawButton(DrawOption::NoCard);
-        emit paintNextButton(NextOption::NotPossible);
+        // emit paintDrawButton(DrawOption::NoCard);
+        // emit paintNextButton(NextOption::NotPossible);
         return true;
     }
 
+    QSharedPointer<Card> stackCard = stack()->topCard();
+
     // while (isMustDrawCard()) {
     if (isMustDrawCard() && player->isRobot()) {
-        drawCardFromBlind(DrawOption::MustCard); //
+        drawCardFromBlind(DrawOption::MustCard);
+
         updatePlayable(); // needed for if, not for while
-    } else if (isMustDrawCard() && !player->isRobot()) {
         // human player must draw card by card
-        emit paintDrawButton(DrawOption::MustCard);    // ButtonColor only needed for player 1
-        emit paintNextButton(NextOption::NotPossible); // ButtonColor only needed for player 1
-        return false;
     }
 
-    updatePlayable();
-
-    QSharedPointer<Card> stackCard = stack()->topCard();
     if (stackCard->rank() == "6") {
-        emit paintNextButton(NextOption::NotPossible);
+        // emit paintDrawButton(DrawOption::MustCard);
+        // emit paintNextButton(NextOption::NotPossible);
         return false;
     }
 
@@ -713,13 +745,17 @@ bool Game::isNextPlayerPossible()
 
     if (!played()->cards().isEmpty()
         || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty())) {
-        emit paintDrawButton(DrawOption::NoCard);
-        emit paintNextButton(NextOption::Possible);
+        // emit paintDrawButton(DrawOption::NoCard);
+        // emit paintNextButton(NextOption::Possible);
         return true;
-    } else {
-        emit paintNextButton(NextOption::NotPossible);
-        return false;
     }
+
+    if (!drawn()->cards().isEmpty())
+        emit paintDrawButton(DrawOption::NoCard);
+
+    emit paintNextButton(NextOption::NotPossible);
+
+    return false;
 }
 
 void Game::drawCardFromBlind(DrawOption option)
@@ -738,6 +774,9 @@ void Game::drawCardFromBlind(DrawOption option)
         mediaPlayer_->setSource(QUrl(":res/sounds/draw_card_from_blind.wav"));
         mediaPlayer_->play();
     }
+
+    // if (!isMustDrawCard())
+    //     emit paintDrawButton(DrawOption::NoCard);
 
     blind()->moveTopCardTo(player->handdeck().get());
 }
@@ -768,6 +807,9 @@ void Game::rotatePlayerList()
 
     player = playerList_.front();
     player->handdeck()->setEnabled(true);
+
+    emit paintNextButton(NextOption::NotPossible);
+    emit paintDrawButton(DrawOption::NoCard);
 
     updatePlayable();
 }
@@ -963,6 +1005,9 @@ void Game::autoplay()
     // Android
     emit resetCbVisible();
 
+    // emit paintNextButton(NextOption::NotPossible);
+    // emit paintDrawButton(DrawOption::NoCard);
+
     while (player->isRobot()) {
         while (!playable()->cards().isEmpty()) { // play all cards with same rank
 
@@ -1002,8 +1047,10 @@ void Game::autoplay()
             }
             updatePlayable();
         }
-        if (isNextPlayerPossible())
+        if (isNextPlayerPossible()) {
+            // emit paintNextButton(NextOption::Possible);
             break;
+        }
         // updatePlayable(); // executed in isNextPlayerPossible()
     }
     handleChoosers();

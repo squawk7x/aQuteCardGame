@@ -344,14 +344,16 @@ void Table::onPaintDrawButton(DrawOption drawOption)
 {
     if (drawOption == DrawOption::MustCard) {
         ui->pbDraw->setStyleSheet("background-color: yellow;");
-    } else
+    } else {
         ui->pbDraw->setStyleSheet("background-color: grey;");
+    }
 }
 
 void Table::onPaintNextButton(NextOption nextOption)
 {
     if (nextOption == NextOption::Possible) {
         ui->pbNext->setStyleSheet("background-color: yellow;");
-    } else
+    } else {
         ui->pbNext->setStyleSheet("background-color: grey;");
+    }
 }
