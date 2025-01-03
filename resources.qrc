@@ -52,31 +52,10 @@
         <file>res/choosers/jsuit_of_diamonds.png</file>
         <file>res/choosers/jsuit_of_hearts.png</file>
         <file>res/choosers/jsuit_of_spades.png</file>
-        <file>res/layout/chooser_eights_a.png</file>
-        <file>res/layout/chooser_eights_n.png</file>
-        <file>res/layout/chooser_jpoints_m.png</file>
-        <file>res/layout/chooser_jpoints_p.png</file>
-        <file>res/layout/chooser_jsuit_of_clubs.png</file>
-        <file>res/layout/chooser_jsuit_of_hearts.png</file>
-        <file>res/layout/chooser_new_f.png</file>
-        <file>res/layout/chooser_new_g.png</file>
-        <file>res/layout/chooser_new_r.png</file>
-        <file>res/layout/chooser_qute_n.png</file>
-        <file>res/layout/chooser_qute_y.png</file>
-        <file>res/layout/indicator_and_control_switches.png</file>
-        <file>res/layout/score_above_125.png</file>
-        <file>res/layout/table_layout_2_players.png</file>
-        <file>res/layout/table_layout_2_players_after_counting.png</file>
-        <file>res/layout/table_layout_3_players.png</file>
-        <file>res/layout/table_layout_3_players_eightsChooser.png</file>
-        <file>res/layout/table_layout_3_players_qute.png</file>
-        <file>res/layout/table_layout_3_players_qute_after_counting.png</file>
-        <file>res/layout/table_layout_bad_cards.png</file>
-        <file>res/layout/table_layout_eights_all.png</file>
-        <file>res/layout/table_layout_eights_next.png</file>
-        <file>res/layout/table_layout_qute_with_eights.png</file>
-        <file>res/layout/table_layout_qute_with_jacks.png</file>
-        <file>res/layout/table_layout_qute_with_kings.png</file>
+        <file>res/layout/ui_android_1.png</file>
+        <file>res/layout/ui_android_2.png</file>
+        <file>res/layout/ui_desktop_1.png</file>
+        <file>res/layout/ui_desktop_2.png</file>
         <file>res/sounds/chooser.wav</file>
         <file>res/sounds/draw_card_from_blind.wav</file>
         <file>res/sounds/put_card_on_stack.wav</file>
