@@ -647,12 +647,14 @@ bool Game::isMustDrawCard()
     // played card '6' must be covered
     if (stackCard->rank() == "6" && playable()->cards().isEmpty()) {
         // emit setBlindRed(true);
+        // emit paintButton(DrawOption::MustCard, NextOption::NotPossible, ButtonColor::Yellow);
         return true;
     }
 
     // at least one card must be played or drawn (if no playable card on hand)
     if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
         // emit setBlindRed(true);
+        // emit paintButton(DrawOption::MustCard, NextOption::NotPossible, ButtonColor::Yellow);
         return true;
     }
 
@@ -679,29 +681,45 @@ bool Game::isMustDrawCard()
 
 bool Game::isNextPlayerPossible()
 {
+    emit paintDrawButton(DrawOption::NoCard); // ButtonColor only needed for player 1
+    emit paintNextButton(NextOption::NotPossible);
+
     if (isRoundFinished()) {
+        emit paintDrawButton(DrawOption::NoCard);
+        emit paintNextButton(NextOption::NotPossible);
         return true;
     }
 
     // while (isMustDrawCard()) {
     if (isMustDrawCard() && player->isRobot()) {
-        drawCardFromBlind(DrawOption::MustCard);
+        drawCardFromBlind(DrawOption::MustCard); //
         updatePlayable(); // needed for if, not for while
+    } else if (isMustDrawCard() && !player->isRobot()) {
         // human player must draw card by card
+        emit paintDrawButton(DrawOption::MustCard);    // ButtonColor only needed for player 1
+        emit paintNextButton(NextOption::NotPossible); // ButtonColor only needed for player 1
+        return false;
     }
+
+    updatePlayable();
 
     QSharedPointer<Card> stackCard = stack()->topCard();
     if (stackCard->rank() == "6") {
+        emit paintNextButton(NextOption::NotPossible);
         return false;
     }
 
     updatePlayable();
 
     if (!played()->cards().isEmpty()
-        || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty()))
+        || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty())) {
+        emit paintDrawButton(DrawOption::NoCard);
+        emit paintNextButton(NextOption::Possible);
         return true;
-    else
+    } else {
+        emit paintNextButton(NextOption::NotPossible);
         return false;
+    }
 }
 
 void Game::drawCardFromBlind(DrawOption option)

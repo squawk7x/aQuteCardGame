@@ -176,5 +176,6 @@
         <file>android/AndroidManifest.xml</file>
         <file>android/res/drawable/ic_launcher.xml</file>
         <file>android/res/xml/qtprovider_paths.xml</file>
+        <file>res/layout/ui_desktop_3.png</file>
     </qresource>
 </RCC>

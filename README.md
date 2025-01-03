@@ -176,7 +176,7 @@ If CONTINUE is selected, the game proceeds as normal.
 - **Click on Choosers**: Toggle decisions for 'Jsuit' , 'QUTE/CONTINUE', 'ALL/NEXT', 'PLUS/MINUS'.
 - **Click on FINISH**: Round finished. Points are counted.
 - **Click on Button →**: Activate next player.
-- **Click on Button ↓ **: Draw a card (if player must draw a card).
+- **Click on Button ↓**: Draw a card (if player must draw a card).
 
 
 ---
@@ -211,14 +211,12 @@ If CONTINUE is selected, the game proceeds as normal.
 2. **Or compile yourself**:  
    - **Install Git** (if not already installed).  
    - **Clone the Repository**:  
-     `bash
      git clone https://github.com/squawk7x/aQuteCardGame.git
-     ```  
    - **Install Qt Creator** (if not already installed).  
    - **Open the Project**:  
      In Qt Creator, navigate to the 'aQuteCardGame' directory and open `CMakeLists.txt`.  
    - **Compile and Run**:  
-     Press `Ctrl+R` or click the green arrow in Qt Creator to build and start the game.
+     Press 'Ctrl+R' or click the green arrow in Qt Creator to build and start the game.
 
 ---
 

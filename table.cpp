@@ -203,6 +203,8 @@ void Table::initializeGame(int numberOfPlayers)
                      &RoundChooser::chooserToggled,
                      this,
                      &Table::onChooserToggled);
+    QObject::connect(game_.get(), &Game::paintDrawButton, this, &Table::onPaintDrawButton);
+    QObject::connect(game_.get(), &Game::paintNextButton, this, &Table::onPaintNextButton);
 
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
@@ -336,4 +338,20 @@ void Table::onRbRank() {} // Transfer to Game
 void Table::onChooserToggled()
 {
     update();
+}
+
+void Table::onPaintDrawButton(DrawOption drawOption)
+{
+    if (drawOption == DrawOption::MustCard) {
+        ui->pbDraw->setStyleSheet("background-color: yellow;");
+    } else
+        ui->pbDraw->setStyleSheet("background-color: grey;");
+}
+
+void Table::onPaintNextButton(NextOption nextOption)
+{
+    if (nextOption == NextOption::Possible) {
+        ui->pbNext->setStyleSheet("background-color: yellow;");
+    } else
+        ui->pbNext->setStyleSheet("background-color: grey;");
 }

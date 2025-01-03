@@ -17,8 +17,9 @@
 #include "player.h"
 #include "stack.h"
 
-enum class DrawOption { MustCard, BadCard };
-enum class ButtonColor { Green, Red };
+enum class DrawOption { NoCard, BadCard, MustCard };
+enum class NextOption { Possible, NotPossible };
+// enum class ButtonColor { Grey, Yellow };
 
 class Game : public QObject
 {
@@ -139,6 +140,8 @@ signals:
     void toggleCardsVisible(bool isVisible);
     void resetCbVisible();
     void clickToTable(); // to Table
+    void paintDrawButton(DrawOption drawOption);
+    void paintNextButton(NextOption nextOption);
 
 public slots:
     void activateNextPlayer();

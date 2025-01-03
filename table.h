@@ -7,6 +7,8 @@
 // #include "card.h"
 #include "game.h"
 
+enum class ButtonColor { Grey, Yellow };
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Table;
@@ -53,6 +55,9 @@ public slots:
 
     void onResetCbVisible(); // for Andoid Version
     void onChooserToggled();
+
+    void onPaintDrawButton(DrawOption drawOption);
+    void onPaintNextButton(NextOption nextOption);
 };
 
 #endif // TABLE_H
