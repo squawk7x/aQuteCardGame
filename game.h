@@ -124,6 +124,7 @@ public:
     void updateLcdDisplays();
     void togglePlayerListToScore(bool highest);
     void collectAllCardsToBlind();
+    void setButtonColors();
 
 signals:
     void cardAddedToStack(const QSharedPointer<Card>& card);

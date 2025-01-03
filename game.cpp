@@ -293,20 +293,9 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
         emit cardAddedToStack(card);
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
-
-        QSharedPointer<Card> stackCard = stack()->topCard();
-
-        if (stackCard->rank() != '6') {
-            emit paintNextButton(NextOption::Possible);
-            emit paintDrawButton(DrawOption::NoCard);
-        } else {
-            emit paintNextButton(NextOption::NotPossible);
-            if (playable()->cards().isEmpty())
-                emit paintDrawButton(DrawOption::MustCard);
-            else
-                emit paintDrawButton(DrawOption::NoCard);
-        }
+        setButtonColors();
     }
+
     handleChoosers();
 }
 
@@ -320,7 +309,6 @@ void Game::handleChoosers()
     if (stackCard->rank() == "J") {
         if (!player->handdeck()->cards().isEmpty() && !played()->cards().isEmpty())
             jsuitChooser()->toggle_to(player->handdeck()->suitOfRankWithMostPoints());
-        // program crash suspected ↑ when J only in handdeck and finishing round
         // jsuitChooser()->toggle_to(player->handdeck()->mostCommonSuit());
         // end KI toggle JSuit to rank with most points
 
@@ -658,16 +646,16 @@ bool Game::isMustDrawCard()
 
     // played card '6' must be covered
     if (stackCard->rank() == "6" && playable()->cards().isEmpty()) {
-        emit paintDrawButton(DrawOption::MustCard);
+        // emit paintDrawButton(DrawOption::MustCard);
         return true;
     }
     // at least one card must be played or drawn (if no playable card on hand)
     if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
-        emit paintDrawButton(DrawOption::MustCard);
+        // emit paintDrawButton(DrawOption::MustCard);
         return true;
     }
 
-    emit paintDrawButton(DrawOption::NoCard);
+    // emit paintDrawButton(DrawOption::NoCard);
 
     return false;
 }
@@ -689,36 +677,40 @@ bool Game::isMustDrawCard()
                 6       1      0||1       N
                 6       0      0||1       N   <-- must draw card
 */
-// bool Game::isNextPlayerPossible()
-// if (isRoundFinished()) {
-//     return true;
-// }
 
-// // while (isMustDrawCard()) {
-// if (isMustDrawCard() && player->isRobot()) {
-//     drawCardFromBlind(DrawOption::MustCard);
-//     updatePlayable(); // needed for if, not for while
-//     // human player must draw card by card
-// }
+void Game::setButtonColors()
+{
+    QSharedPointer<Card> stackCard = stack()->topCard();
 
-// QSharedPointer<Card> stackCard = stack()->topCard();
-// if (stackCard->rank() == "6") {
-//     return false;
-// }
+    if (stackCard->rank() == '6') {
+        emit paintNextButton(NextOption::NotPossible);
+        if (playable()->cards().isEmpty())
+            emit paintDrawButton(DrawOption::MustCard);
+        else
+            emit paintDrawButton(DrawOption::NoCard);
+    }
 
-// updatePlayable();
+    else if (played()->cards().isEmpty() && playable()->cards().isEmpty()
+             && drawn()->cards().isEmpty()) {
+        emit paintDrawButton(DrawOption::MustCard);
+        emit paintNextButton(NextOption::NotPossible);
+    }
 
-// if (!played()->cards().isEmpty()
-//     || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty()))
-//     return true;
-// else
-//     return false;
-// }
+    else if (!played()->cards().isEmpty()
+             || (played()->cards().isEmpty() && playable()->cards().isEmpty()
+                 && !drawn()->cards().isEmpty())) {
+        emit paintDrawButton(DrawOption::NoCard);
+        emit paintNextButton(NextOption::Possible);
+    }
+
+    else {
+        emit paintDrawButton(DrawOption::NoCard);
+        emit paintNextButton(NextOption::NotPossible);
+    }
+}
 
 bool Game::isNextPlayerPossible()
 {
-    // emit paintNextButton(NextOption::NotPossible);
-
     if (isRoundFinished()) {
         // emit paintDrawButton(DrawOption::NoCard);
         // emit paintNextButton(NextOption::NotPossible);
@@ -730,14 +722,16 @@ bool Game::isNextPlayerPossible()
     // while (isMustDrawCard()) {
     if (isMustDrawCard() && player->isRobot()) {
         drawCardFromBlind(DrawOption::MustCard);
-
         updatePlayable(); // needed for if, not for while
         // human player must draw card by card
     }
 
     if (stackCard->rank() == "6") {
-        // emit paintDrawButton(DrawOption::MustCard);
         // emit paintNextButton(NextOption::NotPossible);
+        // if (playable()->cards().isEmpty())
+        //     emit paintDrawButton(DrawOption::MustCard);
+        // else
+        //     emit paintDrawButton(DrawOption::NoCard);
         return false;
     }
 
@@ -750,10 +744,7 @@ bool Game::isNextPlayerPossible()
         return true;
     }
 
-    if (!drawn()->cards().isEmpty())
-        emit paintDrawButton(DrawOption::NoCard);
-
-    emit paintNextButton(NextOption::NotPossible);
+    setButtonColors();
 
     return false;
 }
@@ -775,8 +766,7 @@ void Game::drawCardFromBlind(DrawOption option)
         mediaPlayer_->play();
     }
 
-    // if (!isMustDrawCard())
-    //     emit paintDrawButton(DrawOption::NoCard);
+    setButtonColors();
 
     blind()->moveTopCardTo(player->handdeck().get());
 }
@@ -808,10 +798,10 @@ void Game::rotatePlayerList()
     player = playerList_.front();
     player->handdeck()->setEnabled(true);
 
+    updatePlayable();
+
     emit paintNextButton(NextOption::NotPossible);
     emit paintDrawButton(DrawOption::NoCard);
-
-    updatePlayable();
 }
 
 void Game::togglePlayerListToScore(bool highest)
@@ -835,7 +825,6 @@ void Game::togglePlayerListToScore(bool highest)
 
     // Rotate the list so the extreme player is at the front
     std::rotate(playerList_.begin(), extremePlayerIt, playerList_.end());
-
 }
 
 bool Game::isRoundFinished()
@@ -1034,8 +1023,6 @@ void Game::autoplay()
             player->handdeck()->sortCardsByPattern(pattern);
             playable()->sortCardsByPattern(pattern);
 
-    
-
             // KI permute ranks
             player->handdeck()->permuteRanks(playable()->cards().front()->rank(),
                                              stackCard,
@@ -1048,7 +1035,6 @@ void Game::autoplay()
             updatePlayable();
         }
         if (isNextPlayerPossible()) {
-            // emit paintNextButton(NextOption::Possible);
             break;
         }
         // updatePlayable(); // executed in isNextPlayerPossible()
@@ -1198,11 +1184,10 @@ void Game::onNewRound()
     togglePlayerListToScore(true);
     if (playerList_.front()->score() <= 125) {
         roundChooser()->toggle_to(QString("NEW"));
-      
+
         rounds += 1;
         initializeRound();
     } else {
-        
         roundChooser()->toggle_to(QString("GAME"));
     }
 }
@@ -1215,8 +1200,6 @@ void Game::onNewGame()
     rounds = 1;
 
     updateLcdDisplays();
-
-
 
     initializeRound();
 }
