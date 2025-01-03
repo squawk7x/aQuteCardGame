@@ -680,6 +680,12 @@ bool Game::isMustDrawCard()
 
 void Game::setButtonColors()
 {
+    if (roundChooser()->decision() == QString("FINISH")) {
+        emit paintDrawButton(DrawOption::NoCard);
+        emit paintNextButton(NextOption::NotPossible);
+        // return;
+    }
+
     QSharedPointer<Card> stackCard = stack()->topCard();
 
     if (stackCard->rank() == '6') {
@@ -712,8 +718,7 @@ void Game::setButtonColors()
 bool Game::isNextPlayerPossible()
 {
     if (isRoundFinished()) {
-        // emit paintDrawButton(DrawOption::NoCard);
-        // emit paintNextButton(NextOption::NotPossible);
+        setButtonColors();
         return true;
     }
 
@@ -727,11 +732,7 @@ bool Game::isNextPlayerPossible()
     }
 
     if (stackCard->rank() == "6") {
-        // emit paintNextButton(NextOption::NotPossible);
-        // if (playable()->cards().isEmpty())
-        //     emit paintDrawButton(DrawOption::MustCard);
-        // else
-        //     emit paintDrawButton(DrawOption::NoCard);
+        setButtonColors();
         return false;
     }
 
@@ -739,13 +740,11 @@ bool Game::isNextPlayerPossible()
 
     if (!played()->cards().isEmpty()
         || (playable()->cards().isEmpty() && !drawn()->cards().isEmpty())) {
-        // emit paintDrawButton(DrawOption::NoCard);
-        // emit paintNextButton(NextOption::Possible);
+        setButtonColors();
         return true;
     }
 
     setButtonColors();
-
     return false;
 }
 
@@ -766,9 +765,9 @@ void Game::drawCardFromBlind(DrawOption option)
         mediaPlayer_->play();
     }
 
-    setButtonColors();
-
     blind()->moveTopCardTo(player->handdeck().get());
+    updatePlayable();
+    setButtonColors();
 }
 
 void Game::rotatePlayerList()
