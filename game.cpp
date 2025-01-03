@@ -1065,9 +1065,11 @@ void Game::onRbCardType(CardType type)
         card->setCardType(type);
         card->loadImage(isCardsVisible_);
     }
-    for (auto& card : player3()->handdeck()->cards()) {
-        card->setCardType(type);
-        card->loadImage(isCardsVisible_);
+    if (player3_ != nullptr) {
+        for (auto& card : player3()->handdeck()->cards()) {
+            card->setCardType(type);
+            card->loadImage(isCardsVisible_);
+        }
     }
     // Always small cards for monitor
     // for (auto& card : monitor()->cards()) {
