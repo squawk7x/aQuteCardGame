@@ -141,11 +141,11 @@ Finally there is an *Info* button to display this README file.
 ## Game Control
 
 ### Mouse Controls
-- **Click on card**: Play the card onto the stack if it matches.  
+- **Click on Card**: Play the card onto the stack if it matches.  
 - **Click on Button →**: Activate next player.
 - **Click on Button ↓**: Draw a card (if player must draw a card).
 - **Click on Choosers**: Toggle decisions for '"♦", "♠", "♥", "♣"' , 'QUTE/CONTINUE', 'ALL/NEXT', 'PLUS/MINUS'.
-- **Click on FINISH**: Finishe round, count points and add points to score.
+- **Click on FINISH**: Finish round, count points and add points to score.
 - **Click on GAME**: Start a new game.
 
 
