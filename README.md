@@ -1,8 +1,21 @@
 
+
+
 ---
 <center><span style="font-size: 36px; font-weight: bold;">a Qute Card Game</span></center>
 
 --- 
+<!-- ![layout](res/layout/ui_android.png) -->
+<!-- ![layout](res/layout/ui_desktop.png) -->
+
+![layout](qrc:/res/layout/ui_desktop.png)
+![layout](qrc:/res/layout/ui_android.png)
+--- 
+
+<div style="page-break-before: always;"></div>
+
+---
+## Game Rules
 
 This card game is played with a deck of 36 cards, consisting of 4 suits: {"♦", "♠", "♥", "♣"} and 9 ranks: {"6", "7", "8", "9", "10", "J", "Q", "K", "A"}.
 The game supports 2 or 3 players, with Player 1 competing against 1 or 2 AI opponents.
@@ -15,8 +28,6 @@ The game ends when any player's score exceeds 125 points or if a player decides 
 Below, you will find details about the game rules, gameboard layout, controls, and instructions for compiling and running the game.
 
 ---
-
-## Game Rules
 
 ### Starting the Game
 - **Initial Setup**: Each player starts with 5 cards.
@@ -69,9 +80,13 @@ Below, you will find details about the game rules, gameboard layout, controls, a
 
 ---
 
+<div style="page-break-before: always;"></div>
+
+---
+
 ## Scoring
 - **Rounds**: The game consists of multiple rounds.
-- **Round End**: A round ends when a player has no more cards or a 'Qute' is announced.
+- **Round End**: A round ends when a player has no more cards or 'Qute' is announced.
 - **Scoring**: Points from remaining cards are added to each player's score at the end of a round.
 - **Next Round**: The player with the highest score starts the next round.
 
@@ -120,7 +135,7 @@ When the blind was **shuffled** one or more times, the points of this round will
    Furthermore, there are radiobuttons for the number of *Players* and checkboxes for *Sound* effects and whether or not the card faces of the opponent's hand deck are *visible*.
 
 5. **Bottom Row**: Contains your own hand of cards (Player 1). When it is your turn, just click on a playable card to put it on the stack. Furthermore, there are radiobuttons for *Sort by* (suit or rank) and radiobuttons for *Card type* (small cards for *Android* or normal cards for *Desktop*).
-Finally ther is an *Info* button to display this README file.
+Finally there is an *Info* button to display this README file.
 ---
 
 ## Game Control

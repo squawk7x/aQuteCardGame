@@ -297,12 +297,12 @@ void Table::onInfoClicked()
     QScrollArea* scrollArea = new QScrollArea(&dialog);
     scrollArea->setWidget(editor);        // Set the editor as the scrollable widget
     scrollArea->setWidgetResizable(true); // Allow widget resizing within the scroll area
-    // scrollArea->setVerticalScrollBarPolicy(
-    //     Qt::ScrollBarAlwaysOn); // Always show the vertical scrollbar
+    scrollArea->setVerticalScrollBarPolicy(
+        Qt::ScrollBarAlwaysOn); // Always show the vertical scrollbar
 
     // Ensure that the scroll area handles touch gestures properly on Android
     scrollArea->setHorizontalScrollBarPolicy(
-        Qt::ScrollBarAlwaysOff); // Disable horizontal scrollbar for markdown content
+        Qt::ScrollBarAlwaysOn); // Disable horizontal scrollbar for markdown content
 
     // Create a layout for the dialog
     QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);

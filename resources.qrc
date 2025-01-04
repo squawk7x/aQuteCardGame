@@ -52,10 +52,6 @@
         <file>res/choosers/jsuit_of_diamonds.png</file>
         <file>res/choosers/jsuit_of_hearts.png</file>
         <file>res/choosers/jsuit_of_spades.png</file>
-        <file>res/layout/ui_android_1.png</file>
-        <file>res/layout/ui_android_2.png</file>
-        <file>res/layout/ui_desktop_1.png</file>
-        <file>res/layout/ui_desktop_2.png</file>
         <file>res/sounds/chooser.wav</file>
         <file>res/sounds/draw_card_from_blind.wav</file>
         <file>res/sounds/put_card_on_stack.wav</file>
@@ -176,6 +172,7 @@
         <file>android/AndroidManifest.xml</file>
         <file>android/res/drawable/ic_launcher.xml</file>
         <file>android/res/xml/qtprovider_paths.xml</file>
-        <file>res/layout/ui_desktop_3.png</file>
+        <file>res/layout/ui_desktop.png</file>
+        <file>res/layout/ui_android.png</file>
     </qresource>
 </RCC>
