@@ -5,11 +5,11 @@
 <center><span style="font-size: 36px; font-weight: bold;">a Qute Card Game</span></center>
 
 --- 
-<!-- ![layout](res/layout/ui_android.png) -->
-<!-- ![layout](res/layout/ui_desktop.png) -->
+![layout](res/layout/ui_android.png)
+![layout](res/layout/ui_desktop.png)
 
-![layout](qrc:/res/layout/ui_desktop.png)
-![layout](qrc:/res/layout/ui_android.png)
+<!-- ![layout](qrc:/res/layout/ui_desktop.png)-->
+<!-- ![layout](qrc:/res/layout/ui_android.png)-->
 --- 
 
 <div style="page-break-before: always;"></div>
