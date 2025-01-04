@@ -1,6 +1,7 @@
 #include "card.h"
 #include <QApplication>
 #include <QDebug>
+#include <QFile>
 #include <QScreen>
 
 // Definitions for the global card properties
@@ -17,8 +18,9 @@ void Card::initCard()
     setValue(rank_);
     setCardType(CardType::Small);
     loadImage();
+    applyStyleSheet();
 
-    connect(this, &QPushButton::clicked, this, [&]() { emit cardClicked(this->clone()); });
+    connect(this, &QPushButton::clicked, this, [&]() { emit cardClicked(*this); });
 }
 
 void Card::setSuitname(const QString& suit)
@@ -58,6 +60,7 @@ void Card::setValue(const QString& rank)
 void Card::setCardType(CardType type)
 {
     type_ = type;
+    setProperty("card-type", type == CardType::Small ? "Small" : "Normal");
 }
 
 // Constructors
@@ -93,7 +96,7 @@ Card::Card(const Card& other)
     initCard();
 }
 
-Card& Card::operator=(const Card& other) noexcept
+Card& Card::operator=(const Card& other)
 {
     if (this != &other) {
         this->setParent(other.parentWidget());
@@ -190,54 +193,54 @@ int Card::value() const
 
 void Card::loadImage(bool isCardFaceVisible)
 {
-    setStr();
-
-    this->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
-                        "padding: 1px 2px; margin: 0px; font-size: 16px;");
-
-    // Set the button's size policy to expand vertically and have a minimum width
-    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+    setStr(); // Update the string representation of the card
+    setProperty("card-face-visible", isCardFaceVisible);
+    setProperty("text-only", type_ != CardType::Normal); // Use property for text-only cards
 
     QString imagePath;
-    if (isCardFaceVisible)
+
+    // Determine the image path based on visibility
+    if (isCardFaceVisible) {
         imagePath = QString(":res/cards/%1_of_%2.png").arg(rankname_, suitname_);
-    else {
+    } else {
         imagePath = QString(":res/cards/backside_blue.png");
     }
 
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
+
     if (!pixmap.isNull() && type_ == CardType::Normal) {
-        setText("");
-        // Fetch the size of the application’s primary screen
-        QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
-        QSize maxSize;
+        // Use the pixmap as an icon for the button
+        setText("");            // Remove any text
+        setIcon(QIcon(pixmap)); // Set the icon directly
 
-        // Calculate max size as a percentage of the screen size
-        int height = screenSize.height() * 0.15; // 15% of the screen height
-        int width = height * 0.5;                // 50% of height for the width
-        maxSize = QSize(width, height);
+        // Scale the icon to fit within the size of the button
+        QSize buttonSize = size(); // Get the current size of the button
+        QPixmap scaledPixmap = pixmap.scaled(buttonSize,
+                                             Qt::KeepAspectRatio,
+                                             Qt::SmoothTransformation);
 
-        // Scale the pixmap to fit within the calculated size
-        QPixmap scaledPixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-        QIcon icon(scaledPixmap); // Create an icon from the scaled pixmap
-        this->setIcon(icon);
-        this->setIconSize(scaledPixmap.size()); // Set the icon size to the scaled image size
-
-        // Resize the widget to fit the scaled image size
-        this->resize(scaledPixmap.size());
-
-        // Optional: Remove padding and margins
-        this->setStyleSheet("padding: 0px; margin: 0px; border: none;");
-
+        setIcon(QIcon(scaledPixmap));     // Set the resized icon
+        setIconSize(scaledPixmap.size()); // Set the icon size to the scaled size
     } else {
-        // Remove the icon by setting an empty QIcon
-        this->setIcon(QIcon()); // This clears the icon
+        // Handle cards without pixmaps (e.g., small cards or hidden cards)
+        setIcon(QIcon()); // Clear any existing icon
 
-        if (isCardFaceVisible && isEnabled()) {
-            setText(str_);
-        } else {
-            setText("▓▓");
-        }
+        // Display text for non-image cards
+        setText(isCardFaceVisible && isEnabled() ? str_ : "▓▓");
+    }
+
+    // Apply the stylesheet
+    applyStyleSheet();
+}
+
+void Card::applyStyleSheet()
+{
+    QFile file(":/res/styles/card.qss"); // Ensure the file is in your resource system
+    if (file.open(QFile::ReadOnly | QFile::Text)) {
+        QString stylesheet = file.readAll();
+        this->setStyleSheet(stylesheet);
+        file.close();
+    } else {
+        qDebug() << "Failed to load stylesheet from resource.";
     }
 }

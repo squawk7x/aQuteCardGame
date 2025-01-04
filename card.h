@@ -34,7 +34,7 @@ public:
     Card& operator=(const Card& other);     // Copy assignment operator
     Card(Card&& other) noexcept;            // Move constructor
     Card& operator=(Card&& other) noexcept; // Move assignment operator
-    virtual ~Card() = default;
+    virtual ~Card() = default;              // Default Deconstructor
 
     bool operator==(const Card& other) const;
     bool operator<(const Card& other) const;
@@ -59,9 +59,10 @@ private:
     void setRankname(const QString& rank);
     void setStr();
     void setValue(const QString& rank);
+    void applyStyleSheet();
 
 signals:
-    void cardClicked(const QSharedPointer<Card>& card);
+    void cardClicked(const Card& card);
 };
 
 #endif // CARD_H

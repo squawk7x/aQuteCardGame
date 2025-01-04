@@ -174,5 +174,6 @@
         <file>android/res/xml/qtprovider_paths.xml</file>
         <file>res/layout/ui_desktop.png</file>
         <file>res/layout/ui_android.png</file>
+        <file>res/styles/card.qss</file>
     </qresource>
 </RCC>

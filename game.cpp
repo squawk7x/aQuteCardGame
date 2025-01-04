@@ -272,13 +272,10 @@ void Game::initializeRound()
     player->handdeck()->cards().last()->click();
 
     // emit setRbCardType(CardType::Small); // to Table
-    // emit setCbVisible(false);            // to Table
-    emit toggleCardsVisible(isCardsVisible_); // to CardVec
-    emit resetCbVisible();                    // to Table
+    emit setCbVisible(false);       // to Table
+    emit toggleCardsVisible(false); // to CardVec
+    emit resetCbVisible();          // to Table
 
-    // Android
-
-    // in case a robot player starts a new round all playable cards are played
     autoplay();
 }
 
@@ -679,10 +676,10 @@ bool Game::isMustDrawCard()
 
 void Game::setButtonColors()
 {
-    if (roundChooser()->isEnabled()) {
-        emit paintDrawButton(DrawOption::NoCard);
-        emit paintNextButton(NextOption::NotPossible);
-    }
+    // if (roundChooser()->isEnabled()) {
+    //     emit paintDrawButton(DrawOption::NoCard);
+    //     emit paintNextButton(NextOption::NotPossible);
+    // }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
 
@@ -715,8 +712,10 @@ void Game::setButtonColors()
 
 bool Game::isNextPlayerPossible()
 {
+    emit paintDrawButton(DrawOption::NoCard);
+    emit paintNextButton(NextOption::NotPossible);
+
     if (isRoundFinished()) {
-        setButtonColors();
         return true;
     }
 
