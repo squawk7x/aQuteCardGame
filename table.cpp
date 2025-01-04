@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QPushButton>
 #include <QScreen>
+#include <QScrollArea>
 #include <QShortcut>
 #include <QTextEdit>
 #include <QTextStream>
@@ -281,48 +282,42 @@ void Table::onInfoClicked()
 
     // Create a custom dialog
     QDialog dialog(this);
-    dialog.setWindowTitle("Markdown Editor");
+    dialog.setWindowTitle("Markdown Reader");
     dialog.resize(800, 600); // Set an initial size for the dialog
 
     // Create a text editor for markdown
     QTextEdit* editor = new QTextEdit(&dialog);
     editor->setMarkdown(fileContent); // Display markdown content
+    editor->setReadOnly(true);        // Make the editor read-only to disable editing
 
-    // Create Save and Cancel buttons
-    QPushButton* saveButton = new QPushButton("Save", &dialog);
-    QPushButton* cancelButton = new QPushButton("Cancel", &dialog);
+    // Prevent the keyboard from showing up on Android by setting focus policy to NoFocus
+    editor->setFocusPolicy(Qt::NoFocus);
 
-    // Connect Save button
-    connect(saveButton, &QPushButton::clicked, [&]() {
-        QString editedContent = editor->toMarkdown();
-        QString savePath = QFileDialog::getSaveFileName(&dialog,
-                                                        "Save Markdown File",
-                                                        "README.md",
-                                                        "Markdown Files (*.md);;All Files (*)");
-        if (!savePath.isEmpty()) {
-            QFile saveFile(savePath);
-            if (saveFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                QTextStream out(&saveFile);
-                out << editedContent;
-                saveFile.close();
-                QMessageBox::information(&dialog, "Success", "File saved successfully!");
-                dialog.accept();
-            } else {
-                QMessageBox::warning(&dialog, "Error", "Failed to save the file!");
-            }
-        }
-    });
+    // Create a scroll area to contain the editor
+    QScrollArea* scrollArea = new QScrollArea(&dialog);
+    scrollArea->setWidget(editor);        // Set the editor as the scrollable widget
+    scrollArea->setWidgetResizable(true); // Allow widget resizing within the scroll area
+    // scrollArea->setVerticalScrollBarPolicy(
+    //     Qt::ScrollBarAlwaysOn); // Always show the vertical scrollbar
 
-    // Connect Cancel button
-    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+    // Ensure that the scroll area handles touch gestures properly on Android
+    scrollArea->setHorizontalScrollBarPolicy(
+        Qt::ScrollBarAlwaysOff); // Disable horizontal scrollbar for markdown content
 
-    // Layout for the dialog
-    QVBoxLayout* layout = new QVBoxLayout(&dialog);
-    layout->addWidget(editor);
-    QHBoxLayout* buttonLayout = new QHBoxLayout();
-    buttonLayout->addWidget(saveButton);
-    buttonLayout->addWidget(cancelButton);
-    layout->addLayout(buttonLayout);
+    // Create a layout for the dialog
+    QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);
+    mainLayout->addWidget(scrollArea); // Add the scroll area to the layout
+
+    // Create a "Close" button and make sure it's always visible
+    QPushButton* closeButton = new QPushButton("Close", &dialog);
+
+    // Ensure the button stays at the bottom of the dialog
+    QVBoxLayout* buttonLayout = new QVBoxLayout();
+    buttonLayout->addWidget(closeButton);
+    mainLayout->addLayout(buttonLayout);
+
+    // Connect the Close button to the dialog's reject() method
+    connect(closeButton, &QPushButton::clicked, &dialog, &QDialog::reject);
 
     // Execute the dialog
     dialog.exec();
