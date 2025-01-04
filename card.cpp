@@ -195,7 +195,8 @@ void Card::loadImage(bool isCardFaceVisible)
 {
     setStr(); // Update the string representation of the card
     setProperty("card-face-visible", isCardFaceVisible);
-    setProperty("text-only", type_ != CardType::Normal); // Use property for text-only cards
+    setProperty("card-type", type_ == CardType::Small); // Set property for text-only cards
+    setProperty("text-only", type_ == CardType::Small); // Set property for text-only cards
 
     QString imagePath;
 
@@ -209,27 +210,19 @@ void Card::loadImage(bool isCardFaceVisible)
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
 
     if (!pixmap.isNull() && type_ == CardType::Normal) {
-        // Use the pixmap as an icon for the button
-        setText("");            // Remove any text
-        setIcon(QIcon(pixmap)); // Set the icon directly
+        setText("");               // Remove any text
+        setProperty("icon", true); // Set the 'icon' property for the stylesheet
+        setIcon(QIcon(pixmap));    // Set the icon
 
-        // Scale the icon to fit within the size of the button
-        QSize buttonSize = size(); // Get the current size of the button
-        QPixmap scaledPixmap = pixmap.scaled(buttonSize,
-                                             Qt::KeepAspectRatio,
-                                             Qt::SmoothTransformation);
-
-        setIcon(QIcon(scaledPixmap));     // Set the resized icon
-        setIconSize(scaledPixmap.size()); // Set the icon size to the scaled size
+        // Dynamically resize based on the current size of the button
+        QSize buttonSize = QSize(500, 726) * 0.2; // Scale the icon based on button size
+        setIconSize(buttonSize);                  // Set the icon size to the resized size
     } else {
-        // Handle cards without pixmaps (e.g., small cards or hidden cards)
-        setIcon(QIcon()); // Clear any existing icon
-
-        // Display text for non-image cards
+        setIcon(QIcon());           // Clear any existing icon
+        setProperty("icon", false); // Reset the 'icon' property
         setText(isCardFaceVisible && isEnabled() ? str_ : "▓▓");
     }
 
-    // Apply the stylesheet
     applyStyleSheet();
 }
 
