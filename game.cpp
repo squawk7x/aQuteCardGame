@@ -271,12 +271,12 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    emit setRbCardType(CardType::Small); // to Table
-    emit setCbVisible(false);            // to Table
-    emit toggleCardsVisible(false);      // to CardVec
+    // emit setRbCardType(CardType::Small); // to Table
+    // emit setCbVisible(false);            // to Table
+    emit toggleCardsVisible(isCardsVisible_); // to CardVec
+    emit resetCbVisible();                    // to Table
 
     // Android
-    emit resetCbVisible(); // to Table
 
     // in case a robot player starts a new round all playable cards are played
     autoplay();
@@ -650,12 +650,11 @@ bool Game::isMustDrawCard()
         return true;
     }
     // at least one card must be played or drawn (if no playable card on hand)
-    if (played()->cards().isEmpty() && playable()->cards().isEmpty() && drawn()->cards().isEmpty()) {
+    else if (played()->cards().isEmpty() && playable()->cards().isEmpty()
+             && drawn()->cards().isEmpty()) {
         // emit paintDrawButton(DrawOption::MustCard);
         return true;
     }
-
-    // emit paintDrawButton(DrawOption::NoCard);
 
     return false;
 }
@@ -680,10 +679,9 @@ bool Game::isMustDrawCard()
 
 void Game::setButtonColors()
 {
-    if (roundChooser()->decision() == QString("FINISH")) {
+    if (roundChooser()->isEnabled()) {
         emit paintDrawButton(DrawOption::NoCard);
         emit paintNextButton(NextOption::NotPossible);
-        // return;
     }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
@@ -724,11 +722,8 @@ bool Game::isNextPlayerPossible()
 
     QSharedPointer<Card> stackCard = stack()->topCard();
 
-    // while (isMustDrawCard()) {
     if (isMustDrawCard() && player->isRobot()) {
-        drawCardFromBlind(DrawOption::MustCard);
-        updatePlayable(); // needed for if, not for while
-        // human player must draw card by card
+        drawCardFromBlind(DrawOption::MustCard); // player 1 does not draw automatically
     }
 
     if (stackCard->rank() == "6") {
@@ -776,7 +771,6 @@ void Game::rotatePlayerList()
     drawn()->clearCards();
 
     // jsuitChooser()->setEnabled(false); // handled by slot onCardAddedToStack
-
     eightsChooser()->setEnabled(false);
     jpointsChooser()->setEnabled(false);
     quteChooser()->setEnabled(false);

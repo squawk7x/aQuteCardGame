@@ -34,6 +34,7 @@ public:
     Card& operator=(const Card& other);     // Copy assignment operator
     Card(Card&& other) noexcept;            // Move constructor
     Card& operator=(Card&& other) noexcept; // Move assignment operator
+    virtual ~Card() = default;
 
     bool operator==(const Card& other) const;
     bool operator<(const Card& other) const;

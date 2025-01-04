@@ -93,7 +93,7 @@ Card::Card(const Card& other)
     initCard();
 }
 
-Card& Card::operator=(const Card& other)
+Card& Card::operator=(const Card& other) noexcept
 {
     if (this != &other) {
         this->setParent(other.parentWidget());

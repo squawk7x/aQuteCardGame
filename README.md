@@ -2,14 +2,14 @@
 
 
 ---
-<center><span style="font-size: 36px; font-weight: bold;">a Qute Card Game</span></center>
+# a Qute Card Game
 
 --- 
 ![layout](res/layout/ui_android.png)
 ![layout](res/layout/ui_desktop.png)
 
-<!-- ![layout](qrc:/res/layout/ui_desktop.png)-->
-<!-- ![layout](qrc:/res/layout/ui_android.png)-->
+![layout](qrc:/res/layout/ui_desktop.png)
+![layout](qrc:/res/layout/ui_android.png)
 --- 
 
 <div style="page-break-before: always;"></div>
@@ -72,6 +72,10 @@ Below, you will find details about the game rules, gameboard layout, controls, a
 
 ---
 
+<div style="page-break-before: always;"></div>
+
+---
+
 ### 'Qute' Condition
 - When four cards of the same rank are played in sequence (by different players), the player who plays the fourth card can choose to:
   - Finish the round or continue the game.
@@ -79,11 +83,6 @@ Below, you will find details about the game rules, gameboard layout, controls, a
 - Four '6's **{"6♦", "6♠", "6♥", "6♣"}** and with **'Qute'** enabled overrides the **'a 6 must be covered'** rule.
 
 ---
-
-<div style="page-break-before: always;"></div>
-
----
-
 ## Scoring
 - **Rounds**: The game consists of multiple rounds.
 - **Round End**: A round ends when a player has no more cards or 'Qute' is announced.
@@ -92,6 +91,8 @@ Below, you will find details about the game rules, gameboard layout, controls, a
 
 - **Game End**: The game ends when a player scores over 125 points.
   - The winner is the player with the lowest score.
+
+---
 
 ### Special Scoring Rules
 - **125 Points Reset**: A player's score resets to 0 if they reach exactly 125 points.
@@ -184,6 +185,6 @@ Finally there is an *Info* button to display this README file.
 
 ---
 
-<center><span style="font-size: 36px; font-weight: bold;">Enjoy The Game!</span></center>
+# Enjoy The Game!
 
 ---
