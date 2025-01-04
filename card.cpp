@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QScreen>
+#include <QStyle>
 
 // Definitions for the global card properties
 QVector<QString> suits = {"♦", "♠", "♥", "♣"};
@@ -194,9 +195,7 @@ int Card::value() const
 void Card::loadImage(bool isCardFaceVisible)
 {
     setStr(); // Update the string representation of the card
-    setProperty("card-face-visible", isCardFaceVisible);
-    setProperty("card-type", type_ == CardType::Small); // Set property for text-only cards
-    setProperty("text-only", type_ == CardType::Small); // Set property for text-only cards
+    // setProperty("icon", type_ == CardType::Normal); // Set property for text-only cards
 
     QString imagePath;
 
@@ -210,27 +209,33 @@ void Card::loadImage(bool isCardFaceVisible)
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
 
     if (!pixmap.isNull() && type_ == CardType::Normal) {
-        setText("");               // Remove any text
-        setProperty("icon", true); // Set the 'icon' property for the stylesheet
-        setIcon(QIcon(pixmap));    // Set the icon
+        setText("");            // Remove any text
+        setIcon(QIcon(pixmap)); // Set the icon
 
-        // Dynamically resize based on the current size of the button
-        QSize buttonSize = QSize(500, 726) * 0.2; // Scale the icon based on button size
-        setIconSize(buttonSize);                  // Set the icon size to the resized size
+        QSize buttonSize = QSize(500, 726) * 0.2;
+        setIconSize(buttonSize);
+        this->setStyleSheet("padding: 0px;"
+                            "margin: 0px; "
+                            "border: none;");
     } else {
-        setIcon(QIcon());           // Clear any existing icon
-        setProperty("icon", false); // Reset the 'icon' property
+        setIcon(QIcon()); // Clear any existing icon
         setText(isCardFaceVisible && isEnabled() ? str_ : "▓▓");
+        this->setStyleSheet("background: white; "
+                            "border: 1px solid black;"
+                            "font-size: 16px;"
+                            "border-radius: 4px;"
+                            "padding: 2px 6px; "
+                            "margin: 0px;");
     }
-
-    applyStyleSheet();
+    // applyStyleSheet();   // not working
 }
 
 void Card::applyStyleSheet()
 {
-    QFile file(":/res/styles/card.qss"); // Ensure the file is in your resource system
+    QFile file(":/res/styles/card.css"); // Ensure the file is in your resource system
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QString stylesheet = file.readAll();
+        qDebug() << "Stylesheet loaded:" << stylesheet; // Debug line
         this->setStyleSheet(stylesheet);
         file.close();
     } else {

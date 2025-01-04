@@ -271,7 +271,7 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    // emit setRbCardType(CardType::Small); // to Table
+    emit setRbCardType(CardType::Small); // to Table
     emit setCbVisible(false);       // to Table
     emit toggleCardsVisible(false); // to CardVec
     emit resetCbVisible();          // to Table
