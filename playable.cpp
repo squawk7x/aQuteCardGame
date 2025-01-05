@@ -19,8 +19,6 @@ void Playable::addCard(QSharedPointer<Card> card)
         //     this->onCardClicked(card);
         // });
         card->setParent(this);
-        // card->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
-        // "padding: 1px 2px; margin: 0px; font-size: 16px;");
         card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
         // card->setFocusPolicy(Qt::StrongFocus);
         card->loadImage(true);

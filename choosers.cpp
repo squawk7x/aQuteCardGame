@@ -22,15 +22,11 @@ Chooser::Chooser(QVector<QString> decs, QObject *parent)
     if (!decs_.isEmpty()) {
         setData();
     }
-
-    this->setStyleSheet("background-color: yellow; border: 1px solid black; border-radius: 4px; "
-                        "padding: 1px 2px; margin: 8px 2px;font-size: 16px;");
-
+    this->setProperty("chooser", true); // Add the custom property
     this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-
-    QFont font = this->font();
-    font.setPointSize(16);
-    this->setFont(font);
+    // QFont font = this->font();
+    // font.setPointSize(16);
+    // this->setFont(font);
     connect(this, &QPushButton::clicked, this, &Chooser::toggle);
 }
 

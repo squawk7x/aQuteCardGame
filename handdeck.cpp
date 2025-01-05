@@ -20,8 +20,6 @@ void Handdeck::addCard(QSharedPointer<Card> card)
             this->onCardClicked(card);
         });
         card->setParent(this);
-        // card->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
-        // "padding: 1px 2px; margin: 0px; font-size: 16px;");
         card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         QGroupBox* handdeck = qobject_cast<QGroupBox*>(parent());
@@ -178,7 +176,6 @@ int Handdeck::pointsOnHand()
 
 void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
 {
-    qDebug() << "playing card ...";
     if (cards().contains(card)) {
         emit handCardClicked(card);
     }

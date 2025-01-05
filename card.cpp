@@ -196,7 +196,6 @@ int Card::value() const
 void Card::loadImage(bool isCardFaceVisible)
 {
     setStr(); // Update the string representation of the card
-    // setProperty("icon", type_ == CardType::Normal); // Set property for text-only cards
 
     QString imagePath;
 
@@ -215,20 +214,18 @@ void Card::loadImage(bool isCardFaceVisible)
 
         QSize buttonSize = QSize(500, 726) * 0.2;
         setIconSize(buttonSize);
-        this->setStyleSheet("padding: 0px;"
-                            "margin: 0px; "
-                            "border: none;");
+
+        // Set a property for the stylesheet to target
+        setProperty("icon", true);
     } else {
         setIcon(QIcon()); // Clear any existing icon
         setText(isCardFaceVisible && isEnabled() ? str_ : "▓▓");
-        this->setStyleSheet("background: white; "
-                            "border: 1px solid black;"
-                            "font-size: 16px;"
-                            "border-radius: 4px;"
-                            "padding: 2px 6px; "
-                            "margin: 0px;");
+
+        // Set a property for the stylesheet to target
+        setProperty("icon", false);
     }
-    // applyStyleSheet();   // not working
+
+    applyStyleSheet(); // Apply the stylesheet
 }
 
 void Card::applyStyleSheet()
@@ -236,8 +233,7 @@ void Card::applyStyleSheet()
     QFile file(":/res/styles/card.css"); // Ensure the file is in your resource system
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QString stylesheet = file.readAll();
-        qDebug() << "Stylesheet loaded:" << stylesheet; // Debug line
-        this->setStyleSheet(stylesheet);
+        setStyleSheet(stylesheet); // Apply the stylesheet
         file.close();
     } else {
         qDebug() << "Failed to load stylesheet from resource.";

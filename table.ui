@@ -460,6 +460,9 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_03">
         <item>
+         <layout class="QFormLayout" name="formLayout"/>
+        </item>
+        <item>
          <widget class="QGroupBox" name="gbShuffles">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -933,7 +936,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -952,7 +955,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -1022,7 +1025,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>Sound</string>
@@ -1041,7 +1044,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>Visible</string>
@@ -2189,7 +2192,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>Suit</string>
@@ -2208,7 +2211,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>Rank</string>
@@ -2266,7 +2269,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>small</string>
@@ -2285,7 +2288,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>normal</string>
@@ -2811,7 +2814,7 @@
               </font>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::TabFocus</enum>
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
              </property>
              <property name="text">
               <string>💡</string>
@@ -2828,6 +2831,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pbNext</tabstop>
+  <tabstop>pbDraw</tabstop>
+  <tabstop>rbSuit</tabstop>
+  <tabstop>rbRank</tabstop>
+  <tabstop>cbSound</tabstop>
+  <tabstop>cbVisible</tabstop>
+  <tabstop>rbCardTypeSmall</tabstop>
+  <tabstop>rbCardTypeNormal</tabstop>
+  <tabstop>rbNumPlayers2</tabstop>
+  <tabstop>rbNumPlayers3</tabstop>
+  <tabstop>pbInfo</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <slots>

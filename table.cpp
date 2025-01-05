@@ -21,6 +21,7 @@
 #include "card.h"
 #include "playable.h"
 #include "ui_table.h"
+#include <qstyle.h>
 
 Table::Table(int numberOfPlayers, QWidget* parent)
     : QWidget(parent)
@@ -273,8 +274,8 @@ void Table::keyPressEvent(QKeyEvent* event)
         event->accept(); // Accept the event to prevent other widgets from receiving it
 
     } else {
-        event->accept(); // Accept the event to prevent other widgets from receiving it
-        // Table::keyPressEvent(event); // Pass to base class for default handling
+        // event->accept(); // Accept the event to prevent other widgets from receiving it
+        Table::keyPressEvent(event); // Pass to base class for default handling
     }
 }
 
@@ -309,7 +310,7 @@ void Table::onInfoClicked()
     editor->setReadOnly(true);        // Make the editor read-only to disable editing
 
     // Prevent the keyboard from showing up on Android by setting focus policy to NoFocus
-    editor->setFocusPolicy(Qt::NoFocus);
+    // editor->setFocusPolicy(Qt::NoFocus);
 
     // Create a scroll area to contain the editor
     QScrollArea* scrollArea = new QScrollArea(&dialog);
@@ -319,8 +320,8 @@ void Table::onInfoClicked()
         Qt::ScrollBarAlwaysOn); // Always show the vertical scrollbar
 
     // Ensure that the scroll area handles touch gestures properly on Android
-    scrollArea->setHorizontalScrollBarPolicy(
-        Qt::ScrollBarAlwaysOn); // Disable horizontal scrollbar for markdown content
+    // scrollArea->setHorizontalScrollBarPolicy(
+    //     Qt::ScrollBarAlwaysOn); // Disable horizontal scrollbar for markdown content
 
     // Create a layout for the dialog
     QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);
@@ -386,17 +387,23 @@ void Table::onChooserToggled()
 void Table::onPaintDrawButton(DrawOption drawOption)
 {
     if (drawOption == DrawOption::MustCard) {
-        ui->pbDraw->setStyleSheet("background-color: yellow;");
+        ui->pbDraw->setProperty("highlight", true);
     } else {
-        ui->pbDraw->setStyleSheet("background-color: grey;");
+        ui->pbDraw->setProperty("highlight", false);
     }
+    ui->pbDraw->style()->unpolish(ui->pbDraw);
+    ui->pbDraw->style()->polish(ui->pbDraw);
+    qDebug() << "Current properties of pbNext:" << ui->pbNext->dynamicPropertyNames();
+    qDebug() << "Stylesheet applied to pbNext:" << ui->pbNext->styleSheet();
 }
 
 void Table::onPaintNextButton(NextOption nextOption)
 {
     if (nextOption == NextOption::Possible) {
-        ui->pbNext->setStyleSheet("background-color: yellow;");
+        ui->pbNext->setProperty("highlight", true);
     } else {
-        ui->pbNext->setStyleSheet("background-color: grey;");
+        ui->pbNext->setProperty("highlight", false);
     }
+    ui->pbDraw->style()->unpolish(ui->pbDraw);
+    ui->pbDraw->style()->polish(ui->pbDraw);
 }

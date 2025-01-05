@@ -15,8 +15,6 @@ void Drawn::addCard(QSharedPointer<Card> card)
 {
     if (card) {
         card->setParent(this);                 // Ensure the card's parent is this Played instance
-        // card->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
-        // "padding: 1px 2px; margin: 0px; font-size: 16px;");
         card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
         cardFace_ = CardFace::Closed;
         cards_.prepend(card);                  // Add card to the beginning of the list
