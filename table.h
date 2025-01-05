@@ -38,6 +38,7 @@ private:
 signals:
     // void mouseClicked();
     void cbVisible(bool isVisible);
+    void togglePlayableCards(); // to Playable
 
 public slots:
     void onRbNumPlayers2(); // from Game initializes new game

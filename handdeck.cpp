@@ -48,6 +48,17 @@ void Handdeck::removeCard(QSharedPointer<Card> card)
     }
 }
 
+void Handdeck::playThisCard(const Card& cardToPlay)
+{
+    for (const auto& card : std::as_const(cards_)) {
+        if (cardToPlay.str() == card->str()) {
+            qDebug() << "playing card" << card->str();
+            card->click();
+            break;
+        }
+    }
+}
+
 QVector<QString> Handdeck::patternByRankPoints()
 {
     QMap<QString, int> rankPoints;
@@ -167,6 +178,7 @@ int Handdeck::pointsOnHand()
 
 void Handdeck::onCardClicked(const QSharedPointer<Card>& card)
 {
+    qDebug() << "playing card ...";
     if (cards().contains(card)) {
         emit handCardClicked(card);
     }

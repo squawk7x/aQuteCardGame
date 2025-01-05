@@ -105,9 +105,11 @@ void CardVec::clearCards()
     cards_.clear();
 }
 
-bool CardVec::isCardInCards(const QSharedPointer<Card>& card)
+bool CardVec::isCardInCards(const Card& cardToCheck)
 {
-    return std::any_of(cards_.cbegin(), cards_.cend(), [&](const auto& c) { return card == c; });
+    return std::any_of(cards_.cbegin(), cards_.cend(), [&](const auto& card) {
+        return cardToCheck.str() == card->str();
+    });
 }
 
 bool CardVec::isSuitInCards(const QString& suit)

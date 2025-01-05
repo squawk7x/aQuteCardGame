@@ -28,6 +28,21 @@ void Playable::addCard(QSharedPointer<Card> card)
     }
 }
 
+void Playable::togglePlayableCards()
+{
+    qDebug() << "toggling ...";
+    if (!cards_.isEmpty()) {
+        // Take the last element from the vector
+        QSharedPointer<Card> firstCard = cards_.takeFirst();
+
+        // Insert the last card at the front of the vector
+        cards_.append(firstCard);
+
+        // Update layout or UI if needed
+        updateLayout();
+    }
+}
+
 void Playable::onCardClicked(const QSharedPointer<Card>& card)
 {
     // to make the card played when clicking on card in playable:

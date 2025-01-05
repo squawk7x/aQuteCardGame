@@ -13,6 +13,7 @@ public:
     virtual ~Playable();
 
     virtual void addCard(QSharedPointer<Card> card) override;
+    void togglePlayableCards();
 
 signals:
     void handCardClicked(QSharedPointer<Card> card);

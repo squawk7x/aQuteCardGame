@@ -28,7 +28,7 @@ public:
     void moveTopCardTo(CardVec* targetVec);
     QSharedPointer<Card> topCard();
     void clearCards();
-    bool isCardInCards(const QSharedPointer<Card>& card);
+    bool isCardInCards(const Card& card);
     bool isSuitInCards(const QString& suit);
     bool isRankInCards(const QString& rank);
     void sortCardsByPattern(const QVector<QString>& pattern);

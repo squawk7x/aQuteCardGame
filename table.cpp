@@ -19,6 +19,7 @@
 #include <QTextStream>
 #include <QVBoxLayout>
 #include "card.h"
+#include "playable.h"
 #include "ui_table.h"
 
 Table::Table(int numberOfPlayers, QWidget* parent)
@@ -216,7 +217,6 @@ void Table::initializeGame(int numberOfPlayers)
     QObject::connect(game_.get(), &Game::paintNextButton, this, &Table::onPaintNextButton);
 
     // Pushbuttons
-
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
     QObject::connect(pbInfo, &QPushButton::clicked, this, &Table::onInfoClicked);
@@ -255,15 +255,23 @@ void Table::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_Down) {
         qDebug() << "Arrow Down pressed";
         ui->pbDraw->click(); // Simulate pbDraw button click
+        event->accept();     // Accept the event to prevent other widgets from receiving it
     } else if (event->key() == Qt::Key_Right) {
         qDebug() << "Arrow Right pressed";
         ui->pbNext->click(); // Simulate pbNext button click
+        event->accept();     // Accept the event to prevent other widgets from receiving it
     } else if (event->key() == Qt::Key_Left) {
         qDebug() << "Arrow Left pressed";
-        // ui->pbNext->click(); // Simulate pbNext button click
+        game_.get()->playable()->togglePlayableCards();
+        event->accept(); // Accept the event to prevent other widgets from receiving it
     } else if (event->key() == Qt::Key_Up) {
-        qDebug() << "Arrow Up pressed";
-        // ui->pbNext->click(); // Simulate pbNext button click
+        if (!game_.get()->playable()->cards().isEmpty()) {
+            // qDebug() << game_.get()->playable()->cards().first()->str();
+            auto card = game_.get()->playable()->cards().first();
+            (game_.get()->player->handdeck()->playThisCard(*card));
+        }
+        event->accept(); // Accept the event to prevent other widgets from receiving it
+
     } else {
         // Table::keyPressEvent(event); // Pass to base class for default handling
     }
