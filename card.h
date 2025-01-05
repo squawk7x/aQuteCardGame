@@ -25,7 +25,7 @@ private:
     QString rankname_;
     QString str_;
     int value_;
-    CardType type_;
+    CardType cardType_;
 
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
@@ -59,7 +59,6 @@ private:
     void setRankname(const QString& rank);
     void setStr();
     void setValue(const QString& rank);
-    void applyStyleSheet();
 
 signals:
     void cardClicked(const Card& card);

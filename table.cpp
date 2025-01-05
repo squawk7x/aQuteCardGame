@@ -29,9 +29,6 @@ Table::Table(int numberOfPlayers, QWidget* parent)
 {
     ui->setupUi(this);
 
-    // ui->pbDraw->setObjectName("pbDraw");
-    // ui->pbNext->setObjectName("pbNext");
-
     ui->pbDraw->setProperty("control", true);
     ui->pbNext->setProperty("control", true);
 
@@ -55,7 +52,7 @@ void Table::initializeGame(int numberOfPlayers)
 
     game_ = QSharedPointer<Game>::create(numberOfPlayers);
 
-    // Find all QHBoxLayouts
+    // Find all QHBoxLayouts defined in table.ui
     QHBoxLayout* layoutPlayer2 = findChild<QHBoxLayout*>("layoutPlayer2");
     QHBoxLayout* layoutPlayer3 = nullptr;
     if (numberOfPlayers == 3) {
@@ -392,8 +389,11 @@ void Table::onChooserToggled()
 
 void Table::onPaintDrawButton(DrawOption drawOption)
 {
-    ui->pbDraw->setDisabled(drawOption == DrawOption::NoCard);
+    ui->pbDraw->setEnabled(drawOption == DrawOption::MustCard);
+    // Workaround, Next Button must be pressed once to enable pbDraw:
     ui->pbNext->setEnabled(true);
+    if (ui->pbDraw->isEnabled())
+        ui->pbNext->setEnabled(false);
 }
 
 void Table::onPaintNextButton(NextOption nextOption)

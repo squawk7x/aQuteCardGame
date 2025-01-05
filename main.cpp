@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     // Load the stylesheet from the resource file
-    QFile file(":/res/styles/card.css");
+    QFile file(":/res/styles/aQuteCardgame.css");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QString stylesheet = file.readAll();
         app.setStyleSheet(stylesheet); // Apply the stylesheet globally

@@ -14,13 +14,10 @@ QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 // Private Methods
 void Card::initCard()
 {
-    applyStyleSheet();
-
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
     setCardType(CardType::Small);
-    setProperty("icon", false);
     loadImage();
 
     connect(this, &QPushButton::clicked, this, [&]() { emit cardClicked(*this); });
@@ -62,7 +59,7 @@ void Card::setValue(const QString& rank)
 
 void Card::setCardType(CardType type)
 {
-    type_ = type;
+    cardType_ = type;
     setProperty("card-type", type == CardType::Small ? "Small" : "Normal");
 }
 
@@ -208,36 +205,22 @@ void Card::loadImage(bool isCardFaceVisible)
         imagePath = QString(":res/cards/backside_blue.png");
     }
 
+    setProperty("card-type", cardType_ == CardType::Small ? "Small" : "Normal");
+
     QPixmap pixmap(imagePath); // Load the image as a QPixmap
 
-    if (!pixmap.isNull() && type_ == CardType::Normal) {
+    if (!pixmap.isNull() && cardType_ == CardType::Normal) {
         setText("");            // Remove any text
         setIcon(QIcon(pixmap)); // Set the icon
 
         QSize buttonSize = QSize(500, 726) * 0.2;
         setIconSize(buttonSize);
-
-        // Set a property for the stylesheet to target
-        // setProperty("icon", true);
     } else {
         setIcon(QIcon()); // Clear any existing icon
         setText(isCardFaceVisible && isEnabled() ? str_ : "▓▓");
-
-        // Set a property for the stylesheet to target
-        // setProperty("icon", false);
     }
 
-    // applyStyleSheet(); // Apply the stylesheet
-}
-
-void Card::applyStyleSheet()
-{
-    QFile file(":/res/styles/card.css"); // Ensure the file is in your resource system
-    if (file.open(QFile::ReadOnly | QFile::Text)) {
-        QString stylesheet = file.readAll();
-        setStyleSheet(stylesheet); // Apply the stylesheet
-        file.close();
-    } else {
-        qDebug() << "Failed to load stylesheet from resource.";
-    }
+    // Notify Qt to reapply the stylesheet
+    style()->unpolish(this);
+    style()->polish(this);
 }

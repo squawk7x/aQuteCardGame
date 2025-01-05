@@ -1,0 +1,42 @@
+/* card.css */
+
+QPushButton[card-type="Small"] {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 0;
+    font-size: 16px;
+}
+
+QPushButton[card-type="Normal"] {
+    background-color: none;
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* Style for QPushButton when enabled and control is 'true' */
+QPushButton[control="true"]:enabled {
+    background-color: yellow;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 0px;
+    font-size: 16px;
+}
+
+/* Style for QPushButton when disabled */
+QPushButton[control="true"]:disabled {
+    color: black;
+    font-weight: bold;
+    background-color: lightgrey;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 0px;
+    font-size: 16px;
+}
+

@@ -22,11 +22,10 @@ Chooser::Chooser(QVector<QString> decs, QObject *parent)
     if (!decs_.isEmpty()) {
         setData();
     }
-    this->setProperty("chooser", true); // Add the custom property
+
+    this->setProperty("control", true); // Add the custom property
     this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    // QFont font = this->font();
-    // font.setPointSize(16);
-    // this->setFont(font);
+
     connect(this, &QPushButton::clicked, this, &Chooser::toggle);
 }
 
