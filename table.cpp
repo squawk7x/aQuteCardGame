@@ -216,6 +216,7 @@ void Table::initializeGame(int numberOfPlayers)
     QObject::connect(game_.get(), &Game::paintNextButton, this, &Table::onPaintNextButton);
 
     // Pushbuttons
+
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
     QObject::connect(pbInfo, &QPushButton::clicked, this, &Table::onInfoClicked);
@@ -249,15 +250,23 @@ void Table::keyPressEvent(QKeyEvent* event)
             addSpecialCardsToHand(event);
         }
     }
-    // if (event->key() == Qt::Key_Down) {
-    //     qDebug() << "Arrow Down pressed";
-    //     ui->pbDraw->click(); // Simulate pbDraw button click
-    // } else if (event->key() == Qt::Key_Right) {
-    //     qDebug() << "Arrow Right pressed";
-    //     ui->pbNext->click(); // Simulate pbNext button click
-    // } else {
-    //     Table::keyPressEvent(event); // Pass to base class for default handling
-    // }
+
+    // gamecontrol via keyboard
+    if (event->key() == Qt::Key_Down) {
+        qDebug() << "Arrow Down pressed";
+        ui->pbDraw->click(); // Simulate pbDraw button click
+    } else if (event->key() == Qt::Key_Right) {
+        qDebug() << "Arrow Right pressed";
+        ui->pbNext->click(); // Simulate pbNext button click
+    } else if (event->key() == Qt::Key_Left) {
+        qDebug() << "Arrow Left pressed";
+        // ui->pbNext->click(); // Simulate pbNext button click
+    } else if (event->key() == Qt::Key_Up) {
+        qDebug() << "Arrow Up pressed";
+        // ui->pbNext->click(); // Simulate pbNext button click
+    } else {
+        // Table::keyPressEvent(event); // Pass to base class for default handling
+    }
 }
 
 void Table::onInfoClicked()
