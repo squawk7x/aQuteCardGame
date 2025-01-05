@@ -932,6 +932,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
+             </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
              </property>
@@ -947,6 +950,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -1015,6 +1021,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
+             </property>
              <property name="text">
               <string>Sound</string>
              </property>
@@ -1030,6 +1039,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
              </property>
              <property name="text">
               <string>Visible</string>
@@ -2176,6 +2188,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
+             </property>
              <property name="text">
               <string>Suit</string>
              </property>
@@ -2191,6 +2206,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
              </property>
              <property name="text">
               <string>Rank</string>
@@ -2247,11 +2265,14 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
+             </property>
              <property name="text">
               <string>small</string>
              </property>
              <property name="checked">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -2262,6 +2283,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
              </property>
              <property name="text">
               <string>normal</string>
@@ -2785,6 +2809,9 @@
               <font>
                <bold>true</bold>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::TabFocus</enum>
              </property>
              <property name="text">
               <string>💡</string>

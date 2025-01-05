@@ -16,9 +16,9 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
         foreach (const auto& suit, suits) {
             foreach (const auto& rank, ranks) {
                 auto card = QSharedPointer<Card>::create(suit, rank);
-                card->setStyleSheet(
-                    "background-color: white; border: 1px solid black; border-radius: 4px; "
-                    "padding: 1px 2px; margin: 0px; font-size: 16px;");
+                // card->setStyleSheet(
+                // "background-color: white; border: 1px solid black; border-radius: 4px; "
+                // "padding: 1px 2px; margin: 0px; font-size: 16px;");
                 card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
                 addCard(card);
             }

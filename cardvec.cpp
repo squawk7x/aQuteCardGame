@@ -12,6 +12,7 @@ CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
 
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
+    // setFocusPolicy(Qt::NoFocus);
 
     for (const auto& card : cards_) {
         card->setParent(this);
@@ -29,9 +30,10 @@ void CardVec::addCard(QSharedPointer<Card> card)
 {
     if (card) {
         card->setParent(this);
-        card->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
-                            "padding: 1px 2px; margin: 0px; font-size: 16px;");
+        // // card->setStyleSheet("background-color: white; border: 1px solid black; border-radius: 4px; "
+        //                     "padding: 1px 2px; margin: 0px; font-size: 16px;");
         card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        // card->setFocusPolicy(Qt::NoFocus);
         card->loadImage(isCardFaceVisible_);
         cards_.append(card);
         layout_->addWidget(card.data());

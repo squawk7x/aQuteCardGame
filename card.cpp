@@ -94,6 +94,7 @@ Card::Card(const Card& other)
     , suit_(other.suit_)
     , rank_(other.rank_)
 {
+    // setFocusPolicy(Qt::NoFocus);
     initCard();
 }
 

@@ -273,6 +273,7 @@ void Table::keyPressEvent(QKeyEvent* event)
         event->accept(); // Accept the event to prevent other widgets from receiving it
 
     } else {
+        event->accept(); // Accept the event to prevent other widgets from receiving it
         // Table::keyPressEvent(event); // Pass to base class for default handling
     }
 }
