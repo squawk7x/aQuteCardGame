@@ -20,10 +20,10 @@ class Table : public QWidget
     Q_OBJECT
 
 private:
-    Ui::Table *ui;
     QSharedPointer<Game> game_;
 
 public:
+    Ui::Table *ui;
     explicit Table(int numberOfPlayers = 3, QWidget *parent = nullptr);
     ~Table();
     void initializeGame(int numberOfPlayers);

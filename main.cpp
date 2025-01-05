@@ -1,16 +1,31 @@
 #include <QApplication>
-#include <QScreen>
+#include <QDebug>
+#include <QFile>
+#include <QPushButton>
 #include <QVBoxLayout>
-#include "table.h"
+#include <QWidget>
+#include "table.h" // Ensure this is the correct path for Table
+#include "ui_table.h"
+#include <qstyle.h>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    // Load the stylesheet from the resource file
+    QFile file(":/res/styles/card.css");
+    if (file.open(QFile::ReadOnly | QFile::Text)) {
+        QString stylesheet = file.readAll();
+        app.setStyleSheet(stylesheet); // Apply the stylesheet globally
+        file.close();
+    } else {
+        qDebug() << "Failed to load stylesheet.";
+    }
+
     // Create the main window
     QWidget mainWindow;
 
-    mainWindow.resize(1280, 720); //
+    mainWindow.resize(1280, 720);
 
     // Create the layout
     QVBoxLayout *layout = new QVBoxLayout(&mainWindow);
@@ -20,7 +35,7 @@ int main(int argc, char *argv[])
 
     layout->addWidget(&table);
 
-    // Optionally, set layout margins and spacing if necessary
+    // Set layout margins and spacing
     layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(5);
 

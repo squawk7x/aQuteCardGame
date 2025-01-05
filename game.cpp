@@ -676,10 +676,10 @@ bool Game::isMustDrawCard()
 
 void Game::setButtonColors()
 {
-    // if (roundChooser()->isEnabled()) {
-    //     emit paintDrawButton(DrawOption::NoCard);
-    //     emit paintNextButton(NextOption::NotPossible);
-    // }
+    if (roundChooser()->isEnabled()) {
+        emit paintDrawButton(DrawOption::NoCard);
+        emit paintNextButton(NextOption::NotPossible);
+    }
 
     QSharedPointer<Card> stackCard = stack()->topCard();
 
@@ -693,37 +693,39 @@ void Game::setButtonColors()
 
     else if (played()->cards().isEmpty() && playable()->cards().isEmpty()
              && drawn()->cards().isEmpty()) {
-        emit paintDrawButton(DrawOption::MustCard);
         emit paintNextButton(NextOption::NotPossible);
+        emit paintDrawButton(DrawOption::MustCard);
     }
 
     else if (!played()->cards().isEmpty()
              || (played()->cards().isEmpty() && playable()->cards().isEmpty()
                  && !drawn()->cards().isEmpty())) {
-        emit paintDrawButton(DrawOption::NoCard);
         emit paintNextButton(NextOption::Possible);
+        emit paintDrawButton(DrawOption::NoCard);
+    }
+
+    else if (played()->cards().isEmpty() && !playable()->cards().isEmpty()) {
+        emit paintNextButton(NextOption::NotPossible);
+        emit paintDrawButton(DrawOption::NoCard);
     }
 
     else {
-        emit paintDrawButton(DrawOption::NoCard);
-        emit paintNextButton(NextOption::NotPossible);
+        qDebug() << "case left !!";
     }
 }
 
 bool Game::isNextPlayerPossible()
 {
-    emit paintDrawButton(DrawOption::NoCard);
-    emit paintNextButton(NextOption::NotPossible);
-
     if (isRoundFinished()) {
+        setButtonColors();
         return true;
     }
 
-    QSharedPointer<Card> stackCard = stack()->topCard();
+    if (isMustDrawCard() && player->isRobot())
+        drawCardFromBlind(DrawOption::MustCard);
+    // player 1 does not draw automatically
 
-    if (isMustDrawCard() && player->isRobot()) {
-        drawCardFromBlind(DrawOption::MustCard); // player 1 does not draw automatically
-    }
+    QSharedPointer<Card> stackCard = stack()->topCard();
 
     if (stackCard->rank() == "6") {
         setButtonColors();

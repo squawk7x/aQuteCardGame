@@ -14,12 +14,14 @@ QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 // Private Methods
 void Card::initCard()
 {
+    applyStyleSheet();
+
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
     setCardType(CardType::Small);
+    setProperty("icon", false);
     loadImage();
-    applyStyleSheet();
 
     connect(this, &QPushButton::clicked, this, [&]() { emit cardClicked(*this); });
 }
@@ -216,16 +218,16 @@ void Card::loadImage(bool isCardFaceVisible)
         setIconSize(buttonSize);
 
         // Set a property for the stylesheet to target
-        setProperty("icon", true);
+        // setProperty("icon", true);
     } else {
         setIcon(QIcon()); // Clear any existing icon
         setText(isCardFaceVisible && isEnabled() ? str_ : "▓▓");
 
         // Set a property for the stylesheet to target
-        setProperty("icon", false);
+        // setProperty("icon", false);
     }
 
-    applyStyleSheet(); // Apply the stylesheet
+    // applyStyleSheet(); // Apply the stylesheet
 }
 
 void Card::applyStyleSheet()

@@ -29,6 +29,12 @@ Table::Table(int numberOfPlayers, QWidget* parent)
 {
     ui->setupUi(this);
 
+    // ui->pbDraw->setObjectName("pbDraw");
+    // ui->pbNext->setObjectName("pbNext");
+
+    ui->pbDraw->setProperty("control", true);
+    ui->pbNext->setProperty("control", true);
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->availableGeometry();
     setMaximumSize(screenGeometry.width(), screenGeometry.height());
@@ -237,7 +243,7 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
 
     if (keyToCard.contains(event->key())) {
         QString rank = keyToCard[event->key()];
-        for (const auto &suit : std::as_const(suits)) {
+        for (const auto& suit : std::as_const(suits)) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, rank);
             game_->player->handdeck()->addCard(newCard);
         }
@@ -386,24 +392,11 @@ void Table::onChooserToggled()
 
 void Table::onPaintDrawButton(DrawOption drawOption)
 {
-    if (drawOption == DrawOption::MustCard) {
-        ui->pbDraw->setProperty("highlight", true);
-    } else {
-        ui->pbDraw->setProperty("highlight", false);
-    }
-    ui->pbDraw->style()->unpolish(ui->pbDraw);
-    ui->pbDraw->style()->polish(ui->pbDraw);
-    qDebug() << "Current properties of pbNext:" << ui->pbNext->dynamicPropertyNames();
-    qDebug() << "Stylesheet applied to pbNext:" << ui->pbNext->styleSheet();
+    ui->pbDraw->setDisabled(drawOption == DrawOption::NoCard);
+    ui->pbNext->setEnabled(true);
 }
 
 void Table::onPaintNextButton(NextOption nextOption)
 {
-    if (nextOption == NextOption::Possible) {
-        ui->pbNext->setProperty("highlight", true);
-    } else {
-        ui->pbNext->setProperty("highlight", false);
-    }
-    ui->pbDraw->style()->unpolish(ui->pbDraw);
-    ui->pbDraw->style()->polish(ui->pbDraw);
+    ui->pbNext->setEnabled(nextOption == NextOption::Possible);
 }
