@@ -21,6 +21,7 @@ class Table : public QWidget
 
 private:
     QSharedPointer<Game> game_;
+    QWidget *mainWindow_;
 
 public:
     Ui::Table *ui;

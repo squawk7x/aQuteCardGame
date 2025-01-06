@@ -4,14 +4,16 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
-#include "table.h" // Ensure this is the correct path for Table
+#include "table.h"
 #include <qstyle.h>
+
+// written by: Andreas Ottburg, 66123 Saarbrücken, Germany
+// source code available here: https://github.com/squawk7x/aQuteCardGame
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // Load the stylesheet from the resource file
     QFile file(":/res/styles/main.css");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QString stylesheet = file.readAll();
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
     QVBoxLayout *layout = new QVBoxLayout(&mainWindow);
 
     // Create the table widget and add it to the layout
-    Table table;
+    Table table(3, &mainWindow);
 
     layout->addWidget(&table);
 

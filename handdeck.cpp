@@ -50,7 +50,6 @@ void Handdeck::playThisCard(const Card& cardToPlay)
 {
     for (const auto& card : std::as_const(cards_)) {
         if (cardToPlay.str() == card->str()) {
-            qDebug() << "playing card" << card->str();
             card->click();
             break;
         }

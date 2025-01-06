@@ -26,6 +26,7 @@
 Table::Table(int numberOfPlayers, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::Table)
+    , mainWindow_(parent)
 {
     ui->setupUi(this);
 
@@ -187,6 +188,10 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
     connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
         game_->onRbCardType(CardType::Small);
+        // qDebug() << mainWindow_;
+        if (mainWindow_) {
+            mainWindow_->adjustSize();
+        }
     });
     connect(ui->rbCardTypeNormal, &QRadioButton::clicked, game_.get(), [&]() {
         game_->onRbCardType(CardType::Normal);
@@ -248,57 +253,52 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
     }
 }
 
-// void Table::applyStyleSheet()
-// {
-//     QFile file(":/res/styles/main.css"); // Resource path
-//     if (file.open(QFile::ReadOnly | QFile::Text)) {
-//         QString stylesheet = file.readAll();
-//         setStyleSheet(stylesheet); // Apply the stylesheet
-//         file.close();
-//     } else {
-//         qDebug() << "Failed to load stylesheet from resource.";
-//     }
-//     ui->pbDraw->style()->unpolish(ui->pbDraw);
-//     ui->pbDraw->style()->polish(ui->pbDraw);
-// }
-
 void Table::keyPressEvent(QKeyEvent* event)
+// Add cards for testing
 {
     if (event->modifiers() & Qt::ControlModifier) {
         if (event->key() >= Qt::Key_6 && event->key() <= Qt::Key_Q) {
             addSpecialCardsToHand(event);
+            onResetCbVisible();
         }
     }
 
-    // gamecontrol via keyboard
-    if (event->key() == Qt::Key_2) {
-        ui->pbDraw->click(); // Simulate pbDraw button click
-        // QCoreApplication::processEvents();
-        event->accept();     // Accept the event to prevent other widgets from receiving it
+    //     4 QUTE       5 EIGHTS    6 JPOINTS
+    //     1 TOGGLE     2 PLAY      3 NEXT / FINISH
+    //                  0 DRAW
+
+    // gamecontrol
+    if (event->key() == Qt::Key_0) {
+        ui->pbDraw->click();
+        event->accept();
+    } else if (game_.get()->roundChooser()->isEnabled() && event->key() == Qt::Key_3) {
+        game_.get()->roundChooser()->click();
+        event->accept();
     } else if (event->key() == Qt::Key_3) {
-        ui->pbNext->click(); // Simulate pbNext button click
-        // QCoreApplication::processEvents();
-        event->accept();     // Accept the event to prevent other widgets from receiving it
+        ui->pbNext->click();
+        event->accept();
+    } else if (game_.get()->jsuitChooser()->isEnabled() && event->key() == Qt::Key_1) {
+        game_.get()->jsuitChooser()->toggle();
+        event->accept();
+    } else if (game_.get()->quteChooser()->isEnabled() && event->key() == Qt::Key_4) {
+        game_.get()->quteChooser()->toggle();
+        event->accept();
+    } else if (game_.get()->eightsChooser()->isEnabled() && event->key() == Qt::Key_5) {
+        game_.get()->eightsChooser()->toggle();
+        event->accept();
+    } else if (game_.get()->jpointsChooser()->isEnabled() && event->key() == Qt::Key_6) {
+        game_.get()->jpointsChooser()->toggle();
+        event->accept();
     } else if (event->key() == Qt::Key_1) {
         game_.get()->playable()->togglePlayableCards();
-        // QCoreApplication::processEvents();
-        event->accept(); // Accept the event to prevent other widgets from receiving it
-    } else if (event->key() == Qt::Key_5) {
-        if (!game_.get()->playable()->cards().isEmpty()) {
-            auto card = game_.get()->playable()->cards().first();
-            (game_.get()->player->handdeck()->playThisCard(*card));
-            // QCoreApplication::processEvents();
-            event->accept(); // Accept the event to prevent other widgets from receiving it
-        }
-    } else if (event->key() == Qt::Key_Space) {
-        if (game_.get()->roundChooser()->isEnabled())
-            game_.get()->roundChooser()->click();
-        // QCoreApplication::processEvents();
-        event->accept(); // Accept the event to prevent other widgets from receiving it
-
+        event->accept();
+    } else if (!game_.get()->playable()->cards().isEmpty() && event->key() == Qt::Key_2) {
+        auto card = game_.get()->playable()->cards().first();
+        (game_.get()->player->handdeck()->playThisCard(*card));
+        event->accept();
     } else {
-        // event->accept(); // Accept the event to prevent other widgets from receiving it
-        // Table::keyPressEvent(event); // Pass to base class for default handling
+        // event->accept();
+        // Table::keyPressEvent(event);
     }
 }
 

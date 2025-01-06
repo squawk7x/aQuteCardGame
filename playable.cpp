@@ -29,7 +29,6 @@ void Playable::addCard(QSharedPointer<Card> card)
 
 void Playable::togglePlayableCards()
 {
-    qDebug() << "toggling ...";
     if (!cards_.isEmpty()) {
         // Take the last element from the vector
         QSharedPointer<Card> firstCard = cards_.takeFirst();
