@@ -458,6 +458,9 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_03">
         <item>
          <layout class="QFormLayout" name="formLayout"/>
@@ -936,7 +939,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -955,7 +958,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -1025,7 +1028,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>Sound</string>
@@ -1044,7 +1047,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>Visible</string>
@@ -1558,6 +1561,12 @@
                <pointsize>16</pointsize>
                <bold>false</bold>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">url:/res/styles/main.css</string>
              </property>
              <property name="text">
               <string>↓</string>
@@ -2133,6 +2142,12 @@
                <bold>false</bold>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::StrongFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">url:/res/styles/main.css</string>
+             </property>
              <property name="text">
               <string>→</string>
              </property>
@@ -2192,7 +2207,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>Suit</string>
@@ -2211,7 +2226,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>Rank</string>
@@ -2269,13 +2284,13 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>small</string>
              </property>
              <property name="checked">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -2288,7 +2303,7 @@
               </sizepolicy>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>normal</string>
@@ -2814,7 +2829,7 @@
               </font>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::StrongFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="text">
               <string>💡</string>

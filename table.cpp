@@ -29,9 +29,6 @@ Table::Table(int numberOfPlayers, QWidget* parent)
 {
     ui->setupUi(this);
 
-    ui->pbDraw->setProperty("control", true);
-    ui->pbNext->setProperty("control", true);
-
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->availableGeometry();
     setMaximumSize(screenGeometry.width(), screenGeometry.height());
@@ -217,6 +214,7 @@ void Table::initializeGame(int numberOfPlayers)
                      &RoundChooser::chooserToggled,
                      this,
                      &Table::onChooserToggled);
+
     QObject::connect(game_.get(), &Game::paintDrawButton, this, &Table::onPaintDrawButton);
     QObject::connect(game_.get(), &Game::paintNextButton, this, &Table::onPaintNextButton);
 
@@ -224,6 +222,8 @@ void Table::initializeGame(int numberOfPlayers)
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
     QObject::connect(pbDraw, &QPushButton::clicked, this, &Table::onDrawClicked);
     QObject::connect(pbInfo, &QPushButton::clicked, this, &Table::onInfoClicked);
+
+    ui->rbCardTypeSmall->click();
 }
 
 void Table::addSpecialCardsToHand(QKeyEvent* event)
@@ -240,12 +240,27 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
 
     if (keyToCard.contains(event->key())) {
         QString rank = keyToCard[event->key()];
-        for (const auto& suit : std::as_const(suits)) {
+        // for (const auto& suit : {std::as_const(suits)}) {
+        for (const auto& suit : {QString("♦"), QString("♥")}) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, rank);
             game_->player->handdeck()->addCard(newCard);
         }
     }
 }
+
+// void Table::applyStyleSheet()
+// {
+//     QFile file(":/res/styles/main.css"); // Resource path
+//     if (file.open(QFile::ReadOnly | QFile::Text)) {
+//         QString stylesheet = file.readAll();
+//         setStyleSheet(stylesheet); // Apply the stylesheet
+//         file.close();
+//     } else {
+//         qDebug() << "Failed to load stylesheet from resource.";
+//     }
+//     ui->pbDraw->style()->unpolish(ui->pbDraw);
+//     ui->pbDraw->style()->polish(ui->pbDraw);
+// }
 
 void Table::keyPressEvent(QKeyEvent* event)
 {
@@ -256,29 +271,34 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     // gamecontrol via keyboard
-    if (event->key() == Qt::Key_Down) {
-        qDebug() << "Arrow Down pressed";
+    if (event->key() == Qt::Key_2) {
         ui->pbDraw->click(); // Simulate pbDraw button click
+        // QCoreApplication::processEvents();
         event->accept();     // Accept the event to prevent other widgets from receiving it
-    } else if (event->key() == Qt::Key_Right) {
-        qDebug() << "Arrow Right pressed";
+    } else if (event->key() == Qt::Key_3) {
         ui->pbNext->click(); // Simulate pbNext button click
+        // QCoreApplication::processEvents();
         event->accept();     // Accept the event to prevent other widgets from receiving it
-    } else if (event->key() == Qt::Key_Left) {
-        qDebug() << "Arrow Left pressed";
+    } else if (event->key() == Qt::Key_1) {
         game_.get()->playable()->togglePlayableCards();
+        // QCoreApplication::processEvents();
         event->accept(); // Accept the event to prevent other widgets from receiving it
-    } else if (event->key() == Qt::Key_Up) {
+    } else if (event->key() == Qt::Key_5) {
         if (!game_.get()->playable()->cards().isEmpty()) {
-            // qDebug() << game_.get()->playable()->cards().first()->str();
             auto card = game_.get()->playable()->cards().first();
             (game_.get()->player->handdeck()->playThisCard(*card));
+            // QCoreApplication::processEvents();
+            event->accept(); // Accept the event to prevent other widgets from receiving it
         }
+    } else if (event->key() == Qt::Key_Space) {
+        if (game_.get()->roundChooser()->isEnabled())
+            game_.get()->roundChooser()->click();
+        // QCoreApplication::processEvents();
         event->accept(); // Accept the event to prevent other widgets from receiving it
 
     } else {
         // event->accept(); // Accept the event to prevent other widgets from receiving it
-        Table::keyPressEvent(event); // Pass to base class for default handling
+        // Table::keyPressEvent(event); // Pass to base class for default handling
     }
 }
 
@@ -350,7 +370,6 @@ void Table::onResetCbVisible()
     bool isVisible = ui->cbVisible->isChecked();
     ui->cbVisible->setChecked(!isVisible);
     ui->cbVisible->setChecked(isVisible);
-
     // emit cbVisible(ui->cbVisible->isChecked());
 }
 
@@ -389,14 +408,14 @@ void Table::onChooserToggled()
 
 void Table::onPaintDrawButton(DrawOption drawOption)
 {
-    ui->pbDraw->setEnabled(drawOption == DrawOption::MustCard);
-    // Workaround, Next Button must be pressed once to enable pbDraw:
-    ui->pbNext->setEnabled(true);
-    if (ui->pbDraw->isEnabled())
-        ui->pbNext->setEnabled(false);
+    ui->pbDraw->setProperty("control", drawOption == DrawOption::MustCard);
+    ui->pbDraw->style()->unpolish(ui->pbDraw);
+    ui->pbDraw->style()->polish(ui->pbDraw);
 }
 
 void Table::onPaintNextButton(NextOption nextOption)
 {
-    ui->pbNext->setEnabled(nextOption == NextOption::Possible);
+    ui->pbNext->setProperty("control", nextOption == NextOption::Possible);
+    ui->pbNext->style()->unpolish(ui->pbNext);
+    ui->pbNext->style()->polish(ui->pbNext);
 }

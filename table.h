@@ -33,6 +33,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) override; // Special Keys -> extra cards for testing
 
 private:
+    // void applyStyleSheet();
     void addSpecialCardsToHand(QKeyEvent *event);
 
 signals:

@@ -271,7 +271,7 @@ void Game::initializeRound()
     player->handdeck()->setEnabled(true);
     player->handdeck()->cards().last()->click();
 
-    emit setRbCardType(CardType::Small); // to Table
+    emit setRbCardType(CardType::Small); // ui->rbCardType
     emit setCbVisible(false);       // to Table
     emit toggleCardsVisible(false); // to CardVec
     emit resetCbVisible();          // to Table
@@ -310,7 +310,8 @@ void Game::handleChoosers()
         // end KI toggle JSuit to rank with most points
 
         // Do not allow Player1 toggle JSuitChooser:
-        jsuitChooser()->setDisabled(player->isRobot());
+        // jsuitChooser()->setDisabled(player->isRobot());
+        jsuitChooser()->setDisabled(player->isRobot() || played()->cards().isEmpty());
         jsuitChooser()->show();
         // JsuitChooser is shown until next player's card is added to stack
         // and removed by cardAddedToStack -> onCardAddedToStack
@@ -768,17 +769,6 @@ void Game::drawCardFromBlind(DrawOption option)
 
 void Game::rotatePlayerList()
 {
-    played()->clearCards();
-    drawn()->clearCards();
-
-    // jsuitChooser()->setEnabled(false); // handled by slot onCardAddedToStack
-    eightsChooser()->setEnabled(false);
-    jpointsChooser()->setEnabled(false);
-    quteChooser()->setEnabled(false);
-    eightsChooser()->hide();
-    // jpointsChooser()->hide();    // don't hide when counting points
-    quteChooser()->hide();
-
     if (!playerList_.isEmpty()) {
         player = playerList_.front();
         playerList_.pop_front();
@@ -791,6 +781,20 @@ void Game::rotatePlayerList()
 
     player = playerList_.front();
     player->handdeck()->setEnabled(true);
+
+    played()->clearCards();
+    drawn()->clearCards();
+
+    eightsChooser()->setEnabled(false);
+    jpointsChooser()->setEnabled(false);
+    quteChooser()->setEnabled(false);
+    eightsChooser()->hide();
+    // Bugfix:
+    // must show() until cardAddedToStack
+    // jsuitChooser()->setDisabled(player->isRobot() || played()->cards->isEmpty()) in handleChoosers
+    // jsuitChooser()->setEnabled(false);  // not here
+    // jpointsChooser()->hide();    // don't hide when counting points
+    quteChooser()->hide();
 
     updatePlayable();
 
@@ -826,6 +830,7 @@ bool Game::isRoundFinished()
     QSharedPointer<Card> stackCard = stack()->topCard();
 
     if (roundChooser()->isEnabled()) {
+        // emit paintNextButton(NextOption::NotPossible);
         return true;
     }
 

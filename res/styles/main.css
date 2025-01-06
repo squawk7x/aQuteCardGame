@@ -1,4 +1,4 @@
-/* card.css */
+/* main.css */
 
 QPushButton[card-type="Small"] {
     background-color: white;
@@ -17,8 +17,7 @@ QPushButton[card-type="Normal"] {
     margin: 0px;
 }
 
-/* Style for QPushButton when enabled and control is 'true' */
-QPushButton[control="true"]:enabled {
+QPushButton[control="true"] {
     background-color: yellow;
     font-weight: bold;
     border: 1px solid black;
@@ -28,8 +27,7 @@ QPushButton[control="true"]:enabled {
     font-size: 16px;
 }
 
-/* Style for QPushButton when disabled */
-QPushButton[control="true"]:disabled {
+QPushButton[control="false"] {
     color: black;
     font-weight: bold;
     background-color: lightgrey;
@@ -40,3 +38,14 @@ QPushButton[control="true"]:disabled {
     font-size: 16px;
 }
 
+/* Choosers */
+QPushButton[control="true"]:disabled {
+    color: black;
+    font-weight: bold;
+    background-color: lightgrey;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 0px;
+    font-size: 16px;
+}
