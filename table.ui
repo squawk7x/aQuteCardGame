@@ -549,6 +549,9 @@
            <property name="bottomMargin">
             <number>1</number>
            </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5"/>
+           </item>
           </layout>
          </widget>
         </item>
@@ -716,7 +719,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Playable</string>
+           <string>↑ Playable ←</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>

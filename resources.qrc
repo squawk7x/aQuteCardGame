@@ -175,5 +175,7 @@
         <file>res/layout/ui_desktop.png</file>
         <file>res/layout/ui_android.png</file>
         <file>res/styles/main.css</file>
+        <file>res/layout/ui_android_small.png</file>
+        <file>res/layout/ui_desktop_small.png</file>
     </qresource>
 </RCC>

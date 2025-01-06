@@ -84,7 +84,7 @@ void Table::initializeGame(int numberOfPlayers)
         layoutPlayer3->addWidget(game_->player3()->handdeck().get());
     }
 
-    layoutMonitor->addWidget(game_->monitor().get());
+    layoutMonitor->addWidget(game_->monitor_.get());
     layoutEightsChooser->addWidget(game_->eightsChooser().get());
     layoutQuteChooser->addWidget(game_->quteChooser().get());
     layoutJpointsChooser->addWidget(game_->jpointsChooser().get());
@@ -96,7 +96,9 @@ void Table::initializeGame(int numberOfPlayers)
     layoutShuffles->addWidget(game_->lcdShuffles().get());
     layoutBlind->addWidget(game_->blind().get());
     layoutJsuitChooser->addWidget(game_->jsuitChooser().get());
+
     layoutStack->addWidget(game_->stack().get());
+
     layoutPlayable->addWidget(game_->playable().get());
     layoutRound->addWidget(game_->lcdRound().get());
     layoutScores->addWidget(game_->lcdP1().get());
@@ -245,8 +247,8 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
 
     if (keyToCard.contains(event->key())) {
         QString rank = keyToCard[event->key()];
-        // for (const auto& suit : {std::as_const(suits)}) {
-        for (const auto& suit : {QString("♦"), QString("♥")}) {
+        for (const auto& suit : suits) {
+            // for (const auto& suit : {QString("♦"), QString("♥")}) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, rank);
             game_->player->handdeck()->addCard(newCard);
         }
@@ -264,7 +266,7 @@ void Table::keyPressEvent(QKeyEvent* event)
     }
 
     //     4 QUTE       5 EIGHTS    6 JPOINTS
-    //     1 TOGGLE     2 PLAY      3 NEXT / FINISH
+    //     1 TOGGLE     2 PLAY      3 NEXT / FINISH / ROUND / GAME
     //                  0 DRAW
 
     // gamecontrol

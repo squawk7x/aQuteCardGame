@@ -63,7 +63,7 @@ void Blind::showTopCard()
 // {
 //     isCardFaceVisible_ = isVisible;
 
-//     foreach (const auto& card, cards_) {
+//     for (const auto& card: cards_) {
 //         card->loadImage(isVisible);
 //     }
 // }

@@ -126,10 +126,10 @@ QSharedPointer<Player> Game::player3() const
     return player3_;
 }
 
-QSharedPointer<Monitor> Game::monitor()
-{
-    return monitor_;
-}
+// QSharedPointer<Monitor> Game::monitor()
+// {
+//     return monitor_;
+// }
 
 QSharedPointer<EightsChooser> Game::eightsChooser()
 {
@@ -323,8 +323,7 @@ void Game::handleChoosers()
     // -----------------------------------------------------------------------
 
     // EightsChooser
-    if (stackCard->rank() == "8" && monitor()->cards().size() >= 2
-        && played()->cards().size() >= 2) {
+    if (stackCard->rank() == "8" && monitor_->cards().size() >= 2 && played()->cards().size() >= 2) {
         // 2 Players
         if (numberOfPlayers_ == 2) {
             // if 2 players -> NOT allowing toggling to "ALL"
@@ -387,7 +386,7 @@ void Game::handleChoosers()
     // QuteChooser
 
     // Qute Condition -> connect Q -> J
-    if (monitor()->cards().size() == 4 && played()->cards().size() > 0) {
+    if (monitor_->cards().size() == 4 && played()->cards().size() > 0) {
         connect(quteChooser().get(),
                 &QuteChooser::quteDecisionChanged,
                 jpointsChooser().get(),
@@ -539,7 +538,7 @@ void Game::handleChoosers()
 
         // No Jpoints Condition
     } else {
-        jpointsChooser()->toggle_to("");
+        // jpointsChooser()->toggle_to("");
         jpointsChooser()->hide();
     }
 
@@ -567,7 +566,7 @@ void Game::updatePlayable()
 {
     playable()->clearCards();
 
-    foreach (const auto& card, player->handdeck()->cards()) {
+    for (const auto& card : player->handdeck()->cards()) {
         if (isThisCardPlayable(card)) {
             player->handdeck()->copyCardTo(card, playable().get());
         }
@@ -962,6 +961,7 @@ void Game::handleSpecialCards()
         emit setCbVisible(true);
         emit resetCbVisible();
         playable()->clearCards();
+        // Let the player first see old score before updateLcdDisplays()
         updateLcdDisplays();
     }
 }
@@ -1111,6 +1111,9 @@ void Game::onCbVisible(bool isVisible)
 
 void Game::onRbCardType(CardType type)
 {
+    jsuitChooser()->setCardType(type);
+    jsuitChooser()->loadImage();
+
     for (auto& card : player2()->handdeck()->cards()) {
         card->setCardType(type);
         card->loadImage(isCardsVisible_);

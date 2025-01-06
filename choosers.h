@@ -15,6 +15,9 @@ private:
     QString str_;
     QString name_;
 
+protected:
+    CardType cardType_;
+
 public:
     explicit Chooser(QVector<QString> decs = {""}, QObject* parent = nullptr);
 
@@ -22,13 +25,16 @@ public:
     virtual void toggle();
     void toggle_to(const QString& target_decision);
     void toggleRandom();
-    void loadImage();
 
     // Getters
     QVector<QString>& decs();
     QString decision();
     QString str();
     QString name();
+
+    //Setters
+    void setCardType(CardType type);
+    virtual void loadImage();
 
 protected:
     QString imagePath_ = "";
@@ -106,6 +112,7 @@ public:
     explicit JsuitChooser(QVector<QString> decs = {"♦", "♠", "♥", "♣"}, QObject* parent = nullptr);
 
     QString suit();
+    virtual void loadImage();
 
 public slots:
     void onCardAddedToStack(const QSharedPointer<Card>& card);

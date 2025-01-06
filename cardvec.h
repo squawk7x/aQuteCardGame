@@ -35,7 +35,7 @@ public:
     int countCardsOfRank(const QString& rank) const;
     QString mostCommonSuit() const;
     QString suitOfRankWithMostPoints() const;
-    void updateLayout();
+    virtual void updateLayout();
 
     // Getters
     QVector<QSharedPointer<Card>>& cards();

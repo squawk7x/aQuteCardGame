@@ -1,5 +1,6 @@
 #include "choosers.h"
 #include <QDebug>
+#include <qstyle.h>
 #include <random>
 
 // -----------------------------------------------------------------------
@@ -37,6 +38,10 @@ void Chooser::toggle()
         decs().erase(decs().begin());       // Remove the first element
         decs().push_back(firstElement);
         setData();
+        // Bugfix: use ... == 3 to apply to JpointsChooser only
+        if (decision() == "" && this->decs_.length() == 3) {
+            toggle();
+        }
         emit chooserToggled();
     }
 }
@@ -95,6 +100,12 @@ void Chooser::setData()
     loadImage();
 }
 
+void Chooser::setCardType(CardType type)
+{
+    cardType_ = type;
+    setProperty("card-type", type == CardType::Small ? "Small" : "Normal");
+}
+
 void Chooser::loadImage()
 {
     setStr();
@@ -116,6 +127,35 @@ void JsuitChooser::onCardAddedToStack(const QSharedPointer<Card> &card)
 {
     hide();
     setEnabled(false);
+}
+
+void JsuitChooser::loadImage()
+{
+    setStr();
+
+    QString imagePath;
+
+    // Determine the image path based on visibility
+
+    imagePath = QString(":res/choosers/jsuit_of_%1.png").arg(suitnames.at(suits.indexOf(str())));
+
+    setProperty("card-type", cardType_ == CardType::Small ? "Small" : "Normal");
+
+    QPixmap pixmap(imagePath); // Load the image as a QPixmap
+
+    if (!pixmap.isNull() && cardType_ == CardType::Normal) {
+        setText("");            // Remove any text
+        setIcon(QIcon(pixmap)); // Set the icon
+
+        QSize buttonSize = QSize(500, 726) * 0.2;
+        setIconSize(buttonSize);
+    } else {
+        setIcon(QIcon());
+        this->setText(str());
+    }
+    // Notify Qt to reapply the stylesheet
+    style()->unpolish(this);
+    style()->polish(this);
 }
 
 // -----------------------------------------------------------------------

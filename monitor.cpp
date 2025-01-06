@@ -49,7 +49,7 @@ void Monitor::onCardAddedToStack(const QSharedPointer<Card>& card)
 void Monitor::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
-    foreach (const auto& card, cards_) {
+    for (const auto& card : cards_) {
         card->loadImage(true);
     }
 }

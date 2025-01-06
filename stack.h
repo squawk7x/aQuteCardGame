@@ -13,6 +13,7 @@ public:
     virtual ~Stack();
 
     virtual void addCard(QSharedPointer<Card> card) override;
+    virtual void updateLayout() override;
 
 public slots:
     void onCardsPlayed(int numCardsPlayed);

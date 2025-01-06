@@ -32,7 +32,7 @@ void Played::onToggleCardsVisible(bool isVisible)
 {
     // isCardFaceVisible_ = true; // Always make card faces visible
     isCardFaceVisible_ = isVisible; // Always make card faces visible
-    foreach (const auto& card, cards_) {
+    for (const auto& card: cards_) {
         // card->loadImage(true); // Load the card image to ensure the face is visible
         card->loadImage(isVisible); // Load the card image to ensure the face is visible
     }

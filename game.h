@@ -32,6 +32,7 @@ private:
     QSharedPointer<QMediaPlayer> mediaPlayer_;
     QSharedPointer<QAudioOutput> audioOutput_;
 
+public:
     QSharedPointer<Player> player2_;
     QSharedPointer<Player> player3_;
 
@@ -67,7 +68,6 @@ private:
     int rounds = 1;
     int shuffles = 0;
 
-public:
     explicit Game(int numberOfPlayers, QObject* parent = nullptr);
     ~Game();
 
@@ -77,7 +77,7 @@ public:
     QSharedPointer<Player> player2() const;
     QSharedPointer<Player> player3() const;
 
-    QSharedPointer<Monitor> monitor();
+    // QSharedPointer<Monitor> monitor();
 
     // Choosers
     QSharedPointer<Chooser> chooser();

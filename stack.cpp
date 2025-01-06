@@ -25,6 +25,24 @@ void Stack::addCard(QSharedPointer<Card> card)
     }
 }
 
+void Stack::updateLayout()
+{
+    {
+        int maxCards = 5; // Limit to 8 cards
+        int count = 0;    // Counter for added cards
+
+        for (const auto& card : cards_) {
+            if (count >= std::min<int>(cards_.size(), maxCards))
+                break;
+
+            layout_->removeWidget(card.data());
+            layout_->addWidget(card.data());
+
+            ++count; // Increment the counter
+        }
+    }
+}
+
 void Stack::onCardsPlayed(int numCardsPlayed)
 {
     int maxCardsToShow = numCardsPlayed + 10;
@@ -47,7 +65,7 @@ void Stack::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 
-    foreach (const auto& card, cards_) {
+    for (const auto& card : cards_) {
         card->loadImage(true);
     }
 }

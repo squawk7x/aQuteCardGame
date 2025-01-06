@@ -5,11 +5,11 @@
 # a Qute Card Game
 
 --- 
-![layout](res/layout/ui_android.png)
-![layout](res/layout/ui_desktop.png)
+![layout](res/layout/ui_android_small.png)
+![layout](res/layout/ui_desktop_small.png)
 
-![layout](qrc:/res/layout/ui_desktop.png)
-![layout](qrc:/res/layout/ui_android.png)
+![layout](qrc:/res/layout/ui_desktop_small.png)
+![layout](qrc:/res/layout/ui_android_small.png)
 --- 
 
 <div style="page-break-before: always;"></div>
@@ -149,6 +149,23 @@ Finally there is an *Info* button to display this README file.
 - **Click on FINISH**: Finish round, count points and add points to score.
 - **Click on GAME**: Start a new game.
 
+
+### Keyboard Controls
+
+         4 QUTE       5 EIGHTS    6 JPOINTS
+         1 TOGGLE     2 PLAY      3 NEXT / FINISH / ROUND / GAME
+                      0 DRAW
+
+- **NUM 2**: Play the card onto the stack if it matches. The leftmost card in field *Playable* will be played.
+- **NUM 3**: Activate next player.
+- **NUM 0**: Draw a card (if player must draw a card).
+- **NUM 1**: Toggle playable cards. The leftmost card will be added to the stack when played.
+- **NUM 1**: Toggle decisions for '"♦", "♠", "♥", "♣"'.
+- **NUM 4**: Toggle decisions for Qute Chooser 'QUTE/CONTINUE'.
+- **NUM 5**: Toggle decisions for Eights Chooser 'ALL/NEXT'.
+- **NUM 6**: Toggle decisions for Jpoints Chooser 'PLUS/MINUS'.
+- **NUM 3**: Finish round, count points and add points to score.
+- **NUM 3**: Start a new game.
 
 ---
 

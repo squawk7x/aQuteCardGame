@@ -49,7 +49,7 @@ void CardVec::removeCard(QSharedPointer<Card> card)
 QString CardVec::cardsAsString() const
 {
     QString cardsStr;
-    foreach (const auto& card, cards_) {
+    for (const auto& card: cards_) {
         cardsStr += card->str() + " ";
     }
     return cardsStr.trimmed();
@@ -155,7 +155,7 @@ QString CardVec::mostCommonSuit() const
 {
     QMap<QString, int> suitCounts;
 
-    foreach (const auto& card, cards_) {
+    for (const auto& card: cards_) {
         suitCounts[card->suit()]++;
     }
 
@@ -174,7 +174,7 @@ QString CardVec::suitOfRankWithMostPoints() const
 {
     QMap<QString, int> rankPoints;
 
-    foreach (const auto& card, cards_) {
+    for (const auto& card: cards_) {
         rankPoints[card->rank()] += card->value();
 
         if (card->rank() == "J") {
