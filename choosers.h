@@ -81,6 +81,8 @@ public:
     explicit JpointsChooser(QVector<QString> decs = {"", "MINUS", "PLUS"},
                             QObject* parent = nullptr);
 
+    virtual void toggle();
+
 public slots:
     void onQuteDecisionChanged(const QString& quteDec);
 };

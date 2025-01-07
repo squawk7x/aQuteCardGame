@@ -16,6 +16,7 @@ int getRandomNumber(int max)
 }
 
 // -----------------------------------------------------------------------
+
 // Constructor
 Chooser::Chooser(QVector<QString> decs, QObject *parent)
     : decs_(decs)
@@ -38,10 +39,7 @@ void Chooser::toggle()
         decs().erase(decs().begin());       // Remove the first element
         decs().push_back(firstElement);
         setData();
-        // Bugfix: use ... == 3 to apply to JpointsChooser only
-        if (decision() == "" && this->decs_.length() == 3) {
-            toggle();
-        }
+        loadImage();
         emit chooserToggled();
     }
 }
@@ -114,6 +112,100 @@ void Chooser::loadImage()
 
 // -----------------------------------------------------------------------
 
+QuteChooser::QuteChooser(QVector<QString> decs, QObject *parent)
+    : Chooser(decs)
+{}
+
+void QuteChooser::toggle()
+{
+    if (!decs().isEmpty()) {
+        auto firstElement = decs().front(); // Access the first element
+        decs().erase(decs().begin());       // Remove the first element
+        decs().push_back(firstElement);
+        setData();
+
+        emit quteDecisionChanged(decision());
+        emit chooserToggled();
+    }
+}
+
+// -----------------------------------------------------------------------
+
+EightsChooser::EightsChooser(QVector<QString> decs, QObject *parent)
+    : Chooser(decs)
+{}
+// -----------------------------------------------------------------------
+
+JpointsChooser::JpointsChooser(QVector<QString> decs, QObject *parent)
+    : Chooser(decs)
+{}
+
+void JpointsChooser::toggle()
+{
+    if (!decs().isEmpty()) {
+        auto firstElement = decs().front(); // Access the first element
+        decs().erase(decs().begin());       // Remove the first element
+        decs().push_back(firstElement);
+        // Bugfix: use ... == 3 to apply to JpointsChooser only
+        setData();
+        if (decision() == "") {
+            auto firstElement = decs().front(); // Access the first element
+            decs().erase(decs().begin());       // Remove the first element
+            decs().push_back(firstElement);
+            setData();
+        }
+        emit chooserToggled();
+    }
+}
+
+void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
+{
+    if (decision() != "" && quteDec == QString("QUTE")) {
+        setEnabled(true);
+        show();
+    } else {
+        hide();
+        setEnabled(false);
+    }
+    loadImage();
+}
+
+// -----------------------------------------------------------------------
+
+RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
+    : Chooser(decs)
+{
+    disconnect(this, &QPushButton::clicked, this, &Chooser::toggle);
+
+    connect(this, &QPushButton::clicked, this, [&]() {
+        if (decision() == QString("FINISH")) {
+            toggle_to(QString("NEW"));
+            emit finishRound();
+        } else if (decision() == QString("NEW")) {
+            emit newRound();
+        } else if (decision() == QString("GAME")) {
+            emit newGame();
+        }
+    });
+}
+
+void RoundChooser::onQuteDecisionChanged(const QString &quteDec)
+
+{
+    if (quteDec == QString("QUTE")) {
+        toggle_to(QString("FINISH"));
+        setEnabled(true);
+        show();
+    } else {
+        toggle_to(QString(""));
+        hide();
+        setEnabled(false);
+    }
+    loadImage();
+}
+
+// -----------------------------------------------------------------------
+
 JsuitChooser::JsuitChooser(QVector<QString> decs, QObject *parent)
     : Chooser(decs)
 {}
@@ -158,74 +250,4 @@ void JsuitChooser::loadImage()
     style()->polish(this);
 }
 
-// -----------------------------------------------------------------------
-QuteChooser::QuteChooser(QVector<QString> decs, QObject *parent)
-    : Chooser(decs)
-{}
-
-void QuteChooser::toggle()
-{
-    if (!decs().isEmpty()) {
-        auto firstElement = decs().front(); // Access the first element
-        decs().erase(decs().begin());       // Remove the first element
-        decs().push_back(firstElement);
-        setData();
-
-        emit quteDecisionChanged(decision());
-        emit chooserToggled();
-    }
-}
-
-// -----------------------------------------------------------------------
-EightsChooser::EightsChooser(QVector<QString> decs, QObject *parent)
-    : Chooser(decs)
-{}
-// -----------------------------------------------------------------------
-JpointsChooser::JpointsChooser(QVector<QString> decs, QObject *parent)
-    : Chooser(decs)
-{}
-
-void JpointsChooser::onQuteDecisionChanged(const QString &quteDec)
-{
-    if (decision() != "" && quteDec == QString("QUTE")) {
-        setEnabled(true);
-        show();
-    } else {
-        hide();
-        setEnabled(false);
-    }
-    loadImage();
-}
-// -----------------------------------------------------------------------
-RoundChooser::RoundChooser(QVector<QString> decs, QObject *parent)
-    : Chooser(decs)
-{
-    disconnect(this, &QPushButton::clicked, this, &Chooser::toggle);
-
-    connect(this, &QPushButton::clicked, this, [&]() {
-        if (decision() == QString("FINISH")) {
-            toggle_to(QString("NEW"));
-            emit finishRound();
-        } else if (decision() == QString("NEW")) {
-            emit newRound();
-        } else if (decision() == QString("GAME")) {
-            emit newGame();
-        }
-    });
-}
-
-void RoundChooser::onQuteDecisionChanged(const QString &quteDec)
-
-{
-    if (quteDec == QString("QUTE")) {
-        toggle_to(QString("FINISH"));
-        setEnabled(true);
-        show();
-    } else {
-        toggle_to(QString(""));
-        hide();
-        setEnabled(false);
-    }
-    loadImage();
-}
 // -----------------------------------------------------------------------
