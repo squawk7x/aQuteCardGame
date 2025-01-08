@@ -21,13 +21,14 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Core Multimedia Test)
 # Collect source files dynamically
 file(GLOB PROJECT_SOURCES "*.cpp" "*.h" "*.ui")
 
-# list(FILTER PROJECT_SOURCES EXCLUDE REGEX "testTheQuteCardGame.cpp")
+list(FILTER PROJECT_SOURCES EXCLUDE REGEX "testTheQuteCardGame.cpp")
+list(FILTER PROJECT_SOURCES EXCLUDE REGEX "testTheQuteCardGame.h")
 
 # Add resources
 qt_add_resources(RESOURCES resources.qrc)
 
 # Create main executable for the game
-qt_add_executable(aQuteCardGame main.cpp ${PROJECT_SOURCES} ${RESOURCES})
+qt_add_executable(aQuteCardGame ${PROJECT_SOURCES} ${RESOURCES})
 
 # Link Qt libraries for the main executable
 target_link_libraries(aQuteCardGame PRIVATE Qt6::Widgets Qt6::Multimedia
@@ -48,16 +49,16 @@ install(
 
 # --------------------------------------------------------------
 
-# Add the test source files for the test executable
-file(GLOB TEST_SOURCES "testTheQuteCardGame.cpp" "testTheQuteCardGame.h")
+# Add the test source files for the test executable file(GLOB TEST_SOURCES
+# "testTheQuteCardGame.cpp" "testTheQuteCardGame.h")
 
 # Collect source files dynamically
-file(GLOB TEST_PROJECT_SOURCES "*.cpp" "*.h" "*.ui")
+file(GLOB TEST_PROJECT_SOURCES ${PROJECT_SOURCES})
 
-# list(FILTER TEST_PROJECT_SOURCES EXCLUDE REGEX "main.cpp")
+list(FILTER TEST_PROJECT_SOURCES EXCLUDE REGEX "main.cpp")
 
 # Add the test executable
-add_executable(testCases ${TEST_SOURCES} ${TEST_PROJECT_SOURCES})
+add_executable(testCases testTheQuteCardGame.cpp ${TEST_PROJECT_SOURCES})
 
 # Link Qt libraries for the test executable
 target_link_libraries(testCases PRIVATE Qt6::Widgets Qt6::Widgets

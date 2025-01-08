@@ -968,12 +968,13 @@ void Game::handleSpecialCards()
 
 void Game::activateNextPlayer()
 {
-    bool shouldRunTests = true;
+    // This does not evaluate actual values
+    // bool shouldRunTests = true;
 
-    if (shouldRunTests) {
-        MyTest testObject;         // Your test class
-        QTest::qExec(&testObject); // Run the tests
-    }
+    // if (shouldRunTests) {
+    //     MyTest testObject;         // Your test class
+    //     QTest::qExec(&testObject); // Run the tests
+    // }
 
     if (!isNextPlayerPossible())
         return;

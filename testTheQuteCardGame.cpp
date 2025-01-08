@@ -35,5 +35,5 @@ void MyTest::testCardsInGame()
 }
 
 // Run the tests
-// QTEST_MAIN(MyTest)
+QTEST_MAIN(MyTest)
 #include "testTheQuteCardGame.moc"

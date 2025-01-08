@@ -159,7 +159,7 @@ Finally there is an *Info* button to display this README file.
 - **NUM 2**: Play the card onto the stack if it matches. The leftmost card in field *Playable* will be played.
 - **NUM 3**: Activate next player.
 - **NUM 0**: Draw a card (if player must draw a card).
-- **NUM 1**: Toggle playable cards. The leftmost card will be added to the stack when played.
+- **NUM 1**: Toggle playable cards. The leftmost card will be added to the stack when played (by NUM2).
 - **NUM 1**: Toggle decisions for '"♦", "♠", "♥", "♣"'.
 - **NUM 4**: Toggle decisions for Qute Chooser 'QUTE/CONTINUE'.
 - **NUM 5**: Toggle decisions for Eights Chooser 'ALL/NEXT'.
