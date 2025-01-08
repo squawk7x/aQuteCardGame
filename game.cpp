@@ -1,8 +1,8 @@
 #include "game.h"
 #include <QDebug>
 #include <QTimer>
+#include "testTheQuteCardGame.h"
 #include <algorithm> // std::next_permutation
-
 
 extern std::vector<std::vector<QString>> patterns;
 
@@ -968,6 +968,13 @@ void Game::handleSpecialCards()
 
 void Game::activateNextPlayer()
 {
+    bool shouldRunTests = true;
+
+    if (shouldRunTests) {
+        MyTest testObject;         // Your test class
+        QTest::qExec(&testObject); // Run the tests
+    }
+
     if (!isNextPlayerPossible())
         return;
 
