@@ -146,7 +146,6 @@ void JpointsChooser::toggle()
         auto firstElement = decs().front(); // Access the first element
         decs().erase(decs().begin());       // Remove the first element
         decs().push_back(firstElement);
-        // Bugfix: use ... == 3 to apply to JpointsChooser only
         setData();
         if (decision() == "") {
             auto firstElement = decs().front(); // Access the first element
