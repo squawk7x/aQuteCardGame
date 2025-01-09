@@ -1,7 +1,6 @@
 #include "game.h"
 #include <QDebug>
 #include <QTimer>
-#include "testTheQuteCardGame.h"
 #include <algorithm> // std::next_permutation
 
 extern std::vector<std::vector<QString>> patterns;

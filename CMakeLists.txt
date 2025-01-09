@@ -21,8 +21,11 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Core Multimedia Test)
 # Collect source files dynamically
 file(GLOB PROJECT_SOURCES "*.cpp" "*.h" "*.ui")
 
-list(FILTER PROJECT_SOURCES EXCLUDE REGEX "testTheQuteCardGame.cpp")
-list(FILTER PROJECT_SOURCES EXCLUDE REGEX "testTheQuteCardGame.h")
+# Exclude test files from the main build
+list(FILTER PROJECT_SOURCES EXCLUDE REGEX "qTestTheQuteCardGame.cpp")
+list(FILTER PROJECT_SOURCES EXCLUDE REGEX "qTestTheQuteCardGame.h")
+list(FILTER PROJECT_SOURCES EXCLUDE REGEX "gTestTheQuteCardGame.cpp")
+list(FILTER PROJECT_SOURCES EXCLUDE REGEX "gTestTheQuteCardGame.h")
 
 # Add resources
 qt_add_resources(RESOURCES resources.qrc)
@@ -34,7 +37,7 @@ qt_add_executable(aQuteCardGame ${PROJECT_SOURCES} ${RESOURCES})
 target_link_libraries(aQuteCardGame PRIVATE Qt6::Widgets Qt6::Multimedia
                                             Qt6::Test)
 
-# Finalize
+# Finalize main executable
 qt_finalize_executable(aQuteCardGame)
 
 # --------------------------------------------------------------
@@ -49,25 +52,27 @@ install(
 
 # --------------------------------------------------------------
 
-# Add the test source files for the test executable file(GLOB TEST_SOURCES
-# "testTheQuteCardGame.cpp" "testTheQuteCardGame.h")
-
-# Collect source files dynamically
+# Collect source files dynamically for the test project
 file(GLOB TEST_PROJECT_SOURCES ${PROJECT_SOURCES})
-
 list(FILTER TEST_PROJECT_SOURCES EXCLUDE REGEX "main.cpp")
 
+# Add the test source files for the test executable
+file(GLOB Q_TEST_SOURCES "qTestTheQuteCardGame.cpp" "qTestTheQuteCardGame.h")
+
 # Add the test executable
-add_executable(testCases testTheQuteCardGame.cpp ${TEST_PROJECT_SOURCES})
+add_executable(qTestTheQuteCardGame ${Q_TEST_SOURCES} ${TEST_PROJECT_SOURCES})
+
+# Ensure output directory is set for tests
+set_target_properties(qTestTheQuteCardGame PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+                                                      ${CMAKE_BINARY_DIR}/bin)
 
 # Link Qt libraries for the test executable
-target_link_libraries(testCases PRIVATE Qt6::Widgets Qt6::Widgets
-                                        Qt6::Multimedia Qt6::Test)
+target_link_libraries(
+  qTestTheQuteCardGame PRIVATE Qt6::Core Qt6::Widgets Qt6::Widgets
+                               Qt6::Multimedia Qt6::Test)
 
-# Finalize
-qt_finalize_executable(testCases)
-
-# --------------------------------------------------------------
+# Finalize test executable
+qt_finalize_executable(qTestTheQuteCardGame)
 
 # Enable testing and add test executable
 enable_testing()
@@ -75,7 +80,33 @@ add_test(NAME RunTests COMMAND testCases)
 
 # --------------------------------------------------------------
 
-# Handle Android deployment
+# Find Google Test and Google Mock
+find_package(GTest REQUIRED)
+
+# Include directories for Google Test and Google Mock
+include_directories(${GTEST_INCLUDE_DIRS})
+include_directories("/usr/local/include/gtest")
+include_directories("/usr/local/include/gmock")
+
+# Add the test source files for the test executable
+file(GLOB G_TEST_SOURCES "gTestTheQuteCardGame.cpp" "gTestTheQuteCardGame.h")
+
+# Add the Google Test and Google Mock executable
+add_executable(gTestTheQuteCardGame ${G_TEST_SOURCES} ${TEST_PROJECT_SOURCES})
+
+# Link Qt libraries for the test executable
+target_link_libraries(gTestTheQuteCardGame PRIVATE Qt6::Core Qt6::Widgets
+                                                   Qt6::Widgets Qt6::Multimedia)
+
+# Link with the installed GTest and GMock libraries (ensure gmock_main and
+# gtest_main are linked last)
+target_link_libraries(
+  gTestTheQuteCardGame PRIVATE /usr/local/lib/libgtest.a
+                               /usr/local/lib/libgmock.a gmock_main gtest_main)
+
+# --------------------------------------------------------------
+
+# Handle Android deployment (if applicable)
 if(ANDROID)
   set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android")
   if(EXISTS "${ANDROID_PACKAGE_SOURCE_DIR}")

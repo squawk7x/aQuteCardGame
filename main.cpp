@@ -7,8 +7,9 @@
 #include "table.h"
 #include <qstyle.h>
 
-// written by: Andreas Ottburg, 66123 Saarbrücken, Germany
-// source code available here: https://github.com/squawk7x/aQuteCardGame
+// Written by Andreas Ottburg, 66123 Saarbrücken, Germany
+// Source code available here:
+// https://github.com/squawk7x/aQuteCardGame
 
 int main(int argc, char *argv[])
 {

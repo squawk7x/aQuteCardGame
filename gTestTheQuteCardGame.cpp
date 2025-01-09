@@ -1,19 +1,28 @@
-#include "testTheQuteCardGame.h"
+#include <QApplication>
 #include "card.h"
 #include "game.h"
+#include <gtest/gtest.h>
 
-void MyTest::testCardValues()
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv); // Add QApplication
+
+    ::testing::InitGoogleTest(&argc, argv); // Initialize Google Test
+    return RUN_ALL_TESTS();                 // Run all tests
+}
+
+TEST(MyGoogleTest, gTestCardValues)
 {
     Card card = Card("♦", "Q");
     qDebug() << "Testing card Q value should be 10:" << card.value();
-    QCOMPARE(card.value(), 10);
+    EXPECT_EQ(card.value(), 10);
 
     card = Card("♦", "6");
     qDebug() << "Testing card 6 value should be 0:" << card.value();
-    QCOMPARE(card.value(), 0);
+    ASSERT_EQ(card.value(), 0);
 }
 
-void MyTest::testCardsInGame()
+TEST(MyGoogleTest, testCardsInGame)
 {
     Game game(3);
 
@@ -30,10 +39,6 @@ void MyTest::testCardsInGame()
     qDebug() << "Stack has :" << game.stack_->cards().count();
     numCards += game.stack_->cards().count();
 
-    qDebug() << "Total number of Card should be 36 and is:" << numCards;
-    QCOMPARE(numCards, 36);
+    qDebug() << "Total number of Cards should be 36 and is:" << numCards;
+    ASSERT_EQ(numCards, 36);
 }
-
-// Run the tests
-QTEST_MAIN(MyTest)
-#include "testTheQuteCardGame.moc"
