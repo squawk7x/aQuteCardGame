@@ -27,38 +27,22 @@ void Stack::addCard(QSharedPointer<Card> card)
 
 void Stack::updateLayout()
 {
-    {
-        int maxCards = 5; // Limit to 8 cards
-        int count = 0;    // Counter for added cards
+    int maxCardsToShow = 9;
 
-        for (const auto& card : cards_) {
-            if (count >= std::min<int>(cards_.size(), maxCards))
-                break;
+    for (int i = cards_.length(); i >= 0; i--) {
+        for (auto& card : cards_) {
+            card->hide();
+        }
 
-            layout_->removeWidget(card.data());
-            layout_->addWidget(card.data());
-
-            ++count; // Increment the counter
+        int startIdx = qMax(0, cards_.size() - maxCardsToShow);
+        for (int i = startIdx; i < cards_.size(); ++i) {
+            cards_[i]->show();
         }
     }
 }
-
 void Stack::onCardsPlayed(int numCardsPlayed)
 {
-    int maxCardsToShow = numCardsPlayed + 10;
-
-    // Ensure all cards are hidden initially
-    for (auto& card : cards_) {
-        card->hide();
-    }
-
-    // Show up to maxCardsToShow cards
-    int startIdx = qMax(0, cards_.size() - maxCardsToShow);
-    for (int i = startIdx; i < cards_.size(); ++i) {
-        cards_[i]->show();
-    }
-
-    // Update the layout and widget
+    updateLayout();
 }
 
 void Stack::onToggleCardsVisible(bool isVisible)
