@@ -438,7 +438,7 @@ void Table::onPaintNextButton(NextOption nextOption)
 
 void Table::onDecisionChanged(const QString& dec)
 {
-    qDebug() << "dec transmitted:" << dec;
+    // qDebug() << "dec transmitted:" << dec;
 
     if (game_.get()->roundChooser()->isEnabled()) {
         onPaintNextButton(NextOption::NotPossible);
