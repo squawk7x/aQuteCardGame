@@ -275,31 +275,18 @@ void Table::keyPressEvent(QKeyEvent* event)
         }
     }
 
-    //     4 QUTE       5 EIGHTS    6 JPOINTS
-    //     1 TOGGLE     2 PLAY      3 NEXT / FINISH / ROUND / GAME
-    //                  0 DRAW
+    //     4 QUTE               5 EIGHTS/JPOINTS    6 FINISH/ROUND/GAME
+    //     1 PLAYABLE/JSUIT     2 PLAY              3 NEXT
+    //     0 DRAW
 
-    // gamecontrol
+    // NUM 0
     if (event->key() == Qt::Key_0) {
         ui->pbDraw->click();
         event->accept();
-    } else if (game_.get()->roundChooser()->isEnabled() && event->key() == Qt::Key_3) {
-        game_.get()->roundChooser()->click();
-        event->accept();
-    } else if (event->key() == Qt::Key_3) {
-        ui->pbNext->click();
-        event->accept();
+
+        // NUM 1 2 3
     } else if (game_.get()->jsuitChooser()->isEnabled() && event->key() == Qt::Key_1) {
         game_.get()->jsuitChooser()->toggle();
-        event->accept();
-    } else if (game_.get()->quteChooser()->isEnabled() && event->key() == Qt::Key_4) {
-        game_.get()->quteChooser()->toggle();
-        event->accept();
-    } else if (game_.get()->eightsChooser()->isEnabled() && event->key() == Qt::Key_5) {
-        game_.get()->eightsChooser()->toggle();
-        event->accept();
-    } else if (game_.get()->jpointsChooser()->isEnabled() && event->key() == Qt::Key_6) {
-        game_.get()->jpointsChooser()->toggle();
         event->accept();
     } else if (event->key() == Qt::Key_1) {
         game_.get()->playable()->togglePlayableCards();
@@ -307,6 +294,24 @@ void Table::keyPressEvent(QKeyEvent* event)
     } else if (!game_.get()->playable()->cards().isEmpty() && event->key() == Qt::Key_2) {
         auto card = game_.get()->playable()->cards().first();
         (game_.get()->player->handdeck()->playThisCard(*card));
+        event->accept();
+    } else if (event->key() == Qt::Key_3) {
+        ui->pbNext->click();
+        event->accept();
+    }
+
+    // NUM 4 5 6
+    else if (game_.get()->quteChooser()->isEnabled() && event->key() == Qt::Key_4) {
+        game_.get()->quteChooser()->toggle();
+        event->accept();
+    } else if (game_.get()->eightsChooser()->isEnabled() && event->key() == Qt::Key_5) {
+        game_.get()->eightsChooser()->toggle();
+        event->accept();
+    } else if (game_.get()->jpointsChooser()->isEnabled() && event->key() == Qt::Key_5) {
+        game_.get()->jpointsChooser()->toggle();
+        event->accept();
+    } else if (game_.get()->roundChooser()->isEnabled() && event->key() == Qt::Key_6) {
+        game_.get()->roundChooser()->click();
         event->accept();
     } else {
         // event->accept();
