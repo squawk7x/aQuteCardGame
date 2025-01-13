@@ -152,20 +152,21 @@ Finally there is an *Info* button to display this README file.
 
 ### Keyboard Controls
 
-         4 QUTE       5 EIGHTS    6 JPOINTS
-         1 TOGGLE     2 PLAY      3 NEXT / FINISH / ROUND / GAME
-                      0 DRAW
+//     4 QUTE               5 EIGHTS/JPOINTS    6 FINISH/ROUND/GAME
+//     1 PLAYABLE/JSUIT     2 PLAY              3 NEXT
+//     0 DRAW
 
+- **NUM 4**: Toggle decision for Qute Chooser 'QUTE/CONTINUE'.
+- **NUM 5**: Toggle decision for Eights Chooser 'ALL/NEXT'.
+- **NUM 5**: Toggle decision for Jpoints Chooser 'PLUS/MINUS'.
+- **NUM 6**: Finish round, new round, new game.
+
+- **NUM 1**: Toggle playable cards. The leftmost card will be added to the stack when played (by NUM2).
+- **NUM 1**: Toggle decision for '"♦", "♠", "♥", "♣"'.
 - **NUM 2**: Play the card onto the stack if it matches. The leftmost card in field *Playable* will be played.
 - **NUM 3**: Activate next player.
+
 - **NUM 0**: Draw a card (if player must draw a card).
-- **NUM 1**: Toggle playable cards. The leftmost card will be added to the stack when played (by NUM2).
-- **NUM 1**: Toggle decisions for '"♦", "♠", "♥", "♣"'.
-- **NUM 4**: Toggle decisions for Qute Chooser 'QUTE/CONTINUE'.
-- **NUM 5**: Toggle decisions for Eights Chooser 'ALL/NEXT'.
-- **NUM 6**: Toggle decisions for Jpoints Chooser 'PLUS/MINUS'.
-- **NUM 3**: Finish round, count points and add points to score.
-- **NUM 3**: Start a new game.
 
 ---
 

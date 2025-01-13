@@ -61,7 +61,7 @@ public slots:
     void onPaintDrawButton(DrawOption drawOption);
     void onPaintNextButton(NextOption nextOption);
 
-    // void onChooserToggled();
+    void onChooserToggled();
     void onDecisionChanged(const QString &dec);
 };
 

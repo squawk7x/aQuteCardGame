@@ -40,7 +40,7 @@ void Chooser::toggle()
         decs().push_back(firstElement);
         setData();
         loadImage();
-        // emit chooserToggled();
+        emit chooserToggled();
     }
 }
 
@@ -125,7 +125,7 @@ void QuteChooser::toggle()
         setData();
 
         emit quteDecisionChanged(decision());
-        // emit chooserToggled();
+        emit chooserToggled();
     }
 }
 
@@ -153,7 +153,7 @@ void JpointsChooser::toggle()
             decs().push_back(firstElement);
             setData();
         }
-        // emit chooserToggled();
+        emit chooserToggled();
     }
 }
 

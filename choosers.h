@@ -43,7 +43,7 @@ protected:
     void setData();
 
 signals:
-    // void chooserToggled();
+    void chooserToggled(); // needed for ANDROID
 };
 
 // -----------------------------------------------------------------------

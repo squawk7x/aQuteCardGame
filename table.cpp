@@ -200,27 +200,29 @@ void Table::initializeGame(int numberOfPlayers)
 
     QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
 
-    // QObject::connect(game_.get()->jsuitChooser().get(),
-    //                  &JsuitChooser::chooserToggled,
-    //                  this,
-    //                  &Table::onChooserToggled);
-    // QObject::connect(game_.get()->quteChooser().get(),
-    //                  &QuteChooser::chooserToggled,
-    //                  this,
-    //                  &Table::onChooserToggled);
-    // QObject::connect(game_.get()->eightsChooser().get(),
-    //                  &EightsChooser::chooserToggled,
-    //                  this,
-    //                  &Table::onChooserToggled);
-    // QObject::connect(game_.get()->jpointsChooser().get(),
-    //                  &JpointsChooser::chooserToggled,
-    //                  this,
-    //                  &Table::onChooserToggled);
-    // QObject::connect(game_.get()->roundChooser().get(),
-    //                  &RoundChooser::chooserToggled,
-    //                  this,
-    //                  &Table::onChooserToggled);
+    // onChooserToggled -> update() is needed for ANDROID
+    QObject::connect(game_.get()->jsuitChooser().get(),
+                     &JsuitChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->quteChooser().get(),
+                     &QuteChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->eightsChooser().get(),
+                     &EightsChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->jpointsChooser().get(),
+                     &JpointsChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
+    QObject::connect(game_.get()->roundChooser().get(),
+                     &RoundChooser::chooserToggled,
+                     this,
+                     &Table::onChooserToggled);
 
+    // needed to toggle Button Colors
     QObject::connect(game_.get()->quteChooser().get(),
                      &QuteChooser::quteDecisionChanged,
                      this,
@@ -295,7 +297,8 @@ void Table::keyPressEvent(QKeyEvent* event)
         auto card = game_.get()->playable()->cards().first();
         (game_.get()->player->handdeck()->playThisCard(*card));
         event->accept();
-    } else if (event->key() == Qt::Key_3) {
+        // BUGFIX infinite loop:
+    } else if (game_.get()->isNextPlayerPossible() && event->key() == Qt::Key_3) {
         ui->pbNext->click();
         event->accept();
     }
@@ -418,10 +421,10 @@ void Table::onRbSuit() {} // Transfer to Game
 
 void Table::onRbRank() {} // Transfer to Game
 
-// void Table::onChooserToggled()
-// {
-//     update();
-// }
+void Table::onChooserToggled()
+{
+    update();
+}
 
 void Table::onPaintDrawButton(DrawOption drawOption)
 {

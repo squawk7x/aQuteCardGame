@@ -319,7 +319,7 @@ void Game::handleChoosers()
         // and removed by cardAddedToStack -> onCardAddedToStack
 
         // Android
-        // emit jsuitChooser()->chooserToggled();
+        emit jsuitChooser()->chooserToggled();
     }
 
     // -----------------------------------------------------------------------
@@ -334,7 +334,7 @@ void Game::handleChoosers()
             // eightsChooser()->setDisabled(player->isRobot());
             // eightsChooser()->show();
 
-            // emit eightsChooser()->chooserToggled();
+            emit eightsChooser()->chooserToggled();
         }
 
         // 3 Players
@@ -374,7 +374,7 @@ void Game::handleChoosers()
         eightsChooser()->setDisabled(player->isRobot());
         eightsChooser()->show();
 
-        // emit eightsChooser()->chooserToggled();
+        emit eightsChooser()->chooserToggled();
     }
 
     // no Eights condition:
@@ -483,7 +483,7 @@ void Game::handleChoosers()
     }
     // emit quteChooser()->quteDecisionChanged(quteChooser()->decision());
 
-    // emit quteChooser()->chooserToggled();
+    emit quteChooser()->chooserToggled();
 
     // -----------------------------------------------------------------------
 
@@ -544,7 +544,7 @@ void Game::handleChoosers()
         jpointsChooser()->hide();
     }
 
-    // emit jpointsChooser()->chooserToggled();
+    emit jpointsChooser()->chooserToggled();
 
     // -----------------------------------------------------------------------
 
