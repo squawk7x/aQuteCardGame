@@ -190,7 +190,6 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
     connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
         game_->onRbCardType(CardType::Small);
-        // qDebug() << mainWindow_;
         if (mainWindow_) {
             mainWindow_->adjustSize();
         }
@@ -201,29 +200,40 @@ void Table::initializeGame(int numberOfPlayers)
 
     QObject::connect(game_.get(), &Game::resetCbVisible, this, &Table::onResetCbVisible);
 
-    QObject::connect(game_.get()->jsuitChooser().get(),
-                     &JsuitChooser::chooserToggled,
-                     this,
-                     &Table::onChooserToggled);
-    QObject::connect(game_.get()->quteChooser().get(),
-                     &QuteChooser::chooserToggled,
-                     this,
-                     &Table::onChooserToggled);
-    QObject::connect(game_.get()->eightsChooser().get(),
-                     &EightsChooser::chooserToggled,
-                     this,
-                     &Table::onChooserToggled);
-    QObject::connect(game_.get()->jpointsChooser().get(),
-                     &JpointsChooser::chooserToggled,
-                     this,
-                     &Table::onChooserToggled);
-    QObject::connect(game_.get()->roundChooser().get(),
-                     &RoundChooser::chooserToggled,
-                     this,
-                     &Table::onChooserToggled);
+    // QObject::connect(game_.get()->jsuitChooser().get(),
+    //                  &JsuitChooser::chooserToggled,
+    //                  this,
+    //                  &Table::onChooserToggled);
+    // QObject::connect(game_.get()->quteChooser().get(),
+    //                  &QuteChooser::chooserToggled,
+    //                  this,
+    //                  &Table::onChooserToggled);
+    // QObject::connect(game_.get()->eightsChooser().get(),
+    //                  &EightsChooser::chooserToggled,
+    //                  this,
+    //                  &Table::onChooserToggled);
+    // QObject::connect(game_.get()->jpointsChooser().get(),
+    //                  &JpointsChooser::chooserToggled,
+    //                  this,
+    //                  &Table::onChooserToggled);
+    // QObject::connect(game_.get()->roundChooser().get(),
+    //                  &RoundChooser::chooserToggled,
+    //                  this,
+    //                  &Table::onChooserToggled);
 
-    QObject::connect(game_.get(), &Game::paintDrawButton, this, &Table::onPaintDrawButton);
+    QObject::connect(game_.get()->quteChooser().get(),
+                     &QuteChooser::quteDecisionChanged,
+                     this,
+                     &::Table::onDecisionChanged);
+
+    QObject::connect(game_.get()->roundChooser().get(),
+                     &RoundChooser::roundDecisionChanged,
+                     this,
+                     &::Table::onDecisionChanged);
+
+    // Paint Next and Draw Button
     QObject::connect(game_.get(), &Game::paintNextButton, this, &Table::onPaintNextButton);
+    QObject::connect(game_.get(), &Game::paintDrawButton, this, &Table::onPaintDrawButton);
 
     // Pushbuttons
     QObject::connect(pbNext, &QPushButton::clicked, this, &Table::onNextClicked);
@@ -341,8 +351,8 @@ void Table::onInfoClicked()
     QScrollArea* scrollArea = new QScrollArea(&dialog);
     scrollArea->setWidget(editor);        // Set the editor as the scrollable widget
     scrollArea->setWidgetResizable(true); // Allow widget resizing within the scroll area
-    scrollArea->setVerticalScrollBarPolicy(
-        Qt::ScrollBarAlwaysOn); // Always show the vertical scrollbar
+    // Always show the vertical scrollbar
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     // Ensure that the scroll area handles touch gestures properly on Android
     // scrollArea->setHorizontalScrollBarPolicy(
@@ -403,21 +413,36 @@ void Table::onRbSuit() {} // Transfer to Game
 
 void Table::onRbRank() {} // Transfer to Game
 
-void Table::onChooserToggled()
-{
-    update();
-}
+// void Table::onChooserToggled()
+// {
+//     update();
+// }
 
 void Table::onPaintDrawButton(DrawOption drawOption)
 {
-    ui->pbDraw->setProperty("control", drawOption == DrawOption::MustCard);
+    ui->pbDraw->setProperty("control",
+                            drawOption == DrawOption::MustCard
+                                && !game_.get()->roundChooser()->isEnabled());
     ui->pbDraw->style()->unpolish(ui->pbDraw);
     ui->pbDraw->style()->polish(ui->pbDraw);
 }
 
 void Table::onPaintNextButton(NextOption nextOption)
 {
-    ui->pbNext->setProperty("control", nextOption == NextOption::Possible);
+    ui->pbNext->setProperty("control",
+                            nextOption == NextOption::Possible
+                                && !game_.get()->roundChooser()->isEnabled());
     ui->pbNext->style()->unpolish(ui->pbNext);
     ui->pbNext->style()->polish(ui->pbNext);
+}
+
+void Table::onDecisionChanged(const QString& dec)
+{
+    qDebug() << "dec transmitted:" << dec;
+
+    if (game_.get()->roundChooser()->isEnabled()) {
+        onPaintNextButton(NextOption::NotPossible);
+        onPaintDrawButton(DrawOption::NoCard);
+    } else if (game_.get()->quteChooser()->isEnabled())
+        game_->setButtonColors();
 }

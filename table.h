@@ -57,10 +57,12 @@ public slots:
     void onInfoClicked();
 
     void onResetCbVisible(); // for Andoid Version
-    void onChooserToggled();
 
     void onPaintDrawButton(DrawOption drawOption);
     void onPaintNextButton(NextOption nextOption);
+
+    // void onChooserToggled();
+    void onDecisionChanged(const QString &dec);
 };
 
 #endif // TABLE_H

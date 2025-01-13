@@ -1,4 +1,6 @@
 #include "game.h"
+#include "table.h"
+
 #include <QDebug>
 #include <QTimer>
 #include <algorithm> // std::next_permutation
@@ -62,6 +64,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
 
     connect(this, &Game::cardAddedToStack, jsuitChooser_.get(), &JsuitChooser::onCardAddedToStack);
 
+    // swap RoundChooser according to QuteChooser decision
     connect(quteChooser().get(),
             &QuteChooser::quteDecisionChanged,
             roundChooser().get(),
@@ -316,7 +319,7 @@ void Game::handleChoosers()
         // and removed by cardAddedToStack -> onCardAddedToStack
 
         // Android
-        emit jsuitChooser()->chooserToggled();
+        // emit jsuitChooser()->chooserToggled();
     }
 
     // -----------------------------------------------------------------------
@@ -331,7 +334,7 @@ void Game::handleChoosers()
             // eightsChooser()->setDisabled(player->isRobot());
             // eightsChooser()->show();
 
-            emit eightsChooser()->chooserToggled();
+            // emit eightsChooser()->chooserToggled();
         }
 
         // 3 Players
@@ -371,7 +374,7 @@ void Game::handleChoosers()
         eightsChooser()->setDisabled(player->isRobot());
         eightsChooser()->show();
 
-        emit eightsChooser()->chooserToggled();
+        // emit eightsChooser()->chooserToggled();
     }
 
     // no Eights condition:
@@ -478,9 +481,9 @@ void Game::handleChoosers()
         quteChooser()->setEnabled(false);
         quteChooser()->hide();
     }
-    emit quteChooser()->quteDecisionChanged(quteChooser()->decision());
+    // emit quteChooser()->quteDecisionChanged(quteChooser()->decision());
 
-    emit quteChooser()->chooserToggled();
+    // emit quteChooser()->chooserToggled();
 
     // -----------------------------------------------------------------------
 
@@ -541,7 +544,7 @@ void Game::handleChoosers()
         jpointsChooser()->hide();
     }
 
-    emit jpointsChooser()->chooserToggled();
+    // emit jpointsChooser()->chooserToggled();
 
     // -----------------------------------------------------------------------
 
@@ -551,8 +554,8 @@ void Game::handleChoosers()
         roundChooser()->toggle_to(QString("FINISH"));
         roundChooser()->setEnabled(true);
         roundChooser()->show();
+        emit roundChooser()->roundDecisionChanged(QString("FINISH"));
 
-        emit roundChooser()->chooserToggled();
     } else {
         roundChooser()->hide();
         roundChooser()->setEnabled(false);

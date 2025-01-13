@@ -43,7 +43,7 @@ protected:
     void setData();
 
 signals:
-    void chooserToggled();
+    // void chooserToggled();
 };
 
 // -----------------------------------------------------------------------
@@ -100,6 +100,7 @@ signals:
     void finishRound();
     void newRound();
     void newGame();
+    void roundDecisionChanged(const QString& dec);
 
 public slots:
     void onQuteDecisionChanged(const QString& quteDec);

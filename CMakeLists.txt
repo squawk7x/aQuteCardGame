@@ -51,6 +51,7 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # --------------------------------------------------------------
+# Uncomment if you want to perform testing via QtTest
 
 # Collect source files dynamically for the test project
 file(GLOB TEST_PROJECT_SOURCES ${PROJECT_SOURCES})
@@ -71,17 +72,15 @@ target_link_libraries(
   qTestTheQuteCardGame PRIVATE Qt6::Core Qt6::Widgets Qt6::Widgets
                                Qt6::Multimedia Qt6::Test)
 
-# Finalize test executable
-qt_finalize_executable(qTestTheQuteCardGame)
+# Finalize test executable qt_finalize_executable(qTestTheQuteCardGame)
 
-# Enable testing and add test executable
-enable_testing()
+# Enable testing and add test executable enable_testing()
 add_test(NAME RunTests COMMAND testCases)
 
-# --------------------------------------------------------------
+# -------------------------------------------------------------- # Uncomment if
+# you want to perform testing via GoogleTest
 
-# Find Google Test and Google Mock
-find_package(GTest REQUIRED)
+# Find Google Test and Google Mock find_package(GTest REQUIRED)
 
 # Include directories for Google Test and Google Mock
 include_directories(${GTEST_INCLUDE_DIRS})
@@ -100,6 +99,7 @@ target_link_libraries(gTestTheQuteCardGame PRIVATE Qt6::Core Qt6::Widgets
 
 # Link with the installed GTest and GMock libraries (ensure gmock_main and
 # gtest_main are linked last)
+
 target_link_libraries(
   gTestTheQuteCardGame PRIVATE /usr/local/lib/libgtest.a
                                /usr/local/lib/libgmock.a gmock_main gtest_main)
