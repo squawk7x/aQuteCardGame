@@ -53,7 +53,7 @@ void Playable::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 
-    for (const auto& card: cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         card->loadImage(true);
     }
 }

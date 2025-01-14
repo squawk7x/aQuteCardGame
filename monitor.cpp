@@ -22,7 +22,7 @@ void Monitor::addCard(QSharedPointer<Card> card)
     // Remove all cards that do not match the rank of the new card
     QVector<QSharedPointer<Card>> filteredCards;
 
-    foreach (const auto& existingCard, cards_) {
+    for (const auto& existingCard : std::as_const(cards_)) {
         if (existingCard->rank() == rank) {
             filteredCards.append(existingCard);
         } else {
@@ -49,7 +49,7 @@ void Monitor::onCardAddedToStack(const QSharedPointer<Card>& card)
 void Monitor::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         card->loadImage(true);
     }
 }

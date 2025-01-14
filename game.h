@@ -77,7 +77,7 @@ public:
     QSharedPointer<Player> player2() const;
     QSharedPointer<Player> player3() const;
 
-    // QSharedPointer<Monitor> monitor();
+    QSharedPointer<Monitor> monitor();
 
     // Choosers
     QSharedPointer<Chooser> chooser();

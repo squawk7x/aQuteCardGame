@@ -1,8 +1,5 @@
 #include "game.h"
-#include "table.h"
-
 #include <QDebug>
-#include <QTimer>
 #include <algorithm> // std::next_permutation
 
 extern std::vector<std::vector<QString>> patterns;
@@ -58,7 +55,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
     connect(this, &Game::cardMustFromBlind, drawn_.get(), &Drawn::onCardMustFromBlind);
     connect(this, &Game::cardsPlayed, stack_.get(), &Stack::onCardsPlayed);
 
-    foreach (const auto& player, playerList_) {
+    for (const auto& player : std::as_const(playerList_)) {
         connect(this, &Game::countPoints, player.get(), &Player::onCountPoints);
     }
 
@@ -109,7 +106,7 @@ Game::Game(int numberOfPlayers, QObject* parent)
 
 Game::~Game()
 {
-    // Unique pointers will automatically clean up the resources
+    // smart pointers will automatically clean up their resources
 }
 
 // Getters
@@ -128,10 +125,10 @@ QSharedPointer<Player> Game::player3() const
     return player3_;
 }
 
-// QSharedPointer<Monitor> Game::monitor()
-// {
-//     return monitor_;
-// }
+QSharedPointer<Monitor> Game::monitor()
+{
+    return monitor_;
+}
 
 QSharedPointer<EightsChooser> Game::eightsChooser()
 {
@@ -274,9 +271,11 @@ void Game::initializeRound()
     player->handdeck()->cards().last()->click();
 
     // emit setRbCardType(CardType::Small); // ui->rbCardType
-    // emit setCbVisible(false);       // to Table
-    // emit toggleCardsVisible(false); // to CardVec
-    emit resetCbVisible(); // to Table
+    emit setCbVisible(false);       // to Table
+    emit resetCbVisible();          // to Table
+    emit toggleCardsVisible(false); // to CardVec
+
+    // setButtonColors();
 
     autoplay();
 }
@@ -568,7 +567,8 @@ void Game::updatePlayable()
 {
     playable()->clearCards();
 
-    for (const auto& card : player->handdeck()->cards()) {
+    const auto& cards = player->handdeck()->cards(); // Store in a local variable
+    for (const auto& card : cards) {
         if (isThisCardPlayable(card)) {
             player->handdeck()->copyCardTo(card, playable().get());
         }
@@ -1002,9 +1002,6 @@ void Game::autoplay()
 
     // Android
     emit resetCbVisible();
-
-    // emit paintNextButton(NextOption::NotPossible);
-    // emit paintDrawButton(DrawOption::NoCard);
 
     while (player->isRobot()) {
         while (!playable()->cards().isEmpty()) { // play all cards with same rank

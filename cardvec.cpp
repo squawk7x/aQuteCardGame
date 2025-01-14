@@ -14,7 +14,7 @@ CardVec::CardVec(QWidget* parent, QVector<QSharedPointer<Card>> rhs)
     setLayout(layout_);
     // setFocusPolicy(Qt::NoFocus);
 
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         card->setParent(this);
         card->loadImage(isCardFaceVisible_);
         layout_->addWidget(card.data());
@@ -49,7 +49,7 @@ void CardVec::removeCard(QSharedPointer<Card> card)
 QString CardVec::cardsAsString() const
 {
     QString cardsStr;
-    for (const auto& card: cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         cardsStr += card->str() + " ";
     }
     return cardsStr.trimmed();
@@ -143,7 +143,7 @@ void CardVec::sortCardsByPattern(const QVector<QString>& pattern)
 int CardVec::countCardsOfRank(const QString& rank) const
 {
     int count = 0;
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         if (card->rank() == rank) {
             count++;
         }
@@ -155,7 +155,7 @@ QString CardVec::mostCommonSuit() const
 {
     QMap<QString, int> suitCounts;
 
-    for (const auto& card: cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         suitCounts[card->suit()]++;
     }
 
@@ -174,7 +174,7 @@ QString CardVec::suitOfRankWithMostPoints() const
 {
     QMap<QString, int> rankPoints;
 
-    for (const auto& card: cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         rankPoints[card->rank()] += card->value();
 
         if (card->rank() == "J") {
@@ -191,7 +191,7 @@ QString CardVec::suitOfRankWithMostPoints() const
         }
     }
 
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         if (card->rank() == rankWithMaxPoints) {
             return card->suit();
         }
@@ -201,7 +201,7 @@ QString CardVec::suitOfRankWithMostPoints() const
 
 void CardVec::updateLayout()
 {
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         layout_->removeWidget(card.data());
         layout_->addWidget(card.data());
     }
@@ -221,7 +221,7 @@ void CardVec::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = isVisible;
 
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         card->loadImage(isVisible);
     }
 }

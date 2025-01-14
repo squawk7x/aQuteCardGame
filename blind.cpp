@@ -13,8 +13,8 @@ Blind::Blind(QWidget* parent, const QVector<QSharedPointer<Card>>& rhs)
     cardFace_ = CardFace::Closed;
 
     if (rhs.isEmpty()) {
-        foreach (const auto& suit, suits) {
-            foreach (const auto& rank, ranks) {
+        for (const auto& suit : std::as_const(suits)) {
+            for (const auto& rank : std::as_const(ranks)) {
                 auto card = QSharedPointer<Card>::create(suit, rank);
                 card->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
                 addCard(card);
@@ -63,7 +63,7 @@ void Blind::showTopCard()
 // {
 //     isCardFaceVisible_ = isVisible;
 
-//     for (const auto& card: cards_) {
+//     for (const auto& card: std::as_const(cards_)) {
 //         card->loadImage(isVisible);
 //     }
 // }

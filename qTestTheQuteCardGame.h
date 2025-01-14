@@ -2,7 +2,7 @@
 #define QTESTTHEQUTECARDGAME_H
 
 #include <QObject>
-#include <QtTest/QtTest>
+#include <QTest>
 
 class MyQTest : public QObject
 {

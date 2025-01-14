@@ -201,7 +201,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Qute</string>
+           <string>Qute [4]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -243,7 +243,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Eights</string>
+           <string>Eights [5]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -285,7 +285,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Jpoints</string>
+           <string>Jpoints [5]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -333,7 +333,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Round</string>
+           <string>Round [6]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -354,6 +354,9 @@
            <property name="bottomMargin">
             <number>1</number>
            </property>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_3"/>
+           </item>
           </layout>
          </widget>
         </item>
@@ -570,7 +573,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Jsuit</string>
+           <string>Jsuit [1]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -719,7 +722,7 @@
            </size>
           </property>
           <property name="title">
-           <string>↑ Playable ←</string>
+           <string>↑ [2] Playable ← [1]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1079,7 +1082,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Draw Card</string>
+           <string>Draw Card [0]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1659,7 +1662,7 @@
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Next Player</string>
+           <string>Next Player [3]</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>

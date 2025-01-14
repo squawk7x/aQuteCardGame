@@ -30,7 +30,7 @@ void Stack::updateLayout()
     int maxCardsToShow = 9;
 
     for (int i = cards_.length(); i >= 0; i--) {
-        for (auto& card : cards_) {
+        for (auto& card : std::as_const(cards_)) {
             card->hide();
         }
 
@@ -49,7 +49,7 @@ void Stack::onToggleCardsVisible(bool isVisible)
 {
     isCardFaceVisible_ = true;
 
-    for (const auto& card : cards_) {
+    for (const auto& card : std::as_const(cards_)) {
         card->loadImage(true);
     }
 }
