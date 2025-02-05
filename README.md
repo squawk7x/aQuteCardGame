@@ -23,7 +23,7 @@ The game supports 2 or 3 players, with Player 1 competing against 1 or 2 AI oppo
 Objective
 The goal of the game is to achieve a final score lower than the scores of all other players. The game is played in multiple rounds, with each round ending when a player runs out of cards. At the end of each round, the points from the remaining cards of the other players are counted and added to their scores.
 
-The game ends when any player's score exceeds 125 points or if a player decides for 'Qute' (this is when 4 cards with same rank appear in a row).
+The game ends when any player's score exceeds 125 points.
 
 Below, you will find details about the game rules, gameboard layout, controls, and instructions for compiling and running the game.
 
