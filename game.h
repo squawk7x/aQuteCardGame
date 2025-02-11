@@ -30,9 +30,28 @@ private:
     bool isCardsVisible_;
     bool isSoundOn_;
     bool isLoggingOn_;
+    int games = 1;
+    int rounds = 1;
+    int shuffles = 0;
     QSharedPointer<QMediaPlayer> mediaPlayer_;
     QSharedPointer<QAudioOutput> audioOutput_;
 
+    void initializeGame();
+    void initializeRound();
+    void refillBlindFromStack();
+    bool isThisCardPlayable(const QSharedPointer<Card>& card);
+    bool isMustDrawCard();
+    void updatePlayable();
+    void drawCardFromBlind(DrawOption option);
+    void handleChoosers();
+    void handleSpecialCards();
+    void rotatePlayerList();
+    void autoplay();
+    bool isRoundFinished();
+    void countRound();
+    void updateLcdDisplays();
+    void togglePlayerListToScore(bool highest);
+    void collectAllCardsToBlind();
     void logData();
 
 public:
@@ -67,14 +86,8 @@ public:
 
     QSharedPointer<Player> player1_;
 
-    int games = 1;
-    int rounds = 1;
-    int shuffles = 0;
-
     explicit Game(int numberOfPlayers, QObject* parent = nullptr);
     ~Game();
-
-    void initializeGame();
 
     // Getters
     QSharedPointer<Player> player2() const;
@@ -111,22 +124,7 @@ public:
     QVector<QSharedPointer<Player>> playerList_;
     QSharedPointer<Player> player = nullptr;
 
-    void initializeRound();
-    void refillBlindFromStack();
-    bool isThisCardPlayable(const QSharedPointer<Card>& card);
-    bool isMustDrawCard();
     bool isNextPlayerPossible();
-    void updatePlayable();
-    void drawCardFromBlind(DrawOption option);
-    void handleChoosers();
-    void handleSpecialCards();
-    void rotatePlayerList();
-    void autoplay();
-    bool isRoundFinished();
-    void countRound();
-    void updateLcdDisplays();
-    void togglePlayerListToScore(bool highest);
-    void collectAllCardsToBlind();
     void setButtonColors();
 
 signals:

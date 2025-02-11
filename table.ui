@@ -1061,6 +1061,9 @@
              <property name="text">
               <string>Logging</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>

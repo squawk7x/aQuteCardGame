@@ -266,7 +266,6 @@ void Table::addSpecialCardsToHand(QKeyEvent* event)
     if (keyToCard.contains(event->key())) {
         QString rank = keyToCard[event->key()];
         for (const auto& suit : std::as_const(suits)) {
-            // for (const auto& suit : {QString("♦"), QString("♥")}) {
             QSharedPointer<Card> newCard = QSharedPointer<Card>::create(suit, rank);
             game_->player->handdeck()->addCard(newCard);
         }

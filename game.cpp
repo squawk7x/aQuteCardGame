@@ -14,7 +14,7 @@ Game::Game(
     , audioOutput_(QSharedPointer<QAudioOutput>::create())
     , isSoundOn_(false)
     , isCardsVisible_(false)
-    , isLoggingOn_(false)
+    , isLoggingOn_(true)
     , monitor_(QSharedPointer<Monitor>::create())
     , eightsChooser_(QSharedPointer<EightsChooser>::create())
     , quteChooser_(QSharedPointer<QuteChooser>::create())
@@ -267,6 +267,12 @@ void Game::initializeRound()
 
     for (const auto& player : std::as_const(playerList_)) {
         player->handdeck()->setEnabled(false);
+    }
+
+    QFile logFile("./game.log");
+    // Delete log file (clear contents) at the start of a new round
+    if (logFile.exists()) {
+        logFile.remove(); // Deletes the existing log file
     }
 
     // active player is first player in playerList_
@@ -1105,7 +1111,7 @@ void Game::collectAllCardsToBlind()
 void Game::logData()
 {
     if (isLoggingOn_) {
-        QFile logFile("game.log"); // Use a relative path for the log file
+        QFile logFile("game.log");
         if (!logFile.open(QIODevice::Append | QIODevice::Text)) {
             qWarning() << "Failed to open log file for writing.";
             return;
