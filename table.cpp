@@ -172,6 +172,10 @@ void Table::initializeGame(int numberOfPlayers)
         ui->cbVisible->setChecked(checked);
     });
 
+    // connect(game_.get(), &Game::onCbLogging, this, [&](bool checked) {
+    //     ui->cbLogging->setChecked(checked);
+    // });
+
     connect(game_.get(), &Game::setRbCardType, this, [&](CardType type) {
         if (type == CardType::Small) {
             ui->rbCardTypeSmall->setChecked(true); // Ensures the button is checked
@@ -185,7 +189,9 @@ void Table::initializeGame(int numberOfPlayers)
     connect(ui->rbNumPlayers2, &QRadioButton::pressed, this, &Table::onRbNumPlayers2);
     connect(ui->rbNumPlayers3, &QRadioButton::pressed, this, &Table::onRbNumPlayers3);
     connect(ui->cbSound, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbSound);
+    connect(ui->cbLogging, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbLogging);
     connect(ui->cbVisible, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbVisible);
+    connect(ui->cbLogging, &QCheckBox::checkStateChanged, game_.get(), &Game::onCbLogging);
     connect(ui->rbSuit, &QRadioButton::pressed, game_.get(), &Game::onRbSuit);
     connect(ui->rbRank, &QRadioButton::pressed, game_.get(), &Game::onRbRank);
     connect(ui->rbCardTypeSmall, &QRadioButton::clicked, game_.get(), [&]() {
@@ -414,11 +420,9 @@ void Table::onRbNumPlayers3()
 }
 
 void Table::onCbSound() {} // Transfer to Game
-
 void Table::onCbVisible() {} // Transfer to Game
-
+void Table::onCbLogging() {} // Transfer to Game
 void Table::onRbSuit() {} // Transfer to Game
-
 void Table::onRbRank() {} // Transfer to Game
 
 void Table::onChooserToggled()

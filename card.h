@@ -21,6 +21,7 @@ class Card : public QPushButton
 private:
     QString suit_;
     QString rank_;
+    std::pair<QString, QString> pair_;
     QString suitname_;
     QString rankname_;
     QString str_;
@@ -30,6 +31,7 @@ private:
 public:
     explicit Card(const QString& suit, const QString& rank, QWidget* parent = nullptr);
     explicit Card(const QString& cardStr, QWidget* parent = nullptr);
+    explicit Card(const std::pair<QString, QString>& pair, QWidget* parent = nullptr);
     Card(const Card& other);                // Copy constructor
     Card& operator=(const Card& other);     // Copy assignment operator
     Card(Card&& other) noexcept;            // Move constructor

@@ -1,16 +1,20 @@
 #include "game.h"
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
 #include <algorithm> // std::next_permutation
 
 extern std::vector<std::vector<QString>> patterns;
 
-Game::Game(int numberOfPlayers, QObject* parent)
+Game::Game(
+    int numberOfPlayers, QObject* parent)
     : QObject(parent)
     , numberOfPlayers_(numberOfPlayers)
     , mediaPlayer_(QSharedPointer<QMediaPlayer>::create())
     , audioOutput_(QSharedPointer<QAudioOutput>::create())
-    , isCardsVisible_(false)
     , isSoundOn_(false)
+    , isCardsVisible_(false)
+    , isLoggingOn_(false)
     , monitor_(QSharedPointer<Monitor>::create())
     , eightsChooser_(QSharedPointer<EightsChooser>::create())
     , quteChooser_(QSharedPointer<QuteChooser>::create())
@@ -292,6 +296,7 @@ void Game::onHandCardClicked(const QSharedPointer<Card>& card)
         player->handdeck()->moveCardTo(card, stack().get());
         updatePlayable();
         setButtonColors();
+        logData();
     }
 
     handleChoosers();
@@ -1097,6 +1102,38 @@ void Game::collectAllCardsToBlind()
     }
 }
 
+void Game::logData()
+{
+    if (isLoggingOn_) {
+        QFile logFile("game.log"); // Use a relative path for the log file
+        if (!logFile.open(QIODevice::Append | QIODevice::Text)) {
+            qWarning() << "Failed to open log file for writing.";
+            return;
+        }
+
+        QTextStream out(&logFile);
+
+        // Log game data
+        out << "Blind: " << blind_.data()->cardsAsString() << Qt::endl;
+        out << "Stack: " << stack_.data()->cardsAsString() << Qt::endl;
+
+        for (const auto& player : playerList_) {
+            out << player->name() << ": " << player->handdeck().data()->cardsAsString() << Qt::endl;
+        }
+
+        out << "--------------------------------" << Qt::endl; // Separator for readability
+        out.flush();                                           // Ensure data is written immediately
+        logFile.close();
+
+        // Console output remains the same
+        qDebug() << "Blind:" << blind_.data()->cardsAsString();
+        qDebug() << "Stack:" << stack_.data()->cardsAsString();
+        for (const auto& player : playerList_) {
+            qDebug() << player->name() << ":" << player->handdeck().data()->cardsAsString();
+        }
+    }
+}
+
 void Game::updateLcdDisplays()
 {
     for (const auto& player : std::as_const(playerList_)) {
@@ -1164,6 +1201,12 @@ void Game::onRbCardType(CardType type)
 void Game::onCbSound(int state)
 {
     isSoundOn_ = state;
+}
+
+void Game::onCbLogging(
+    int state)
+{
+    isLoggingOn_ = state;
 }
 
 void Game::onRbSuit()

@@ -29,8 +29,11 @@ private:
     int numberOfPlayers_;
     bool isCardsVisible_;
     bool isSoundOn_;
+    bool isLoggingOn_;
     QSharedPointer<QMediaPlayer> mediaPlayer_;
     QSharedPointer<QAudioOutput> audioOutput_;
+
+    void logData();
 
 public:
     QSharedPointer<Player> player2_;
@@ -150,6 +153,7 @@ public slots:
     void onNewRound();
     void onNewGame();
     void onCbSound(int state);
+    void onCbLogging(int state);
     void onCbVisible(bool isVisible);
     void onRbCardType(CardType type);
     void onRbSuit();

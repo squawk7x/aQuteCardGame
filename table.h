@@ -48,6 +48,7 @@ public slots:
 
     void onCbSound();                      // Transfer to Game
     void onCbVisible();                    // Transfer to Game
+    void onCbLogging();                    // Transfer to Game
 
     void onRbSuit();                       // Transfer to Game
     void onRbRank();                       // Transfer to Game

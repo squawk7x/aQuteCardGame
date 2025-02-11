@@ -14,6 +14,8 @@ QVector<QString> suitnames = {"diamonds", "spades", "hearts", "clubs"};
 // Private Methods
 void Card::initCard()
 {
+    pair_.first = suit_;
+    pair_.second = rank_;
     setSuitname(suit_);
     setRankname(rank_);
     setValue(rank_);
@@ -87,6 +89,11 @@ Card::Card(const QString& cardStr, QWidget* parent)
         qDebug() << "Invalid card string format:" << cardStr;
     }
 }
+
+Card::Card(
+    const std::pair<QString, QString>& pair, QWidget* parent)
+    : Card(pair.first, pair.second)
+{}
 
 Card::Card(const Card& other)
     : QPushButton(other.parentWidget())

@@ -640,6 +640,9 @@
          </widget>
         </item>
         <item>
+         <layout class="QGridLayout" name="gridLayout_5"/>
+        </item>
+        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
@@ -1044,6 +1047,19 @@
              </property>
              <property name="checked">
               <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbLogging">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Logging</string>
              </property>
             </widget>
            </item>
