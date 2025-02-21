@@ -415,7 +415,8 @@ void Game::handleChoosers()
             //             else                           CONTINUE      hide
             //
             int jacks = 0;
-            for (const auto& card : std::as_const(played()->cards())) {
+            for (const auto &card : std::as_const(played()->cards()))
+            {
                 if (card->rank() == "J") {
                     jacks++;
                 }

@@ -4,14 +4,12 @@
 #include <QObject>
 #include <QTest>
 
-class MyQTest : public QObject
-{
-    Q_OBJECT
+class MyQTest : public QObject {
+  Q_OBJECT  // 🔹 Add this macro!
 
-private slots:
-
-    void qTestCardValues();
-    void qTestCardsInGame();
+ private slots:
+  void qTestCardValues();
+  void qTestCardsInGame();
 };
 
-#endif // TESTTHEQUTECARDGAME_H
+#endif  // QTESTTHEQUTECARDGAME_H

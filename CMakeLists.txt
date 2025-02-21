@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Environment-based Qt path for portability
@@ -31,7 +31,8 @@ list(FILTER PROJECT_SOURCES EXCLUDE REGEX "gTestTheQuteCardGame.h")
 qt_add_resources(RESOURCES resources.qrc)
 
 # Create main executable for the game
-qt_add_executable(aQuteCardGame ${PROJECT_SOURCES} ${RESOURCES})
+qt_add_executable(aQuteCardGame MANUAL_FINALIZATION ${PROJECT_SOURCES}
+                  ${RESOURCES})
 
 # Link Qt libraries for the main executable
 target_link_libraries(aQuteCardGame PRIVATE Qt6::Widgets Qt6::Multimedia
@@ -58,6 +59,9 @@ if(NOT ANDROID)
   # Collect source files dynamically for the test project
   file(GLOB TEST_PROJECT_SOURCES ${PROJECT_SOURCES})
   list(FILTER TEST_PROJECT_SOURCES EXCLUDE REGEX "main.cpp")
+
+  # Add the directory containing test headers to the include path
+  include_directories(${CMAKE_SOURCE_DIR})
 
   # QtTest Unit Tests
   file(GLOB Q_TEST_SOURCES "qTestTheQuteCardGame.cpp" "qTestTheQuteCardGame.h")
