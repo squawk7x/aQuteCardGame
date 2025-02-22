@@ -269,11 +269,11 @@ void Game::initializeRound()
         player->handdeck()->setEnabled(false);
     }
 
-    QFile logFile("./game.log");
-    // Delete log file (clear contents) at the start of a new round
-    if (logFile.exists()) {
-        logFile.remove(); // Deletes the existing log file
-    }
+    // QFile logFile("~/Qt-Projects/aQuteCardGame/game.log");
+    // // Delete log file (clear contents) at the start of a new round
+    // if (logFile.exists()) {
+    //     logFile.remove(); // Deletes the existing log file
+    // }
 
     // active player is first player in playerList_
     player = playerList_.front();
@@ -1109,36 +1109,45 @@ void Game::collectAllCardsToBlind()
     }
 }
 
-void Game::logData()
-{
-    if (isLoggingOn_) {
-        QFile logFile("game.log");
-        if (!logFile.open(QIODevice::Append | QIODevice::Text)) {
-            qWarning() << "Failed to open log file for writing.";
-            return;
-        }
+#include <QStandardPaths>
 
-        QTextStream out(&logFile);
+void Game::logData() {
+  if (isLoggingOn_) {
+    QString logFilePath =
+        QStandardPaths::writableLocation(QStandardPaths::HomeLocation) +
+        "/Qt-Projects/aQuteCardGame/game.log";
+    QFile logFile(logFilePath);
 
-        // Log game data
-        out << "Blind: " << blind_.data()->cardsAsString() << Qt::endl;
-        out << "Stack: " << stack_.data()->cardsAsString() << Qt::endl;
-
-        for (const auto& player : playerList_) {
-            out << player->name() << ": " << player->handdeck().data()->cardsAsString() << Qt::endl;
-        }
-
-        out << "--------------------------------" << Qt::endl; // Separator for readability
-        out.flush();                                           // Ensure data is written immediately
-        logFile.close();
-
-        // Console output remains the same
-        qDebug() << "Blind:" << blind_.data()->cardsAsString();
-        qDebug() << "Stack:" << stack_.data()->cardsAsString();
-        for (const auto& player : playerList_) {
-            qDebug() << player->name() << ":" << player->handdeck().data()->cardsAsString();
-        }
+    if (!logFile.open(QIODevice::Append | QIODevice::Text)) {
+      qWarning() << "Failed to open log file for writing at:" << logFilePath;
+      return;
     }
+
+    QTextStream out(&logFile);
+
+    // Log game data
+    out << "Blind: " << blind_.data()->cardsAsString() << Qt::endl;
+    out << "Played: " << played_.data()->cardsAsString() << Qt::endl;
+    out << "Stack: " << stack_.data()->cardsAsString() << Qt::endl;
+
+    for (const auto& player : playerList_) {
+      out << player->name() << ": "
+          << player->handdeck().data()->cardsAsString() << Qt::endl;
+    }
+
+    out << "--------------------------------"
+        << Qt::endl;  // Separator for readability
+    out.flush();
+    logFile.close();
+
+    // Console output remains the same
+    qDebug() << "Blind:" << blind_.data()->cardsAsString();
+    qDebug() << "Stack:" << stack_.data()->cardsAsString();
+    for (const auto& player : playerList_) {
+      qDebug() << player->name() << ":"
+               << player->handdeck().data()->cardsAsString();
+    }
+  }
 }
 
 void Game::updateLcdDisplays()

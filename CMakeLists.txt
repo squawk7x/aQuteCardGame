@@ -19,7 +19,7 @@ set(CMAKE_PREFIX_PATH "$ENV{Qt6_DIR}" "$ENV{HOME}/Qt/6.8.2/gcc_64")
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Multimedia Test)
 
 # Collect source files dynamically
-file(GLOB PROJECT_SOURCES "*.cpp" "*.h" "*.ui")
+file(GLOB PROJECT_SOURCES "*.cpp" "*.h" "*.ui" "*.log")
 
 # Exclude test files from the main build
 list(FILTER PROJECT_SOURCES EXCLUDE REGEX "qTestTheQuteCardGame.cpp")
@@ -52,53 +52,6 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # --------------------------------------------------------------
-if(NOT ANDROID)
-  # Enable testing
-  enable_testing()
-
-  # Collect source files dynamically for the test project
-  file(GLOB TEST_PROJECT_SOURCES ${PROJECT_SOURCES})
-  list(FILTER TEST_PROJECT_SOURCES EXCLUDE REGEX "main.cpp")
-
-  # Add the directory containing test headers to the include path
-  include_directories(${CMAKE_SOURCE_DIR})
-
-  # QtTest Unit Tests
-  file(GLOB Q_TEST_SOURCES "qTestTheQuteCardGame.cpp" "qTestTheQuteCardGame.h")
-
-  # Add the test executable
-  add_executable(qTestTheQuteCardGame ${Q_TEST_SOURCES} ${TEST_PROJECT_SOURCES})
-
-  # Ensure output directory is set for tests
-  set_target_properties(qTestTheQuteCardGame PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-                                                        ${CMAKE_BINARY_DIR}/bin)
-
-  # Link Qt libraries for the test executable
-  target_link_libraries(qTestTheQuteCardGame PRIVATE Qt6::Core Qt6::Widgets
-                                                     Qt6::Multimedia Qt6::Test)
-
-  # Add test to CTest
-  add_test(NAME RunTests COMMAND qTestTheQuteCardGame)
-
-  # --------------------------------------------------------------
-  # GoogleTest Setup
-  find_package(GTest REQUIRED)
-
-  # Include directories for Google Test and Google Mock
-  include_directories(${GTEST_INCLUDE_DIRS})
-
-  # Google Test Sources
-  file(GLOB G_TEST_SOURCES "gTestTheQuteCardGame.cpp" "gTestTheQuteCardGame.h")
-
-  # Add Google Test executable
-  add_executable(gTestTheQuteCardGame ${G_TEST_SOURCES} ${TEST_PROJECT_SOURCES})
-
-  # Link Qt and Google Test libraries
-  target_link_libraries(
-    gTestTheQuteCardGame PRIVATE Qt6::Core Qt6::Widgets Qt6::Multimedia
-                                 GTest::GTest GTest::Main)
-endif()
-# --------------------------------------------------------------
 
 # Handle Android deployment (if applicable)
 if(ANDROID)
@@ -113,3 +66,26 @@ if(ANDROID)
     )
   endif()
 endif()
+
+# --------------------------------------------------------------
+# Enable testing
+enable_testing()
+
+# GoogleTest & GoogleMock Setup
+set(GTEST_DIR /usr/share/googletest)
+set(GMOCK_DIR /usr/share/googletest/googlemock)
+
+# Include GoogleTest and GoogleMock
+include_directories(${GTEST_DIR}/googletest/include ${GMOCK_DIR}/include)
+
+# Specify the binary directory for GoogleTest
+add_subdirectory(${GTEST_DIR} ${CMAKE_BINARY_DIR}/googletest-build)
+
+# Add the test executable
+add_executable(runTests tst_cardtest.cpp card.cpp)
+
+# Link the Qt6 and GoogleTest libraries to your test executable
+target_link_libraries(runTests Qt6::Widgets gtest gtest_main gmock gmock_main)
+
+# Register the tests
+add_test(NAME CardTests COMMAND runTests)
