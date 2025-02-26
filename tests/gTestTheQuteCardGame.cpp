@@ -1,7 +1,9 @@
-#include <QApplication>
-#include "card.h"
-#include "game.h"
 #include <gtest/gtest.h>
+
+#include <QApplication>
+
+#include "../card.h"
+#include "../game.h"
 
 int main(int argc, char **argv)
 {

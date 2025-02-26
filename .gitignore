@@ -2,15 +2,13 @@
 # --------------------------------------------------------------
 .cache/
 .directory
+.git
 build/
-dll/
-images/Screenshot*
-*.xcf
+CMakeFiles/
+precompiled/
 CMakeLists.txt.user
 CMakeCache.txt
-CMakeFiles/
 *.orig
 *.backup
 *.log
-*~
-res/
+

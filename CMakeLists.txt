@@ -18,8 +18,10 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 # Ensure Qt 6 is being used
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Multimedia Test)
 
-# Collect source files dynamically
-file(GLOB PROJECT_SOURCES "*.cpp" "*.h" "*.ui" "*.log")
+# Include the src directory for header files include_directories(src)
+
+# # Alle Quell- und Headerdateien aus dem src Ordner einbinden
+file(GLOB PROJECT_SOURCES src/*.cpp src/*.h src/*.ui)
 
 # Add resources
 qt_add_resources(RESOURCES resources.qrc)
@@ -76,7 +78,7 @@ include_directories(${GTEST_DIR}/googletest/include ${GMOCK_DIR}/include)
 add_subdirectory(${GTEST_DIR} ${CMAKE_BINARY_DIR}/googletest-build)
 
 # Add the test executable Add test executable
-add_executable(runTests)
+add_executable(runTests tests/tst_card.cpp)
 
 # Link GoogleTest properly
 target_link_libraries(runTests gtest gtest_main)
